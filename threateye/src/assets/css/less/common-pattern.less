@@ -1,0 +1,157 @@
+/**
+ *此样式为搜索框、下拉框、按钮、重置、以及一般性按钮组的公共样式
+ *创建者ycl 时间2020-01-05
+**/
+.common-pattern {
+  .title {
+    text-align: left;
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+  }
+  .common_box {
+    padding: 9px 0;
+    line-height: normal;
+    border-bottom: 1px solid #ececec;
+    .common_box_list {
+      font-size: 0;
+      text-align: left;
+      .s_key {
+        height: 40px;
+        width: 164px;
+        margin-right: 8px;
+        line-height: 40px;
+        display: inline-block;
+        /deep/
+        .el-input__inner {
+          border-width: 0;
+          font-size: 14px;
+          height: 40px;
+          background: #F8F8F8;
+          font-family: PingFangSC-Regular;
+        }
+        &.s_key_types{
+          margin-left: 8px;
+        }
+      }
+      /deep/
+      .el-date-editor{
+        /*border: 1px solid #F8F8F8;*/
+        height: 40px;
+        vertical-align: bottom;
+        min-width: 250px!important;
+        .el-range-input{
+          font-size: 14px;
+          &:hover{
+            font-size: 14px;
+          }
+        }
+      }
+      /deep/
+      .b_btn{
+        background: #F8F8F8;
+        border-width: 0;
+        height: 40px;
+        width: 164px;
+        margin-left: 8px;
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #BBBBBB;
+      }
+      /deep/
+      .dropdown_ul_box{
+        width: 164px;
+        margin-left: 8px;
+        background: red;
+      }
+      /deep/
+      .s_btn {
+        display: inline-block;
+        width: 102px;
+        height: 40px;
+        line-height: 0;
+        outline: none;
+        border-width: 0;
+        color: #fff;
+        margin: 0 16px;
+        background: #0070FF;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        .el-input__inner{
+          &:hover{
+            font-size: 16px;
+          }
+        }
+      }
+      /deep/
+      .s_link {
+        color: #0070FF;
+        margin-left: 8px;
+        vertical-align: baseline;
+        text-decoration: none;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+      }
+    }
+  }
+  .common_btn {
+    height: 80px;
+    padding: 19px 0;
+    .common_btn_list {
+      font-size: 0;
+      /deep/
+      .b_btn {
+        font-size: 14px;
+        height: 42px;
+        width: 148px;
+        outline: none;
+        margin-right: 8px;
+        line-height: 0;
+        font-family: PingFangSC-Medium;
+        &.b_btn_status {
+          color: #fff;
+          background: #0070FF;
+          border: 1px solid #0070FF;
+        }
+        &.b_btn_label {
+          color: #0070FF;
+          border: 1px solid #0070FF;
+          background-color: #fff;
+        }
+        &.b_btn_edit{
+          color: #0070FF;
+          border: 1px solid #0070FF;
+          background-color: #fff;
+          vertical-align: bottom;
+        }
+      }
+
+      /deep/
+      .b_btn_124 {
+        font-size: 14px;
+        height: 42px;
+        width: 124px;
+        outline: none;
+        margin-right: 8px;
+        line-height: 0;
+        font-family: PingFangSC-Medium;
+        &.b_btn_status {
+          color: #fff;
+          background: #0070FF;
+          border: 1px solid #0070FF;
+        }
+      }
+    }
+  }
+}
+.dropdown_ul_box{
+  width: 148px;
+}
+
+.key_dropdown_ul_box{
+  width: 164px;
+  margin-left: 8px;
+}
+.dropdown_ul_box_124{
+  width: 124px;
+}

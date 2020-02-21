@@ -1,0 +1,39 @@
+<template>
+  <div id="system_control_resume"
+       class="container">
+    <div class="content_box">
+      <p class="title">恢复出场设置</p>
+      <el-button class="btn_i">恢复出场设置</el-button>
+      <p class="title marin_top">重启平台</p>
+      <el-button class="btn_i">立即重启</el-button>
+    </div>
+  </div>
+</template>
+<script type="text/ecmascript-6">
+export default {
+  name: "system_control_resume"
+}
+</script>
+
+<style scoped lang='less'>
+@import '../../../../assets/css/less/system/setting/common_box.less';
+#system_control_resume {
+  .content_box {
+    .title {
+      font-family: PingFangSC-Medium;
+      font-size: 16px;
+      color: #333333;
+      margin-bottom: 24px;
+    }
+    .marin_top {
+      margin-top: 64px;
+    }
+    .btn_i {
+      width: 148px;
+      height: 42px;
+      background: #0070ff;
+      color: #fff;
+    }
+  }
+}
+</style>

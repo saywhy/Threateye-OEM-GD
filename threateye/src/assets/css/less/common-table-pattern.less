@@ -1,0 +1,45 @@
+/**
+ *此样式带(全选)的table公共样式
+ *创建者ycl 时间2020-01-05
+**/
+.common-table-pattern{
+  /deep/
+  .common-table{
+    width: 100%;
+    font-family: PingFangSC-Medium;
+    /deep/
+    .el-table__header-wrapper{
+      .el-table__header{
+        thead.has-gutter{
+          th{
+            background: #F8F8F8;
+            .cell{
+              color: #333;
+              font-weight: bold;
+            }
+          }
+          th:nth-child(1){
+            .cell{
+              padding: 0;
+              text-align: right;
+              color: #999;
+            }
+          }
+          th:nth-child(2){
+            .cell{
+              .el-checkbox__input{
+                vertical-align: baseline!important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  /deep/
+  .el-pagination{
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+

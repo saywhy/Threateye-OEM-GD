@@ -24,7 +24,7 @@
           href="https://chat.vuejs.org"
           target="_blank"
         >
-          Community Chat
+          Community Chat11111111111111111111111111111111
         </a>
       </li>
       <li>

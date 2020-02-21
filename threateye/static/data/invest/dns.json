@@ -1,0 +1,183 @@
+[
+  {
+    "pid": "01",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "02",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "03",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "04",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "05",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "06",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "07",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "08",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "09",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "10",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "11",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "12",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "13",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "14",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "15",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "16",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "17",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  },
+  {
+    "pid": "18",
+    "time": "2019.11.08 15:33:24 ",
+    "dns": "8.8.8.8",
+    "main_address": "192.168.1.187",
+    "type": "query",
+    "domain": "teredo.ipv6.microsoft.com",
+    "resolve_address": "192.166.1.156",
+    "ttl":" - —"
+  }
+]
+

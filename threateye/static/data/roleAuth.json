@@ -1,0 +1,27 @@
+[
+  {
+    "name": "购物车",
+    "auth": "cart",
+    "pid": -1,
+    "id": 1
+  },
+  {
+    "name": "购物车列表",
+    "auth": "cart-list",
+    "pid": 1,
+    "id": 4
+  },
+  {
+    "name": "彩票",
+    "auth": "lottery",
+    "pid": 4,
+    "id": 5
+  },
+  {
+    "name": "商品",
+    "auth": "product",
+    "pid": 4,
+    "id": 6
+  }
+]
+

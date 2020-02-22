@@ -104,11 +104,11 @@
         });
       }
     },
-    watch:{
+    /*watch:{
       $route(to,from){
         this.drawGraph();
       }
-    }
+    }*/
   }
 </script>
 

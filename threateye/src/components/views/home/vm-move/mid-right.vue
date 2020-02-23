@@ -1,0 +1,124 @@
+<template>
+    <div id="edr"></div>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  name: "edr",
+  data() {
+    return {};
+  },
+  props: {
+    option: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  mounted() {
+    this.edr();
+  },
+  methods: {
+    edr() {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("edr"));
+      // 绘制图表
+      myChart.setOption({
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        legend: {
+          show:false
+        },
+        grid: {
+          top:0,
+          left: 0,
+          right: '2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          min: 0,
+          max: 10,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+        },
+        yAxis: {
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: ['可疑文件', '可疑URL', '可疑IP']
+        },
+        series: [
+          {
+            name: '威胁类型',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: false
+            },
+            barWidth:'40%',
+            color:'#5389E0',
+            data: [7, 6, 8]
+          },
+          {
+            name: '威胁类型',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: false
+            },
+            barWidth:'40%',
+            color:'#f8f8f8',
+            data: [10, 10, 10]
+          },
+
+        ]
+      });
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    }
+  }
+};
+</script>
+<style scoped lang="less">
+#edr {
+  height: 100%;
+}
+</style>

@@ -1,174 +1,389 @@
 <template>
- <div id="Overview" v-cloak>
-   <vm-main-tabs></vm-main-tabs>
-   <el-row :gutter="20" type="flex" class="va-main-2" justify="space-between">
-     <el-col :span="12">
-       <div class="vam-2">
-         <div class="vam-title">威胁告警（7天）</div>
-         <vm-main-emerge></vm-main-emerge>
-       </div>
-     </el-col>
-     <el-col :span="6">
-       <div class="vam-2">
-         <div class="vam-title">威胁类型 TOP5（7天）</div>
-         <vm-main-form></vm-main-form>
-         <vm-main-time></vm-main-time>
-       </div>
-     </el-col>
-     <el-col :span="6">
-       <div class="vam-2">
-         <div class="vam-title">高风险威胁指标（7天）</div>
-         <vm-main-target></vm-main-target>
-       </div>
-     </el-col>
-   </el-row>
+  <div id="home_overview" v-cloak>
+    <div class="container">
 
-   <el-row :gutter="20" type="flex" class="va-main-3" justify="space-between">
-     <el-col :span="12">
-       <div class="vam-3">
-         <div class="vam-title">风险资产</div>
-         <vm-main-capital></vm-main-capital>
-         <el-col :span="14" class="vam-progress">
-           <vm-main-progress></vm-main-progress>
-         </el-col>
-       </div>
-     </el-col>
-     <el-col :span="12">
-       <div class="vam-3">
-         <div class="vam-title">风险资产 TOP5</div>
-         <div class="vam-more" v-more="more" @click="dialogTableVisible = true"></div>
-         <vm-main-top5></vm-main-top5>
-       </div>
-     </el-col>
-   </el-row>
+      <!-- 第一排 -->
+      <el-row class="container_top  container_item" :gutter="10">
+        <el-col :span="6">
+          <div class="top_item" @click="sys_state">
+            <div class="title">
+              <p>
+                <span>系统状态监控</span>
+              </p>
+            </div>
+            <div class="legend">
+              <span class="legend_icon color2"></span>
+              <span>预警:2</span>
+              <span class="legend_icon color5"></span>
+              <span>健康:5</span>
+              <span class="legend_icon color6"></span>
+              <span>离线:3</span>
+            </div>
+            <div class="top_left_content">
+              <top-left></top-left>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">流量文件监控</span>
+                <span class="title_right">
+                    <span class="title_right_icon color1"></span>
+                    <span>流量(M/s)</span>
+                    <span class="title_right_icon color2"></span>
+                    <span>文件(个/s)</span>
+                </span>
+              </p>
+            </div>
+            <div class="top_mid_content">
+              <div class="content_top">
+                <top-mid-flow></top-mid-flow>
+              </div>
+              <div class="content_bom">
+                <top-mid-file></top-mid-file>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">协议统计</span>
+              </p>
+            </div>
+            <div class="legend">
+              <p class="legend_title">单位(P/s)</p>
+            </div>
+            <div class="top_right_content">
+              <top-right></top-right>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
 
-   <el-row :gutter="20" type="flex" class="va-main-4" justify="space-between">
-     <el-col :span="12">
-       <div class="vam-4">
-         <div class="vam-title">攻击阶段分布（30天）</div>
-         <vm-main-rank></vm-main-rank>
-       </div>
-     </el-col>
-     <el-col :span="12">
-       <div class="vam-4">
-         <div class="vam-title">最新告警</div>
-         <div class="vam-more" v-more="more" @click="dialogTableVisible = true"></div>
-         <vm-main-threat></vm-main-threat>
-       </div>
-     </el-col>
-   </el-row>
+      <!-- 第二排 -->
+      <el-row class="container_bom  container_item" :gutter="10">
+        <el-col :span="9">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">告警</span>
+                <span class="title_right">
+                    <span class="title_right_icon color3"></span>
+                    <span>低危</span>
+                    <span class="title_right_icon color4"></span>
+                    <span>中危</span>
+                    <span class="title_right_icon color5"></span>
+                    <span>中危</span>
+                </span>
+              </p>
+            </div>
+            <div class="bom_left_content">
+              <div class="content_top">
+                <mid-left></mid-left>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">未处理告警</span>
+                <span class="title_right">
+                    <span class="title_right_icon color3"></span>
+                    <span>低危</span>
+                    <span class="title_right_icon color4"></span>
+                    <span>中危</span>
+                    <span class="title_right_icon color5"></span>
+                    <span>中危</span>
+                </span>
+              </p>
+            </div>
+            <div class="bom_mid_content">
+              <mid-mid></mid-mid>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="9">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">威胁类型</span>
+              </p>
+            </div>
+            <div class="bom_right_content">
+              <mid-right></mid-right>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
 
-   <!--更多弹出框-->
-   <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
-     <el-table :data="gridData">
-       <el-table-column property="date" label="日期" width="150"></el-table-column>
-       <el-table-column property="name" label="姓名" width="200"></el-table-column>
-       <el-table-column property="address" label="地址"></el-table-column>
-     </el-table>
-   </el-dialog>
- </div>
+      <!-- 第三排 -->
+      <el-row class="container_bom  container_item" :gutter="10">
+        <el-col :span="6">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">Top5威胁</span>
+              </p>
+            </div>
+            <div class="bom_left_content">
+              <div class="content_top">
+                 <bom-left></bom-left>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">Top5风险资产</span>
+              </p>
+            </div>
+            <div class="bom_mid_content">
+               <bom-mid></bom-mid>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="top_item">
+            <div class="title">
+              <p>
+                <span class="title_left">最新警告</span>
+              </p>
+            </div>
+            <div class="bom_right_content">
+              <bom-right></bom-right>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="">
+      <sys-monitor></sys-monitor>
+    </div>
+  </div>
 </template>
-
 <script type="text/ecmascript-6">
-    import vmMainTabs from './vm-main/vm-main-tabs'
-    import vmMainEmerge from './vm-main/vm-main-emerge'
-    import vmMainTarget from './vm-main/vm-main-target'
-    import vmMainForm from './vm-main/vm-main-form'
-    import vmMainTime from './vm-main/vm-main-time'
-    import vmMainCapital from './vm-main/vm-main-capital'
-    import vmMainProgress from './vm-main/vm-main-progress'
-    import vmMainTop5 from './vm-main/vm-main-top5'
-    import vmMainRank from './vm-main/vm-main-rank'
-    import vmMainThreat from './vm-main/vm-main-threat'
-    export default {
-      name: "Overview",
-      data(){
-        return {
-          more:[{name:'醉在你世界'},{name:'走过冬日雪'}],
-          gridData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }],
-          dialogTableVisible: false,
-        }
-      },
-      components:{
-        vmMainTabs,
-        vmMainEmerge,
-        vmMainTarget,
-        vmMainForm,
-        vmMainTime,
-        vmMainCapital,
-        vmMainProgress,
-        vmMainTop5,
-        vmMainRank,
-        vmMainThreat
-      }
-    }
-</script>
+  import topLeft from "./vm-move/top-left";
+  import topMidFlow from "./vm-move/top-mid-flow";
+  import topMidFile from "./vm-move/top-mid-file";
+  import topRight from "./vm-move/top-right";
 
+  import midLeft from "./vm-move/mid-left";
+  import midMid from "./vm-move/mid-mid";
+  import midRight from "./vm-move/mid-right";
+
+  import bomLeft from "./vm-move/bom-left";
+  import bomMid from "./vm-move/bom-mid";
+  import bomRight from "./vm-move/bom-right";
+
+  import sysMonitor from "./vm-move/sys-monitor";
+
+  export default {
+    name: "system_control_move",
+    components: {
+      topLeft,
+      topMidFlow,
+      topMidFile,
+      topRight,
+
+      midLeft,
+      midMid,
+      midRight,
+
+      bomLeft,
+      bomMid,
+      bomRight,
+
+      sysMonitor
+    },
+    data() {
+      return {};
+    },
+    created() {},
+    methods: {
+      sys_state() {
+        this.$store.commit("CHANGE_SYS", true);
+      }
+    }
+  };
+</script>
 <style scoped lang="less">
-  #Overview{
-    padding:24px;
-    .vam-title{
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      font-size: 16px;
-      color: #333;
-      font-weight: bold;
-      font-family: PingFangSC-Medium;
-    }
-    .vam-more{
-      position: absolute;
-      top:8px;
-      right: 10px;
-    }
-    .va-main-2{
-      margin-top: 20px;
-      .vam-2{
-        height: 302px;
-        border-radius: 4px;
-        background-color: #fff;
-        position: relative;
-      }
-    }
-    .va-main-3{
-      margin-top: 20px;
-      .vam-3{
-        height: 302px;
-        border-radius: 4px;
-        background-color: #fff;
-        position: relative;
-        .vam-progress{
-          position: absolute;
-          right: 0;
-          top: 56px;
-          z-index: 999;
+  #home_overview {
+    padding: 24px;
+    .container {
+      text-align: left;
+      .container_item {
+        .color1 {
+          background: #f57c00;
         }
-      }
-    }
-    .va-main-4{
-      margin-top: 20px;
-      .vam-4{
-        height: 302px;
-        border-radius: 4px;
-        background-color: #fff;
-        position: relative;
+        .color2 {
+          background: #0288d1;
+        }
+        .color3 {
+          background: #47cad9;
+        }
+        .color4 {
+          background: #dc5f5f;
+        }
+        .color5 {
+          background: #cddc39;
+        }
+        .color6 {
+          background: #4caf50;
+        }
+        .color7 {
+          background: #47CAD9;
+        }
+        .color8 {
+          background: #E0C840;
+        }
+        margin-bottom: 10px;
+
+        .top_item {
+          background: #ffffff;
+          height: 380px;
+          border-radius: 4px;
+          padding: 0 16px 20px 16px;
+          .title {
+            height: 60px;
+            line-height: 60px;
+            font-family: PingFangSC-Medium;
+            font-size: 18px;
+            color: #333333;
+            .title_left {
+              float: left;
+              font-weight: bold;
+            }
+
+            .title_right {
+              float: right;
+              font-size: 14px;
+              color: #333333;
+
+              .title_right_icon {
+                margin-left: 12px;
+                border-radius: 2px;
+                height: 14px;
+                width: 28px;
+                vertical-align: unset;
+                display: inline-block;
+              }
+            }
+          }
+
+          .legend {
+            clear: both;
+            height: 30px;
+            text-align: left;
+            font-size: 14px;
+            .legend_icon {
+              margin-left: 10px;
+              border-radius: 2px;
+              height: 14px;
+              width: 28px;
+              vertical-align: middle;
+              display: inline-block;
+            }
+          }
+
+          // 第一个
+          .top_left_content {
+            height: 270px;
+          }
+
+          // 第二个
+          .top_mid_content {
+            height: 300px;
+
+            .content_top {
+              height: 150px;
+            }
+
+            .content_bom {
+              height: 150px;
+            }
+          }
+
+          // 第三个
+          .top_right_content {
+            height: 270px;
+          }
+
+          // 第四个
+          .bom_left_content {
+            height: 300px;
+            .content_top {
+              height: 300px;
+            }
+          }
+
+          // 第五个
+          .bom_mid_content {
+            height: 270px;
+          }
+
+          // 第六个
+          .bom_right_content {
+            height: 300px;
+          }
+        }
       }
     }
   }
+  .vm-move-threat{
+    margin: 0;
+    padding: 0!important;
+    /deep/
+    .common-table{
+      width: 100%;
+      font-family: PingFangSC-Medium;
+      /deep/
+      .el-table__header-wrapper{
+        .el-table__header{
+          thead.has-gutter{
+            th{
+              background: #F8F8F8;
+              .cell{
+                color: #333;
+                font-weight: bold;
+              }
+            }
+          }
+        }
+      }
+    }
+    /deep/
+    &.vm-move-threat-middle{
+      .common-table{
+        /deep/
+        .el-table__body-wrapper{
+          .el-table__row{
+            td:nth-child(3){
+              .cell{
+                position: relative;
+                height: 16px;
+                background: #F8F8F8;
+                .sc_index{
+                  background: #5389E0;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 40%;
+                  height: 16px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 </style>

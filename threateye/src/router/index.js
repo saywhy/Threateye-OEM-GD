@@ -179,19 +179,6 @@ export const asyncRouterMap = [
           deep: 1
         },
         component: () => import('@/components/views/home/Overview')
-      },
-      {
-        path: '/home/screen',
-        name: 'screen',
-        meta: {
-          title: '大屏',
-          auth: '12',
-          icon: 'e-aside-screen',
-          parentAuth: '1',
-          rootAuth: '1',
-          deep: 1
-        },
-        component: () => import('@/components/views/home/Screen')
       }
     ]
   },

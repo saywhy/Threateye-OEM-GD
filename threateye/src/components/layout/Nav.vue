@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="0" id="Nav" v-cloak>
-    <el-col :span="4">
+    <el-col :span="3" style="width: 11.5%;">
       <div class="header-logo" align="left">
         <img class="e-image" :src="logoSrc">
       </div>
@@ -14,7 +14,7 @@
         </router-link>
       </el-menu>
     </el-col>
-    <el-col :span="8">
+    <el-col :span="9" style="width:38.5%;">
       <div class="header-basic" align="right">
         <el-badge is-dot class="item">
           <img :src="messageSrc" class="va-image" @click.once="messageClick();">
@@ -97,7 +97,7 @@
     .header-logo{
       .e-image{
         margin: 9px 0;
-        width: 56px;
+        width: 152px;
         height: 42px;
       }
     }

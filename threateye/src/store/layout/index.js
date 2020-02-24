@@ -63,12 +63,24 @@ export default {
       return new Promise((resolve, reject) => {
 
         //loginByUsername(username, userInfo.password).then(response => {
-        axios('/static/data/user.json', userInfo).then(response => {
-          // const data = response.data
-          //Cookies.set('Token', response.token) //登录成功后将token存储在cookie之中
-          setToken(response.token);
-          commit('SET_TOKEN', response.token);
-          resolve()
+        axios('/static/data/user.json', userInfo)
+          .then(resp => {
+
+            console.log("******************")
+
+            let { code, data } = resp;
+
+            //用户名和密码正确
+            if(code === 0){
+              setToken(data.token);
+              commit('SET_TOKEN', data.token);
+              resolve(true);
+
+              //用户名密码错误
+            }else {
+              resolve(false);
+            }
+            resolve()
         }).catch(error => {
           reject(error)
         });

@@ -1,19 +1,15 @@
 <template>
-  <div id="Login" class="login-container" @keyup.enter.native="handleLogin" v-cloak>
+  <div id="Login" class="login-container" v-cloak>
     <div class="logo">
-      <img src="@/assets/images/login/logo01.png" alt="logo" style="vertical-align: middle;" />
+      <img class="l_product_logo" src="@/assets/images/login/logo.png" alt="logo"/>
+      <span class="l_product_title">ThreatEye</span>
+      <h4 class="l_product_name">ThreatEye高级威胁检测系统</h4>
+      <p class="l_product_content">ThreatEye Advanced Threat Detection System</p>
     </div>
 
-    <p class="login-copyright">
-      虎特信息科技（上海）有限公司  版权所有
-    </p>
-    <div class="login-box animated">
-      <div class="border-line"></div>
+    <div class="login-box">
       <div class="login-main">
-        <div class="l-img">
-          <img src="@/assets/images/login/logo.png" alt="logo" style="vertical-align: middle;" />
-        </div>
-        <h2 class="l-title">iView 安全感知系统</h2>
+        <h2 class="l-title">登录</h2>
         <User></User>
       </div>
     </div>
@@ -34,11 +30,6 @@
           whiteList: ['/login', '/404', '/401', '/lock'],
           lockPage: '/lock'
         }
-      }
-    },
-
-    methods: {
-      handleLogin(){
       }
     },
     components:{
@@ -73,69 +64,57 @@
     }
     .logo{
       position: absolute;
-      top: 50px;
-      left: 50px;
-    }
-    .login-copyright{
-      text-align: center;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 50px;
-      line-height: 30px;
-      font-size: 16px;
-      color: #FFFFFF;
-      font-weight: normal;
-      width: 100%;
-      font-family: PingFangSC-Regular;
+      top: 360px;
+      left: 156px;
+      text-align: initial;
+      .l_product_logo{
+        vertical-align: middle;
+        width: 108px;
+        height: 108px;
+      }
+      .l_product_title{
+        font-family: HelveticaNeue-Bold;
+        font-size: 48px;
+        color: #FFFFFF;
+        letter-spacing: 4px;
+        vertical-align: middle;
+      }
+      .l_product_name{
+        font-family: PingFangSC-Semibold;
+        font-size: 30px;
+        color: #FFFFFF;
+        margin-top: 48px;
+      }
+      .l_product_content{
+        font-family: PingFangSC-Regular;
+        font-size: 20px;
+        color: #FFFFFF;
+        margin-top: 12px;
+      }
     }
     .login-box {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-      .border-line{
-        height: 6px;
-        width: 100%;
-        background-color: #0070ff;
-      }
+      position: absolute;
+      top: 210px;
+      right: 180px;
+      width: 480px;
+      min-height: 462px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 48px 4px rgba(0,0,0,0.16);
+      /*&.add-code{
+        height: 582px;
+      }*/
       .login-main{
-        justify-content: center;
-        padding: 20px 50px;
-        background-color: rgba(79,135,255,0.48);
-        .l-img{
-          height: 108px;
-          margin: auto;
-        }
+        text-align: left;
+        padding: 24px 42px;
         .l-title{
-          margin: 0 0 20px;
-          text-align: center;
           font-family: PingFangSC-Semibold;
-          font-weight: normal;
-          font-size: 28px;
-          color: #FFFFFF;
+          font-size: 32px;
+          color: #0070FF;
+          letter-spacing: 2.67px;
+          line-height: 48px;
         }
       }
     }
-  }
-
-  .login-code {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 0 0 0 10px;
-  }
-  .login-code-img {
-    margin-top: 2px;
-    width: 100px;
-    height: 32px;
-    background-color: #fdfdfd;
-    border: 1px solid #f0f0f0;
-    color: #333;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 5px;
-    line-height: 32px;
-    text-indent: 5px;
-    text-align: center;
   }
 </style>

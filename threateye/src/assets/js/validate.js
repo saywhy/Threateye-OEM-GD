@@ -2,8 +2,15 @@
  * Created by jiachenpan on 16/11/18.
  */
 
+//用户名验证
 export function isvalidUsername(str) {
-  const valid_map = ['admin', 'editor']
+  const valid_map = ['admin']
+  return valid_map.indexOf(str.trim()) >= 0
+}
+
+//密码验证
+export function isvalidPassword(str) {
+  const valid_map = ['123456']
   return valid_map.indexOf(str.trim()) >= 0
 }
 

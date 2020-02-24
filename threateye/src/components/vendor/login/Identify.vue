@@ -7,6 +7,7 @@
   export default{
     name: 'SIdentify',
     props: {
+
       identifyCode: { // 默认注册码
         type: String,
         default: '1234'
@@ -39,9 +40,8 @@
         type: Number,
         default: 90
       },
-      contentHeight: { // 容器高度
-        type: Number,
-        default: 38
+      contentHeight:{
+        default: 48
       }
     },
     methods: {
@@ -69,6 +69,7 @@
         for (let i = 0; i < this.identifyCode.length; i++) {
           this.drawText(ctx, this.identifyCode[i], i)
         }
+
         this.drawLine(ctx)
         this.drawDot(ctx)
       },
@@ -98,7 +99,6 @@
           ctx.stroke()
         }
       },
-
       drawDot (ctx) {
         // 绘制干扰点
         for (let i = 0; i < 30; i++) {

@@ -362,7 +362,16 @@
     /deep/
     &.vm-move-threat-middle{
       .common-table{
-        /deep/
+
+        .el-table__header-wrapper{
+          .el-table__header{
+            th:nth-child(3){
+              .cell{
+                padding: 0!important;
+              }
+            }
+          }
+        }
         .el-table__body-wrapper{
           .el-table__row{
             td:nth-child(3){
@@ -385,5 +394,4 @@
       }
     }
   }
-
 </style>

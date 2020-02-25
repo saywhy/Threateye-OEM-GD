@@ -52,6 +52,8 @@ Vue.config.productionTip = false;
 
 const whiteList = ['/login', '/'];
 
+
+//全局路由钩子
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (store.getters.token) { // 判断是否有token
@@ -102,7 +104,6 @@ router.beforeEach((to, from, next) => {
     }
   }
 });
-
 
 router.afterEach(() => {
   // finish progress bar

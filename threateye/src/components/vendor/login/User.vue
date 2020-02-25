@@ -155,6 +155,7 @@
             this.$store.dispatch('LoginByUsername', this.loginForm)
               .then((resp) => {
 
+                console.log(resp)
                 //返回成功跳转
                 if(resp){
                   this.$router.push('/', () => {});//登录成功之后重定向到首页

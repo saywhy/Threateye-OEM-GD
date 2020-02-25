@@ -19,9 +19,19 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
 // 引入axios
-import axios from './https/index'
-Vue.prototype.$axios = axios;
-// axios.defaults.baseURL = '/api' //关键代码
+//import axios from 'axios'
+/*import axios from './https/index'
+Vue.prototype.$axios = axios;*/
+
+// 引入http
+import { post,fetch,patch,put,deletes } from './https/index'
+
+//定义全局变量
+Vue.prototype.$post = post;
+Vue.prototype.$fetch = fetch;
+Vue.prototype.$patch = patch;
+Vue.prototype.$put = put;
+Vue.prototype.$deletes = deletes;
 
 //全局自定义指令
 import directives from '@/components/directive/index'
@@ -104,7 +114,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  axios,
   components: {
     App
   },

@@ -13,6 +13,7 @@ import {
   forRoleList,
   formatList
 } from './auth'
+import {fetch} from "../../https";
 
 export default {
   state: {
@@ -63,10 +64,8 @@ export default {
       return new Promise((resolve, reject) => {
 
         //loginByUsername(username, userInfo.password).then(response => {
-        axios('/static/data/user.json', userInfo)
+        fetch('/static/data/user.json', userInfo)
           .then(resp => {
-
-            console.log("******************")
 
             let { code, data } = resp;
 
@@ -92,11 +91,8 @@ export default {
       dispatch
     }) {
       let auth = await axios('/static/data/auth.json');
-      auth = auth.data;
 
       let roles = forRoleList(auth);
-
-      console.log(roles)
 
       commit('SET_ROLES', roles);
 

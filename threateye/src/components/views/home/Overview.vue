@@ -206,6 +206,13 @@
     data() {
       return {};
     },
+    /*mounted(){
+      this.$fetch('/static/data/user.json')
+        .then((response) => {
+          console.log('$$$$$$$$$$$$$$$$')
+          console.log(response)
+        })
+    },*/
     created() {},
     methods: {
       sys_state() {

@@ -1,4 +1,6 @@
 export function forRoleList(auth) {
+
+  auth = auth.data.data;
   let roles = [];
   auth.forEach(function (v,k) {
     roles.push(v.id);

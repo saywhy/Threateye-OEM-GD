@@ -2,7 +2,8 @@
   <el-container id="dashboard" v-cloak>
     <el-header><Nav></Nav></el-header>
     <el-container class="dashboard-list">
-      <el-aside class="dashboard-list-aside" :class="{'collapse':isCollapse}"><Aside></Aside></el-aside>
+      <el-aside class="dashboard-list-aside" :class="{'collapse':isCollapse}"><Aside></Aside>
+      </el-aside>
       <el-main class="dashboard-list-main" :class="{'collapse':isCollapse}">
         <transition name="slider">
           <keep-alive>
@@ -25,7 +26,8 @@
     name: 'Dashboard',
     data(){
       return{
-        toggleAside: true
+        toggleAside: true,
+        asideFlag:true
       }
     },
     computed: {
@@ -37,7 +39,16 @@
       Nav,
       Aside,
       Main
-    }
+    },
+    /*created(){
+      console.log(this.$route.meta.asideFlag)
+      let asideFlag = this.$route.meta.asideFlag;
+      console.log(undefined == undefined)
+      asideFlag == (asideFlag == undefined)? true: asideFlag;
+
+      console.log(asideFlag)
+      this.asideFlag = asideFlag;
+    },*/
   }
 </script>
 
@@ -59,8 +70,8 @@
         position: fixed;
         left: 0;
         top: 60px;
-        width: 210px !important;
-        &.collapse{
+        width: 210px;
+        &.collapse {
           width: 56px!important;
           #aside{
             width: 100%;

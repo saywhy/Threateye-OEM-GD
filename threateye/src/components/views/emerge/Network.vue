@@ -1,7 +1,7 @@
 <template>
     <div id="Network" v-cloak>
         <div class="e_line">
-            <p class="title" @mouseover.native="mouseOver()">实时告警监测</p>
+            <p class="title" @mouseover="mouseOver()">实时告警监测</p>
             <vm-emerge-line></vm-emerge-line>
         </div>
         <div class="alert_box">

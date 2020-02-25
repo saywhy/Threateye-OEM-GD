@@ -37,8 +37,6 @@ Vue.prototype.$deletes = deletes;
 import directives from '@/components/directive/index'
 Vue.use(directives);
 
-/*import 'default-passive-events'*/
-
 //全局自定义组件
 import gl_component from '@/components/encapse/index'
 Vue.use(gl_component);

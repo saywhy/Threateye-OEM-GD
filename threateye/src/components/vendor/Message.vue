@@ -1,93 +1,68 @@
 <template>
-  <div class="Message" v-cloak>
-     <DetailItem></DetailItem>
-     <el-container class="message-item">
-       <el-row class="row-bg">
+  <div class="message-container" v-cloak>
+     <back-title :title-name="title_name"></back-title>
+     <div class="message-content">
+       <el-row class="message-top">
          <el-col :span="24">
-           <el-button class="av-btn av-av-read">标位已读</el-button>
-           <el-button class="av-btn av-av-remove">删除</el-button>
-         </el-col>
-         <el-col :span="24">
-           <el-table
-             class="vm-table"
-             ref="multipleTable"
-             :data="tableData"
-             height="400"
-             :header-cell-style="{background:'#f8f8f8',color:'#333'}"
-             tooltip-effect="dark"
-             style="width: 100%;"
-             @selection-change="handleSelectionChange">
-             <el-table-column
-               label="全选"
-               width="40">
-             </el-table-column>
-             <el-table-column
-               align='left'
-               type="selection"
-               width="50">
-             </el-table-column>
-             <el-table-column
-               label="时间"
-               width="180">
-               <template slot-scope="scope">{{ scope.row.date }}</template>
-             </el-table-column>
-             <el-table-column
-               prop="name"
-               label="消息来源"
-               width="150">
-             </el-table-column>
-             <el-table-column
-               prop="address"
-               label="描述"
-               show-overflow-tooltip>
-             </el-table-column>
-           </el-table>
-         </el-col>
-         <!--分页-->
-         <el-col :span="24">
-          <pagination-item></pagination-item>
+           <div>
+             <el-button class="e-btn e-btn-read">标位已读</el-button>
+             <el-button class="e-btn e-btn-remove">删除</el-button>
+           </div>
          </el-col>
        </el-row>
-     </el-container>
+       <el-row class="message-bottom common-table-pattern">
+         <el-col :span="24">
+           <el-table
+             class="common-table"
+             ref="multipleTable"
+             :data="tableData"
+             @selection-change="handleSelectionChange">
+             <el-table-column label="全选" width="40"></el-table-column>
+             <el-table-column align='left' type="selection" width="40"></el-table-column>
+             <el-table-column prop="time" width="200" label="时间"></el-table-column>
+             <el-table-column prop="origin" width="240" label="消息来源"></el-table-column>
+             <el-table-column prop="represent" label="描述"></el-table-column>
+           </el-table>
+         </el-col>
+         <el-col :span="24" class="e-pagination">
+           <el-pagination
+             @size-change="handleSizeChange"
+             @current-change="handleCurrentChange"
+             :page-sizes="[5, 10, 20]"
+             :page-size="10"
+             :total="20"
+             layout="total, sizes, prev, pager, next, jumper"
+           ></el-pagination>
+         </el-col>
+       </el-row>
+     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import DetailItem from '@/components/items/DetailItem'
-  import PaginationItem from '@/components/items/PaginationItem'
+  import backTitle from "@/components/common/back-title";
   export default {
-    name: 'Message',
+    name: 'message-container',
     data() {
       return {
+        title_name: "通知消息",
         tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          time: '2019.11.08 15:33:24',
+          origin: '王小虎',
+          represent: '上海市普陀区金沙江路 1518 弄'
         }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          time: '2019.11.08 15:33:24',
+          origin: '王小虎',
+          represent: '上海市普陀区金沙江路 1518 弄'
         }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-          {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }],
+          time: '2019.11.08 15:33:24',
+          origin: '王小虎',
+          represent: '上海市普陀区金沙江路 1518 弄'
+        }],
         multipleSelection: []
       }
     },
+    components:{backTitle},
     methods: {
       toggleSelection(rows) {
         if (rows) {
@@ -100,46 +75,49 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
-      }
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
     },
-    components:{
-      DetailItem,
-      PaginationItem
-    }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-  .Message {
-    .message-item{
-      padding: 24px 56px;
-      .row-bg{
-        text-align: left;
-        .av-btn{
+  @import "../../assets/css/less/common-table-pattern.less";
+  .message-container {
+    .message-content{
+      padding: 0 56px;
+      background: #fff;
+      text-align: left;
+      .message-top{
+        height: 90px;
+        line-height: 90px;
+        /deep/
+        .e-btn{
           width: 148px;
           height: 42px;
-          border-radius: 0;
           font-family: PingFangSC-Medium;
-          font-size: 14px;
+          font-size: 16px;
           cursor: pointer;
           border: 1px solid #0070FF;
-          &.av-av-read{
+          &.e-btn-read{
             background: #0070FF;
             color: #fff;
           }
-          &.av-av-remove{
+          &.e-btn-remove{
             background: #fff;
             color: #0070FF;
           }
         }
-        .vm-table{
-          padding: 24px 0;
-        }
+      }
+      .message-bottom{
+        min-height: 658px;
       }
     }
   }
-</style>
-<style lang="less">
-  @import "../../assets/css/less/common-table-pattern.less";
 </style>

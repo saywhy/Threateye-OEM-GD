@@ -147,7 +147,7 @@ export default {
 }
 </style>
 <style lang='less'>
-@import '../../../../../assets/css/less/reset_css/reset_pop.less';
+@import '../../../../assets/css/less/reset_css/reset_pop.less';
 #rule_base {
   .el-dialog {
     width: 440px;

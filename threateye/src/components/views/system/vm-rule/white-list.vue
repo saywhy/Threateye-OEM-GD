@@ -177,8 +177,8 @@ export default {
 }
 </style>
 <style lang='less'>
-@import '../../../../../assets/css/less/reset_css/reset_table.less';
-@import '../../../../../assets/css/less/reset_css/reset_pop.less';
+@import '../../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../../assets/css/less/reset_css/reset_pop.less';
 #white_list {
   .add_box {
     .el-dialog {

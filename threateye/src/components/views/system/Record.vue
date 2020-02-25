@@ -25,9 +25,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import auditLog from "@/components/views/system/setting/vm-record/audit-log";
-import faultLog from "@/components/views/system/setting/vm-record/fault-log";
-import syslogSet from "@/components/views/system/setting/vm-record/syslog-set";
+import auditLog from "@/components/views/system/vm-record/audit-log";
+import faultLog from "@/components/views/system/vm-record/fault-log";
+import syslogSet from "@/components/views/system/vm-record/syslog-set";
 export default {
   components: {
     auditLog,
@@ -46,8 +46,8 @@ export default {
 };
 </script>
 <style lang='less'>
-@import '../../../../assets/css/less/reset_css/reset_tab.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 <style scoped lang='less'>
-@import '../../../../assets/css/less/system/setting/common_box.less';
+@import '../../../assets/css/less/system/setting/common_box.less';
 </style>

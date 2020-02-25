@@ -25,9 +25,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import userManagement from "@/components/views/system/setting/vm-account/user-management";
-import roleManagement from "@/components/views/system/setting/vm-account/role-management";
-import securityPolicy from "@/components/views/system/setting/vm-account/security-policy";
+import userManagement from "@/components/views/system/vm-account/user-management";
+import roleManagement from "@/components/views/system/vm-account/role-management";
+import securityPolicy from "@/components/views/system/vm-account/security-policy";
 export default {
   components: {
     userManagement,
@@ -46,9 +46,9 @@ export default {
 };
 </script>
 <style lang='less'>
-@import '../../../../assets/css/less/reset_css/reset_tab.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 <style scoped lang='less'>
-@import '../../../../assets/css/less/system/setting/common_box.less';
+@import '../../../assets/css/less/system/setting/common_box.less';
 </style>
 

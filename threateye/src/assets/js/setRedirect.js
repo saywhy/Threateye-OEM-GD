@@ -71,27 +71,27 @@ export function setRedirect(per) {
   }else if(per.includes('6')){
 
     if(per.includes('61')){
-      redirect = '/system/setting/manage';
+      redirect = '/system/manage';
     }else if(per.includes('62')){
-      redirect = '/system/setting/monitor';
+      redirect = '/system/monitor';
     }else if(per.includes('63')){
-      redirect = '/system/setting/account';
+      redirect = '/system/account';
     }else if(per.includes('64')){
-      redirect = '/system/setting/electric';
+      redirect = '/system/electric';
     }else if(per.includes('65')){
-      redirect = '/system/setting/option';
+      redirect = '/system/option';
     }else if(per.includes('66')){
-      redirect = '/system/setting/rule';
+      redirect = '/system/rule';
     }else if(per.includes('67')){
-      redirect = '/system/setting/react';
+      redirect = '/system/react';
     }else if(per.includes('68')){
-      redirect = '/system/setting/threat';
+      redirect = '/system/threat';
     }else if(per.includes('69')){
-      redirect = '/system/setting/record';
+      redirect = '/system/record';
     }else if(per.includes('610')){
-      redirect = '/system/setting/resume';
+      redirect = '/system/resume';
     }else if(per.includes('611')) {
-      redirect = '/system/setting/licence';
+      redirect = '/system/licence';
     }
   }
   return redirect;

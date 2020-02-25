@@ -77,30 +77,6 @@ export const constantRouterMap = [{
         component: () => import('@/components/views/emerge/detail/detail-network')
       },
       {
-        path: '/detail/terminal',
-        name: 'detail_terminal',
-        meta: {
-          title: '端点告警',
-          auth: '32',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '3',
-          rootAuth: '3'
-        },
-        component: () => import('@/components/views/emerge/detail/detail-terminal')
-      },
-      {
-        path: '/detail/journal',
-        name: 'detail_journal',
-        meta: {
-          title: '日志告警',
-          auth: '33',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '3',
-          rootAuth: '3'
-        },
-        component: () => import('@/components/views/emerge/detail/detail-journal')
-      },
-      {
         path: '/detail/computer',
         name: 'detail_computer',
         meta: {
@@ -490,7 +466,7 @@ export const asyncRouterMap = [
     },
     component: Layout,
     children: [{
-        path: '/system/setting/manage',
+        path: '/system/manage',
         name: 'manage',
         meta: {
           title: '设备管理',
@@ -500,10 +476,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Manage')
+        component: () => import('@/components/views/system/Manage')
       },
       {
-        path: '/system/setting/monitor',
+        path: '/system/monitor',
         name: 'monitor',
         meta: {
           title: '受监控IP',
@@ -513,10 +489,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Monitor')
+        component: () => import('@/components/views/system/Monitor')
       },
       {
-        path: '/system/setting/account',
+        path: '/system/account',
         name: 'account',
         meta: {
           title: '账号管理',
@@ -526,10 +502,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Account')
+        component: () => import('@/components/views/system/Account')
       },
       {
-        path: '/system/setting/electric',
+        path: '/system/electric',
         name: 'electric',
         meta: {
           title: '网络配置',
@@ -539,10 +515,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Electric')
+        component: () => import('@/components/views/system/Electric')
       },
       {
-        path: '/system/setting/option',
+        path: '/system/option',
         name: 'option',
         meta: {
           title: '系统选项',
@@ -552,10 +528,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Option')
+        component: () => import('@/components/views/system/Option')
       },
       {
-        path: '/system/setting/rule',
+        path: '/system/rule',
         name: 'rule',
         meta: {
           title: '规则库及白名单',
@@ -565,10 +541,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Rule')
+        component: () => import('@/components/views/system/Rule')
       },
       {
-        path: '/system/setting/react',
+        path: '/system/react',
         name: 'react',
         meta: {
           title: '联动',
@@ -578,10 +554,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/React')
+        component: () => import('@/components/views/system/React')
       },
       {
-        path: '/system/setting/threat',
+        path: '/system/threat',
         name: 'threat',
         meta: {
           title: '威胁通知',
@@ -591,10 +567,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Threat')
+        component: () => import('@/components/views/system/Threat')
       },
       {
-        path: '/system/setting/record',
+        path: '/system/record',
         name: 'record',
         meta: {
           title: '日志',
@@ -604,10 +580,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Record')
+        component: () => import('@/components/views/system/Record')
       },
       {
-        path: '/system/setting/resume',
+        path: '/system/resume',
         name: 'resume',
         meta: {
           title: '恢复/重启',
@@ -617,10 +593,10 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Resume')
+        component: () => import('@/components/views/system/Resume')
       },
       {
-        path: '/system/setting/licence',
+        path: '/system/licence',
         name: 'licence',
         meta: {
           title: '许可证',
@@ -630,7 +606,7 @@ export const asyncRouterMap = [
           rootAuth: '6',
           deep: 1
         },
-        component: () => import('@/components/views/system/setting/Licence')
+        component: () => import('@/components/views/system/Licence')
       }
     ]
   }

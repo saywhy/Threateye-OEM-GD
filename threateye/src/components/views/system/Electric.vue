@@ -1,25 +1,25 @@
 <template>
-  <div id="system_control_rule"
+  <div id="system_control_electric"
        class="container">
     <div class="content_box">
       <div class="network_tab">
         <el-tabs v-model="activeName"
                  @tab-click="handleClick"
                  class="reset_tab">
-          <el-tab-pane label="规则库更新"
+          <el-tab-pane label="网卡配置"
                        class="tabs-item"
                        name="first">
-            <rule-base></rule-base>
+            <network-card></network-card>
           </el-tab-pane>
-          <el-tab-pane label="YARA规则"
+          <el-tab-pane label="代理服务器"
                        class="tabs-item"
                        name="second">
-            <yara-rule></yara-rule>
+            <proxy-server></proxy-server>
           </el-tab-pane>
-          <el-tab-pane label="白名单设置"
+          <el-tab-pane label="路由设置"
                        class="tabs-item"
                        name="third">
-            <white-list></white-list>
+            <router-set></router-set>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -27,34 +27,36 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import ruleBase from "@/components/views/system/setting/vm-rule/rule-base";
-import yaraRule from "@/components/views/system/setting/vm-rule/yara-rule";
-import whiteList from "@/components/views/system/setting/vm-rule/white-list";
+import networkCard from "@/components/views/system/vm-electric/network-card";
+import proxyServer from "@/components/views/system/vm-electric/proxy-server";
+import routerSet from "@/components/views/system/vm-electric/router-set";
 export default {
   components: {
-    ruleBase,
-    yaraRule,
-    whiteList,
+    networkCard,
+    proxyServer,
+    routerSet
   },
-  name: "system_control_rule",
+  name: "system_control_electric",
   data () {
     return {
       activeName: "first"
     };
   },
-
+  mounted () {
+  },
   methods: {
     handleClick (tab, event) {
       console.log(tab.label);
-    }
+    },
+
   }
 };
 </script>
 <style lang='less'>
-@import '../../../../assets/css/less/reset_css/reset_tab.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 <style scoped lang='less'>
-@import '../../../../assets/css/less/system/setting/common_box.less';
+@import '../../../assets/css/less/system/setting/common_box.less';
 </style>
 
 

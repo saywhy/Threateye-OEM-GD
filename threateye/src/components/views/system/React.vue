@@ -20,8 +20,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import outsideSet from "@/components/views/system/setting/vm-react/outside-set";
-import outsideList from "@/components/views/system/setting/vm-react/outside-list";
+import outsideSet from "@/components/views/system/vm-react/outside-set";
+import outsideList from "@/components/views/system/vm-react/outside-list";
 export default {
   components: {
     outsideSet,
@@ -39,8 +39,8 @@ export default {
 };
 </script>
 <style lang='less'>
-@import '../../../../assets/css/less/reset_css/reset_tab.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 <style scoped lang='less'>
-@import '../../../../assets/css/less/system/setting/common_box.less';
+@import '../../../assets/css/less/system/setting/common_box.less';
 </style>

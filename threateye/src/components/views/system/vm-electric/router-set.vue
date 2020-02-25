@@ -251,8 +251,8 @@ export default {
 };
 </script>
 <style lang='less'>
-@import '../../../../../assets/css/less/reset_css/reset_table.less';
-@import '../../../../../assets/css/less/reset_css/reset_pop.less';
+@import '../../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../../assets/css/less/reset_css/reset_pop.less';
 #router_set {
   .el-dialog {
     width: 440px !important;

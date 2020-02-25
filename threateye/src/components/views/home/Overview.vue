@@ -170,20 +170,20 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import topLeft from "./vm-move/top-left";
-  import topMidFlow from "./vm-move/top-mid-flow";
-  import topMidFile from "./vm-move/top-mid-file";
-  import topRight from "./vm-move/top-right";
+  import topLeft from "./vm-home/top-left";
+  import topMidFlow from "./vm-home/top-mid-flow";
+  import topMidFile from "./vm-home/top-mid-file";
+  import topRight from "./vm-home/top-right";
 
-  import midLeft from "./vm-move/mid-left";
-  import midMid from "./vm-move/mid-mid";
-  import midRight from "./vm-move/mid-right";
+  import midLeft from "./vm-home/mid-left";
+  import midMid from "./vm-home/mid-mid";
+  import midRight from "./vm-home/mid-right";
 
-  import bomLeft from "./vm-move/bom-left";
-  import bomMid from "./vm-move/bom-mid";
-  import bomRight from "./vm-move/bom-right";
+  import bomLeft from "./vm-home/bom-left";
+  import bomMid from "./vm-home/bom-mid";
+  import bomRight from "./vm-home/bom-right";
 
-  import sysMonitor from "./vm-move/sys-monitor";
+  import sysMonitor from "./vm-home/sys-monitor";
 
   export default {
     name: "system_control_move",

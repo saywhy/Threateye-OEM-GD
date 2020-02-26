@@ -27,11 +27,13 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.interceptors.request.use(
   config => {
     let token = getToken();
+    console.log(config)
     if(token) {
       config.headers['Authorization'] = token;
     }
     if(config.method  === 'post'){
       config.data = qs.stringify(config.data);
+      config.headers['ContentType'] = 'application/x-www-form-urlencoded';
     }
     console.log(config)
     return config;

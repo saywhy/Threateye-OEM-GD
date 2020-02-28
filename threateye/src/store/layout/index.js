@@ -102,13 +102,14 @@ export default {
       });
     },
 
+    //权限设置
     async GetInfo({
       commit,
       dispatch
     }) {
-      let auth = await axios('/static/data/auth.json');
+      let resp = await axios('/api/yiiapi/site/menu');
 
-      let roles = forRoleList(auth);
+      let roles = forRoleList(resp);
 
       commit('SET_ROLES', roles);
 

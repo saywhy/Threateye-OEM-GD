@@ -2,20 +2,20 @@ export function forRoleList(auth) {
 
   auth = auth.data.data;
   let roles = [];
+  //真实状态
   auth.forEach(function (v,k) {
     roles.push(v.id);
-    if(v.child_menu && v.child_menu.length){
-      v.child_menu.forEach(function (v1,k1) {
+    if(v.child && v.child.length){
+      v.child.forEach(function (v1,k1) {
         roles.push(v1.id);
-        if(v1.child_menu && v1.child_menu.length){
-          v1.child_menu.forEach(function (v2,k2) {
+        if(v1.child && v1.child.length){
+          v1.child.forEach(function (v2,k2) {
             roles.push(v2.id);
           })
         }
       })
     }
   });
-
   return roles;
 }
 

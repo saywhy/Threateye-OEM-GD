@@ -93,8 +93,8 @@
         count: 0,
         contentHeight: 48,
         loginForm: {
-          username: '',
-          password: ''
+          username: 'admin',
+          password: 'Hoohoolab*123'
         },
         identifyCodes: '1234567890',
         identifyCode: '',
@@ -149,13 +149,10 @@
         this.passwordType === '' ? (this.passwordType = 'password') : (this.passwordType = '');
       },
       handleLogin() {
-
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.$store.dispatch('LoginByUsername', this.loginForm)
               .then((resp) => {
-
-                console.log(resp)
                 //返回成功跳转
                 if(resp){
                   this.$router.push('/', () => {});//登录成功之后重定向到首页
@@ -164,7 +161,6 @@
                 }else {
                   this.$message.error('用户名或密码错误。');
                   this.count ++;
-                  //this.$emit('funcCount',this.count);
                 }
 
             }).catch(err => {

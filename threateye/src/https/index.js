@@ -30,7 +30,7 @@ axios.interceptors.request.use(
     if(token) {
       config.headers['Authorization'] = token;
     }
-    if(config.method  === 'post'){
+    if(config.method === 'post'){
       config.data = qs.stringify(config.data);
       config.headers['ContentType'] = 'application/x-www-form-urlencoded';
     }
@@ -189,3 +189,23 @@ export function deletes(url, params) {
   });
 }
 
+/*
+import axios from 'axios';
+
+axios.defaults.baseURL = '';
+
+axios.interceptors.request.use(
+  config => {
+    return config;
+  },
+  error => {
+    return Promise.reject(err);
+  }
+);
+axios.interceptors.response.use((resp) => {
+  //console.log(resp)
+  return resp;
+});
+
+export default axios;
+*/

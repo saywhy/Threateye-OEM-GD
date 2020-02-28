@@ -19,7 +19,6 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
 // 引入axios
-//import axios from 'axios'
 /*import axios from './https/index'
 Vue.prototype.$axios = axios;*/
 

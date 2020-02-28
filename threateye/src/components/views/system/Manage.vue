@@ -213,7 +213,20 @@
         }
       };
     },
+    mounted () {
+      this.get_data();
+    },
     methods: {
+      get_data () {
+        this.$axios.get('/api/yiiapi/dev/list')
+          .then(response => {
+            console.log('333333333')
+             console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      },
       handleSizeChange () {
       },
       handleCurrentChange () {

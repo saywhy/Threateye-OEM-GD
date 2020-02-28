@@ -56,32 +56,49 @@ export default {
     },
   },
   actions: {
-    //////////////////////////////////
+    //登录
     LoginByUsername({
       commit
     }, userInfo) {
-      // const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        //loginByUsername(username, userInfo.password).then(response => {
-        fetch('/static/data/user.json', userInfo)
+        axios.post('/api/yiiapi/site/login',
+          {
+            "LoginForm": userInfo,
+            "login-button": ""
+          }
+        ).then(resp => {
+          console.log(resp);
+          let { status, msg ,data } = resp;
+          //用户名和密码正确
+          if(status == 200){
+           data.token = (data.token == undefined )? userInfo.username : data.token;
+            setToken(data.token);
+            commit('SET_TOKEN', data.token);
+            resolve(true);
+            //用户名密码错误
+          }else {
+            this.$message.error(msg);
+            resolve(false);
+          }
+        }).catch(error => {
+            console.log(error);
+          })
+
+      /*  axios.get('/static/data/user.json', userInfo)
           .then(resp => {
-
             let { code, data } = resp;
-
             //用户名和密码正确
             if(code === 0){
               setToken(data.token);
               commit('SET_TOKEN', data.token);
               resolve(true);
-
               //用户名密码错误
             }else {
               resolve(false);
             }
-            resolve()
         }).catch(error => {
           reject(error)
-        });
+        });*/
       });
     },
 

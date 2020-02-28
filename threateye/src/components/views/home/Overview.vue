@@ -187,6 +187,35 @@
 
   export default {
     name: "system_control_move",
+    data () {
+      return {
+        sandbox: {
+          data: [{
+            res: '未发现威胁',
+            time: '2019-12-03 12:36:48',
+            name: 'sougou_pinyin_8.8.0.1814_6991.exe',
+            status: '扫描结束',
+          }],
+          pageNow: 1,
+          count: 1002,
+        },
+      };
+    },
+    created() {
+      this.get_list();
+    },
+    methods: {
+      get_list(){
+        this.$axios.get('/api/yiiapi/alert/system-state')
+          .then((resp) => {
+            console.log('****************')
+            console.log(resp)
+          })
+      },
+      sys_state() {
+        this.$store.commit("CHANGE_SYS", true);
+      }
+    },
     components: {
       topLeft,
       topMidFlow,
@@ -203,22 +232,6 @@
 
       sysMonitor
     },
-    data() {
-      return {};
-    },
-    /*mounted(){
-      this.$fetch('/static/data/user.json')
-        .then((response) => {
-          console.log('$$$$$$$$$$$$$$$$')
-          console.log(response)
-        })
-    },*/
-    created() {},
-    methods: {
-      sys_state() {
-        this.$store.commit("CHANGE_SYS", true);
-      }
-    }
   };
 </script>
 <style scoped lang="less">

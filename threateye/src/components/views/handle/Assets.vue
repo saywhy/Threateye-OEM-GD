@@ -1,5 +1,5 @@
 <template>
-  <div class="assets" v-cloak>
+  <div class="handle-assets" v-cloak>
     <vm-handle-tabs></vm-handle-tabs>
     <!--全部资产-->
     <div class="assets_all">
@@ -221,7 +221,17 @@
         toggle_4_show:false
       };
     },
+    created() {
+      this.get_list();
+    },
     methods: {
+      get_list(){
+        this.$axios.get('/api/yiiapi/alert/risk-asset-top')
+          .then((resp) => {
+            console.log('****************')
+            console.log(resp);
+          })
+      },
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
@@ -254,7 +264,7 @@
 <style scoped lang="less">
   @import "../../../assets/css/less/common-pattern.less";
   @import "../../../assets/css/less/common-table-pattern.less";
-  .assets {
+  .handle-assets {
     padding: 24px;
     .assets_all {
       height: auto;

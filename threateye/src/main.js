@@ -19,11 +19,11 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
 // 引入axios
-/*import axios from './https/index'
-Vue.prototype.$axios = axios;*/
+import axios from './https/axios'
+Vue.prototype.$axios = axios;
 
 // 引入http
-import { post,fetch,patch,put,deletes } from './https/index'
+import { post,fetch,patch,put,deletes } from './https/api'
 
 //定义全局变量
 Vue.prototype.$post = post;
@@ -62,7 +62,6 @@ router.beforeEach((to, from, next) => {
       NProgress.done();
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
-
 
         store.dispatch('GetInfo').then(res => { // 拉取info
           //const roles = res.data.role;
@@ -113,6 +112,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  axios,
   components: {
     App
   },

@@ -2,6 +2,10 @@ export function forRoleList(auth) {
 
   auth = auth.data.data;
   let roles = [];
+  if(auth == ''){
+    console.log('无权限');
+    return false;
+  }
   //真实状态
   auth.forEach(function (v,k) {
     roles.push(v.id);

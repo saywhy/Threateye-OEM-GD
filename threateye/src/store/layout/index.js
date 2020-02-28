@@ -13,7 +13,7 @@ import {
   forRoleList,
   formatList
 } from './auth'
-import {fetch} from "../../https";
+import {fetch} from "../../https/api";
 
 export default {
   state: {
@@ -67,17 +67,21 @@ export default {
             "login-button": ""
           }
         ).then(resp => {
-          console.log(resp);
-          let { status, msg ,data } = resp;
+
+          console.log(resp)
+
+          let { status, msg, data} = resp;
           //用户名和密码正确
           if(status == 200){
-           data.token = (data.token == undefined )? userInfo.username : data.token;
+           data.token = (data.token == undefined )?
+             userInfo.username: data.token;
+
             setToken(data.token);
             commit('SET_TOKEN', data.token);
             resolve(true);
             //用户名密码错误
           }else {
-            this.$message.error(msg);
+            this.$message.error(msg.username[0]);
             resolve(false);
           }
         }).catch(error => {
@@ -107,7 +111,10 @@ export default {
       commit,
       dispatch
     }) {
-      let resp = await axios('/api/yiiapi/site/menu');
+      //测试数据
+      let resp = await axios('/static/data/auth.json');
+      //真实数据
+      //let resp = await axios('/api/yiiapi/site/menu');
 
       let roles = forRoleList(resp);
 

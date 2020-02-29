@@ -1,8 +1,9 @@
 import Vue from 'vue'
 Vue.filter('time',function(date){
-  date = date * 1000;
+  if(date.length == 10){
+    date = date * 1000;
+  }
   date = new Date(date);
-
   var YYYY = date.getFullYear() + '-';
   var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
   var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());

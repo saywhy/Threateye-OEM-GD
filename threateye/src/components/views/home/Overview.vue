@@ -208,8 +208,8 @@
       get_list(){
         this.$axios.get('/api/yiiapi/alert/system-state')
           .then((resp) => {
-            console.log('****************')
-            console.log(resp)
+            /*console.log('****************')
+            console.log(resp)*/
           })
       },
       sys_state() {

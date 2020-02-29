@@ -22,7 +22,7 @@
         <el-dropdown class="avatar-container right-menu-item" trigger="click">
           <div class="avatar-wrapper">
             <img class="user-avatar" :src="avatarSrc">
-            <label class="avatar-name">Admin</label>
+            <label class="avatar-name">{{token}}</label>
             <i class="el-icon-caret-bottom"></i>
           </div>
           <el-dropdown-menu slot="dropdown" class="nav-dropdown-menu">
@@ -49,7 +49,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapState,mapGetters } from 'vuex'
+  import { mapState,mapGetters } from 'vuex';
   export default {
     name: 'Nav',
     data() {
@@ -61,12 +61,13 @@
     },
     computed:{
       ...mapState({
-        navIndex: state => state.highligh.navIndex
+        token:state => state.layout.token
       }),
       ...mapGetters([
         'addRouters'
       ])
     },
+
     methods:{
       login(){
         this.$router.push('/', () => {});
@@ -174,8 +175,8 @@
         }
       }
       .avatar-container{
-        width: 140px;
-        margin: 14px 0;
+        min-width: 140px;
+        margin: 14px 0 14px 14px;
         .avatar-wrapper{
           line-height: 32px;
           color: #fff;

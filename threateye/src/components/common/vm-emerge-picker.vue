@@ -48,8 +48,8 @@ export default {
           }
         ],
         time: [
-          new Date(new Date().getTime() - 7 * 24 * 3600 * 1000),
-          new Date()
+          /*new Date(new Date().getTime() - 7 * 24 * 3600 * 1000),
+          new Date()*/
         ]
       }
     };

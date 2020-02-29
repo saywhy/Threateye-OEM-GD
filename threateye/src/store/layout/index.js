@@ -70,18 +70,18 @@ export default {
 
           console.log(resp)
 
-          let { status, msg, data} = resp;
-          //用户名和密码正确
+          let { status, data} = resp;
+          //用户名密码正确
           if(status == 200){
-           data.token = (data.token == undefined )?
+           data.token = ( data.token == undefined )?
              userInfo.username: data.token;
 
             setToken(data.token);
             commit('SET_TOKEN', data.token);
             resolve(true);
-            //用户名密码错误
-          }else {
-            this.$message.error(msg.username[0]);
+          //用户名密码错误
+          } else {
+            console.log('用户名或密码错误。');
             resolve(false);
           }
         }).catch(error => {

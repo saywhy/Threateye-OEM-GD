@@ -65,7 +65,7 @@
   export default {
     name: 'UserLogin',
     data() {
-      const validateUsername = (rule, value, callback) => {
+      /*const validateUsername = (rule, value, callback) => {
         if (!isvalidUsername(value)) {
           callback(new Error('请输入正确的用户名'))
         } else {
@@ -78,17 +78,7 @@
         } else {
           callback()
         }
-      }
-      const validateCode = (rule, value, callback) => {
-        if (this.identifyCode !== value) {
-          this.loginForm.code = '';
-          this.identifyCode = '';
-          this.makeCode(this.identifyCodes, 4);
-          callback(new Error('验证码不正确，请重新输入'))
-        } else {
-          callback()
-        }
-      }
+      }*/
       return {
         count: 0,
         contentHeight: 48,
@@ -96,11 +86,13 @@
           username: 'admin',
           password: 'Hoohoolab*123'
         },
+        code:'',
         identifyCodes: '1234567890',
         identifyCode: '',
         loginRules: {
             username: [
-              { required: true, trigger: 'blur' ,message: '用户名不能为空'},
+              { required: true,message: '用户名不能为空',trigger: 'blur' },
+              { min: 2, max: 16, message: '用户名长度为2~16个字符', trigger: 'blur' },
               /*{ required: true, trigger: 'blur', validator: validateUsername }*/
             ],
             password: [
@@ -108,7 +100,7 @@
               { min: 6, message: '密码长度最少为6位', trigger: 'blur' },
               /*{ required: true, trigger: 'blur', validator: validatePassword }*/
             ],
-          /*code: [
+          /*code:[
               { required: true, message: '请输入验证码', trigger: 'blur' },
               { min: 4, max: 4, message: '验证码长度为4位', trigger: 'blur' },
               { required: true, trigger: 'blur', validator: validateCode }
@@ -144,11 +136,31 @@
             ];
         }
       },
-
       showPassword() {
-        this.passwordType === '' ? (this.passwordType = 'password') : (this.passwordType = '');
+        this.passwordType === '' ?
+          (this.passwordType = 'password') :
+          (this.passwordType = '');
       },
       handleLogin() {
+        if(this.count > 2){
+          const validateCode = (rule, value, callback) => {
+            if (this.identifyCode !== value) {
+              this.code = '';
+              this.identifyCode = '';
+              this.makeCode(this.identifyCodes, 4);
+              callback(new Error('验证码不正确，请重新输入'))
+            } else {
+              callback()
+            }
+          }
+          let codeValidate = [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+            { min: 4, max: 4, message: '验证码长度为4位', trigger: 'blur' },
+            { required: true, validator: validateCode, trigger: 'blur'}
+          ]
+          this.$set(this.loginRules,'code',codeValidate);
+        }
+
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.$store.dispatch('LoginByUsername', this.loginForm)
@@ -158,11 +170,11 @@
                   this.$router.push('/', () => {});//登录成功之后重定向到首页
                   this.count = 0;
                   //失败
-                }else {
+                } else {
                   this.$message.error('用户名或密码错误。');
                   this.count ++;
+                 //this.loginForm = {username: '', password: ''};
                 }
-
             }).catch(err => {
                this.$message.error(err); //登录失败提示错误
             });

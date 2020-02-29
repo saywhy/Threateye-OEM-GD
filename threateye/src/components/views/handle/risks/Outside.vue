@@ -55,19 +55,19 @@
                 <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
                 <!--告警类型-->
-                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型"  @change="currentSel">
+                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型"  @change="currentSelChange">
                   <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
 
                 <!--处理状态-->
-                <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态"  @change="currentSel">
+                <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态"  @change="currentSelChange">
                   <el-option v-for="item in options_status" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
 
-                <el-button class="s_btn" @click="">搜索</el-button>
-                <el-link class="s_link">重置</el-link>
+                <el-button class="s_btn" @click="submitClick();">搜索</el-button>
+                <el-link class="s_link" @click="resetClick();">重置</el-link>
               </el-col>
             </el-row>
 
@@ -105,10 +105,11 @@
           </el-form>
         </div>
         <el-table ref="multipleTable" class="handle_table"
-                  align="center" :data="table.tableData"
+                  align="center"
+                  v-loading="table.loading"
+                  :data="table.tableData"
                   tooltip-effect="dark"
-                  style="width: 100%"
-                  @selection-change="handleSelectionChange">
+                  @selection-change="handleSelChange">
           <el-table-column label="全选" prop="type" width="50">
             <template slot-scope="scope">
               <div class="new_dot" v-show="scope.row.processing_person != null">
@@ -182,7 +183,6 @@
       return {
         progress_data_source5: [],
         progress_data_source5_show:false,
-        maxPage: 10,
         form_data_threat5:[],
         form_data_threat5_show:false,
         options_types: [
@@ -242,7 +242,8 @@
           pageNow: 1,
           maxPage: 1,
           eachPage: 10,
-          multipleSelection: []
+          multipleSelection: [],
+          loading:true
         }
       };
     },
@@ -281,10 +282,11 @@
       },
       //外部威脅列表
       get_list_threat() {
+        this.table.loading = true;
         this.$axios.get('/api/yiiapi/externalthreat/list',{
           params:{
-            start_time:'1231232131',
-            end_time:'6231232131',
+            start_time:this.params.startTime,
+            end_time:this.params.endTime,
             degree:'',
             category:this.params.category,
             status:this.params.status,
@@ -293,8 +295,6 @@
             rows: this.table.eachPage
           }
         }).then((resp) => {
-
-          console.log(resp)
 
           let { status,data } = resp.data;
 
@@ -307,6 +307,8 @@
             this.table.count = count;
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
+
+            this.table.loading = false;
           }
           })
       },
@@ -321,21 +323,33 @@
         this.table.pageNow = val;
         this.get_list_threat();
       },
-
       //下拉框change切換
-      currentSel(){
+      currentSelChange(){
        this.get_list_threat();
       },
-
-
-
+      //時間切換
       changeTime(data) {
-        this.params_net.startTime = data[0].valueOf();
-        this.params_net.endTime = data[1].valueOf();
+        this.params.startTime = data[0].valueOf();
+        this.params.endTime = data[1].valueOf();
+        this.get_list_threat();
       },
-
+      //搜索按鈕點擊事件
+      submitClick(){
+        this.get_list_threat();
+      },
+      //重置按鈕點擊事件
+      resetClick(){
+        this.params = {
+          key_word:"",
+          category:"",
+          status: "",
+          startTime: "",
+          endTime: "",
+        }
+        this.get_list_threat();
+      },
       /*****************************/
-      handleSelectionChange(val) {
+      handleSelChange(val) {
         this.multipleSelection = val;
         console.log("1111");
       },

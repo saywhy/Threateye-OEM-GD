@@ -36,9 +36,13 @@
         let dataAttr = this.data_attr;
 
         let index = 0;
+
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('threatForm'))
         // 绘制图表
+
+        myChart.showLoading({ text: '正在加载数据...' });
+        myChart.clear();
         myChart.setOption({
           grid: {
             top: '0%',
@@ -52,7 +56,7 @@
             orient: 'vertical',
             x: 'left',
             top: 30,
-            left: 10,
+            left: -4,
             selectedMode:false,
             data: legendAttr
           },
@@ -94,6 +98,8 @@
             }
           ]
         });
+
+        myChart.hideLoading();
 
         myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0});//设置默认选中高亮部分
         myChart.on('mouseover',function(e){

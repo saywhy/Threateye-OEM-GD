@@ -95,8 +95,8 @@ export const constantRouterMap = [{
           title: '风险资产详情',
           auth: '21',
           icon: 'el-icon-picture-outline',
-          parentAuth: '2',
-          rootAuth: '2'
+          parentAuth: '13',
+          rootAuth: '13'
         },
         component: () => import('@/components/views/handle/detail/detail-assets')
       },
@@ -107,8 +107,8 @@ export const constantRouterMap = [{
           title: '工单详情',
           auth: '23',
           icon: 'el-icon-picture-outline',
-          parentAuth: '2',
-          rootAuth: '2'
+          parentAuth: '13',
+          rootAuth: '13'
         },
         component: () => import('@/components/views/handle/detail/detail-works')
       },

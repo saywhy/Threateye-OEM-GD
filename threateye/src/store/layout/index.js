@@ -112,9 +112,9 @@ export default {
       dispatch
     }) {
       //测试数据
-      let resp = await axios('/static/data/auth.json');
+      //let resp = await axios('/static/data/auth.json');
       //真实数据
-      //let resp = await axios('/api/yiiapi/site/menu');
+      let resp = await axios('/api/yiiapi/site/menu');
 
       let roles = forRoleList(resp);
 

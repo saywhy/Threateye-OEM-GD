@@ -16,39 +16,24 @@
 <script type="text/ecmascript-6">
   export default {
     name: 'vm-handle-tabs',
-    props: ['data_top'],
+    props:{
+      data_top: {
+        type:Object,
+        default: () => {}
+      },
+    },
     data(){
       return {
-        props:{
-          data_top:{
-            type:Object,
-            default:{
-              high:0,
-              midium:0,
-              low:0,
-              total:0
-            }
-          }
-        },
         tabsData: {
           activeIndex: 0,
           data: [
             {title: '风险资产总数', count: this.data_top.total},
             {title: '高危资产数', count: this.data_top.high},
-            {title: '中危资产数', count: this.data_top.midium},
+            {title: '中危资产数', count: this.data_top.medium},
             {title: '低危资产数', count: this.data_top.low}
           ]
         }
       }
-    },
-    created() {
-      console.log(this.data_top.total)
-      /*let data_top = this.data_top;
-
-      this.$set(this.data[0].count,99);
-      this.data[1].count = data_top.high || 0;
-      this.data[2].count = data_top.midium || 0;
-      this.data[3].count = data_top.low || 0;*/
     }
   }
 </script>

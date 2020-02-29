@@ -1,39 +1,11 @@
 <template>
   <div class="vm-progress-list-handle">
-    <div class="item">
+    <div class="item" v-for="(item,index) in progress_data_list">
       <span class="vam-progress-title">
-         <img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">
-        <span class="progress-title">IP: 121.148.48.233</span>
+         <!--<img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">-->
+        <span class="progress-title">IP: {{item.ip}}</span>
       </span>
-      <el-progress color="#0288D1" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="70"></el-progress>
-    </div>
-    <div class="item">
-     <span class="vam-progress-title">
-         <img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">
-        <span class="progress-title">IP: 121.148.48.233</span>
-      </span>
-      <el-progress color="#CDDC39" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="60"></el-progress>
-    </div>
-    <div class="item">
-      <span class="vam-progress-title">
-         <img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">
-        <span class="progress-title">IP: 121.148.48.233</span>
-      </span>
-      <el-progress color="#4CAF50" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="74"></el-progress>
-    </div>
-    <div class="item">
-      <span class="vam-progress-title">
-         <img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">
-        <span class="progress-title">IP: 121.148.48.233</span>
-      </span>
-      <el-progress color="#00BCD4" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="40"></el-progress>
-    </div>
-    <div class="item">
-      <span class="vam-progress-title">
-         <img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">
-        <span class="progress-title">IP: 121.148.48.233</span>
-      </span>
-      <el-progress color="#F57C00" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="40"></el-progress>
+      <el-progress :color="item.color" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="item.count"></el-progress>
     </div>
   </div>
 </template>
@@ -41,13 +13,33 @@
 <script type="text/ecmascript-6">
   export default {
     name: 'vm-progress-list',
-    props: {
-      option: {
-        type: Object,
-        default: () => {}
+    props:{
+      progress_data:{
+        type:Array,
+        default:[]
       }
     },
-    mounted(){
+    computed:{
+      progress_data_list(){
+        let progress_data = this.progress_data;
+        let that = this;
+         progress_data.filter(function (v,k) {
+          if(k == 0){
+            that.$set(v,'color','#0288D1');
+          }else if(k == 1){
+            that.$set(v,'color','#CDDC39');
+          }else if(k == 2){
+            that.$set(v,'color','#4CAF50');
+          }else if(k == 3){
+            that.$set(v,'color','#00BCD4');
+          }else if(k == 4){
+            that.$set(v,'color','#F57C00');
+          }
+        });
+        return progress_data;
+      }
+    },
+    methods: {
 
     }
   }
@@ -60,6 +52,7 @@
       display: flex;
       line-height: 45px;
       .vam-progress-title{
+
         .progress-img{
           display: inline-block;
           width: 36px;
@@ -71,7 +64,7 @@
           font-family: PingFangSC-Regular;
           font-size: 14px;
           color: #333333;
-          margin: 0 20px 0 10px;
+          margin: 0 20px 0 0;
         }
       }
       /deep/

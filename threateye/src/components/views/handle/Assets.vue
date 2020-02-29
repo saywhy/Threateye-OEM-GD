@@ -1,13 +1,13 @@
 <template>
   <div class="handle-assets" v-cloak>
-    <vm-handle-tabs :data_top="data_top"></vm-handle-tabs>
+    <vm-handle-tabs :data_top="data_top" v-if="data_top_show"></vm-handle-tabs>
     <!--全部资产-->
     <div class="assets_all">
       <el-row class="assets_all_list">
         <h3 class="title">全部资产</h3>
         <div class="all_list">
           <el-tag
-            v-for="tag in assets_detail.tags"
+            v-for="tag in assets_all.tags"
             :key="tag.name"
             closable
             size="small"
@@ -25,29 +25,29 @@
       </el-row>
       <el-row class="assets_all_detail" v-show="toggle_top_show">
          <ul class="all_detail">
-           <li class="all_detail_item" v-for="(item,$index) in assets_detail.base" :key="$index">
+           <li class="all_detail_item" v-for="(item,$index) in assets_all.base" :key="$index">
              <h4 class="title">{{item.name}}：</h4>
              <div class="detail_list">
                <el-button class="d_base_btn" size="small" :key="$idx" v-for="(it,$idx) in item.value">{{it}}</el-button>
              </div>
              <div class="detail-toggle">
                <label class="tog-types" v-if="$index == 0"
-                      v-show="assets_detail.base[0].value.length > 15">
+                      v-show="assets_all.base[0].value.length > 15">
                  <span class="name">更多</span>
                  <i class="icons"></i>
                </label>
                <label class="tog-types" v-if="$index == 1"
-                      v-show="assets_detail.base[1].value.length > 15">
+                      v-show="assets_all.base[1].value.length > 15">
                  <span class="name">更多</span>
                  <i class="icons"></i>
                </label>
                <label class="tog-types" v-if="$index == 2"
-                      v-show="assets_detail.base[2].value.length > 15">
+                      v-show="assets_all.base[2].value.length > 15">
                  <span class="name">更多</span>
                  <i class="icons"></i>
                </label>
                <label class="tog-types" v-if="$index == 3"
-                      v-show="assets_detail.base[3].value.length > 15">
+                      v-show="assets_all.base[3].value.length > 15">
                  <span class="name">更多</span>
                  <i class="icons"></i>
                </label>
@@ -63,21 +63,21 @@
         <h3 class="title">风险资产</h3>
         <el-row class="common_box" style="padding: 15px 0;">
           <el-col :span="24" class="common_box_list">
-            <el-input class="s_key" placeholder="搜索关键词" v-model="assets.key" clearable>
+            <el-input class="s_key" placeholder="搜索关键词" v-model="params.key" clearable>
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
 
-            <el-select class="s_key" v-model="assets.threat" clearable placeholder="关联威胁">
+            <el-select class="s_key" v-model="params.threat" clearable placeholder="关联威胁">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
 
-            <el-select class="s_key" v-model="assets.rank" clearable placeholder="风险等级">
+            <el-select class="s_key" v-model="params.rank" clearable placeholder="风险等级">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
 
-            <el-select class="s_key" v-model="assets.status" clearable placeholder="处理状态">
+            <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -118,7 +118,7 @@
           <el-table
             class="common-table"
             ref="multipleTable"
-            :data="tableData"
+            :data="table.tableData"
             @row-click="detailClick"
             @selection-change="handleSelectionChange">
             <el-table-column label="全选" width="40"></el-table-column>
@@ -137,7 +137,7 @@
             @current-change="handleCurrentChange"
             :page-sizes="[5, 10, 20]"
             :page-size="10"
-            :total="20"
+            :total="table.tableData.length"
             layout="total, sizes, prev, pager, next, jumper"
           ></el-pagination>
         </el-col>
@@ -147,6 +147,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  const qs = require('qs');
   import VmHandleTabs from "./vm-handle/vm-handle-tabs";
   export default {
     name: 'assets',
@@ -157,7 +158,8 @@
       return {
         //頂部數據
         data_top:{},
-        assets_detail:{
+        data_top_show:false,
+        assets_all:{
           tags:['服务器','终端','网络设备'],
           base:[
               {name:'基础分类',value:['服务器','终端','网络设备','服务器','终端','网络设备','网络设备','服务器','网络设备','服务器','网络设备','服务器','终端','网络设备','网络设备','网络设备','服务器','网络设备','服务器']},
@@ -166,7 +168,12 @@
               {name:'部门',value:['部门1','部门2','部门3','部门4','部门5','部门6','部门7','部门8','部门9']}
             ]
         },
-        assets: {
+        toggle_top_show:true,
+        toggle_1_show:false,
+        toggle_2_show:false,
+        toggle_3_show:false,
+        toggle_4_show:false,
+        params: {
           key: "",
           rank:"",
           threat: "",
@@ -194,51 +201,98 @@
             label: "恶意地址"
           }
         ],
-        tableData: [
-          {
-            id: 3,
-            asset: "恶意地址",
-            asset_group: "服务器",
-            threat: "恶意地址",
-            rank: "高危 ",
-            fall: "— —",
-            status: "待处置"
-          },
-          {
-            id: 4,
-            asset: "恶意地址",
-            asset_group: "服务器",
-            threat: "恶意地址",
-            rank: "高危 ",
-            fall: "— —",
-            status: "待处置"
-          }
-        ],
-        multipleSelection: [],
-
-        toggle_top_show:true,
-        toggle_1_show:false,
-        toggle_2_show:false,
-        toggle_3_show:false,
-        toggle_4_show:false
+        table: {
+          tableData: [
+            {
+              id: 3,
+              asset: "恶意地址",
+              asset_group: "服务器",
+              threat: "恶意地址",
+              rank: "高危 ",
+              fall: "— —",
+              status: "待处置"
+            }
+          ],
+          count:0,
+          maxPage:0,
+          pageNow: 1,
+          multipleSelection: [],
+        }
       };
     },
     created() {
       //頂部
       this.get_list_top();
+
+      //全部資產
+      this.get_list_all();
+
+      //風險資產
+      this.get_list_risk();
     },
     methods: {
+      //頂部
       get_list_top(){
         this.$axios.get('/api/yiiapi/alert/risk-asset-top')
           .then((resp) => {
             let data = resp.data.data;
             this.data_top = data;
-
-            this.$set(this.data_top,data)
-
-            console.log(this.data_top)
+            this.$set(this.data_top,data);
+            this.data_top_show = true;
           })
       },
+
+      //全部資產列表
+      get_list_all(){
+        this.$axios.get('/api/yiiapi/alert/all-asset-labels')
+          .then((resp) => {
+           // console.log(resp)
+
+            let { status,data } = resp.data;
+            let datas = data;
+
+            if(status == 0){
+              let data = datas;
+              this.assets_all.base[0].value = data[0];
+              this.assets_all.base[1].value = data[1];
+              this.assets_all.base[2].value = data[2];
+              this.assets_all.base[3].value = data[3];
+            }
+          });
+      },
+
+      //風險資產列表
+      get_list_risk(){
+        this.$axios.get('/api/yiiapi/alert/risk-asset',
+          {
+            params:{
+              label:'["终端","bb"]',
+              key_word:'终端',
+              fall_certainty:1,
+              degree:'高',
+              page:1,
+              rows:10
+            },
+            paramsSerializer: function(params) {
+              return qs.stringify(params, {arrayFormat: 'repeat'})
+            }
+          })
+          .then((resp) => {
+           // console.log(resp)
+
+            let { status,data } = resp.data;
+            let datas = data;
+
+            if(status == 0){
+              let {data, count, maxPage,pageNow } = datas;
+              this.table.tableData = data;
+              this.table.count = count;
+              this.table.maxPage = maxPage;
+              this.table.pageNow = pageNow;
+            }
+          });
+      },
+
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
@@ -257,8 +311,9 @@
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
+
       handleClose(tag) {
-        this.assets_detail.tags.splice(this.assets_detail.tags.indexOf(tag), 1);
+        this.assets_all.tags.splice(this.assets_all.tags.indexOf(tag), 1);
       },
       /************************************/
       detailClick(row, column, event) {

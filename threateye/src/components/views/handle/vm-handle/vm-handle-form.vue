@@ -5,17 +5,36 @@
 <script type="text/ecmascript-6">
   export default {
     name: 'threatForm',
-    props: {
-      option: {
-        type: Object,
-        default: () => {}
+    props:{
+      form_data:{
+        type:Array,
+        default:[]
       }
+    },
+    data(){
+      return{
+        legend_attr:[],
+        data_attr: []
+      }
+    },
+    created(){
+      let legendAttr = [];
+      let that = this;
+      this.form_data.filter(function (v,k) {
+        legendAttr.push(v.category);
+        that.data_attr.push({value:v.count, name:v.category});
+      });
+      this.legend_attr = legendAttr;
     },
     mounted(){
       this.drawGraph();
     },
     methods:{
       drawGraph(){
+
+        let legendAttr = this.legend_attr;
+        let dataAttr = this.data_attr;
+
         let index = 0;
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('threatForm'))
@@ -35,11 +54,11 @@
             top: 30,
             left: 10,
             selectedMode:false,
-            data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            data: legendAttr
           },
           series: [
             {
-              name:'访问来源',
+              name:'外部威胁类型',
               type:'pie',
               center: ['70%', '50%'],
               radius: ['36%', '60%'],
@@ -54,12 +73,6 @@
               emphasis: {
                 label:{
                   show: true,
-                  /*formatter:function(params, ticket, callback) {
-                    let name = params.data.name;
-                    let percent = params.percent;
-                    let str = percent+'%\n'+name;
-                    return str;
-                  },*/
                   formatter: ['{d|{d}%}','{b|{b}}'].join('\n'),
                   rich: {
                     d: {
@@ -77,13 +90,7 @@
                   show: false
                 }
               },
-              data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
-              ]
+              data: dataAttr
             }
           ]
         });
@@ -103,12 +110,7 @@
           myChart.resize();
         });
       }
-    },
-    /*watch:{
-      $route(to,from){
-        this.drawGraph();
-      }
-    }*/
+    }
   }
 </script>
 

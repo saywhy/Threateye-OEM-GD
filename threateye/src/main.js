@@ -40,6 +40,9 @@ Vue.use(directives);
 import gl_component from '@/components/encapse/index'
 Vue.use(gl_component);
 
+import '@/components/filters/index'
+
+
 import './assets/css/index.css'
 import "./assets/family/font.css";
 import "./assets/family/pingfang.css";

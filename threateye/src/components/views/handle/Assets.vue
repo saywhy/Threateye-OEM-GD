@@ -1,6 +1,6 @@
 <template>
   <div class="handle-assets" v-cloak>
-    <vm-handle-tabs></vm-handle-tabs>
+    <vm-handle-tabs :data_top="data_top"></vm-handle-tabs>
     <!--全部资产-->
     <div class="assets_all">
       <el-row class="assets_all_list">
@@ -155,6 +155,8 @@
     },
     data() {
       return {
+        //頂部數據
+        data_top:{},
         assets_detail:{
           tags:['服务器','终端','网络设备'],
           base:[
@@ -222,14 +224,19 @@
       };
     },
     created() {
-      this.get_list();
+      //頂部
+      this.get_list_top();
     },
     methods: {
-      get_list(){
+      get_list_top(){
         this.$axios.get('/api/yiiapi/alert/risk-asset-top')
           .then((resp) => {
-            console.log('****************')
-            console.log(resp);
+            let data = resp.data.data;
+            this.data_top = data;
+
+            this.$set(this.data_top,data)
+
+            console.log(this.data_top)
           })
       },
       toggleSelection(rows) {

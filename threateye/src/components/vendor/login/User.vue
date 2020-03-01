@@ -99,12 +99,7 @@
               { required: true, message: '密码不能为空', trigger: 'blur' },
               { min: 6, message: '密码长度最少为6位', trigger: 'blur' },
               /*{ required: true, trigger: 'blur', validator: validatePassword }*/
-            ],
-          /*code:[
-              { required: true, message: '请输入验证码', trigger: 'blur' },
-              { min: 4, max: 4, message: '验证码长度为4位', trigger: 'blur' },
-              { required: true, trigger: 'blur', validator: validateCode }
-            ],*/
+            ]
         },
         passwordType: 'password'
       }

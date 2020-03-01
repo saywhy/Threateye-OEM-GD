@@ -5,30 +5,32 @@
 <script type="text/ecmascript-6">
 export default {
   name: "file",
-  data() {
-    return {};
-  },
   props: {
-    option: {
+    top_mid: {
       type: Object,
-      default: () => {}
+      default:() => {}
     }
   },
   mounted() {
-    this.file();
+    this.graph();
   },
   methods: {
-    file() {
+    graph() {
+      let statistics_time = this.top_mid.statistics_time;
+      let file_count_diff = this.top_mid.file_count_diff;
+
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("file"));
+
+      myChart.showLoading({ text: '正在加载数据...' });
+      myChart.clear();
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: "10%",
-          left: 0,
-          right: "5%",
-          bottom: "5%",
-          containLabel: true
+          top: "8%",
+          left: 36,
+          right: "4%",
+          bottom: 24
         },
         tooltip: {
           trigger: "axis",
@@ -50,6 +52,8 @@ export default {
           //网格样式
           splitLine: {
             show: true,
+            interval: 'auto', //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+            maxInterval: 3600 * 24 * 1000,
             lineStyle: {
               color: ["#F4F4F4"],
               width: 1,
@@ -70,21 +74,7 @@ export default {
           axisTick: {
             show: false
           },
-          data: [
-            "08:00",
-            "08:10",
-            "08:20",
-            "08:30",
-            "08:40",
-            "08:50",
-            "09:00",
-            "09:10",
-            "09:20",
-            "09:30",
-            "09:40",
-            "09:50",
-            "10:00"
-          ]
+          data: statistics_time
         },
         yAxis: {
           splitLine: {
@@ -117,7 +107,7 @@ export default {
             symbol: "none",
             cursor: "pointer",
             smooth: true,
-            data: [32, 14, 16, 30, 35, 20, 18, 32, 14, 16, 30, 35, 20, 18],
+            data: file_count_diff,
             lineStyle: {
               color: "#0288D1"
             },
@@ -143,6 +133,8 @@ export default {
           }
         ]
       });
+
+      myChart.hideLoading();
       window.addEventListener("resize", () => {
         myChart.resize();
       });

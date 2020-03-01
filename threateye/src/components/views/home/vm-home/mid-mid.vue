@@ -6,20 +6,48 @@
 export default {
   name: "safe",
   props: {
-    option: {
-      type: Object,
-      default: () => {}
+    mid_mid: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data(){
+    return{
+      untreat: {}
     }
   },
   mounted() {
-    this.safe();
+    this.graph();
   },
   methods: {
-    safe() {
+    graph() {
+
       let index = 0;
+
+      let chartData = this.mid_mid;
+
+      chartData.forEach((item,index,array)=>{
+        if (item.degree == 'low') {
+          this.$set(this.untreat, 'low', item.total_count);
+        }else if(item.degree == 'medium'){
+          this.$set(this.untreat, 'medium', item.total_count);
+        }else if(item.degree == 'high'){
+          this.$set(this.untreat, 'high', item.total_count);
+        }
+      });
+
+      let low = this.untreat.low;
+      let medium = this.untreat.medium;
+      let high = this.untreat.high;
+
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("safe"));
+
+      myChart.showLoading({ text: '正在加载数据...' });
+
+      myChart.clear();
+
       // 绘制图表
       myChart.setOption({
         grid: {
@@ -29,7 +57,7 @@ export default {
           bottom: "5%",
           containLabel: true
         },
-        color: ["#47CAD9", "#DC5F5F", "#E0C840"],
+        color: ["#DC5F5F", "#E0C840", "#47CAD9"],
         series: [
           {
             name: "预警",
@@ -67,13 +95,16 @@ export default {
               }
             },
             data: [
-              { value: 3, name: "高危预警", selected: true },
-              { value: 2, name: "中危预警" },
-              { value: 1, name: "低危预警" }
+              { value: high, name: "高危预警", selected: true },
+              { value: medium, name: "中危预警" },
+              { value: low, name: "低危预警" }
             ]
           }
         ]
       });
+
+      myChart.hideLoading();
+
       myChart.dispatchAction({
         type: "highlight",
         seriesIndex: 0,
@@ -98,7 +129,6 @@ export default {
           dataIndex: e.dataIndex
         });
       });
-
 
       window.addEventListener("resize", () => {
         myChart.resize();

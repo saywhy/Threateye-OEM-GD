@@ -1,5 +1,5 @@
 <template>
-  <div id="home_overview" v-cloak>
+  <div class="home_overview" v-cloak>
     <div class="container">
 
       <!-- 第一排 -->
@@ -8,19 +8,19 @@
           <div class="top_item" @click="sys_state">
             <div class="title">
               <p>
-                <span>系统状态监控</span>
+                <span class="title_left">系统状态监控</span>
               </p>
             </div>
             <div class="legend">
-              <span class="legend_icon color2"></span>
-              <span>预警:2</span>
-              <span class="legend_icon color5"></span>
-              <span>健康:5</span>
-              <span class="legend_icon color6"></span>
-              <span>离线:3</span>
+              <span class="legend_icon color8"></span>
+              <span class="legend_title">预警:{{top_left.warning_count}}</span>
+              <span class="legend_icon color3"></span>
+              <span class="legend_title">健康:{{top_left.healthy_count}}</span>
+              <span class="legend_icon color4"></span>
+              <span class="legend_title">离线:{{top_left.offline_count}}</span>
             </div>
             <div class="top_left_content">
-              <top-left></top-left>
+              <top-left :top_left = "top_left" v-if="top_left_show"></top-left>
             </div>
           </div>
         </el-col>
@@ -30,7 +30,7 @@
               <p>
                 <span class="title_left">流量文件监控</span>
                 <span class="title_right">
-                    <span class="title_right_icon color1"></span>
+                    <span class="title_right_icon color6"></span>
                     <span>流量(M/s)</span>
                     <span class="title_right_icon color2"></span>
                     <span>文件(个/s)</span>
@@ -39,10 +39,10 @@
             </div>
             <div class="top_mid_content">
               <div class="content_top">
-                <top-mid-flow></top-mid-flow>
+                <top-mid-flow :top_mid = "top_mid" v-if="top_mid_show"></top-mid-flow>
               </div>
               <div class="content_bom">
-                <top-mid-file></top-mid-file>
+                <top-mid-file :top_mid = "top_mid" v-if="top_mid_show"></top-mid-file>
               </div>
             </div>
           </div>
@@ -74,16 +74,16 @@
                 <span class="title_right">
                     <span class="title_right_icon color3"></span>
                     <span>低危</span>
-                    <span class="title_right_icon color4"></span>
-                    <span>中危</span>
                     <span class="title_right_icon color5"></span>
                     <span>中危</span>
+                    <span class="title_right_icon color4"></span>
+                    <span>高危</span>
                 </span>
               </p>
             </div>
             <div class="bom_left_content">
               <div class="content_top">
-                <mid-left></mid-left>
+                <mid-left :mid_left="mid_left" v-if="mid_left_show"></mid-left>
               </div>
             </div>
           </div>
@@ -96,15 +96,15 @@
                 <span class="title_right">
                     <span class="title_right_icon color3"></span>
                     <span>低危</span>
-                    <span class="title_right_icon color4"></span>
-                    <span>中危</span>
                     <span class="title_right_icon color5"></span>
                     <span>中危</span>
+                    <span class="title_right_icon color4"></span>
+                    <span>高危</span>
                 </span>
               </p>
             </div>
             <div class="bom_mid_content">
-              <mid-mid></mid-mid>
+              <mid-mid :mid_mid="mid_mid" v-if="mid_mid_show"></mid-mid>
             </div>
           </div>
         </el-col>
@@ -116,7 +116,7 @@
               </p>
             </div>
             <div class="bom_right_content">
-              <mid-right></mid-right>
+              <mid-right :mid_right="mid_right" v-if="mid_right_show"></mid-right>
             </div>
           </div>
         </el-col>
@@ -189,29 +189,122 @@
     name: "system_control_move",
     data () {
       return {
-        sandbox: {
-          data: [{
-            res: '未发现威胁',
-            time: '2019-12-03 12:36:48',
-            name: 'sougou_pinyin_8.8.0.1814_6991.exe',
-            status: '扫描结束',
-          }],
-          pageNow: 1,
-          count: 1002,
+        top_left: {
+          dev_info:[],
+          healthy_count:0,
+          warning_count:0,
+          offline_count:0
         },
+        top_left_show:false,
+
+        top_mid:{
+          statistics_time:[],
+          flow_diff:[],
+          file_count_diff:[]
+        },
+        top_mid_show:false,
+        ///////////
+
+        mid_left:[],
+        mid_left_show:false,
+
+        mid_mid:[],
+        mid_mid_show:false,
+
+        mid_right:[],
+        mid_right_show:false
+
+        ///////////
+
       };
     },
     created() {
-      this.get_list();
+      //第一排
+      this.init_top_left();
+      this.init_top_mid();
+      this.init_top_right();
+      //第二排
+      this.init_mid_left();
+      this.init_mid_mid();
+      this.init_mid_right();
     },
     methods: {
-      get_list(){
+      //第一排（左）
+      init_top_left(){
         this.$axios.get('/api/yiiapi/alert/system-state')
           .then((resp) => {
-            /*console.log('****************')
-            console.log(resp)*/
+            let {status,data} = resp.data;
+            if(status == 0){
+              this.top_left.dev_info = data.dev_info;
+              this.top_left.healthy_count = data.healthy_count;
+              this.top_left.warning_count = data.warning_count;
+              this.top_left.offline_count = data.offline_count;
+              this.top_left_show = true;
+            }
           })
       },
+      //第一排（中）
+      init_top_mid() {
+        this.$axios.get('/api/yiiapi/alert/flow-file-statistics')
+          .then((resp) => {
+
+            //console.log(resp)
+            let {status,data} = resp.data;
+
+            if(status == 0){
+              this.top_mid.statistics_time = data.statistics_time;
+              this.top_mid.flow_diff = data.flow_diff;
+              this.top_mid.file_count_diff = data.file_count_diff;
+              this.top_mid_show = true;
+            }
+          })
+      },
+      //第一排（右）
+      init_top_right(){
+        this.$axios.get('/api/yiiapi/alert/protocol-flow-statistics')
+          .then((resp) => {
+
+            //console.log(resp);
+            let {status,data} = resp.data;
+
+          })
+      },
+
+      //第二排（左）
+      init_mid_left() {
+        this.$axios.get('/api/yiiapi/alert/get-last7-days-alarm')
+          .then((resp) => {
+            let {status,data} = resp.data;
+            if(status == 0){
+              this.mid_left = data;
+              this.mid_left_show = true;
+            }
+          })
+      },
+      //第二排（中）
+      init_mid_mid() {
+        this.$axios.get('/api/yiiapi/alert/untreated-alarm-type')
+          .then((resp) => {
+            let {status,data} = resp.data;
+            if(status == 0){
+              this.mid_mid = data;
+              this.mid_mid_show = true;
+            }
+          })
+      },
+      //第二排（右）
+      init_mid_right() {
+        this.$axios.get('/api/yiiapi/alert/threat-type')
+          .then((resp) => {
+            console.log(resp)
+            let {status,data} = resp.data;
+            if(status == 0){
+              this.mid_right = data;
+              this.mid_right_show = true;
+            }
+          })
+      },
+
       sys_state() {
         this.$store.commit("CHANGE_SYS", true);
       }
@@ -235,7 +328,7 @@
   };
 </script>
 <style scoped lang="less">
-  #home_overview {
+  .home_overview {
     padding: 24px;
     .container {
       text-align: left;
@@ -304,12 +397,16 @@
             text-align: left;
             font-size: 14px;
             .legend_icon {
-              margin-left: 10px;
               border-radius: 2px;
               height: 14px;
               width: 28px;
               vertical-align: middle;
               display: inline-block;
+            }
+            .legend_title{
+              margin-right: 10px;
+              color: #0070FF;
+              text-decoration: underline;
             }
           }
 

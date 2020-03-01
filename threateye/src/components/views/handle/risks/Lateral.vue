@@ -4,13 +4,15 @@
       <div class="ost ost-1">
         <div class="ost-title">发起横向威胁资产 Top5</div>
         <div class="ost-progress">
-          <vm-handle-progress></vm-handle-progress>
+          <vm-handle-progress :progress_data="progress_data_source5"
+          v-if="progress_data_source5_show"></vm-handle-progress>
         </div>
       </div>
       <div class="ost ost-2">
         <div class="ost-title">横向威胁类型 Top5</div>
         <div class="ost-emerge">
-          <vm-handle-form></vm-handle-form>
+          <vm-handle-form :form_data="form_data_threat5"
+          v-if="form_data_threat5_show"></vm-handle-form>
         </div>
       </div>
     </div>
@@ -45,7 +47,7 @@
               <el-col :span="24" class="common_box_list">
 
                 <!--搜索关键词-->
-                <el-input class="s_key" placeholder="搜索关键词" v-model="params_1.handle_key" clearable>
+                <el-input class="s_key" placeholder="搜索关键词" v-model="params.key_word" clearable>
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
 
@@ -53,19 +55,19 @@
                 <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
                 <!--告警类型-->
-                <el-select class="s_key s_key_types" v-model="params_1.handle_types" clearable placeholder="告警类型">
+                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型"  @change="currentSelChange">
                   <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
 
                 <!--处理状态-->
-                <el-select class="s_key" v-model="params_1.handle_status" clearable placeholder="处理状态">
+                <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态"  @change="currentSelChange">
                   <el-option v-for="item in options_status" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
 
-                <el-button class="s_btn">搜索</el-button>
-                <el-link class="s_link">重置</el-link>
+                <el-button class="s_btn" @click="submitClick();">搜索</el-button>
+                <el-link class="s_link" @click="resetClick();">重置</el-link>
               </el-col>
             </el-row>
 
@@ -103,20 +105,21 @@
           </el-form>
         </div>
         <el-table ref="multipleTable" class="handle_table"
-                  align="center" :data="table1Data"
+                  align="center"
+                  v-loading="table.loading"
+                  :data="table.tableData"
                   tooltip-effect="dark"
-                  style="width: 100%"
-                  @selection-change="handleSelectionChange">
+                  @selection-change="handleSelChange">
           <el-table-column label="全选" prop="type" width="50">
             <template slot-scope="scope">
-              <div class="new_dot" v-show="scope.row.type=='new'">
+              <div class="new_dot" v-show="scope.row.processing_person != null">
               </div>
             </template>
           </el-table-column>
           <el-table-column type="selection" width="30">
           </el-table-column>
           <el-table-column label="告警时间" width="150">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+            <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
           </el-table-column>
           <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
           </el-table-column>
@@ -149,9 +152,10 @@
               </el-dropdown>
             </template>
           </el-table-column>
-          <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
+          <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="status" label="状态" show-overflow-tooltip>
+          <el-table-column label="状态" show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
           </el-table-column>
         </el-table>
         <el-pagination
@@ -159,8 +163,8 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :page-sizes="[5, 10, 20]"
-          :page-size="10"
-          :total="20"
+          :page-size="table.eachPage"
+          :total="table.count"
           layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
       </div>
@@ -177,9 +181,10 @@
     name: 'handle-lateral',
     data() {
       return {
-        activeName: 'first',
-        loading_net:true,
-        loading_point:true,
+        progress_data_source5: [],
+        progress_data_source5_show:false,
+        form_data_threat5:[],
+        form_data_threat5_show:false,
         options_types: [
           {
             value: "1",
@@ -224,59 +229,22 @@
             label: "已处置"
           }
         ],
-        params_1: {
-          handle_key:"",
-          handle_types:"",
-          handle_status: "",
+        params: {
+          key_word:"",
+          category:"",
+          status: "",
           startTime: "",
           endTime: "",
         },
-        table1_data: {
-          count: 102,
-          maxPage: 11,
-          pageNow: 1
-        },
-        table1Data: [
-          {
-            type: "new",
-            date: "2019.11.08 15:33:24",
-            category: "恶意地址",
-            indicator: "223.17.229.272",
-            src_ip: "192.166.1.156",
-            dest_ip: "223.17.229.272",
-            application: "http",
-            degree: "低危",
-            color: "low",
-            fall: "— —",
-            status: "待处置"
-          },
-          {
-            type: "new",
-            date: "2019.11.08 15:33:24",
-            category: "恶意地址",
-            indicator: "223.17.229.272",
-            src_ip: "192.166.1.156",
-            dest_ip: "223.17.229.272",
-            application: "http",
-            degree: "中危",
-            color: "mid",
-            fall: "— —",
-            status: "待处置"
-          },
-          {
-            type: "old",
-            date: "2019.11.08 15:33:24",
-            category: "恶意地址",
-            indicator: "223.17.229.272",
-            src_ip: "192.166.1.156",
-            dest_ip: "223.17.229.272",
-            application: "http",
-            degree: "低危",
-            color: "low",
-            fall: "— —",
-            status: "待处置"
-          }
-        ]
+        table: {
+          tableData: [],
+          count: 0,
+          pageNow: 1,
+          maxPage: 1,
+          eachPage: 10,
+          multipleSelection: [],
+          loading:true
+        }
       };
     },
     components:{
@@ -284,22 +252,104 @@
       VmHandleForm,
       VmEmergePicker
     },
+    created(){
+      this.get_list_source_top5();
+      this.get_list_threat_top5();
+      this.get_list_threat();
+    },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
+      //外部威脅源top5
+      get_list_source_top5() {
+        this.$axios.get('/api/yiiapi/horizontalthreat/source-top5')
+          .then((resp) => {
+            let {status, data} = resp.data;
+            if (status == 0) {
+              this.progress_data_source5 = data;
+              this.progress_data_source5_show = true;
+            }
+          })
       },
+      //外部威脅類型top5
+      get_list_threat_top5() {
+        this.$axios.get('/api/yiiapi/horizontalthreat/threat-top5')
+          .then((resp) => {
+            let {status, data} = resp.data;
+            if (status == 0) {
+              this.form_data_threat5 = data;
+              this.form_data_threat5_show = true;
+            }
+          })
+      },
+      //横向威脅列表
+      get_list_threat() {
+        this.table.loading = true;
+        this.$axios.get('/api/yiiapi/horizontalthreat/list',{
+          params:{
+            start_time:this.params.startTime,
+            end_time:this.params.endTime,
+            degree:'',
+            category:this.params.category,
+            status:this.params.status,
+            key_word:this.params.key_word,
+            page: this.table.pageNow,
+            rows: this.table.eachPage
+          }
+        }).then((resp) => {
+
+          let { status,data } = resp.data;
+
+          let datas = data;
+
+          if(status == 0){
+
+            let {data, count, maxPage,pageNow } = datas;
+            this.table.tableData = data;
+            this.table.count = count;
+            this.table.maxPage = maxPage;
+            this.table.pageNow = pageNow;
+
+            this.table.loading = false;
+          }
+        })
+      },
+      //每頁多少條切換
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        console.log(val)
+        this.table.eachPage = val;
+        this.get_list_threat();
       },
+      //頁數點擊切換
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.table.pageNow = val;
+        this.get_list_threat();
       },
+      //下拉框change切換
+      currentSelChange(){
+        this.get_list_threat();
+      },
+      //時間切換
       changeTime(data) {
-        this.params_net.startTime = data[0].valueOf();
-        this.params_net.endTime = data[1].valueOf();
+        this.params.startTime = data[0].valueOf();
+        this.params.endTime = data[1].valueOf();
+        this.get_list_threat();
+      },
+      //搜索按鈕點擊事件
+      submitClick(){
+        this.get_list_threat();
+      },
+      //重置按鈕點擊事件
+      resetClick(){
+        this.params = {
+          key_word:"",
+          category:"",
+          status: "",
+          startTime: "",
+          endTime: "",
+        }
+        this.get_list_threat();
       },
       /*****************************/
-      handleSelectionChange(val) {
+      handleSelChange(val) {
         this.multipleSelection = val;
         console.log("1111");
       },

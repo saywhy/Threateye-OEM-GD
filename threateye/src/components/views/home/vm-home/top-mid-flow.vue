@@ -5,34 +5,37 @@
 <script type="text/ecmascript-6">
 export default {
   name: "flow",
-  data() {
-    return {};
-  },
   props: {
-    option: {
+    top_mid: {
       type: Object,
-      default: () => {}
+      default:() => {}
     }
   },
   mounted() {
-    this.flow();
+    this.graph();
   },
   methods: {
-    flow() {
+    graph() {
+
+      let statistics_time = this.top_mid.statistics_time;
+      let flow_diff = this.top_mid.flow_diff;
+
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("flow"));
+
+      myChart.showLoading({ text: '正在加载数据...' });
+      myChart.clear();
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: "10%",
-          left: 0,
-          right: "5%",
-          bottom: "5%",
-          containLabel: true
+          top: "8%",
+          left: 36,
+          right: "4%",
+          bottom: 24
         },
         tooltip: {
           trigger: "axis",
-          borderColor: "rgba(245,124,0,0.3)",
+          borderColor: "rgba(76,175,80,0.3)",
           borderWidth: 2,
           backgroundColor: "#fff",
           textStyle: {
@@ -44,12 +47,14 @@ export default {
             }
           }
         },
-        color: ["#F57C00"],
+        color: ["#4CAF50"],
         xAxis: {
           boundaryGap: false,
           //网格样式
           splitLine: {
             show: true,
+            interval: 'auto', //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+            maxInterval: 3600 * 24 * 1000,
             lineStyle: {
               color: ["#F4F4F4"],
               width: 1,
@@ -70,23 +75,9 @@ export default {
           axisTick: {
             show: false
           },
-          data: [
-            "08:00",
-            "08:10",
-            "08:20",
-            "08:30",
-            "08:40",
-            "08:50",
-            "09:00",
-            "09:10",
-            "09:20",
-            "09:30",
-            "09:40",
-            "09:50",
-            "10:00"
-          ]
+          data: statistics_time
         },
-        yAxis: {
+        yAxis:{
           splitLine: {
             show: true,
             lineStyle: {
@@ -115,10 +106,10 @@ export default {
             name: "流量",
             type: "line",
             symbol: "none",
+            data: flow_diff,
             smooth: true,
-            data: [32, 14, 16, 30, 35, 20, 18, 32, 14, 16, 30, 35, 20, 18],
             lineStyle: {
-              color: "#F57C00"
+              color: "#4CAF50"
             },
             areaStyle: {
               color: {
@@ -130,18 +121,21 @@ export default {
                 colorStops: [
                   {
                     offset: 0,
-                    color: "rgba(245,124,0,0.3)" // 0% 处的颜色
+                    color: "rgba(76,175,80,0.3)" // 0% 处的颜色
                   },
                   {
                     offset: 1,
-                    color: "rgba(245,124,0,0.1)" // 100% 处的颜色
+                    color: "rgba(76,175,80,0.1)" // 100% 处的颜色
                   }
                 ]
               }
-            }
+            },
+
           }
         ]
       });
+
+      myChart.hideLoading();
       window.addEventListener("resize", () => {
         myChart.resize();
       });

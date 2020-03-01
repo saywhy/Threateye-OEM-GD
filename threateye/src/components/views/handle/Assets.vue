@@ -160,7 +160,7 @@
         data_top:{},
         data_top_show:false,
         assets_all:{
-          tags:['服务器','终端','网络设备'],
+          tags:[],
           base:[
               {name:'基础分类',value:['服务器','终端','网络设备','服务器','终端','网络设备','网络设备','服务器','网络设备','服务器','网络设备','服务器','终端','网络设备','网络设备','网络设备','服务器','网络设备','服务器']},
               {name:'业务',value:['业务1','业务2','业务3','业务4','业务5','业务6','业务7','业务8','业务9']},
@@ -246,7 +246,7 @@
       get_list_all(){
         this.$axios.get('/api/yiiapi/alert/all-asset-labels')
           .then((resp) => {
-           // console.log(resp)
+            console.log(resp)
 
             let { status,data } = resp.data;
             let datas = data;

@@ -5,22 +5,48 @@
 <script type="text/ecmascript-6">
 export default {
   name: "mid-left",
-  data() {
-    return {};
-  },
   props: {
-    option: {
-      type: Object,
-      default: () => {}
+    mid_left: {
+      type: Array,
+      default:() => []
+    }
+  },
+  data(){
+    return{
+      treat:{
+        date:[],
+        high:[],
+        medium:[],
+        low:[]
+      }
     }
   },
   mounted() {
-    this.test();
+    this.graph();
   },
   methods: {
-    test() {
+    graph() {
       // 基于准备好的dom，初始化echarts实例
+
+      let chartData = this.mid_left;
+      chartData.forEach((item,index,array)=>{
+
+        this.treat.date.push(item.statistics_time);
+        this.treat.high.push(item.alert_count_details.high);
+        this.treat.medium.push(item.alert_count_details.medium);
+        this.treat.low.push(item.alert_count_details.low);
+
+      });
+
+      let date = this.treat.date;
+      let high = this.treat.high;
+      let medium = this.treat.medium;
+      let low = this.treat.low;
+
       let myChart = this.$echarts.init(document.getElementById("test"));
+
+      myChart.showLoading({ text: '正在加载数据...' });
+      myChart.clear();
       // 绘制图表
       myChart.setOption({
         tooltip: {
@@ -80,7 +106,7 @@ export default {
           axisTick: {
             show: false
           },
-          data: ['11-01', '11-02', '11-03', '11-04', '11-05', '11-06', '11-07']
+          data: date
         },
         yAxis: {
           splitLine: {
@@ -112,25 +138,26 @@ export default {
             type: 'bar',
             stack: '广告',
             barWidth:'40%',
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: low
           },
           {
             name: '中危',
             type: 'bar',
             stack: '广告',
             barWidth:'40%',
-            data: [220, 182, 191, 234, 290,230, 210]
+            data: medium
           },
           {
             name: '高危',
             type: 'bar',
             stack: '广告',
             barWidth:'40%',
-            data: [150, 232, 201, 154, 190, 230, 210]
+            data: high
           }
-
         ]
       });
+
+      myChart.hideLoading();
 
       window.addEventListener("resize", () => {
         myChart.resize();

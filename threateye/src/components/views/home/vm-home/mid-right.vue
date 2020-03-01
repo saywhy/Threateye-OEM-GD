@@ -5,20 +5,38 @@
 <script type="text/ecmascript-6">
 export default {
   name: "edr",
-  data() {
-    return {};
-  },
   props: {
-    option: {
-      type: Object,
-      default: () => {}
+    mid_right: {
+      type: Array,
+      default: () => []
     }
   },
+  data() {
+    return {
+      threat_type:{
+        type:[],
+        num:[]
+      }
+    };
+  },
   mounted() {
-    this.edr();
+    this.graph();
   },
   methods: {
-    edr() {
+    graph() {
+
+      let chartData = this.mid_right;
+
+      chartData.forEach((item,index,array)=>{
+        this.threat_type.type.push(item.alert_type);
+        this.threat_type.num.push(item.total_count);
+      });
+
+      let type = this.threat_type.type;
+      let num = this.threat_type.num;
+
+     let maxNum = Math.max(...num);
+
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("edr"));
       // 绘制图表
@@ -35,14 +53,14 @@ export default {
         grid: {
           top:0,
           left: 0,
-          right: '2%',
+          right: '4%',
           bottom: '1%',
           containLabel: true
         },
         xAxis: {
           type: 'value',
           min: 0,
-          max: 10,
+          max:maxNum,
           splitLine: {
             show: true,
             lineStyle: {
@@ -82,11 +100,10 @@ export default {
           axisTick: {
             show: false
           },
-          data: ['可疑文件', '可疑URL', '可疑IP']
+          data: type
         },
         series: [
           {
-            name: '威胁类型',
             type: 'bar',
             stack: '总量',
             label: {
@@ -94,10 +111,9 @@ export default {
             },
             barWidth:'40%',
             color:'#5389E0',
-            data: [7, 6, 8]
+            data: num
           },
           {
-            name: '威胁类型',
             type: 'bar',
             stack: '总量',
             label: {
@@ -105,7 +121,12 @@ export default {
             },
             barWidth:'40%',
             color:'#f8f8f8',
-            data: [10, 10, 10]
+            data: [maxNum, maxNum, maxNum],
+            tooltip:{
+              textStyle:{
+                backgroundColor:'red'
+              }
+            }
           },
 
         ]

@@ -70,7 +70,7 @@
         position: fixed;
         left: 0;
         top: 60px;
-        width: 210px;
+        width: 210px!important;
         &.collapse {
           width: 56px!important;
           #aside{

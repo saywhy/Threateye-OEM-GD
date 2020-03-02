@@ -271,7 +271,9 @@
         this.$axios.get('/api/yiiapi/alert/protocol-flow-statistics')
           .then((resp) => {
             //console.log(resp);
+
             let {status,data} = resp.data;
+
             if(status == 0){
               this.top_right = data;
               this.top_right_show = true;

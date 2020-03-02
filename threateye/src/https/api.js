@@ -10,18 +10,21 @@
  * @returns {Promise}
  */
 
-export function fetch(url,params={}){
-  return new Promise((resolve,reject) => {
-    axios.get(url,{
-      params:params
-    })
+export function fetch(url, params = {}) {
+  return new Promise((resolve, reject) => {
+    axios.get(url, {
+        params: params
+      })
       .then(response => {
         resolve(response.data);
       })
       .catch(err => {
-      reject(err.data);
-      Message({message: '加载失败', type: 'error'});
-    })
+        reject(err.data);
+        Message({
+          message: '加载失败',
+          type: 'error'
+        });
+      })
   })
 }
 
@@ -32,15 +35,18 @@ export function fetch(url,params={}){
  * @returns {Promise}
  */
 
-export function post(url,data = {}){
-  return new Promise((resolve,reject) => {
-    axios.post(url,data)
+export function post(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
       .then(response => {
         resolve(response.data);
       })
       .catch(err => {
         reject(err.data)
-        Message({message: '加载失败', type: 'error'});
+        Message({
+          message: '加载失败',
+          type: 'error'
+        });
       })
   })
 }
@@ -52,12 +58,12 @@ export function post(url,data = {}){
  * @returns {Promise}
  */
 
-export function patch(url,data = {}){
-  return new Promise((resolve,reject) => {
-    axios.patch(url,data)
+export function patch(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.patch(url, data)
       .then(response => {
         resolve(response.data);
-      },err => {
+      }, err => {
         reject(err)
       })
   })
@@ -70,12 +76,12 @@ export function patch(url,data = {}){
  * @returns {Promise}
  */
 
-export function put(url,data = {}){
-  return new Promise((resolve,reject) => {
-    axios.put(url,data)
+export function put(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.put(url, data)
       .then(response => {
         resolve(response.data);
-      },err => {
+      }, err => {
         reject(err)
       })
   })
@@ -94,9 +100,10 @@ export function deletes(url, params) {
       })
       .catch(err => {
         reject(err.data)
-        Message({message: '加载失败', type: 'error'});
+        Message({
+          message: '加载失败',
+          type: 'error'
+        });
       })
   });
 }
-
-

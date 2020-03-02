@@ -5,48 +5,55 @@
                  class="btn_i"
                  @click="add_box">新增</el-button>
       <el-button type="primary"
-                 class="btn_o">删除</el-button>
+                 class="btn_o"
+                 @click="del_role">删除</el-button>
     </div>
     <div class="role_table">
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
-                :data="role_data.data"
+                :data="role_list.data"
                 tooltip-effect="dark"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
-                @row-click="alert_detail">
+                style="width: 100%">
         <el-table-column label="全选"
                          prop="type"
                          width="50">
         </el-table-column>
         <el-table-column type="selection"
+                         :selectable="checkSelectable"
                          width="50">
         </el-table-column>
         <el-table-column prop="index"
                          label="序号"
                          width="50"
                          show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{(role_data.page-1)*(role_data.rows) + scope.row.index_cn}}
+          </template>
         </el-table-column>
         <el-table-column prop="name"
                          label="角色名称"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="describe"
+        <el-table-column prop="description"
                          label="角色描述"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="time"
-                         label="创建时间"
+
+        <el-table-column label="创建时间"
+                         width="150"
                          show-overflow-tooltip>
+          <template slot-scope="scope">{{ scope.row.created_at*1000 |formatDate }}</template>
         </el-table-column>
-        <el-table-column prop="founder"
+        <el-table-column prop="creatorname"
                          label="创建人"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="primary"
+                       v-if="scope.row.creatorname!= 'SYSTEM' "
                        class="btn_edit"
                        @click.stop='edit_box(scope.row)'>编辑</el-button>
           </template>
@@ -55,11 +62,11 @@
       <el-pagination class="pagination_box"
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :current-page="role_data.pageNow"
+                     :current-page="role_list.pageNow"
                      :page-sizes="[10,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
-                     :total="role_data.count">
+                     :total="role_list.count">
       </el-pagination>
     </div>
     <!-- 新增 -->
@@ -79,10 +86,24 @@
             <span class="title">角色名称</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入用户名"
+                    placeholder="请输入角色名称"
                     v-model="role_add.name"
                     clearable>
           </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">角色权限</span>
+          </p>
+          <el-tree :data="data"
+                   show-checkbox
+                   highlight-current
+                   ref="tree"
+                   node-key="id"
+                   :props="defaultProps"
+                   :default-checked-keys="[2,207]"
+                   :default-expand-all="true">
+          </el-tree>
         </div>
         <div class="content_item">
           <p>
@@ -101,7 +122,8 @@
       <div class="btn_box">
         <el-button @click="closed_add_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="add_role">确定</el-button>
       </div>
     </el-dialog>
     <!-- 编辑 -->
@@ -121,10 +143,23 @@
             <span class="title">角色名称</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入用户名"
+                    placeholder="请输入角色名称"
                     v-model="role_edit.name"
                     clearable>
           </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">角色权限</span>
+          </p>
+          <el-tree :data="data"
+                   show-checkbox
+                   highlight-current
+                   ref="tree_edit"
+                   node-key="id"
+                   :props="defaultProps"
+                   default-expand-all>
+          </el-tree>
         </div>
         <div class="content_item">
           <p>
@@ -136,36 +171,197 @@
                     autosize
                     resize='none'
                     placeholder="请输入角色描述"
-                    v-model="role_edit.describe">
+                    v-model="role_edit.description">
           </el-input>
         </div>
       </div>
       <div class="btn_box">
         <el-button @click="closed_edit_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="edit_role">确定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import moment from 'moment'
 export default {
   name: "role_management",
   data () {
     return {
+      data: [
+        // 首页
+        {
+          id: 1,
+          label: '首页',
+          children: [{
+            id: 2,
+            label: '总览',
+          }]
+        },
+        // 处置
+        {
+          id: 13,
+          label: '处置',
+          children: [
+            {
+              id: 14,
+              label: '资产维度',
+            },
+            {
+              id: 23,
+              label: '风险维度',
+              children: [
+                {
+                  id: 24,
+                  label: '外部威胁',
+                },
+                {
+                  id: 32,
+                  label: '横向威胁',
+                },
+                {
+                  id: 40,
+                  label: '外联威胁',
+                }
+              ]
+            },
+            {
+              id: 48,
+              label: '工单中心',
+            },
+          ]
+        },
+        // 告警
+        {
+          id: 58,
+          label: '告警',
+          children: [{
+            id: 59,
+            label: '网络告警',
+          }]
+        },
+        // 追查
+        {
+          id: 76,
+          label: '追查',
+          children: [
+            {
+              id: 77,
+              label: 'DNS追查',
+            },
+            {
+              id: 81,
+              label: 'IP/URL追查',
+            },
+            {
+              id: 85,
+              label: '主机追查',
+            },
+            {
+              id: 93,
+              label: '用户追查',
+            },
+            {
+              id: 97,
+              label: '文件追查',
+            },
+            {
+              id: 101,
+              label: '数据传输追查',
+            },
+            {
+              id: 105,
+              label: '流量方向追查',
+            },
+            {
+              id: 109,
+              label: 'IOC扫描器',
+            },
+            {
+              id: 117,
+              label: '沙箱',
+            },
+          ]
+        },
+        // 报表
+        {
+          id: 123,
+          label: '报表',
+          children: [
+            {
+              id: 124,
+              label: '报表生成',
+            },
+            {
+              id: 130,
+              label: '报表发送',
+            },
+          ]
+        },
+        // 系统
+        {
+          id: 132,
+          label: '系统',
+          children: [
+            {
+              id: 133,
+              label: '设备管理',
+            },
+            {
+              id: 139,
+              label: '受监控IP',
+            },
+            {
+              id: 144,
+              label: '账号管理',
+            },
+            {
+              id: 157,
+              label: '网络配置',
+            },
+            {
+              id: 162,
+              label: '系统选项',
+            },
+            {
+              id: 169,
+              label: '规则库及白名单',
+            },
+            {
+              id: 183,
+              label: '联动',
+            },
+            {
+              id: 187,
+              label: '威胁通知',
+            },
+            {
+              id: 191,
+              label: '日志',
+            },
+            {
+              id: 204,
+              label: '恢复/重启',
+            },
+            {
+              id: 207,
+              label: '许可证',
+            },
+          ]
+        },
+      ],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
+      role_list: {
+      },
       role_data: {
-        data: [
-          {
-            index: "01",
-            name: "admin",
-            describe: "系统管理员",
-            founder: "system",
-            time: "2019.11.03 15:24"
-          }
-        ],
-        pageNow: 1,
-        count: 102
+        page: 1,
+        rows: 10
       },
       role_state: {
         add: false,
@@ -173,12 +369,13 @@ export default {
       },
       role_add: {
         name: "",
-        describe: ""
+        describe: "",
+        permissions_id: []
       },
       role_edit: {
-        name: "",
-        describe: ""
-      }
+      },
+      old_role_edit: '',
+      select_list: []
     };
   },
   props: {
@@ -193,10 +390,18 @@ export default {
 
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/user/role-list')
+      this.$axios.get('/api/yiiapi/user/role-list', {
+        params: {
+          page: this.role_data.page,
+          rows: this.role_data.rows
+        }
+      })
         .then(response => {
-          console.log(response);
-          this.role_data = response.data;
+          console.log(response.data);
+          this.role_list = response.data.data;
+          this.role_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
         })
         .catch(error => {
           console.log(error);
@@ -204,21 +409,229 @@ export default {
     },
     add_box () {
       this.role_state.add = true;
+      this.role_add.name = ''
+      this.role_add.describe = ''
+      this.role_add.permissions_id = []
     },
-    edit_box () {
+    edit_box (item) {
+      this.role_edit = {}
+      this.old_role_edit = ''
       this.role_state.edit = true;
+      this.old_role_edit = JSON.stringify(item);
+      this.role_edit_cn = JSON.stringify(item);
+      this.role_edit = JSON.parse(this.role_edit_cn);
+      this.role_edit.permissions_id_cn = JSON.parse(this.role_edit.permissions_id)
+      this.$nextTick(() => {
+        this.$refs.tree_edit.setCheckedKeys(this.role_edit.permissions_id_cn);
+      });
     },
-    alert_detail () { },
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
+    // 分页
+    handleSizeChange (val) {
+      this.role_data.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.role_data.page = val
+      this.get_data();
+    },
     closed_add_box () {
       this.role_state.add = false;
     },
     closed_edit_box () {
       this.role_state.edit = false;
+    },
+    // tree
+    // 添加角色
+    add_role () {
+      if (this.role_add.name == '') {
+        this.$message(
+          {
+            message: '请输入角色名称',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.$refs.tree.getCheckedNodes().length == 0) {
+        this.$message(
+          {
+            message: '请至少选择一项角色权限',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$refs.tree.getCheckedNodes().forEach(item => {
+        this.role_add.permissions_id.push(item.id)
+      });
+      this.$axios.post('/api/yiiapi/user/add-role', {
+        name: this.role_add.name,
+        description: this.role_add.describe,
+        permissions_id: this.role_add.permissions_id,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 0) {
+            this.role_state.add = false;
+            this.get_data();
+            this.$message(
+              {
+                message: '添加角色成功',
+                type: 'success',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
+    // 修改角色
+    edit_role () {
+      console.log(this.role_edit);
+      this.role_edit.permissions_id_edit = [];
+      if (this.role_edit.name == '') {
+        this.$message(
+          {
+            message: '请输入角色名称',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.$refs.tree_edit.getCheckedNodes().length == 0) {
+        this.$message(
+          {
+            message: '请至少选择一项角色权限',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$refs.tree_edit.getCheckedNodes().forEach(item => {
+        this.role_edit.permissions_id_edit.push(item.id)
+      });
+      this.$axios.post('/api/yiiapi/user/edit-role', {
+        id: this.role_edit.id,
+        old_name: JSON.parse(this.old_role_edit).name,
+        name: this.role_edit.name,
+        description: this.role_edit.description,
+        permissions_id: this.role_edit.permissions_id_edit,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 0) {
+            this.role_state.edit = false;
+            this.get_data();
+            this.$message(
+              {
+                message: '修改角色成功',
+                type: 'success',
+              }
+            );
+          } else if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 删除角色
+    del_role () {
+      console.log(this.select_list);
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需删除的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.select_list.forEach(element => {
+          id_list.push(element.name)
+        });
+        this.$axios.delete('/api/yiiapi/user/del-role', {
+          data: {
+            role_name: id_list
+          }
+        })
+          .then(response => {
+            console.log(response.data);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
+    handleSelectionChange (val) {
+      this.select_list = val
+    },
+    // 禁止选中的项目
+    checkSelectable (row) {
+      return row.creatorname != "SYSTEM"
+    },
+    getCheckedKeys () {
+      console.log(this.$refs.tree.getCheckedKeys());
+    },
+    setCheckedNodes () {
+      this.$refs.tree.setCheckedNodes([{
+        id: 5,
+        label: '二级 2-1'
+      }, {
+        id: 9,
+        label: '三级 1-1-1'
+      }]);
+    },
+    setCheckedKeys () {
+      this.$refs.tree.setCheckedKeys([3]);
+    },
+    resetChecked () {
+      this.$refs.tree.setCheckedKeys([]);
     }
-  }
+
+  },
+  filters: {
+    formatDate: function (value) {
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
+    }
+  },
 };
 </script>
 <style lang='less'>

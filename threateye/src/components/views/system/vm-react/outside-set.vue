@@ -4,20 +4,21 @@
     <div class="set_top">
       <p>
         <span>是否启用:</span>
-        <el-switch v-model="outside_set.switch">
+        <el-switch v-model="outside_set.switch"
+                   @change="set_switch">
         </el-switch>
       </p>
       <p class="top_tips">本功能实现和第三方设备如防火墙的联动，第三方设备通过URL地址获取恶意IP列表以及恶意域名列表做告警提示或者拦截。</p>
       <div class="malice_list">
         <div class="list_left">
-          <p class="item_title">恶意IP列表 URL：</p>
-          <p v-for="item in outside_set.ip_list"
-             class="item_list">{{item.name}}</p>
+          <p class="item_title">恶意IP列表</p>
+          <p v-for="item in outside_list.ip"
+             class="item_list">{{item.addr}}</p>
         </div>
         <div class="list_right">
-          <p class="item_title">恶意IP列表 URL：</p>
-          <p v-for="item in outside_set.url_list"
-             class="item_list">{{item.name}}</p>
+          <p class="item_title">恶意域名列表</p>
+          <p v-for="item in outside_list.url"
+             class="item_list">{{item.addr}}</p>
         </div>
       </div>
     </div>
@@ -27,16 +28,16 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
-                :data="outside_set.data"
+                :data="user_list.data"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
                 @row-click="alert_detail">
-        <el-table-column prop="user"
+        <el-table-column prop="uname"
                          label="用户名"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="pswd"
+        <el-table-column prop="passwd"
                          label="密码"
                          show-overflow-tooltip>
         </el-table-column>
@@ -54,11 +55,11 @@
       <el-pagination class="pagination_box"
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :current-page="outside_set.pageNow"
+                     :current-page="user_list.pageNow"
                      :page-sizes="[10,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
-                     :total="outside_set.count">
+                     :total="user_list.count">
       </el-pagination>
     </div>
     <!-- 创建账号 -->
@@ -90,15 +91,16 @@
           <el-input class="select_box"
                     placeholder="请输入密码"
                     v-model="outside_pop.add.pswd"
-                    clearable>
+                    clearable
+                    show-password>
           </el-input>
         </div>
-
       </div>
       <div class="btn_box">
         <el-button @click="closed_add_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="add_user">确定</el-button>
       </div>
     </el-dialog>
     <!-- 编辑账号 -->
@@ -115,16 +117,6 @@
       <div class="content">
         <div class="content_item">
           <p>
-            <span class="title">用户名</span>
-          </p>
-          <el-input class="select_box"
-                    placeholder="请输入用户名"
-                    v-model="outside_pop.edit.user"
-                    clearable>
-          </el-input>
-        </div>
-        <div class="content_item">
-          <p>
             <span class="title">密码</span>
           </p>
           <el-input class="select_box"
@@ -138,7 +130,8 @@
       <div class="btn_box">
         <el-button @click="closed_edit_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="edit_user">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -151,15 +144,11 @@ export default {
   data () {
     return {
       outside_set: {
-        switch: true,
-        ip_list: [{ name: 'https://1.2.3.4/malicus_192.168.1.1.68' }, { name: 'https://1.2.3.4/malicious_192.168.1.1.68' }],
-        url_list: [{ name: 'https://1.2.3.4/malicious_threateye.hoohoolab.com/#/app/set_black_list/threateye.hoohoolab.com/#/app/set_black_list' }],
-        data: [{
-          user: 'admin',
-          pswd: '000WESA1111RDCF00000',
-        }],
-        pageNow: 1,
-        count: 1002,
+        switch: true
+      },
+      outside_list: {
+        ip: [],
+        url: [],
       },
       outside_pop: {
         add: {
@@ -169,10 +158,16 @@ export default {
         },
         edit: {
           show: false,
+          id: '',
           user: '',
           pswd: '',
         }
-      }
+      },
+      user_data: {
+        page: 1,
+        rows: 10
+      },
+      user_list: {}
     };
   },
   props: {
@@ -181,22 +176,291 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
+  mounted () {
+    this.get_switch()
+    this.get_ip()
+    this.get_user_list()
+    this.get_list('1')
+    this.get_list('2')
+  },
 
   methods: {
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
-    alert_detail () { },
+    // 获取列表
+    get_list (type) {
+      this.$axios.get('/api/yiiapi/linkage/list', {
+        params: {
+          type: type,
+          page: 1,
+          rows: 9999
+        }
+      })
+        .then(response => {
+          console.log(response);
+          if (type == '1') {
+            this.outside_list.ip = response.data.data.data
+          }
+          if (type == '2') {
+            this.outside_list.url = response.data.data.data
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 获取开关状态
+    get_switch () {
+      this.$axios.get('/api/yiiapi/externalaccess/get-status')
+        .then(response => {
+          console.log(response);
+          if (response.data.data.status == '0') {
+            this.outside_set.switch = false
+          } else {
+            this.outside_set.switch = true
+            console.log(12121);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
+    // 设置开关
+    set_switch () {
+      var switch_status = 0
+      if (this.outside_set.switch) {
+        switch_status = 1
+      } else {
+        switch_status = 0
+      }
+      console.log(switch_status);
+      this.$axios.put('/api/yiiapi/externalaccess/change-status', {
+        status: switch_status
+      })
+        .then(response => {
+          console.log(response.data);
+          if (response.data.status == 0) {
+            if (switch_status == 0) {
+              this.$message(
+                {
+                  message: '关闭成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '开启成功',
+                  type: 'success',
+                }
+              );
+            }
+
+          }
+          this.get_switch()
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 获取当前IP
+    get_ip () {
+      this.$axios.get('/api/yiiapi/linkage/get-hostip')
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
+    // 获取用户列表
+    get_user_list () {
+      this.$axios.get('/api/yiiapi/externalaccess/list', {
+        params: {
+          page: this.user_data.page,
+          rows: this.user_data.rows
+        }
+      })
+        .then(response => {
+          console.log(response);
+          this.user_list = response.data.data
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 添加外部访问用户
     add_box () {
       this.outside_pop.add.show = true
+      this.outside_pop.add.user = ''
+      this.outside_pop.add.pswd = ''
+    },
+    add_user () {
+      if (this.outside_pop.add.user == '') {
+        this.$message(
+          {
+            message: '请输入用户名',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.outside_pop.add.pswd == '') {
+        this.$message(
+          {
+            message: '请输入密码',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$axios.post('/api/yiiapi/externalaccess/add', {
+        uname: this.outside_pop.add.user,
+        passwd: this.outside_pop.add.pswd,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            this.get_user_list()
+            this.outside_pop.add.show = false
+            this.$message(
+              {
+                message: '添加账号成功',
+                type: 'success',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
+    // 编辑
+    edit_box (item) {
+      console.log(item);
+      this.outside_pop.edit.show = true
+      var item_str = JSON.stringify(item)
+      var item_obj = JSON.parse(item_str)
+      this.outside_pop.edit.id = item_obj.id
+      this.outside_pop.edit.user = item_obj.uname
+      this.outside_pop.edit.pswd = item_obj.passwd
+    },
+    edit_user () {
+      if (this.outside_pop.edit.user == '') {
+        this.$message(
+          {
+            message: '请输入用户名',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.outside_pop.add.pswd == '') {
+        this.$message(
+          {
+            message: '请输入密码',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$axios.put('/api/yiiapi/externalaccess/edit', {
+        "passwd": "dsfdafgfdagr"
+      })
+        .then(response => {
+          console.log(response.data);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            this.get_user_list()
+            this.outside_pop.add.show = false
+            this.$message(
+              {
+                message: '修改账号成功',
+                type: 'success',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
+    // 删除
+    del_box (item) {
+      console.log(this.item);
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete('/api/yiiapi/externalaccess/del', {
+          data: {
+            id: item.id
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_user_list();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
+
+
+    handleSelectionChange () { },
+    alert_detail () { },
+
+    // 分页
+    handleSizeChange (val) {
+      this.user_data.rows = val;
+      this.get_user_list();
+    },
+    handleCurrentChange (val) {
+      this.user_data.page = val
+      this.get_user_list();
     },
     closed_add_box () {
       this.outside_pop.add.show = false
     },
-    edit_box () {
-      this.outside_pop.edit.show = true
-    },
+
     closed_edit_box () {
       this.outside_pop.edit.show = false
 
@@ -226,13 +490,13 @@ export default {
         height: 42px;
         line-height: 42px;
         border-bottom: 1px solid #ececec;
-        padding: 0 16px;
+        padding: 0 24px;
       }
       .item_list {
-        padding: 0 16px;
+        padding: 0 24px;
       }
       .list_left {
-        width: 320px;
+        // width: 320px;
         margin-right: 36px;
         background: #f8f8f8;
         word-break: break-all;
@@ -241,7 +505,7 @@ export default {
         padding-bottom: 16px;
       }
       .list_right {
-        width: 720px;
+        // width: 720px;
         padding-bottom: 16px;
         background: #f8f8f8;
         word-break: break-all;
@@ -288,6 +552,9 @@ export default {
         margin-top: 24px;
       }
     }
+  }
+  .el-switch__core {
+    width: 40px !important;
   }
 }
 </style>

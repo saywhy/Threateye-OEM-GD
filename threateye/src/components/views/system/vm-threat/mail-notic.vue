@@ -6,7 +6,7 @@
         <p>SMTP服务器:</p>
         <el-input class="select_box"
                   placeholder="请输入SMTP服务器"
-                  v-model="mail.server.ip"
+                  v-model="mail.host"
                   clearable>
         </el-input>
       </div>
@@ -14,44 +14,45 @@
         <p>SMTP端口:</p>
         <el-input class="select_box"
                   placeholder="请输入SMTP端口"
-                  v-model="mail.server.port"
+                  v-model="mail.port"
                   clearable>
         </el-input>
       </div>
       <p class="title">
         SMTP启用安全连接SSL启用：
-        <el-switch v-model="mail.server.switch">
+        <el-switch v-model="ssl_switch">
         </el-switch>
       </p>
       <div class="left_item">
         <p>发件邮箱账号:</p>
         <el-input class="select_box"
-                  placeholder="请输入SMTP端口"
-                  v-model="mail.server.user"
+                  placeholder="请输入发件邮箱账号"
+                  v-model="mail.user"
                   clearable>
         </el-input>
       </div>
       <div class="left_item">
         <p>邮箱地址:</p>
         <el-input class="select_box"
-                  placeholder="请输入SMTP端口"
-                  v-model="mail.server.addr"
+                  placeholder="请输入邮箱地址"
+                  v-model="mail.username"
                   clearable>
         </el-input>
       </div>
       <div class="left_item">
         <p>邮箱密码:</p>
         <el-input class="select_box"
-                  placeholder="请输入SMTP端口"
-                  v-model="mail.server.paswd"
-                  clearable>
+                  placeholder="请输入邮箱密码"
+                  v-model="mail.password"
+                  show-password>
         </el-input>
       </div>
       <div class="left_item">
         <el-button type="primary"
                    class="save_btn">保存</el-button>
         <el-button type="primary"
-                   class="test_btn">发送测试邮件</el-button>
+                   class="test_btn"
+                   @click='send_test'>发送测试邮件</el-button>
       </div>
     </div>
     <div class="mid">
@@ -59,7 +60,7 @@
       <div class="mid_item">
         <p>邮箱地址</p>
         <div class="item_addrs"
-             v-for="(item,index) in mail.receipt.addrs">
+             v-for="(item,index) in receipt_addrs">
           <el-input class="select_box"
                     placeholder="请输入邮箱地址"
                     v-model="item.name"
@@ -84,14 +85,14 @@
                   :rows="10"
                   autosize
                   resize='none'
-                  placeholder="请输入角色描述"
-                  v-model="mail.receipt.info"
+                  placeholder="请输入发送内容"
+                  v-model="mail.info"
                   clearable>
         </el-input>
       </div>
       <p class="title">
         发生警告时给此邮箱发送通知邮件:
-        <el-switch v-model="mail.receipt.switch">
+        <el-switch v-model="mail.send">
         </el-switch>
       </p>
     </div>
@@ -105,24 +106,9 @@ export default {
   data () {
     return {
       mail: {
-        server: {
-          ip: '',
-          port: '',
-          switch: true,
-          paswd: '',
-          addr: '',
-          user: '',
-        },
-        receipt: {
-          addrs: [
-            { name: '', add: true },
-          ],
-          switch: true,
-          info: '',
-        }
-
       },
-
+      ssl_switch: true,
+      receipt_addrs: [{ name: '', add: true }]
     };
   },
   props: {
@@ -131,17 +117,40 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
+  mounted () {
+    this.get_data();
+  },
 
   methods: {
+    get_data () {
+      this.$axios.get('/api/yiiapi/email/get')
+        .then(response => {
+          console.log(response);
+          this.mail = response.data.data
+          this.mail.user = '';
+          this.mail.info = '';
+          if (this.mail.encryption == 'ssl') {
+            this.ssl_switch = true
+          } else {
+            this.ssl_switch = false
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 发送测试
+    send_test () {
+      console.log(this.mail);
+    },
     add_addr () {
-      this.mail.receipt.addrs.forEach(item => {
+      this.receipt_addrs.forEach(item => {
         item.add = false;
       });
-      this.mail.receipt.addrs.push({ name: '', add: true })
+      this.receipt_addrs.push({ name: '', add: true })
     },
     del_addr (item, index) {
-      this.mail.receipt.addrs.splice(index, 1);
+      this.receipt_addrs.splice(index, 1);
     }
   }
 };

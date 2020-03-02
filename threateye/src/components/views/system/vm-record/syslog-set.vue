@@ -1,5 +1,6 @@
-<template>
-  <div id="syslog_set">
+<template >
+  <div id="syslog_set"
+       v-loading.fullscreen.lock="syslog_data.loading">
     <div class="search_box">
       <el-button class="btn_i"
                  @click="open_add">添加SYSLOG配置</el-button>
@@ -8,26 +9,26 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
-                :data="syslog_set.data"
+                :data="syslog_list.data"
                 tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange"
-                @row-click="alert_detail">
-        <el-table-column prop="ip"
+                style="width: 100%">
+        <el-table-column prop="server_ip"
                          label="Syslog服务器IP"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="port"
+        <el-table-column prop="server_port"
                          label="端口"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="transport"
+        <el-table-column prop="protocol"
                          label='传输协议'
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="status"
-                         label='状态'
-                         show-overflow-tooltip>
+        <el-table-column label='状态'>
+          <template slot-scope="scope">
+            <span>{{scope.row.status == '1'?'启用':'未启用'}}</span>
+          </template>
+
         </el-table-column>
         <el-table-column label='操作'>
           <template slot-scope="scope">
@@ -43,11 +44,11 @@
       <el-pagination class="pagination_box"
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :current-page="syslog_set.pageNow"
+                     :current-page="syslog_list.pageNow"
                      :page-sizes="[10,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
-                     :total="syslog_set.count">
+                     :total="syslog_list.count">
       </el-pagination>
     </div>
     <!-- 添加p配置 -->
@@ -74,7 +75,7 @@
             </p>
             <el-input class="select_box"
                       placeholder="请输入SYSLOG服务器IP"
-                      v-model="syslog_pop.add.ip"
+                      v-model="syslog_pop.add.server_ip"
                       clearable>
             </el-input>
           </div>
@@ -83,12 +84,12 @@
         <div class="content_item">
           <div class="item_top">
             <span>状态:</span>
-            <el-radio v-model="syslog_pop.add.radio"
-                      label="1"
-                      class="r_radio_item">UDP</el-radio>
-            <el-radio v-model="syslog_pop.add.radio"
-                      label="2"
-                      class="r_radio_item">DCP</el-radio>
+            <el-radio v-model="syslog_pop.add.protocol"
+                      label="udp"
+                      class="r_radio_item">udp</el-radio>
+            <el-radio v-model="syslog_pop.add.protocol"
+                      label="tcp"
+                      class="r_radio_item">tcp</el-radio>
           </div>
           <div class="item_bottom">
             <p>
@@ -96,7 +97,7 @@
             </p>
             <el-input class="select_box"
                       placeholder="请输入端口"
-                      v-model="syslog_pop.add.port"
+                      v-model="syslog_pop.add.server_port"
                       clearable>
             </el-input>
           </div>
@@ -105,7 +106,8 @@
       <div class="btn_box">
         <el-button @click="closed_add_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="addsyslog">确定</el-button>
       </div>
     </el-dialog>
     <!-- 编辑配置 -->
@@ -142,11 +144,11 @@
           <div class="item_top">
             <span>状态:</span>
             <el-radio v-model="syslog_pop.edit.radio"
-                      label="1"
-                      class="r_radio_item">UDP</el-radio>
+                      label="udp"
+                      class="r_radio_item">udp</el-radio>
             <el-radio v-model="syslog_pop.edit.radio"
-                      label="2"
-                      class="r_radio_item">DCP</el-radio>
+                      label="tcp"
+                      class="r_radio_item">tcp</el-radio>
           </div>
           <div class="item_bottom">
             <p>
@@ -163,7 +165,8 @@
       <div class="btn_box">
         <el-button @click="closed_edit_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="editsyslog">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -178,29 +181,27 @@ export default {
   name: "syslog_set",
   data () {
     return {
-      syslog_set: {
-        data: [{
-          ip: '192.168.1.184',
-          port: '514',
-          transport: 'udp',
-          status: '启用',
-        }],
-        pageNow: 1,
-        count: 1002,
+      syslog_data: {
+        page: 1,
+        rows: 10,
+        loading: false
       },
+      syslog_list: {},
       syslog_pop: {
         add: {
           show: false,
           switch: true,
-          radio: '2',
-          ip: '',
-          port: ''
+          protocol: 'udp',
+          server_ip: '',
+          server_port: ''
         },
         edit: {
           show: false,
           switch: true,
-          radio: '2',
+          radio: '',
+          status: '',
           ip: '',
+          id: '',
           port: ''
         }
       }
@@ -212,20 +213,156 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
+  mounted () {
+    this.get_data()
+  },
 
   methods: {
-    del_box () {
+    // 获取列表
+    get_data () {
+      this.syslog_data.loading = true;
+      this.$axios.get('/api/yiiapi/syslog/list', {
+        params: {
+          page: this.syslog_data.page,
+          rows: this.syslog_data.rows
+        }
+      })
+        .then(response => {
+          console.log(response);
+          this.syslog_data.loading = false;
+          this.syslog_list = response.data.data
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
     },
-    alert_detail () { },
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
+    // 删除syslog
+    del_box (item) {
+      console.log(item);
+      this.$confirm('此操作删除该条信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete('/api/yiiapi/syslog/del-conf', {
+          data: {
+            id: item.id
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
+
+    // 分页
+    handleSizeChange (val) {
+      this.syslog_data.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.syslog_data.page = val
+      this.get_data();
+    },
     open_add () {
       this.syslog_pop.add.show = true
+      this.syslog_pop.add.switch = true;
+      this.syslog_pop.add.protocol = 'udp';
+      this.syslog_pop.add.server_ip = '';
+      this.syslog_pop.add.server_port = '';
     },
-    edit_box () {
+    // 添加
+    addsyslog () {
+      if (this.syslog_pop.add.switch) {
+        this.syslog_pop.add.status = '1'
+      } else {
+        this.syslog_pop.add.status = '0'
+      }
+      this.$axios.post('/api/yiiapi/syslog/add-conf', {
+        server_ip: this.syslog_pop.add.server_ip,
+        server_port: this.syslog_pop.add.server_port,
+        protocol: this.syslog_pop.add.protocol,
+        status: this.syslog_pop.add.status,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            this.syslog_pop.add.show = false
+            this.get_data();
+
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 编辑
+    edit_box (item) {
       this.syslog_pop.edit.show = true
+      console.log(item);
+      if (item.status == '1') {
+        this.syslog_pop.edit.switch = true
+      } else {
+        this.syslog_pop.edit.switch = false
+      }
+      this.syslog_pop.edit.status = item.status
+      this.syslog_pop.edit.radio = item.protocol
+      this.syslog_pop.edit.ip = item.server_ip
+      this.syslog_pop.edit.port = item.server_port
+      this.syslog_pop.edit.id = item.id
+    },
+    editsyslog () {
+      if (this.syslog_pop.edit.switch) {
+        this.syslog_pop.edit.status = '1'
+      } else {
+        this.syslog_pop.edit.status = '0'
+      }
+      this.$axios.put('/api/yiiapi/syslog/edit-conf', {
+        id: this.syslog_pop.edit.id,
+        server_ip: this.syslog_pop.edit.ip,
+        server_port: this.syslog_pop.edit.port,
+        protocol: this.syslog_pop.edit.radio,
+        status: this.syslog_pop.edit.status,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 0) {
+            this.get_data();
+            this.syslog_pop.edit.show = false
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     closed_add_box () {
       this.syslog_pop.add.show = false

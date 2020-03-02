@@ -9,17 +9,17 @@
           <el-tab-pane label="规则库更新"
                        class="tabs-item"
                        name="first">
-            <rule-base></rule-base>
+            <rule-base v-if="tab_show.first"></rule-base>
           </el-tab-pane>
           <el-tab-pane label="YARA规则"
                        class="tabs-item"
                        name="second">
-            <yara-rule></yara-rule>
+            <yara-rule v-if="tab_show.second"></yara-rule>
           </el-tab-pane>
           <el-tab-pane label="白名单设置"
                        class="tabs-item"
                        name="third">
-            <white-list></white-list>
+            <white-list v-if="tab_show.third"></white-list>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -39,13 +39,38 @@ export default {
   name: "system_control_rule",
   data () {
     return {
-      activeName: "first"
+      activeName: "first",
+      tab_show: {
+        first: true,
+        second: false,
+        third: false,
+      }
     };
   },
 
   methods: {
     handleClick (tab, event) {
-      console.log(tab.label);
+      console.log(tab);
+      switch (tab.name) {
+        case "first":
+          this.tab_show.first = true;
+          this.tab_show.second = false;
+          this.tab_show.third = false;
+          break;
+        case "second":
+          this.tab_show.first = false;
+          this.tab_show.second = true;
+          this.tab_show.third = false;
+          break;
+        case "third":
+          this.tab_show.first = false;
+          this.tab_show.second = false;
+          this.tab_show.third = true;
+          break;
+        default:
+          break;
+      }
+
     }
   }
 };

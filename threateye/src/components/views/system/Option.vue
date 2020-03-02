@@ -60,7 +60,7 @@
         <el-button type="primary"
                    class="btn_i">保存</el-button>
       </div>
-      <div class="mid">
+      <!-- <div class="mid">
         <p class="title">
           <img class="titile_icon"
                src="@/assets/images/setting/duandian.png"
@@ -76,7 +76,7 @@
         </div>
         <el-button type="primary"
                    class="btn_i">保存</el-button>
-      </div>
+      </div> -->
       <div class="bottom">
         <p class="title">
           <img class="titile_icon"
@@ -236,13 +236,14 @@ export default {
         }
       }
     }
-    .mid {
-      margin: 12px 0;
-      padding: 24px 0 24px 24px;
-      background: #fff;
-      border-radius: 4px;
-    }
+    // .mid {
+    //   margin: 12px 0;
+    //   padding: 24px 0 24px 24px;
+    //   background: #fff;
+    //   border-radius: 4px;
+    // }
     .bottom {
+      margin: 12px 0;
       padding: 24px 0 24px 24px;
       background: #fff;
       border-radius: 4px;

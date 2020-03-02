@@ -1,19 +1,22 @@
 <template>
-  <div id="router_set">
+  <div id="router_set"
+       v-loading.fullscreen.lock="router_data.loading">
     <div class="router_top">
       <el-button type="primary"
                  class="btn_i"
                  @click="add_box">新增</el-button>
       <el-button type="primary"
-                 class="btn_i">删除</el-button>
+                 class="btn_i"
+                 @click="del_router">删除</el-button>
       <el-button type="primary"
-                 class="btn_o">刷新</el-button>
+                 class="btn_o"
+                 @click="get_data('refresh')">刷新</el-button>
     </div>
     <div class="router_table">
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
-                :data="router_data.data"
+                :data="router_list.data"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
@@ -25,20 +28,22 @@
         <el-table-column type="selection"
                          width="50">
         </el-table-column>
-        <el-table-column prop="index"
-                         label="序号"
+        <el-table-column label="序号"
                          width="50"
                          show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{(router_data.page-1)*(router_data.rows) + scope.row.index_cn}}
+          </template>
         </el-table-column>
-        <el-table-column prop="des_addr"
+        <el-table-column prop="ip"
                          label="目的地址"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="subnet_mask"
+        <el-table-column prop="net_mask"
                          label="子网掩码"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="download_addr"
+        <el-table-column prop="next_step"
                          label="下载地址"
                          show-overflow-tooltip>
         </el-table-column>
@@ -53,11 +58,11 @@
       <el-pagination class="pagination_box"
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :current-page="router_data.pageNow"
+                     :current-page="router_list.pageNow"
                      :page-sizes="[10,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
-                     :total="router_data.count">
+                     :total="router_list.count">
       </el-pagination>
     </div>
     <!-- 新增 -->
@@ -78,7 +83,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入目的地址"
-                    v-model="router_add.des_addr"
+                    v-model="router_add.ip"
                     clearable>
           </el-input>
         </div>
@@ -88,7 +93,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入子网掩码"
-                    v-model="router_add.subnet_mask"
+                    v-model="router_add.net_mask"
                     clearable>
           </el-input>
         </div>
@@ -98,7 +103,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入下载地址"
-                    v-model="router_add.download_addr"
+                    v-model="router_add.next_step"
                     clearable>
           </el-input>
         </div>
@@ -106,7 +111,8 @@
       <div class="btn_box">
         <el-button @click="closed_add_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="add_router">确定</el-button>
       </div>
     </el-dialog>
     <!-- 编辑 -->
@@ -127,7 +133,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入目的地址"
-                    v-model="router_edit.des_addr"
+                    v-model="router_edit.ip"
                     clearable>
           </el-input>
         </div>
@@ -137,7 +143,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入子网掩码"
-                    v-model="router_edit.subnet_mask"
+                    v-model="router_edit.net_mask"
                     clearable>
           </el-input>
         </div>
@@ -147,7 +153,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入下载地址"
-                    v-model="router_edit.download_addr"
+                    v-model="router_edit.next_step"
                     clearable>
           </el-input>
         </div>
@@ -155,7 +161,8 @@
       <div class="btn_box">
         <el-button @click="closed_edit_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="edit_router">确定</el-button>
       </div>
     </el-dialog>
 
@@ -168,57 +175,28 @@ export default {
   data () {
     return {
       router_data: {
-        data: [
-          {
-            index: "01",
-            des_addr: "0.0.0.0",
-            subnet_mask: "0.0.0.0",
-            download_addr: "192.168.88.1"
-          },
-          {
-            index: "02",
-            des_addr: "0.0.0.0",
-            subnet_mask: "0.0.0.0",
-            download_addr: "192.168.88.1"
-          },
-          {
-            index: "03",
-            des_addr: "0.0.0.0",
-            subnet_mask: "0.0.0.0",
-            download_addr: "192.168.88.1"
-          },
-          {
-            index: "04",
-            des_addr: "0.0.0.0",
-            subnet_mask: "0.0.0.0",
-            download_addr: "192.168.88.1"
-          },
-          {
-            index: "05",
-            des_addr: "0.0.0.0",
-            subnet_mask: "0.0.0.0",
-            download_addr: "192.168.88.1"
-          }
-        ],
-        pageNow: 1,
-        count: 102,
-        pageNow: 1
+        page: 1,
+        rows: 10,
+        loading: false
       },
+      router_list: {},
       router_state: {
         add: false,
         edit: false,
         import: false
       },
       router_add: {
-        des_addr: "",
-        subnet_mask: "",
-        download_addr: ""
+        ip: "",
+        net_mask: "",
+        next_step: ""
       },
       router_edit: {
-        des_addr: "",
-        subnet_mask: "",
-        download_addr: ""
-      }
+        id: '',
+        ip: "",
+        net_mask: "",
+        next_step: ""
+      },
+      select_list: []
     };
   },
   props: {
@@ -227,20 +205,192 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
+  mounted () {
+    this.get_data();
+  },
   methods: {
-    alert_detail () { },
+    // 获取列表
+    get_data (name) {
+      this.router_data.loading = true
+      this.$axios.get('/api/yiiapi/seting/route-list', {
+        params: {
+          page: this.router_data.page,
+          rows: this.router_data.rows,
+        }
+      })
+        .then(response => {
+          console.log(response);
+          this.router_data.loading = false
+          this.router_list = response.data.data
+          this.router_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+          if (name == "refresh") {
+            this.$message(
+              {
+                message: '刷新成功',
+                type: 'success',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
 
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
+    // 添加
     add_box () {
       this.router_state.add = true;
+      this.router_add.ip = '';
+      this.router_add.net_mask = '';
+      this.router_add.next_step = '';
+    },
+    add_router () {
+      this.$axios.post('/api/yiiapi/seting/route-add', {
+        ip: this.router_add.ip,
+        net_mask: this.router_add.net_mask,
+        next_step: this.router_add.next_step
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            this.get_data();
+            this.router_state.add = false;
+            this.$message(
+              {
+                message: '添加路由成功',
+                type: 'success',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     edit_box (row) {
       this.router_state.edit = true;
       console.log(row);
+      var edit_str = JSON.stringify(row)
+      var edit_obj = JSON.parse(edit_str)
+      this.router_edit.ip = edit_obj.ip
+      this.router_edit.id = edit_obj.id
+      this.router_edit.net_mask = edit_obj.net_mask
+      this.router_edit.next_step = edit_obj.next_step
     },
+    // 编辑
+    edit_router () {
+      this.$axios.put('/api/yiiapi//seting/route-edit', {
+        id: this.router_edit.id,
+        ip: this.router_edit.ip,
+        net_mask: this.router_edit.net_mask,
+        next_step: this.router_edit.next_step
+      })
+        .then(response => {
+          if (response.data.status == 0) {
+            this.router_state.edit = false;
+            this.get_data();
+            this.$message({
+              message: '修改路由成功',
+              type: 'success'
+            });
+          } else {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
+    // 删除
+    del_router () {
+      console.log(this.select_list);
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需删除的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.select_list.forEach(element => {
+          id_list.push(element.id)
+        });
+        this.$axios.delete('/api/yiiapi/seting/del', {
+          data: {
+            id: id_list
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
+
+
+    alert_detail () { },
+
+    handleSelectionChange () { },
+    // 分页
+    handleSizeChange (val) {
+      this.router_data.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.router_data.page = val
+      this.get_data();
+    },
+    // 全选择
+    handleSelectionChange (val) {
+      this.select_list = val
+    },
+
     closed_add_box () {
       this.router_state.add = false;
     },

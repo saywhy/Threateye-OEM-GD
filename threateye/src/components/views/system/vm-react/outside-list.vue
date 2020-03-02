@@ -3,7 +3,6 @@
     <div class="outside_content">
       <div class="content_left content_common">
         <p class="title">恶意IP列表：</p>
-        <p>URL：https://threateye.hoohoolab.com/#/app/set_black_list/threateye.hoohoolab.com/#/app/set_black_list</p>
         <div class="list_box">
           <p class="list_title_box">
             <span>IP:</span>
@@ -15,10 +14,10 @@
                @mouseenter="enter(index)"
                :class="item.class"
                @mouseleave="leave(index)">
-            <span>{{item.name}}</span>
+            <span>{{item.addr}}</span>
             <img class="del_img"
                  v-if="item.icon"
-                 @click="del_ip(index)"
+                 @click="del_list(item)"
                  src="@/assets/images/common/del.png"
                  alt="">
           </div>
@@ -26,7 +25,6 @@
       </div>
       <div class="content_right content_common">
         <p class="title">恶意域名列表：</p>
-        <p>https://threateye.hoohoolab.com/#/app/set_black_list/threateye.hoohoolab.com/#/app/set_black_list</p>
         <div class="list_box">
           <p class="list_title_box">
             <span>域名:</span>
@@ -36,12 +34,12 @@
           <div class="item_box"
                v-for="(item,index) in outside_list.url"
                @mouseenter="enter_url(index)"
-               :class="item.class"
+               :class="item.class==''?'':item.class"
                @mouseleave="leave_url(index)">
-            <span>{{item.name}}</span>
+            <span>{{item.addr}}</span>
             <img class="del_img"
                  v-if="item.icon"
-                 @click="del_url(index)"
+                 @click="del_list(item)"
                  src="@/assets/images/common/del.png"
                  alt="">
           </div>
@@ -75,7 +73,7 @@
         <el-button @click="closed_ip_box"
                    class="cancel_btn">取消</el-button>
         <el-button class="ok_btn"
-                   @click="add_ip_list">确定</el-button>
+                   @click="add_list('1')">确定</el-button>
       </div>
     </el-dialog>
     <!-- 添加url -->
@@ -105,7 +103,7 @@
         <el-button @click="closed_url_box"
                    class="cancel_btn">取消</el-button>
         <el-button class="ok_btn"
-                   @click="add_url_list">确定</el-button>
+                   @click="add_list('2')">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -117,16 +115,8 @@ export default {
   data () {
     return {
       outside_list: {
-        ip: [{
-          name: '192.168.1.1',
-          icon: false,
-          class: ''
-        }],
-        url: [{
-          name: 'threateye.hoohoolab.com',
-          icon: false,
-          class: ''
-        }]
+        ip: [],
+        url: []
       },
       outside_pop: {
         ip: {
@@ -146,20 +136,169 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
+  mounted () {
+    this.get_list('1')
+    this.get_list('2')
+    // 必填；只能是1和2；动态类型，1Ip，2url
+  },
 
   methods: {
+    // 获取列表
+    get_list (type) {
+      this.$axios.get('/api/yiiapi/linkage/list', {
+        params: {
+          type: type,
+          page: 1,
+          rows: 9999
+        }
+      })
+        .then(response => {
+          console.log(response);
+          if (type == '1') {
+            this.outside_list.ip = response.data.data.data
+            this.outside_list.ip.forEach(item => {
+              this.$set(item, 'icon', false)
+              this.$set(item, 'class', '')
+            });
+          }
+          if (type == '2') {
+            this.outside_list.url = response.data.data.data
+            this.outside_list.url.forEach(item => {
+              this.$set(item, 'icon', false)
+              this.$set(item, 'class', '')
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 添加ip
     add_ip () {
       this.outside_pop.ip.show = true;
+      this.outside_pop.ip.ip = ''
+    },
+    add_list (num) {
+      var addr_params = ''
+      switch (num) {
+        case '1':
+          if (this.outside_pop.ip.ip == '') {
+            this.$message(
+              {
+                message: '请输入ip地址',
+                type: 'error',
+              }
+            );
+            return false
+          }
+          addr_params = this.outside_pop.ip.ip
+          break;
+        case '2':
+          if (this.outside_pop.url.url == '') {
+            this.$message(
+              {
+                message: '请输入域名',
+                type: 'error',
+              }
+            );
+            return false
+          }
+          addr_params = this.outside_pop.url.url
+          break;
+        default:
+          break;
+      }
+      this.$axios.post('/api/yiiapi/linkage/add', {
+        addr: addr_params,
+        type: num,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            switch (num) {
+              case '1':
+                this.get_list('1')
+                this.outside_pop.ip.show = false;
+                this.$message(
+                  {
+                    message: '添加IP成功',
+                    type: 'success',
+                  }
+                );
+                break;
+              case '2':
+                this.get_list('2')
+                this.outside_pop.url.show = false;
+                this.$message(
+                  {
+                    message: '添加域名成功',
+                    type: 'success',
+                  }
+                );
+                break;
+              default:
+                break;
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     add_url () {
       this.outside_pop.url.show = true;
     },
-    del_ip (index) {
-      this.outside_list.ip.splice(index, 1)
-    },
-    del_url (index) {
-      this.outside_list.url.splice(index, 1)
+    // 删除ip
+    del_list (item) {
+      console.log(item);
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        id_list.push(item.id)
+        this.$axios.delete('/api/yiiapi/linkage/del', {
+          data: {
+            id: id_list
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_list('1');
+              this.get_list('2');
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     closed_ip_box () {
       this.outside_pop.ip.show = false;
@@ -167,37 +306,13 @@ export default {
     closed_url_box () {
       this.outside_pop.url.show = false;
     },
-
-    add_ip_list () {
-      if (this.outside_pop.ip.ip != '') {
-        this.outside_list.ip.push({
-          name: this.outside_pop.ip.ip,
-          icon: false,
-          class: ''
-        })
-        this.outside_pop.ip.show = false;
-        this.outside_pop.ip.ip = ''
-      } else {
-        this.$message.error('IP地址不能为空');
-      }
-    },
-    add_url_list () {
-      if (this.outside_pop.url.url != '') {
-        this.outside_list.url.push({
-          name: this.outside_pop.url.url,
-          icon: false,
-          class: ''
-        })
-        this.outside_pop.url.show = false;
-        this.outside_pop.url.url = ''
-      } else {
-        this.$message.error('域名不能为空');
-      }
-    },
-
-    enter (index) {
-      this.outside_list.ip[index].icon = true
-      this.outside_list.ip[index].class = 'active'
+    enter (num) {
+      this.outside_list.ip.forEach((item, index) => {
+        if (num == index) {
+          item.icon = true
+          item.class = 'active'
+        }
+      });
     },
     leave (index) {
       this.outside_list.ip[index].icon = false
@@ -211,7 +326,6 @@ export default {
       this.outside_list.url[index].icon = false
       this.outside_list.url[index].class = ''
     }
-
   }
 };
 </script>
@@ -253,7 +367,7 @@ export default {
         }
       }
       .item_box {
-        height: 36px;
+        // height: 36px;
         line-height: 36px;
         padding: 0 26px 0 14px;
         position: relative;

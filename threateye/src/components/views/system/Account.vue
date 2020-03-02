@@ -8,17 +8,17 @@
         <el-tab-pane label="用户管理"
                      class="tabs-item"
                      name="first">
-          <user-management></user-management>
+          <user-management v-if="tab_show.first"></user-management>
         </el-tab-pane>
         <el-tab-pane label="角色管理"
                      class="tabs-item"
                      name="second">
-          <role-management></role-management>
+          <role-management v-if="tab_show.second"></role-management>
         </el-tab-pane>
         <el-tab-pane label="用户安全策略"
                      class="tabs-item"
                      name="third">
-          <security-policy></security-policy>
+          <security-policy v-if="tab_show.third"></security-policy>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -37,11 +37,38 @@ export default {
   name: "system_control_account",
   data () {
     return {
-      activeName: "first"
+      activeName: "first",
+      tab_show: {
+        first: true,
+        second: false,
+        third: false,
+      }
     };
   },
   methods: {
-    handleClick () { }
+    handleClick (tab, event) {
+      console.log(tab);
+      switch (tab.name) {
+        case "first":
+          this.tab_show.first = true;
+          this.tab_show.second = false;
+          this.tab_show.third = false;
+          break;
+        case "second":
+          this.tab_show.first = false;
+          this.tab_show.second = true;
+          this.tab_show.third = false;
+          break;
+        case "third":
+          this.tab_show.first = false;
+          this.tab_show.second = false;
+          this.tab_show.third = true;
+          break;
+        default:
+          break;
+      }
+
+    }
   }
 };
 </script>

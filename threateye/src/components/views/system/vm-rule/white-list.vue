@@ -3,9 +3,30 @@
     <div class="btn_box">
       <el-button class="btn_i"
                  @click="open_add_box">添加白名单</el-button>
-      <el-button class="btn_i">下载模板</el-button>
-      <el-button class="btn_o">批量导入</el-button>
-      <el-button class="btn_o">删除</el-button>
+      <el-button class="btn_i"
+                 @click="download">下载模板</el-button>
+      <el-upload class="upload-demo"
+                 style="display: inline-block;"
+                 action="/api/yiiapi/whitelist/add-import"
+                 :on-preview="handlePreview"
+                 :on-remove="handleRemove"
+                 :before-remove="beforeRemove"
+                 :show-file-list='false'
+                 :before-upload="onBeforeUpload"
+                 :on-change="onChange"
+                 multiple
+                 :auto-upload='true'
+                 :on-success='onsuccess'
+                 :on-error='onerror'
+                 :on-exceed="handleExceed"
+                 :file-list="fileList">
+        <el-button size="small"
+                   class="btn_o"
+                   type="primary">批量导入</el-button>
+      </el-upload>
+
+      <el-button class="btn_o"
+                 @click="del_white">删除</el-button>
     </div>
     <div class="user_table">
       <el-table ref="multipleTable"
@@ -13,9 +34,8 @@
                 align="center"
                 :data="white_list.data"
                 tooltip-effect="dark"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
-                @row-click="alert_detail">
+                style="width: 100%">
         <el-table-column label="全选"
                          prop=""
                          width="50">
@@ -23,20 +43,21 @@
         <el-table-column type="selection"
                          width="50">
         </el-table-column>
-        <el-table-column prop="index"
-                         label="序号"
-                         width="50"
-                         show-overflow-tooltip>
+        <el-table-column label="序号"
+                         width="80">
+          <template slot-scope="scope">
+            {{(white_data.page-1)*(white_data.rows) + scope.row.index_cn}}
+          </template>
         </el-table-column>
-        <el-table-column prop="indication"
+        <el-table-column prop="indicator"
                          label="指标"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="type"
+        <el-table-column prop="alert_type"
                          label="类型"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="time"
+        <el-table-column prop="create_time"
                          label='创建时间'
                          show-overflow-tooltip>
         </el-table-column>
@@ -69,7 +90,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入指标"
-                    v-model="white_add.indication"
+                    v-model="white_add.indicator"
                     clearable>
           </el-input>
         </div>
@@ -81,9 +102,9 @@
                      v-model="white_add.type"
                      placeholder="请选择类型">
             <el-option v-for="item in white_add.type_list"
-                       :key="item.name"
-                       :label="item.name"
-                       :value="item.name">
+                       :key="item"
+                       :label="item"
+                       :value="item">
             </el-option>
           </el-select>
         </div>
@@ -92,7 +113,8 @@
       <div class="btn_box">
         <el-button @click="closed_add_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="add_white">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -103,22 +125,19 @@ export default {
   name: "white_list",
   data () {
     return {
-      white_list: {
-        data: [{
-          index: '01',
-          indication: '**745554354309***',
-          type: 'URL',
-          time: '2019.11.03 15: 24: 05',
-        }],
-        pageNow: 1,
-        count: 1002,
+      white_list: {},
+      white_data: {
+        page: 1,
+        rows: 10,
       },
       white_add: {
         add: false,
-        type_list: [],
-        indication: '',
-        type: ''
-      }
+        type_list: ["MD5", "IP", "URL", 'indicator'],
+        indicator: '',
+        type: 'MD5'
+      },
+      fileList: [],
+      select_list: []
     };
   },
   props: {
@@ -127,30 +146,197 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
-
+  mounted () {
+    this.get_data();
+  },
   methods: {
+    get_data () {
+      this.$axios.get('/api/yiiapi/whitelist/list', {
+        params: {
+          page: this.white_data.page,
+          rows: this.white_data.rows
+        }
+      })
+        .then(response => {
+          this.white_list = response.data.data
+          this.white_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     open_add_box () {
       this.white_add.add = true;
+      this.white_add.indicator = '';
+      this.white_add.type = 'MD5';
+    },
+    // 添加
+    add_white () {
+      console.log(this.white_add);
+      if (this.white_add.indicator == '') {
+        this.$message(
+          {
+            message: '请输入指标',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$axios.post('/api/yiiapi/whitelist/add', {
+        indicator: this.white_add.indicator,
+        alert_type: this.white_add.type
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            this.get_data();
+            this.$message(
+              {
+                message: '添加成功',
+                type: 'success',
+              }
+            );
+            this.white_add.add = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     closed_add_box () {
       this.white_add.add = false;
     },
-    uploadSuccess () {
-      console.log("1111");
-      this.monitor_state.import_loading = false;
+    // 分页
+    handleSizeChange (val) {
+      this.white_data.rows = val;
+      this.get_data();
     },
-    handleSelectionChange () {
+    handleCurrentChange (val) {
+      this.white_data.page = val
+      this.get_data();
     },
-    alert_detail () {
+    // 下载模板
+    download () {
+      var url2 = "/api/yiiapi/whitelist/download-ioc-template";
+      window.location.href = url2;
+    },
+    // 批量上传
+    handlePreview () { },
+    handleRemove () { },
+    beforeRemove () { },
+    onBeforeUpload () { },
+    onChange (params) {
+      console.log(params);
+      if (params.status == 'fail') {
+        this.$message(
+          {
+            message: '上传失败',
+            type: 'error',
+          }
+        );
+      }
+    },
+    onsuccess (params) {
+      console.log(params);
+      if (params.status == 1) {
+        this.$message(
+          {
+            message: params.msg,
+            type: 'error',
+          }
+        );
+      } else if (params.status == 0) {
+        this.get_data();
+        this.$message(
+          {
+            message: '上传成功',
+            type: 'success',
+          }
+        );
+      }
+    },
+    onerror (params) {
+      console.log(params);
+      if (params.status == 'fail') {
+        this.$message(
+          {
+            message: '上传失败',
+            type: 'error',
+          }
+        );
+      }
 
     },
-    handleSizeChange () {
+    handleExceed () { },
+    handleSelectionChange (val) {
+      console.log(val);
+      this.select_list = val
+    },
+    del_white () {
+      console.log(this.select_list);
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需删除的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.select_list.forEach(element => {
+          id_list.push(element.id)
+        });
+        this.$axios.delete('/api/yiiapi/whitelist/del', {
+          data: {
+            id: id_list
+          }
+        })
+          .then(response => {
+            console.log(response.data);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
 
     },
-    handleCurrentChange () {
 
-    }
   }
 };
 </script>

@@ -8,12 +8,12 @@
         <el-tab-pane label="外部动态列表设置"
                      class="tabs-item"
                      name="first">
-          <outside-set></outside-set>
+          <outside-set v-if="tab_show.first"></outside-set>
         </el-tab-pane>
         <el-tab-pane label="外部动态列表"
                      class="tabs-item"
                      name="second">
-          <outside-list></outside-list>
+          <outside-list v-if="tab_show.second"></outside-list>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -30,11 +30,29 @@ export default {
   name: "system_control_react",
   data () {
     return {
-      activeName: "first"
+      activeName: "first",
+      tab_show: {
+        first: true,
+        second: false,
+      }
     };
   },
   methods: {
-    handleClick () { }
+    handleClick (tab, event) {
+      console.log(tab);
+      switch (tab.name) {
+        case "first":
+          this.tab_show.first = true;
+          this.tab_show.second = false;
+          break;
+        case "second":
+          this.tab_show.first = false;
+          this.tab_show.second = true;
+          break;
+          break;
+      }
+
+    }
   }
 };
 </script>

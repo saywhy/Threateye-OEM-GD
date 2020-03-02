@@ -5,13 +5,14 @@
                  class="btn_i"
                  @click="add_box">新增</el-button>
       <el-button type="primary"
-                 class="btn_o">删除</el-button>
+                 class="btn_o"
+                 @click="del_user">删除</el-button>
     </div>
     <div class="user_table">
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
-                :data="user_data.data"
+                :data="user_list.data"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
@@ -23,16 +24,18 @@
         <el-table-column type="selection"
                          width="50">
         </el-table-column>
-        <el-table-column type="index"
-                         label="序号"
+        <el-table-column label="序号"
                          width="50"
                          show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{(user_data.page-1)*(user_data.rows) + scope.row.index_cn}}
+          </template>
         </el-table-column>
         <el-table-column prop="username"
                          label="用户名"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="class"
+        <el-table-column prop="department"
                          label="部门"
                          show-overflow-tooltip>
         </el-table-column>
@@ -48,9 +51,10 @@
                          label="创建人"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="updated_at"
-                         label="创建时间"
+        <el-table-column label="创建时间"
+                         width="150"
                          show-overflow-tooltip>
+          <template slot-scope="scope">{{ scope.row.updated_at*1000 |formatDate }}</template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -63,11 +67,11 @@
       <el-pagination class="pagination_box"
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :current-page="user_data.pageNow"
+                     :current-page="user_list.pageNow"
                      :page-sizes="[10,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
-                     :total="user_data.count">
+                     :total="user_list.count">
       </el-pagination>
     </div>
     <!-- 新增 -->
@@ -97,8 +101,18 @@
             <span class="title">密码</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入密码"
+                    :placeholder="user_data.placeholder"
                     v-model="user_add.password"
+                    show-password>
+          </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">确认密码</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请再次输入密码"
+                    v-model="user_add.Re_password"
                     show-password>
           </el-input>
         </div>
@@ -108,7 +122,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入部门"
-                    v-model="user_add.class"
+                    v-model="user_add.department"
                     clearable>
           </el-input>
         </div>
@@ -118,7 +132,17 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入邮箱"
-                    v-model="user_add.email"
+                    v-model="user_add.email_addr"
+                    clearable>
+          </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">手机号</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请输入手机号"
+                    v-model="user_add.mobile"
                     clearable>
           </el-input>
         </div>
@@ -140,7 +164,8 @@
       <div class="btn_box">
         <el-button @click="closed_add_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="add_user">确定</el-button>
       </div>
     </el-dialog>
     <!-- 编辑 -->
@@ -157,12 +182,22 @@
       <div class="content">
         <div class="content_item">
           <p>
-            <span class="title">用户名</span>
+            <span class="title">密码</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入用户名"
-                    v-model="user_edit.name"
-                    clearable>
+                    :placeholder="user_data.placeholder"
+                    v-model="user_edit.password"
+                    show-password>
+          </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">确认密码</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请再次输入密码"
+                    v-model="user_edit.Re_password"
+                    show-password>
           </el-input>
         </div>
         <div class="content_item">
@@ -171,7 +206,7 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入部门"
-                    v-model="user_edit.class"
+                    v-model="user_edit.department"
                     clearable>
           </el-input>
         </div>
@@ -181,7 +216,17 @@
           </p>
           <el-input class="select_box"
                     placeholder="请输入邮箱"
-                    v-model="user_edit.email"
+                    v-model="user_edit.email_addr"
+                    clearable>
+          </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">手机号</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请输入手机号"
+                    v-model="user_edit.mobile"
                     clearable>
           </el-input>
         </div>
@@ -203,18 +248,26 @@
       <div class="btn_box">
         <el-button @click="closed_edit_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="edit_user">确定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import moment from 'moment'
 export default {
   name: "user_management",
   data () {
     return {
-      user_data: {},
+      user_list: {},
+      user_data: {
+        page: 1,
+        rows: 10,
+        placeholder: '',
+        password: {}
+      },
       user_state: {
         add: false,
         edit: false
@@ -222,25 +275,27 @@ export default {
       user_add: {
         username: "",
         password: "",
-        class: "",
-        email: "",
+        Re_password: "",
+        department: "",
+        mobile: "",
+        email_addr: "",
         role: "",
+        allow_ip: '',
         role_list: []
       },
       user_edit: {
-        name: "",
-        class: "",
-        email: "",
+        password: "",
+        Re_password: "",
+        department: "",
+        mobile: "",
+        email_addr: "",
         role: "",
-        role_list: [
-          {
-            name: "admin"
-          },
-          {
-            name: "user"
-          }
-        ]
-      }
+        id: "",
+        allow_ip: '',
+        role_list: []
+      },
+      token_data: '',
+      select_list: []
     };
   },
   props: {
@@ -252,20 +307,34 @@ export default {
   mounted () {
     this.get_data();
     this.role_list();
+    this.get_menu()
+    this.getPwdLength()
   },
 
   methods: {
+    get_menu () {
+      this.$axios.get('/api/yiiapi/site/menu')
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     // 获取用户列表
     get_data () {
       this.$axios.get('/api/yiiapi/user/page', {
         params: {
-          page: 1,
-          rows: 10,
+          page: this.user_data.page,
+          rows: this.user_data.rows,
         }
       })
         .then(response => {
           console.log(response);
-          this.user_data = response.data
+          this.user_list = response.data.data
+          this.user_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
         })
         .catch(error => {
           console.log(error);
@@ -273,29 +342,104 @@ export default {
     },
     // 获取角色列表
     role_list () {
-      this.$axios.get('/api/yiiapi/user/role-list')
+      this.$axios.get('/api/yiiapi/user/role-list', {
+        params: {
+          page: 1,
+          rows: 999,
+        }
+      })
         .then(response => {
           console.log(response);
-          this.user_add.role_list = response.data
+          this.user_add.role_list = response.data.data.data
+          this.user_edit.role_list = response.data.data.data
         })
         .catch(error => {
           console.log(error);
         })
     },
-
+    // 获取密码长度
+    getPwdLength () {
+      this.$axios.get('/api/yiiapi/site/get-passwd-length')
+        .then(response => {
+          console.log(response);
+          this.user_data.password = response.data.data
+          this.user_data.placeholder = '请输入包含大写、小写、数字和特殊字符其中三项,' + response.data.data.min_passwd_len + '-' + response.data.data.max_passwd_len + '位密码'
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 正则验证密码
+    regex (password) {
+      var reg = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9])');
+      return reg.test(password)
+    },
     // 添加用户
     add_user () {
-      this.$axios.post('/api/yiiapi/user-add', {
-        data: {
-          username: this.user_add.username,
-          password: this.user_add.password,
-          role: $scope.selectValue,
-          allow_ip: $scope.newUser.allow_ip,
-          page: $scope.pages.pageNow
-        }
+      if (this.user_add.username == '') {
+        this.$message(
+          {
+            message: '请输入用户名',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.user_add.password == '') {
+        this.$message(
+          {
+            message: '请输入密码',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.user_add.password != this.user_add.Re_password) {
+        this.$message(
+          {
+            message: '两次输入密码不一致',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (!this.regex(this.user_add.password)) {
+        this.$message(
+          {
+            message: '密码必须同时包含大写、小写、数字和特殊字符其中三项',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$axios.post('/api/yiiapi/user/user-add', {
+        username: this.user_add.username,
+        password: this.user_add.password,
+        role: this.user_add.role,
+        department: this.user_add.department,
+        allow_ip: this.user_add.allow_ip,
+        mobile: this.user_add.mobile,
+        email_addr: this.user_add.email_addr,
       })
         .then(response => {
           console.log(response);
+          if (response.data.status == 1) {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          } else if (response.data.status == 0) {
+            this.get_data();
+            this.user_state.add = false;
+            this.$message(
+              {
+                message: '添加用户成功',
+                type: 'success',
+              }
+            );
+          }
         })
         .catch(error => {
           console.log(error);
@@ -303,21 +447,177 @@ export default {
     },
     add_box () {
       this.user_state.add = true;
+      this.user_add.username = '';
+      this.user_add.password = '';
+      this.user_add.Re_password = '';
+      this.user_add.department = '';
+      this.user_add.mobile = '';
+      this.user_add.email_addr = '';
+      this.user_add.role = '';
+      this.user_add.allow_ip = '';
+      this.getPwdLength()
+      this.role_list()
     },
-    edit_box () {
+    // 编辑用户
+    edit_box (item) {
+      this.getPwdLength()
+      this.role_list()
       this.user_state.edit = true;
+      console.log(item);
+      var item_edit = JSON.stringify(item)
+      this.user_edit.department = JSON.parse(item_edit).department
+      this.user_edit.mobile = JSON.parse(item_edit).mobile
+      this.user_edit.email_addr = JSON.parse(item_edit).email_addr
+      this.user_edit.role = JSON.parse(item_edit).role
+      this.user_edit.allow_ip = JSON.parse(item_edit).allow_ip
+      this.user_edit.id = JSON.parse(item_edit).id
+    },
+    edit_user () {
+      console.log(this.user_edit);
+      if (this.user_edit.password != this.user_edit.Re_password) {
+        this.$message(
+          {
+            message: '两次输入密码不一致',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (!this.regex(this.user_edit.password) && this.user_edit.password != '') {
+        this.$message(
+          {
+            message: '密码必须同时包含大写、小写、数字和特殊字符其中三项',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$axios.get('/api/yiiapi/user/get-password-reset-token', {
+        params: {
+          id: this.user_edit.id
+        }
+      })
+        .then(response => {
+          console.log(response.data);
+          this.token_data = response.data.data
+          localStorage.setItem("token", response.data.data.token);
+          this.$axios.put('/api/yiiapi/user/reset-password?token=' + localStorage.getItem("token"), {
+            ResetPasswordForm: {
+              password: this.user_edit.password,
+              allow_ip: this.user_edit.allow_ip,
+              role: this.user_edit.role,
+              email_addr: this.user_edit.email_addr,
+              mobile: this.user_edit.mobile,
+              department: this.user_edit.department,
+            }
+          })
+            .then(response => {
+              this.user_state.edit = false;
+              if (response.data.status == 0) {
+                this.get_data();
+                this.$message({
+                  message: '修改用户成功',
+                  type: 'success'
+                });
+              } else {
+                this.$message(
+                  {
+                    message: response.data.msg,
+                    type: 'error',
+                  }
+                );
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 删除用户
+    del_user () {
+      console.log(this.select_list);
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需删除的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.select_list.forEach(element => {
+          id_list.push(element.id)
+        });
+        this.$axios.delete('/api/yiiapi/user/user-del', {
+          data: {
+            id: id_list
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
+    // 分页
+    handleSizeChange (val) {
+      this.user_data.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.user_data.page = val
+      this.get_data();
+    },
+    // 全选择
+    handleSelectionChange (val) {
+      this.select_list = val
     },
     alert_detail () { },
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
     closed_add_box () {
       this.user_state.add = false;
     },
     closed_edit_box () {
       this.user_state.edit = false;
     }
-  }
+  },
+  filters: {
+    formatDate: function (value) {
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
+    }
+  },
 };
 </script>
 
@@ -326,9 +626,9 @@ export default {
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
 #user_management {
   .el-dialog {
-    width: 440px;
+    width: 550px;
     .el-dialog__body {
-      width: 440px;
+      width: 550px;
       .content {
         padding: 24px 0;
         .content_item {

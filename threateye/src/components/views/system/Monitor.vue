@@ -7,7 +7,8 @@
                    class="btn_i"
                    @click="add_box">新增</el-button>
         <el-button type="primary"
-                   class="btn_i">删除</el-button>
+                   class="btn_i"
+                   @click="del_monitor">删除</el-button>
         <el-button type="primary"
                    class="btn_o"
                    @click="import_box">导入</el-button>
@@ -31,9 +32,10 @@
                            width="50">
           </el-table-column>
           <el-table-column label="序号"
-                           width="50">
+                           width="50"
+                           show-overflow-tooltip>
             <template slot-scope="scope">
-              <span>{{scope.row.$index}}</span>
+              {{(monitor_page.page-1)*(monitor_page.rows) + scope.row.index_cn}}
             </template>
           </el-table-column>
           <el-table-column prop="name"
@@ -44,8 +46,12 @@
                            label="IP地址段"
                            show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop=""
+          <el-table-column prop="network_type"
                            label="网段类型"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="net_mask"
+                           label="子网掩码"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="tag"
@@ -66,7 +72,9 @@
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="更新时间"
-                           prop="updated_at">
+                           width="150"
+                           show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.updated_at*1000 |formatDate }}</template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -112,13 +120,12 @@
             </div>
             <div class="content_item">
               <p>
-                <span class="title">网络类型</span>
+                <span class="title">网段类型</span>
                 <span class="title_color">*</span>
               </p>
               <el-select class="select_box"
                          v-model="monitor_add.type"
-                         clearable
-                         placeholder="请选择网络类型">
+                         placeholder="请选择网段类型">
                 <el-option v-for="item in monitor_add.type_list"
                            :key="item"
                            :label="item"
@@ -130,15 +137,28 @@
               <p>
                 <span class="title">标签</span>
               </p>
-              <el-input class="select_box"
-                        placeholder="请输入标签"
-                        v-model="monitor_add.tag"
-                        clearable>
-              </el-input>
+              <div class="item_addrs"
+                   v-for="(item,index) in monitor_add.tag_list">
+                <el-input class="select_box"
+                          placeholder="请输入标签"
+                          v-model="item.name"
+                          clearable>
+                </el-input>
+                <img src="@/assets/images/common/add.png"
+                     alt=""
+                     class="img_box"
+                     v-if="item.icon"
+                     @click="add_tag">
+                <img src="@/assets/images/common/del.png"
+                     alt=""
+                     class="img_box"
+                     @click="del_tag(item,index)"
+                     v-if="!item.icon">
+              </div>
             </div>
             <div class="content_item">
               <p>
-                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网络设备”</span>
+                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网段设备”</span>
               </p>
             </div>
           </div>
@@ -158,6 +178,17 @@
             </div>
             <div class="content_item">
               <p>
+                <span class="title">子网掩码</span>
+                <span class="title_color">*</span>
+              </p>
+              <el-input class="select_box"
+                        placeholder="请输入子网掩码"
+                        v-model="monitor_add.net_mask"
+                        clearable>
+              </el-input>
+            </div>
+            <div class="content_item">
+              <p>
                 <span class="title">责任人</span>
               </p>
               <el-input class="select_box"
@@ -171,7 +202,8 @@
         <div class="btn_box">
           <el-button @click="closed_add_box"
                      class="cancel_btn">取消</el-button>
-          <el-button class="ok_btn">确定</el-button>
+          <el-button class="ok_btn"
+                     @click="add_data">确定</el-button>
         </div>
       </el-dialog>
       <!-- 编辑 -->
@@ -198,15 +230,15 @@
                         clearable>
               </el-input>
             </div>
+
             <div class="content_item">
               <p>
-                <span class="title">网络类型</span>
+                <span class="title">网段类型</span>
                 <span class="title_color">*</span>
               </p>
               <el-select class="select_box"
-                         v-model="monitor_edit.type"
-                         clearable
-                         placeholder="请选择网络类型">
+                         v-model="monitor_edit.network_type"
+                         placeholder="请选择网段类型">
                 <el-option v-for="item in monitor_edit.type_list"
                            :key="item"
                            :label="item"
@@ -218,15 +250,28 @@
               <p>
                 <span class="title">标签</span>
               </p>
-              <el-input class="select_box"
-                        placeholder="请输入标签"
-                        v-model="monitor_edit.tag"
-                        clearable>
-              </el-input>
+              <div class="item_addrs"
+                   v-for="(item,index) in monitor_edit.label_list">
+                <el-input class="select_box"
+                          placeholder="请输入标签"
+                          v-model="item.name"
+                          clearable>
+                </el-input>
+                <img src="@/assets/images/common/add.png"
+                     alt=""
+                     class="img_box"
+                     v-if="item.icon"
+                     @click="add_tag_edit">
+                <img src="@/assets/images/common/del.png"
+                     alt=""
+                     class="img_box"
+                     @click="del_tag_edit(item,index)"
+                     v-if="!item.icon">
+              </div>
             </div>
             <div class="content_item">
               <p>
-                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网络设备”</span>
+                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网段设备”</span>
               </p>
             </div>
           </div>
@@ -246,6 +291,17 @@
             </div>
             <div class="content_item">
               <p>
+                <span class="title">子网掩码</span>
+                <span class="title_color">*</span>
+              </p>
+              <el-input class="select_box"
+                        placeholder="请输入子网掩码"
+                        v-model="monitor_edit.net_mask"
+                        clearable>
+              </el-input>
+            </div>
+            <div class="content_item">
+              <p>
                 <span class="title">责任人</span>
               </p>
               <el-input class="select_box"
@@ -259,7 +315,8 @@
         <div class="btn_box">
           <el-button @click="closed_edit_box"
                      class="cancel_btn">取消</el-button>
-          <el-button class="ok_btn">确定</el-button>
+          <el-button class="ok_btn"
+                     @click="edit_data">确定</el-button>
         </div>
       </el-dialog>
       <!-- 批量导入 -->
@@ -305,11 +362,16 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import moment from 'moment'
 export default {
   name: "system_control_monitor",
   data () {
     return {
       monitor_data: {},
+      monitor_page: {
+        page: 1,
+        rows: 10,
+      },
       monitor_state: {
         add: false,
         edit: false,
@@ -319,19 +381,25 @@ export default {
       monitor_add: {
         name: "",
         ip_segment: "",
-        type: "",
-        type_list: ["动态"],
+        net_mask: "",
+        type: "static",
+        type_list: ["static", 'dhcp', 'public'],
         person: "",
-        tag: ""
+        tag: [],
+        tag_list: [{ name: '', icon: true }]
       },
       monitor_edit: {
-        name: "",
-        ip_segment: "",
-        type: "",
-        type_list: ["动态"],
-        person: "",
-        tag: ""
-      }
+        id: '',
+        name: '',
+        ip_segment: '',
+        network_type: '',
+        person: '',
+        label_list: [],
+        tag: [],
+        net_mask: '',
+        type_list: ["static", 'dhcp', 'public'],
+      },
+      select_list: []
     };
   },
   mounted () {
@@ -342,13 +410,16 @@ export default {
     get_data () {
       this.$axios.get('/api/yiiapi/ipsegment/list', {
         params: {
-          page: 1,
-          rows: 1,
+          page: this.monitor_page.page,
+          rows: this.monitor_page.rows,
         }
       })
         .then(response => {
           console.log(response);
-          this.monitor_data = response.data;
+          this.monitor_data = response.data.data;
+          this.monitor_data.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
         })
         .catch(error => {
           console.log(error);
@@ -356,33 +427,208 @@ export default {
     },
     // 添加IP
     add_data () {
-      this.$axios.get('/api/yiiapi/ipsegment/set-ip-segment', {
-        data: {
-          name: this.monitor_add.name,
-          ip_segment: this.monitor_add.ip_segment,
-          net_mask: this.monitor_add.net_mask,
-          network_type: 'dhcp',
-          person: this.monitor_add.person,
-          label: [],
+      this.monitor_add.tag_list.forEach(item => {
+        if (item.name != '') {
+          this.monitor_add.tag.push(item.name)
         }
+      });
+      this.$axios.post('/api/yiiapi/ipsegment/set-ip-segment', {
+        name: this.monitor_add.name,
+        ip_segment: this.monitor_add.ip_segment,
+        net_mask: this.monitor_add.net_mask,
+        network_type: this.monitor_add.type,
+        person: this.monitor_add.person,
+        label: this.monitor_add.tag,
       })
         .then(response => {
           console.log(response);
+          if (response.data.status == 0) {
+            this.monitor_state.add = false;
+            this.get_data();
+            this.$message(
+              {
+                message: '添加成功',
+                type: 'success',
+              }
+            );
+          } else {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          }
         })
         .catch(error => {
           console.log(error);
         })
     },
+    //  添加标签
+    add_tag () {
+      this.monitor_add.tag_list.forEach(item => {
+        item.icon = false;
+      });
+      this.monitor_add.tag_list.push({ name: '', icon: true })
+    },
+    del_tag (item, index) {
+      this.monitor_add.tag_list.splice(index, 1);
+    },
+    // 编辑标签
+    add_tag_edit () {
+      this.monitor_edit.label_list.forEach(item => {
+        item.icon = false;
+      });
+      this.monitor_edit.label_list.push({ name: '', icon: true })
+    },
+    del_tag_edit (item, index) {
+      this.monitor_edit.label_list.splice(index, 1);
+    },
     alert_detail () { },
     edit_box (row) {
       this.monitor_state.edit = true;
       console.log(row);
+      var item_str = JSON.stringify(row);
+      var obj_edit = JSON.parse(item_str);
+      this.monitor_edit.id = obj_edit.id
+      this.monitor_edit.name = obj_edit.name
+      this.monitor_edit.ip_segment = obj_edit.ip_segment
+      this.monitor_edit.network_type = obj_edit.network_type
+      this.monitor_edit.person = obj_edit.person
+      this.monitor_edit.net_mask = obj_edit.net_mask
+      this.monitor_edit.label_list = [];
+      this.monitor_edit.tag = [];
+      if (obj_edit.label.length == 0) {
+        this.monitor_edit.label_list.push({
+          name: '',
+          icon: true
+        })
+      } else {
+        obj_edit.label.forEach(item => {
+          this.monitor_edit.label_list.push({
+            name: item,
+            icon: false
+          })
+        });
+        this.monitor_edit.label_list[this.monitor_edit.label_list.length - 1].icon = true
+      }
     },
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
+    edit_data () {
+      this.monitor_edit.label_list.forEach(item => {
+        if (item.name != '') {
+          this.monitor_edit.tag.push(item.name)
+        }
+      });
+      this.$axios.put('/api/yiiapi/ipsegment/edit-ip-segment', {
+        id: this.monitor_edit.id,
+        name: this.monitor_edit.name,
+        ip_segment: this.monitor_edit.ip_segment,
+        net_mask: this.monitor_edit.net_mask,
+        network_type: this.monitor_edit.network_type,
+        person: this.monitor_edit.person,
+        label: this.monitor_edit.tag,
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 0) {
+            this.monitor_state.edit = false;
+            this.get_data();
+            this.$message(
+              {
+                message: '修改成功',
+                type: 'success',
+              }
+            );
+          } else {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+
+    // 分页
+    handleSizeChange (val) {
+      this.monitor_page.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.monitor_page.page = val
+      this.get_data();
+    },
+    // 全选择
+    handleSelectionChange (val) {
+      this.select_list = val
+    },
+    // 删除
+    del_monitor () {
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需删除的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.select_list.forEach(element => {
+          id_list.push(element.id)
+        });
+        this.$axios.delete('/api/yiiapi/ipsegment/del', {
+          data: {
+            id: id_list
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
     add_box () {
       this.monitor_state.add = true;
+      this.monitor_add.name = '';
+      this.monitor_add.ip_segment = '';
+      this.monitor_add.net_mask = '';
+      this.monitor_add.type = 'static';
+      this.monitor_add.person = '';
+      this.monitor_add.tag = [];
+      this.monitor_add.tag_list = [{ name: '', icon: true }]
     },
     import_box () {
       this.monitor_state.import = true;
@@ -413,7 +659,12 @@ export default {
       this.monitor_state.import_loading = false;
       console.log("onChange");
     }
-  }
+  },
+  filters: {
+    formatDate: function (value) {
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
+    }
+  },
 };
 </script>
 <style lang='less'>
@@ -432,6 +683,17 @@ export default {
             flex: 1;
             .content_item {
               margin-bottom: 24px;
+              .item_addrs {
+                margin-bottom: 12px;
+                display: flex;
+              }
+              .img_box {
+                width: 16px;
+                height: 16px;
+                margin-left: 10px;
+                margin-top: 14px;
+                cursor: pointer;
+              }
               .title {
                 font-size: 12px;
                 color: #999999;

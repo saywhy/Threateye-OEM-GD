@@ -1,44 +1,32 @@
 <template>
   <div id="rule_base">
     <p class="title">实时更新</p>
-    <p class="item_box">
-      <span class="item_name">DF</span>
-      <span class="item_time">上次更新时间：2019.11.25 15:23:56</span>
-      <span class="item_status">成功</span>
-    </p>
-    <p class="item_box">
-      <span class="item_name">IDS</span>
-      <span class="item_time">上次更新时间：2019.11.25 15:23:56</span>
-      <span class="item_status">成功</span>
-    </p>
-    <p class="item_box">
-      <span class="item_name">SDK</span>
-      <span class="item_time">上次更新时间：2019.11.25 15:23:56</span>
-      <span class="item_status">成功</span>
+    <p class="item_box"
+       v-for="item in rule"
+       v-if="item.update_type=='1'">
+      <span class="item_name">{{item.key}}</span>
+      <span class="item_time">上次更新时间：
+        <span>{{item.time}}</span>
+      </span>
+      <span class="item_status">{{item.status_cn}}</span>
     </p>
     <el-button type="primary"
                class="update">更新</el-button>
     <p class="title">离线更新</p>
-    <p class="item_box">
-      <span class="item_name">DF</span>
-      <span class="item_time">上次更新时间：2019.11.25 15:23:56</span>
-      <span class="item_status">成功</span>
-    </p>
-    <p class="item_box">
-      <span class="item_name">IDS</span>
-      <span class="item_time">上次更新时间：2019.11.25 15:23:56</span>
-      <span class="item_status">成功</span>
-    </p>
-    <p class="item_box">
-      <span class="item_name">SDK</span>
-      <span class="item_time">上次更新时间：2019.11.25 15:23:56</span>
-      <span class="item_status">成功</span>
+    <p class="item_box"
+       v-for="item in rule"
+       v-if="item.update_type=='2'">
+      <span class="item_name">{{item.key}}</span>
+      <span class="item_time">上次更新时间：
+        <span>{{item.time}}</span>
+      </span>
+      <span class="item_status">{{item.status_cn}}</span>
     </p>
     <el-button type="primary"
                class="update"
                @click="open_box">上传更新文件</el-button>
     <el-dialog class="import_box pop_box"
-               :visible.sync="rule.upload_pop">
+               :visible.sync="rule_data.upload_pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_upload_box"
            class="closed_img"
@@ -81,9 +69,11 @@ export default {
   name: "rule_base",
   data () {
     return {
-      rule: {
-        upload_pop: false
-      }
+      rule: {},
+      rule_data: {
+        upload_pop: false,
+      },
+      timer: null
     };
   },
   props: {
@@ -92,16 +82,59 @@ export default {
       default: () => { }
     }
   },
+  activated () { },
+  deactivated () { },
   mounted () {
+    // this.timer = setInterval(() => {
+    this.get_data();
+    // }, 2000)
+  },
+  beforeDestroy () {
+    console.log('2222');
+    // clearInterval(this.timer); //关闭
+  },
+  destroyed () {
+    console.log('33333');
+  },
+  beforeRouteLeave (to, from, next) {
+    console.log('2132131');
 
   },
-
   methods: {
+    get_data () {
+      this.$axios.get('/api/yiiapi/rulebase/get-update-status')
+        .then(response => {
+          console.log(response);
+          if (response.data.status == 0) {
+            this.rule = response.data.data
+            this.rule.forEach(item => {
+              switch (item.status) {
+                case '1':
+                  item.status_cn = '更新中'
+                  break;
+                case '2':
+                  item.status_cn = '成功'
+                  break;
+                case '3':
+                  item.status_cn = '失败'
+                  break;
+                default:
+                  break;
+              }
+            });
+          } else if (response.data.status == 1) {
+
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     open_box () {
-      this.rule.upload_pop = true;
+      this.rule_data.upload_pop = true;
     },
     closed_upload_box () {
-      this.rule.upload_pop = false;
+      this.rule_data.upload_pop = false;
     },
     onBeforeUpload () {
 

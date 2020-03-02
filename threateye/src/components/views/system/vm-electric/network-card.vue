@@ -1,5 +1,6 @@
 <template>
-  <div id="network-card">
+  <div id="network-card"
+       v-loading.fullscreen.lock="network_loading">
     <div class="left">
       <div class="left_item">
         <p>网络设备</p>
@@ -55,7 +56,8 @@
       </div>
       <div class="left_item">
         <el-button type="primary"
-                   class="save_btn">保存</el-button>
+                   class="save_btn"
+                   @click="set_network">保存</el-button>
       </div>
     </div>
     <div class="mid">
@@ -125,7 +127,8 @@ export default {
         MASK: "",
         DNS1: "",
         DNS2: ""
-      }
+      },
+      network_loading: false
     };
   },
   props: {
@@ -214,14 +217,89 @@ export default {
     },
     // 获取网卡配置
     get_data () {
+      this.network_loading = true
       this.$axios.get('/api/yiiapi/seting/get-network')
         .then(response => {
-          console.log(response);
-          this.network = response.data.data;
+          this.network = response.data.data.data;
+          this.change_name(this.network[0].NAME)
+          this.network_loading = false
         })
         .catch(error => {
           console.log(error);
         })
+    },
+    // 设置网络
+    set_network () {
+      var BOOTPROTO = ''
+      var ONBOOT = ''
+      var PORT = ""
+      switch (this.network_model.obtain) {
+        case '手动获取':
+          BOOTPROTO = 'static'
+          break;
+        case '自动获取':
+          BOOTPROTO = 'dhcp'
+          break;
+        default:
+          BOOTPROTO = 'none'
+          break;
+      }
+      if (this.network_model.switch) {
+        ONBOOT = 'yes'
+      } else {
+        ONBOOT = 'no'
+      }
+      switch (this.network_model.role_name) {
+        case '管理口':
+          PORT = 1;
+          break;
+        case '通讯口':
+          PORT = 2;
+          break;
+        case '镜像口':
+          PORT = 3;
+          break;
+        case '沙箱口':
+          PORT = 4;
+          break;
+        default:
+          break;
+      }
+      this.network_loading = true
+      this.$axios.put('/api/yiiapi/seting/set-network', {
+        NAME: this.network_model.name,
+        ONBOOT: ONBOOT,
+        BOOTPROTO: BOOTPROTO,
+        IPADDR: this.network_model.IPADDR,
+        MASK: this.network_model.MASK,
+        GATEWAY: this.network_model.GATEWAY,
+        DNS1: this.network_model.DNS1,
+        DNS2: this.network_model.DNS2,
+        PORT: PORT,
+      })
+        .then(response => {
+          this.network_loading = false
+          if (response.data.status == 0) {
+            this.get_data()
+            this.$message(
+              {
+                message: '修改配置成功',
+                type: 'success',
+              }
+            );
+          } else {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
     }
   }
 };

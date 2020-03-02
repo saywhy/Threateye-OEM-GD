@@ -3,15 +3,19 @@
     <div class="search_box">
       <el-input class="search_key"
                 placeholder="搜索关键词"
-                v-model="key"
+                v-model="audit_data.key"
                 clearable>
         <i slot="prefix"
            class="el-input__icon el-icon-search"></i>
       </el-input>
-      <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-      <el-button class="btn_i"> 搜索</el-button>
-      <span class="reset">重置</span>
-      <el-button class="btn_right">下载</el-button>
+      <vm-emerge-picker @changeTime='changeTime'
+                        :option='time_list'></vm-emerge-picker>
+      <el-button class="btn_i"
+                 @click="get_data"> 搜索</el-button>
+      <span class="reset"
+            @click="reset">重置</span>
+      <el-button class="btn_right"
+                 @click="download">下载</el-button>
     </div>
     <p class="line"></p>
     <div class="audit_table">
@@ -20,27 +24,26 @@
                 align="center"
                 :data="audit_log.data"
                 tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange"
-                @row-click="alert_detail">
-        <el-table-column prop="index"
-                         label="序号"
-                         width="50"
-                         show-overflow-tooltip>
+                style="width: 100%">
+        <el-table-column label="序号"
+                         width="80">
+          <template slot-scope="scope">
+            {{(audit_data.page-1)*(audit_data.rows) + scope.row.index_cn}}
+          </template>
         </el-table-column>
-        <el-table-column prop="time"
+        <el-table-column prop="created_at"
                          label="时间"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="user"
+        <el-table-column prop="username"
                          label="用户标识"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="description"
+        <el-table-column prop="info"
                          label='描述'
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="host_ip"
+        <el-table-column prop="userip"
                          label='主机地址'
                          show-overflow-tooltip>
         </el-table-column>
@@ -67,19 +70,18 @@ export default {
   name: "audit_log",
   data () {
     return {
-      key: '',
-      audit_log: {
-        data: [{
-          index: '01',
-          time: '2019-11-12 22:09:55',
-          user: 'admin',
-          description: '删除yara文件失败，原因为：请求超时',
-          host_ip: '127.0.0.1',
-        }],
-        pageNow: 1,
-        count: 1002,
+      time_list: {
+        time: []
       },
-      changeTime: ''
+      audit_log: {},
+      audit_data: {
+        start_time: "",
+        end_time: "",
+        key: "",
+        page: 1,
+        rows: 10
+      },
+      // changeTimes:[]
     };
   },
   props: {
@@ -88,20 +90,67 @@ export default {
       default: () => { }
     }
   },
-  mounted () { },
+  mounted () {
+    this.get_data()
+  },
 
   methods: {
+    get_data () {
+      this.$axios.get('/api/yiiapi/userlog/page', {
+        params: {
+          username: this.audit_data.key,
+          start_time: this.audit_data.start_time,
+          end_time: this.audit_data.end_time,
+          page: this.audit_data.page,
+          rows: this.audit_data.rows
+        }
+      })
+        .then(response => {
+          console.log(response);
+          this.audit_log = response.data.data;
+          this.audit_log.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
     add_box () {
     },
     edit_box () {
     },
-    alert_detail () { },
-    handleSelectionChange () { },
-    handleSizeChange () { },
-    handleCurrentChange () { },
-    closed_add_box () {
+    changeTime (data) {
+      console.log(data);
+      if (data) {
+        this.audit_data.start_time = data[0].valueOf() / 1000;
+        this.audit_data.end_time = data[1].valueOf() / 1000;
+      } else {
+        this.audit_data.start_time = ''
+        this.audit_data.end_time = ''
+      }
     },
-    closed_edit_box () {
+    // 分页
+    handleSizeChange (val) {
+      this.audit_data.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.audit_data.page = val
+      this.get_data();
+    },
+    reset () {
+      this.audit_data.key = ''
+      this.audit_data.start_time = ""
+      this.audit_data.end_time = ""
+      this.time_list = {
+        time: []
+      }
+    },
+    download () {
+      var url2 = "/api/yiiapi/userlog/export?username=" + this.audit_data.key + "&start_time=" + this.audit_data.start_time + '&end_time=' + this.audit_data.end_time;
+      window.location.href = url2;
     }
   }
 };
@@ -133,6 +182,7 @@ export default {
     }
 
     .reset {
+      cursor: pointer;
       margin-left: 24px;
       font-size: 16px;
       color: #0070ff;

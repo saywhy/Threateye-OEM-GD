@@ -21,22 +21,23 @@ export default {
       }
     }
   },
+  created(){
+    let chartData = this.mid_left;
+    chartData.forEach((item,index,array)=>{
+
+      this.treat.date.push(item.statistics_time);
+      this.treat.high.push(item.alert_count_details.high);
+      this.treat.medium.push(item.alert_count_details.medium);
+      this.treat.low.push(item.alert_count_details.low);
+
+    });
+  },
   mounted() {
     this.graph();
   },
   methods: {
     graph() {
       // 基于准备好的dom，初始化echarts实例
-
-      let chartData = this.mid_left;
-      chartData.forEach((item,index,array)=>{
-
-        this.treat.date.push(item.statistics_time);
-        this.treat.high.push(item.alert_count_details.high);
-        this.treat.medium.push(item.alert_count_details.medium);
-        this.treat.low.push(item.alert_count_details.low);
-
-      });
 
       let date = this.treat.date;
       let high = this.treat.high;
@@ -46,6 +47,7 @@ export default {
       let myChart = this.$echarts.init(document.getElementById("test"));
 
       myChart.showLoading({ text: '正在加载数据...' });
+
       myChart.clear();
       // 绘制图表
       myChart.setOption({
@@ -137,21 +139,21 @@ export default {
             name: '低危',
             type: 'bar',
             stack: '广告',
-            barWidth:'40%',
+            barWidth:'20',
             data: low
           },
           {
             name: '中危',
             type: 'bar',
             stack: '广告',
-            barWidth:'40%',
+            barWidth:'20',
             data: medium
           },
           {
             name: '高危',
             type: 'bar',
             stack: '广告',
-            barWidth:'40%',
+            barWidth:'20',
             data: high
           }
         ]

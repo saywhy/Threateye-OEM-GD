@@ -16,6 +16,18 @@ export default {
       untreat: {}
     }
   },
+  created(){
+    let chartData = this.mid_mid;
+    chartData.forEach((item,index,array)=>{
+      if (item.degree == 'low') {
+        this.$set(this.untreat, 'low', item.total_count);
+      }else if(item.degree == 'medium'){
+        this.$set(this.untreat, 'medium', item.total_count);
+      }else if(item.degree == 'high'){
+        this.$set(this.untreat, 'high', item.total_count);
+      }
+    });
+  },
   mounted() {
     this.graph();
   },
@@ -24,22 +36,9 @@ export default {
 
       let index = 0;
 
-      let chartData = this.mid_mid;
-
-      chartData.forEach((item,index,array)=>{
-        if (item.degree == 'low') {
-          this.$set(this.untreat, 'low', item.total_count);
-        }else if(item.degree == 'medium'){
-          this.$set(this.untreat, 'medium', item.total_count);
-        }else if(item.degree == 'high'){
-          this.$set(this.untreat, 'high', item.total_count);
-        }
-      });
-
       let low = this.untreat.low;
       let medium = this.untreat.medium;
       let high = this.untreat.high;
-
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("safe"));

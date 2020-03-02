@@ -19,23 +19,24 @@ export default {
       }
     };
   },
+  created(){
+    let chartData = this.mid_right;
+
+    chartData.forEach((item,index,array)=>{
+      this.threat_type.type.push(item.alert_type);
+      this.threat_type.num.push(item.total_count);
+    });
+  },
   mounted() {
     this.graph();
   },
   methods: {
     graph() {
 
-      let chartData = this.mid_right;
-
-      chartData.forEach((item,index,array)=>{
-        this.threat_type.type.push(item.alert_type);
-        this.threat_type.num.push(item.total_count);
-      });
-
       let type = this.threat_type.type;
       let num = this.threat_type.num;
 
-     let maxNum = Math.max(...num);
+      let maxNum = Math.max(...num);
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("edr"));

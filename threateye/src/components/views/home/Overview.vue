@@ -58,7 +58,7 @@
               <p class="legend_title">单位(P/s)</p>
             </div>
             <div class="top_right_content">
-              <top-right></top-right>
+              <top-right :top_right="top_right" v-if="top_right_show"></top-right>
             </div>
           </div>
         </el-col>
@@ -133,7 +133,7 @@
             </div>
             <div class="bom_left_content">
               <div class="content_top">
-                 <bom-left></bom-left>
+                 <bom-left :bom_left="bom_left" v-if="bom_left_show"></bom-left>
               </div>
             </div>
           </div>
@@ -158,7 +158,7 @@
               </p>
             </div>
             <div class="bom_right_content">
-              <bom-right></bom-right>
+              <bom-right :bom_right="bom_right" v-if="bom_right_show"></bom-right>
             </div>
           </div>
         </el-col>
@@ -189,20 +189,14 @@
     name: "system_control_move",
     data () {
       return {
-        top_left: {
-          dev_info:[],
-          healthy_count:0,
-          warning_count:0,
-          offline_count:0
-        },
+        top_left: {},
         top_left_show:false,
 
-        top_mid:{
-          statistics_time:[],
-          flow_diff:[],
-          file_count_diff:[]
-        },
+        top_mid:{},
         top_mid_show:false,
+
+        top_right:[],
+        top_right_show:false,
         ///////////
 
         mid_left:[],
@@ -212,9 +206,17 @@
         mid_mid_show:false,
 
         mid_right:[],
-        mid_right_show:false
+        mid_right_show:false,
 
         ///////////
+        bom_left:[],
+        bom_left_show:false,
+
+        bom_mid:[],
+        bom_mid_show:false,
+
+        bom_right:[],
+        bom_right_show:false
 
       };
     },
@@ -227,6 +229,10 @@
       this.init_mid_left();
       this.init_mid_mid();
       this.init_mid_right();
+      //第三排
+      this.init_bom_left();
+      //this.init_bom_mid();
+      this.init_bom_right();
     },
     methods: {
       //第一排（左）
@@ -235,10 +241,11 @@
           .then((resp) => {
             let {status,data} = resp.data;
             if(status == 0){
-              this.top_left.dev_info = data.dev_info;
+              /*this.top_left.dev_info = data.dev_info;
               this.top_left.healthy_count = data.healthy_count;
               this.top_left.warning_count = data.warning_count;
-              this.top_left.offline_count = data.offline_count;
+              this.top_left.offline_count = data.offline_count;*/
+              this.top_left = data;
               this.top_left_show = true;
             }
           })
@@ -247,14 +254,14 @@
       init_top_mid() {
         this.$axios.get('/api/yiiapi/alert/flow-file-statistics')
           .then((resp) => {
-
             //console.log(resp)
             let {status,data} = resp.data;
 
             if(status == 0){
-              this.top_mid.statistics_time = data.statistics_time;
+              /*this.top_mid.statistics_time = data.statistics_time;
               this.top_mid.flow_diff = data.flow_diff;
-              this.top_mid.file_count_diff = data.file_count_diff;
+              this.top_mid.file_count_diff = data.file_count_diff;*/
+              this.top_mid = data;
               this.top_mid_show = true;
             }
           })
@@ -263,10 +270,12 @@
       init_top_right(){
         this.$axios.get('/api/yiiapi/alert/protocol-flow-statistics')
           .then((resp) => {
-
             //console.log(resp);
             let {status,data} = resp.data;
-
+            if(status == 0){
+              this.top_right = data;
+              this.top_right_show = true;
+            }
           })
       },
 
@@ -296,11 +305,51 @@
       init_mid_right() {
         this.$axios.get('/api/yiiapi/alert/threat-type')
           .then((resp) => {
-            console.log(resp)
+           // console.log(resp)
             let {status,data} = resp.data;
             if(status == 0){
               this.mid_right = data;
               this.mid_right_show = true;
+            }
+          })
+      },
+
+
+      //第三排（左）
+      init_bom_left() {
+        this.$axios.get('/api/yiiapi/alert/threat-top5')
+          .then((resp) => {
+            // /console.log(resp)
+
+            let {status,data} = resp.data;
+            if(status == 0){
+              this.bom_left = data;
+              this.bom_left_show = true;
+            }
+          })
+      },
+      //第三排（中）
+      init_bom_mid() {
+        this.$axios.get('/api/yiiapi/alert/risk-asset-top5')
+          .then((resp) => {
+            console.log(resp)
+            /*let {status,data} = resp.data;
+            if(status == 0){
+              this.mid_right = data;
+              this.mid_right_show = true;
+            }*/
+          })
+      },
+
+      //第三排（右）
+      init_bom_right() {
+        this.$axios.get('/api/yiiapi/alert/list-top5')
+          .then((resp) => {
+           // console.log(resp)
+            let {status,data} = resp.data;
+            if(status == 0){
+              this.bom_right = data;
+              this.bom_right_show = true;
             }
           })
       },

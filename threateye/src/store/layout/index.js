@@ -86,28 +86,12 @@ export default {
           }
         }).catch(error => {
             console.log(error);
-          })
-
-      /*  axios.get('/static/data/user.json', userInfo)
-          .then(resp => {
-            let { code, data } = resp;
-            //用户名和密码正确
-            if(code === 0){
-              setToken(data.token);
-              commit('SET_TOKEN', data.token);
-              resolve(true);
-              //用户名密码错误
-            }else {
-              resolve(false);
-            }
-        }).catch(error => {
-          reject(error)
-        });*/
+        })
       });
     },
 
     //权限设置
-    async GetInfo({
+    async GetAuth({
       commit,
       dispatch
     }) {
@@ -118,8 +102,10 @@ export default {
 
       let roles = forRoleList(resp);
 
-      commit('SET_ROLES', roles);
+      console.log(roles)
 
+
+      commit('SET_ROLES', roles);
       return roles;
     },
 
@@ -142,10 +128,9 @@ export default {
       commit
     }, data) {
       return new Promise(resolve => {
-        const {
-          roles
-        } = data;
+        const {roles} = data;
 
+       // console.log(roles)
         const accessedRouters = formatList(asyncRouterMap, roles);
 
         commit('SET_ROUTERS', accessedRouters);

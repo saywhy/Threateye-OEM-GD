@@ -146,7 +146,7 @@
               </p>
             </div>
             <div class="bom_mid_content">
-               <bom-mid></bom-mid>
+               <bom-mid :bom_mid="bom_mid"></bom-mid>
             </div>
           </div>
         </el-col>
@@ -231,7 +231,7 @@
       this.init_mid_right();
       //第三排
       this.init_bom_left();
-      //this.init_bom_mid();
+      this.init_bom_mid();
       this.init_bom_right();
     },
     methods: {
@@ -239,12 +239,9 @@
       init_top_left(){
         this.$axios.get('/api/yiiapi/alert/system-state')
           .then((resp) => {
+            //console.log(resp)
             let {status,data} = resp.data;
             if(status == 0){
-              /*this.top_left.dev_info = data.dev_info;
-              this.top_left.healthy_count = data.healthy_count;
-              this.top_left.warning_count = data.warning_count;
-              this.top_left.offline_count = data.offline_count;*/
               this.top_left = data;
               this.top_left_show = true;
             }
@@ -335,11 +332,11 @@
         this.$axios.get('/api/yiiapi/alert/risk-asset-top5')
           .then((resp) => {
             console.log(resp)
-            /*let {status,data} = resp.data;
+            let {status,data} = resp.data;
             if(status == 0){
-              this.mid_right = data;
-              this.mid_right_show = true;
-            }*/
+              this.bom_mid = data;
+              this.bom_mid_show = true;
+            }
           })
       },
 

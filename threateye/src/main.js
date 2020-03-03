@@ -49,7 +49,6 @@ import "./assets/family/pingfang.css";
 
 
 Vue.config.productionTip = false;
-
 const whiteList = ['/login', '/'];
 
 
@@ -66,24 +65,28 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
 
-        store.dispatch('GetInfo').then(res => { // 拉取info
+        store.dispatch('GetAuth').then(resp => { // 拉取info
           //const roles = res.data.role;
-          const roles = res;
+          const roles = resp;
 
-          store.dispatch('GenerateRoutes', {
+          if(roles == null){
+            store.dispatch('LogOut');
+          }else {
+            store.dispatch('GenerateRoutes', {
               roles
             })
-            .then(() => { // 生成可访问的路由表
+              .then(() => { // 生成可访问的路由表
 
-              router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+                router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 
-              next({
-                ...to,
-                replace: true
-              }) // hack方法 确保addRoutes已完成 ,
-              // set the replace: true so the navigation will not leave a history record
+                next({
+                  ...to,
+                  replace: true
+                }) // hack方法 确保addRoutes已完成 ,
+                // set the replace: true so the navigation will not leave a history record
 
-            })
+              })
+          }
         }).catch(err => {
 
           NProgress.done();

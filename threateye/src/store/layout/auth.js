@@ -4,22 +4,25 @@ export function forRoleList(auth) {
   let roles = [];
   if(auth == ''){
     console.log('无权限');
-    return false;
+
+    roles = null;
+  }else {
+    //真实状态
+    auth.forEach(function (v,k) {
+      roles.push(v.id);
+      if(v.child && v.child.length){
+        v.child.forEach(function (v1,k1) {
+          roles.push(v1.id);
+          if(v1.child && v1.child.length){
+            v1.child.forEach(function (v2,k2) {
+              roles.push(v2.id);
+            })
+          }
+        })
+      }
+    });
   }
-  //真实状态
-  auth.forEach(function (v,k) {
-    roles.push(v.id);
-    if(v.child && v.child.length){
-      v.child.forEach(function (v1,k1) {
-        roles.push(v1.id);
-        if(v1.child && v1.child.length){
-          v1.child.forEach(function (v2,k2) {
-            roles.push(v2.id);
-          })
-        }
-      })
-    }
-  });
+
   return roles;
 }
 

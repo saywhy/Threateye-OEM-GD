@@ -1,510 +1,470 @@
 <template>
-  <div id="invest_host" class="common-invest">
-    <div class="invest">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <!--网络视角-->
-        <el-tab-pane label="网络视角" name="first">
-          <div class="invest_form invest_form_network">
-            <el-form class="common-pattern">
-              <el-row class="common_box">
-                <el-col :span="24" class="common_box_list">
+  <div id="invest_host"
+       class="common_invest"
+       v-loading.fullscreen.lock="host_search.loading">
+    <div class="invest_box">
+      <div class="invest_top">
+        <el-input placeholder="主机地址"
+                  class="search_box"
+                  v-model="host_search.host_ip"
+                  clearable>
+        </el-input>
+        <vm-emerge-picker @changeTime='changeTime'
+                          :option='time_list'></vm-emerge-picker>
+        <el-button class="btn_i"
+                   @click="search_data()"> 搜索</el-button>
+        <span class="reset"
+              @click="reset">重置</span>
+        <el-button class="btn_right"
+                   @click="download">下载</el-button>
+      </div>
+      <div class="invest_bom">
+        <el-button-group>
+          <el-button :class="{'active':activeButGroup =='1'}"
+                     @click="activeButGroup = '1'">网络通讯</el-button>
+          <el-button :class="{'active':activeButGroup =='2'}"
+                     @click="activeButGroup = '2'">文件</el-button>
+          <el-button :class="{'active':activeButGroup =='3'}"
+                     @click="activeButGroup = '3'">用户</el-button>
+        </el-button-group>
+        <!-- 网络通信 -->
+        <div v-show="activeButGroup=='1'">
+          <el-table ref="multipleTable"
+                    class="reset_table"
+                    align="center"
+                    :data="host_network_data.data"
+                    tooltip-effect="dark"
+                    style="width: 100%">
+            <el-table-column label="序号"
+                             width="60">
+              <template slot-scope="scope">
+                {{(host_network_page.page-1)*(host_network_page.rows) + scope.row.index_cn}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="timestamp"
+                             width="280"
+                             label="时间"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="src_ip"
+                             label="源地址"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="src_port"
+                             label="源端口"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="dest_ip"
+                             label="目的地址"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="dest_port"
+                             label="目的端口"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="email"
+                             label="Email地址"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="application"
+                             label="应用"
+                             show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+          <el-pagination class="pagination_box"
+                         @size-change="handleSizeChange_network"
+                         @current-change="handleCurrentChange_network"
+                         :current-page="host_network.pageNow"
+                         :page-sizes="[10,50,100]"
+                         :page-size="10"
+                         layout="total, sizes, prev, pager, next"
+                         :total="host_network.count">
+          </el-pagination>
+        </div>
+        <!-- 文件 -->
+        <div v-show="activeButGroup=='2'">
+          <el-table ref="multipleTable"
+                    class="reset_table"
+                    align="center"
+                    :data="host_file_data.data"
+                    tooltip-effect="dark"
+                    style="width: 100%">
+            <el-table-column label="序号"
+                             width="60">
+              <template slot-scope="scope">
+                {{(host_file_page.page-1)*(host_file_page.rows) + scope.row.index_cn}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="file_name"
+                             label="文件名"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="md5"
+                             label="哈希值"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="source"
+                             label="来源"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="host_ip"
+                             label="主机地址"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="application"
+                             label="应用"
+                             show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+          <el-pagination class="pagination_box"
+                         @size-change="handleSizeChange_file"
+                         @current-change="handleCurrentChange_file"
+                         :current-page="host_file.pageNow"
+                         :page-sizes="[10,50,100]"
+                         :page-size="10"
+                         layout="total, sizes, prev, pager, next"
+                         :total="host_file.count">
+          </el-pagination>
+        </div>
+        <!-- 用户 -->
+        <div v-show="activeButGroup=='3'">
+          <el-table ref="multipleTable"
+                    class="reset_table"
+                    align="center"
+                    :data="host_user_data.data"
+                    tooltip-effect="dark"
+                    style="width: 100%">
+            <el-table-column label="序号"
+                             width="60">
+              <template slot-scope="scope">
+                {{(host_user_page.page-1)*(host_user_page.rows) + scope.row.index_cn}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="user_name"
+                             label="用户名"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="host_ip"
+                             label="主机地址"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="application"
+                             label="应用"
+                             show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+          <el-pagination class="pagination_box"
+                         @size-change="handleSizeChange_user"
+                         @current-change="handleCurrentChange_user"
+                         :current-page="host_user.pageNow"
+                         :page-sizes="[10,50,100]"
+                         :page-size="10"
+                         layout="total, sizes, prev, pager, next"
+                         :total="host_user.count">
+          </el-pagination>
+        </div>
 
-                  <!--主机地址-->
-                  <el-input class="s_key" placeholder="主机地址" v-model="params_net.host_ip" clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                  </el-input>
-
-                  <!--时间-->
-                  <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-
-                  <el-button class="s_btn">搜索</el-button>
-                  <el-link class="s_link">重置</el-link>
-                </el-col>
-              </el-row>
-            </el-form>
-            <el-link class="s_download">下载</el-link>
-            <el-row class="invest_btn_group">
-              <el-button-group>
-                <el-button :class="{'active':activeButGroup =='1'}" @click="activeButGroup = '1'">网络通讯</el-button>
-                <el-button :class="{'active':activeButGroup =='2'}" @click="activeButGroup = '2'">文件</el-button>
-                <el-button :class="{'active':activeButGroup =='3'}" @click="activeButGroup = '3'">用户</el-button>
-              </el-button-group>
-            </el-row>
-          </div>
-          <div class="invest_table">
-            <el-row class="invest-common-table-pattern">
-              <el-col :span="24" v-show="activeButGroup=='1'">
-                <el-table class="common-table" ref="multipleTable" :data="tableNetData1">
-                  <el-table-column prop="pid" label="序号" width="60" align="center"></el-table-column>
-                  <el-table-column prop="time" label="时间" min-width="180" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="ori_address" label="源地址" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="ori_port" label="源端口"  show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="des_address" label="目的地址" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="des_port" label="目的端口" width="100" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="email" label="Email地址" min-width="120" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="apply" label="应用" width="60"></el-table-column>
-                </el-table>
-              </el-col>
-              <el-col :span="24" v-show="activeButGroup=='2'">
-                <el-table class="common-table" ref="multipleTable" :data="tableNetData2">
-                  <el-table-column prop="pid" label="序号" width="60" align="center"></el-table-column>
-                  <el-table-column prop="file" label="文件名"  min-width="100" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="hash" label="哈希值"  min-width="200" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="ori" label="来源"  show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="host_ip" label="主机IP" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="apply" label="应用" width="120"></el-table-column>
-                </el-table>
-              </el-col>
-              <el-col :span="24" v-show="activeButGroup=='3'">
-                <el-table class="common-table" ref="multipleTable" :data="tableNetData3">
-                  <el-table-column prop="pid" label="序号" width="100" align="center"></el-table-column>
-                  <el-table-column prop="user" label="用户名" min-width="120" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="host_ip" label="主机IP" min-width="120" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="apply" label="应用"></el-table-column>
-                </el-table>
-              </el-col>
-              <el-col :span="24" class="e-pagination">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :page-sizes="[5, 10, 20]"
-                  :page-size="10"
-                  :total="20"
-                  layout="total, sizes, prev, pager, next, jumper"
-                ></el-pagination>
-              </el-col>
-            </el-row>
-          </div>
-        </el-tab-pane>
-        <!--端点视角-->
-        <el-tab-pane label="端点视角" name="second">
-          <div class="invest_form invest_form_point">
-            <el-form class="common-pattern">
-              <el-row class="common_box">
-                <el-col :span="24" class="common_box_list">
-
-                  <!--主机地址-->
-                  <el-input class="s_key" placeholder="主机地址" v-model="params_net.host_ip" clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                  </el-input>
-
-                  <!--时间-->
-                  <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-
-                  <el-button class="s_btn">搜索</el-button>
-                  <el-link class="s_link">重置</el-link>
-                </el-col>
-              </el-row>
-            </el-form>
-            <!--<el-link class="s_download">下载</el-link>-->
-          </div>
-          <div class="invest-point-detail">
-            <div class="invest-point-detail-title detail-computer">
-               <i class="e-icon-detail e-icon-computer"></i>
-               <h4 class="title">JamesWin7-64Pro</h4>
-               <i class="e-icon el-icon-caret-bottom"></i>
-            </div>
-            <div class="invest-point-detail-content">
-               <div class="detail_base_bottom">
-                 <ul>
-                   <li class="item_li">
-                     <span class="item_li_title">操作系统：</span>
-                     <span class="item_li_content">Windows 7 , Enterprise Edition , 6.1.7601 SP1 , x64 architecture , 64 bits OS</span>
-                   </li>
-                   <li class="item_li">
-                     <span class="item_li_title">所在域：</span>
-                     <span class="item_li_content"></span>
-                   </li>
-                   <li class="item_li">
-                     <span class="item_li_title">IP地址：</span>
-                     <span class="item_li_content">114.242.16.83</span>
-                   </li>
-                 </ul>
-               </div>
-              <div class="detail_base_bottom">
-                <ul>
-                  <li class="item_li">
-                    <span class="item_li_title">状态：</span>
-                    <span class="item_li_content">Windows 7</span>
-                  </li>
-                  <li class="item_li">
-                    <span class="item_li_title">Sensor版本：</span>
-                    <span class="item_li_content">2.2.0.23</span>
-                  </li>
-                  <li class="item_li">
-                    <span class="item_li_title">最近一次通讯：</span>
-                    <span class="item_li_content">2019-08-22 16:43:24</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="invest-point-detail">
-            <div class="invest-point-detail-title">
-              <i class="e-icon-detail e-icon-login"></i>
-              <h4 class="title">用户登录信息</h4>
-            </div>
-            <div class="invest_table invest_table_point">
-              <el-row class="invest-common-table-pattern">
-                <el-col :span="24">
-                  <el-table class="common-table" ref="multipleTable" :data="tablePointData1">
-                    <el-table-column prop="computer_name" label="计算机名称" min-width="120" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="login_type" label="登录类型" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="time" label="登录时间" min-width="100" show-overflow-tooltip></el-table-column>
-                  </el-table>
-                </el-col>
-                <el-col :span="24" class="e-pagination">
-                  <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[5, 10, 20]"
-                    :page-size="10"
-                    :total="20"
-                    layout="total, sizes, prev, pager, next, jumper"
-                  ></el-pagination>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-          <div class="invest-point-detail">
-            <div class="invest-point-detail-title">
-              <i class="e-icon-detail e-icon-process"></i>
-              <h4 class="title">带有网络连接的进程</h4>
-            </div>
-            <div class="invest_table invest_table_point">
-              <el-row class="invest-common-table-pattern">
-                <el-col :span="24">
-                  <el-table class="common-table" ref="multipleTable" :data="tablePointData1">
-                    <el-table-column prop="computer_name" label="计算机名称" min-width="120" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="login_type" label="登录类型" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="time" label="登录时间" min-width="100" show-overflow-tooltip></el-table-column>
-                  </el-table>
-                </el-col>
-                <el-col :span="24" class="e-pagination">
-                  <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[5, 10, 20]"
-                    :page-size="10"
-                    :total="20"
-                    layout="total, sizes, prev, pager, next, jumper"
-                  ></el-pagination>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-          <div class="invest-point-detail">
-            <div class="invest-point-detail-title">
-              <i class="e-icon-detail e-icon-device"></i>
-              <h4 class="title">外接移动设备</h4>
-            </div>
-            <div class="invest_table invest_table_point">
-              <el-row class="invest-common-table-pattern">
-                <el-col :span="24">
-                  <el-table class="common-table" ref="multipleTable" :data="tablePointData1">
-                    <el-table-column prop="computer_name" label="计算机名称" min-width="120" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="login_type" label="登录类型" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="time" label="登录时间" min-width="100" show-overflow-tooltip></el-table-column>
-                  </el-table>
-                </el-col>
-                <el-col :span="24" class="e-pagination">
-                  <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[5, 10, 20]"
-                    :page-size="10"
-                    :total="20"
-                    layout="total, sizes, prev, pager, next, jumper"
-                  ></el-pagination>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-          <div class="invest-point-detail">
-            <div class="invest-point-detail-title">
-              <i class="e-icon-detail e-icon-time"></i>
-              <h4 class="title">创建定时任务</h4>
-            </div>
-            <div class="invest_table invest_table_point">
-              <el-row class="invest-common-table-pattern">
-                <el-col :span="24">
-                  <el-table class="common-table" ref="multipleTable" :data="tablePointData1">
-                    <el-table-column prop="computer_name" label="计算机名称" min-width="120" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="login_type" label="登录类型" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="time" label="登录时间" min-width="100" show-overflow-tooltip></el-table-column>
-                  </el-table>
-                </el-col>
-                <el-col :span="24" class="e-pagination">
-                  <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[5, 10, 20]"
-                    :page-size="10"
-                    :total="20"
-                    layout="total, sizes, prev, pager, next, jumper"
-                  ></el-pagination>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
+      </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import VmEmergePicker from "@/components/common/vm-emerge-picker";
-  export default {
-    name: "invest_host",
-    data() {
-      return {
-        activeButGroup:'1',
-        activeName: 'first',
-        loading_net:true,
-        loading_point:true,
-        params_net: {
-          host_ip: "",
-          startTime: "",
-          endTime: "",
-        },
-        params_point: {
-          domain_ip: "",
-          port:"",
-          process: "",
-          startTime: "",
-          endTime: "",
-        },
-        tableNetData1: [
-          {
-            pid: '01',
-            time: "2019.11.08 15:33:24 ~ 2019.11.08 15:33:24",
-            ori_address: "192.168.1.187",
-            ori_port: "29284",
-            des_address: "119.255.133.57",
-            des_port: "443",
-            email:'teredo@ipv6microsoft.com',
-            apply:'— —'
-          },
-          {
-            pid: '02',
-            time: "2019.11.08 15:33:24 ~ 2019.11.08 15:33:24",
-            ori_address: "192.168.1.187",
-            ori_port: "29284",
-            des_address: "119.255.133.57",
-            des_port: "443",
-            email:'teredo@ipv6microsoft.com',
-            apply:'— —'
-          },
-          {
-            pid: '03',
-            time: "2019.11.08 15:33:24 ~ 2019.11.08 15:33:24",
-            ori_address: "192.168.1.187",
-            ori_port: "29284",
-            des_address: "119.255.133.57",
-            des_port: "443",
-            email:'teredo@ipv6microsoft.com',
-            apply:'— —'
-          }
-        ],
-        tableNetData2: [
-          {
-            pid: '01',
-            file: "/cgi-bin/httpcom",
-            hash: "eoiquoiquw1038129dhjlkasda3102843jksdhfl7",
-            ori: "220.194.93.12",
-            host_ip: "119.255.133.57",
-            apply:'— —'
-          },
-          {
-            pid: '02',
-            file: "/cgi-bin/httpcom",
-            hash: "eoiquoiquw1038129dhjlkasda3102843jksdhfl7",
-            ori: "220.194.93.12",
-            host_ip: "119.255.133.57",
-            apply:'— —'
-          },
-          {
-            pid: '03',
-            file: "/cgi-bin/httpcom",
-            hash: "eoiquoiquw1038129dhjlkasda3102843jksdhfl7",
-            ori: "220.194.93.12",
-            host_ip: "119.255.133.57",
-            apply:'— —'
-          }
-        ],
-        tableNetData3: [
-          {
-            pid: '01',
-            user: "Centerhttpcomdm",
-            host_ip: "192.168.1.187",
-            apply:'— —'
-          },
-          {
-            pid: '02',
-            user: "Centerhttpcomdm",
-            host_ip: "192.168.1.187",
-            apply:'— —'
-          },
-          {
-            pid: '03',
-            user: "Centerhttpcomdm",
-            host_ip: "192.168.1.187",
-            apply:'— —'
-          }
-        ],
-        tablePointData1: [
-          {
-            computer_name: "JamesWin7-64Pro",
-            login_type: "系统管理员登录",
-            time: "2019-08-22 16:43:24"
-          }
-        ],
-        tablePointData2: [
-          {
-            computer_name: "JamesWin7-64Pro",
-            login_type: "系统管理员登录",
-            time: "2019-08-22 16:43:24"
-          }
-        ],
-        tablePointData3: [
-          {
-            computer_name: "JamesWin7-64Pro",
-            login_type: "系统管理员登录",
-            time: "2019-08-22 16:43:24"
-          }
-        ],
-        tablePointData4: [
-          {
-            computer_name: "JamesWin7-64Pro",
-            login_type: "系统管理员登录",
-            time: "2019-08-22 16:43:24"
-          }
-        ]
-      };
+import VmEmergePicker from "@/components/common/vm-emerge-picker";
+export default {
+  name: "invest_host",
+  data () {
+    return {
+      activeButGroup: '1',
+      time_list: {
+        time: []
+      },
+      host_search: {
+        loading: false,
+        host_ip: '',
+        start_time: "",
+        end_time: "",
+      },
+      // 网络通讯
+      host_network: {
+      },
+      host_network_data: {
+      },
+      host_network_page: {
+        page: 1,
+        rows: 10
+      },
+      // 文件
+      host_file: {
+      },
+      host_file_data: {
+      },
+      host_file_page: {
+        page: 1,
+        rows: 10
+      },
+      // 用户
+      host_user: {
+      },
+      host_user_data: {
+      },
+      host_user_page: {
+        page: 1,
+        rows: 10
+      },
+    };
+  },
+  components: {
+    VmEmergePicker
+  },
+  methods: {
+    search_data () {
+      switch (this.activeButGroup) {
+        case '1':
+          this.get_data_network()
+          break;
+        case '2':
+          this.get_data_file()
+          break;
+        case '3':
+          this.get_data_user()
+          break;
+        default:
+          break;
+      }
     },
-    components:{
-      VmEmergePicker
+    // 网络通讯
+    get_data_network () {
+      this.host_search.loading = true
+      this.$axios.get('/api/yiiapi/investigate/host-network-investigation', {
+        params: {
+          host_ip: this.host_search.host_ip,
+          start_time: this.host_search.start_time,
+          end_time: this.host_search.end_time,
+          current_page: this.host_network_page.page,
+          per_page_count: this.host_network_page.rows
+        }
+      })
+        .then(response => {
+          this.host_search.loading = false
+          let { status, data } = response.data;
+          console.log(data);
+          if (data.count > 10000) {
+            this.$message({
+              type: 'error',
+              message: '数据超过一万条,请缩小搜索条件'
+            });
+            return false
+          }
+          this.host_network = data
+          this.host_network_data = data.data
+          this.host_network_data.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
-    methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      changeTime(data) {
-        this.params_net.startTime = data[0].valueOf();
-        this.params_net.endTime = data[1].valueOf();
-      },
-    }
+    // 文件
+    get_data_file () {
+      this.host_search.loading = true
+      this.$axios.get('/api/yiiapi/investigate/host-file-investigation', {
+        params: {
+          host_ip: this.host_search.host_ip,
+          start_time: this.host_search.start_time,
+          end_time: this.host_search.end_time,
+          current_page: this.host_file_page.page,
+          per_page_count: this.host_file_page.rows
+        }
+      })
+        .then(response => {
+          this.host_search.loading = false
+          let { status, data } = response.data;
+          console.log(data);
+          if (data.count > 10000) {
+            this.$message({
+              type: 'error',
+              message: '数据超过一万条,请缩小搜索条件'
+            });
+            return false
+          }
+          this.host_file = data
+          this.host_file_data = data.data
+          this.host_file_data.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 用户
+    get_data_user () {
+      this.host_search.loading = true
+      this.$axios.get('/api/yiiapi/investigate/host-user-investigation', {
+        params: {
+          host_ip: this.host_search.host_ip,
+          start_time: this.host_search.start_time,
+          end_time: this.host_search.end_time,
+          current_page: this.host_user_page.page,
+          per_page_count: this.host_user_page.rows
+        }
+      })
+        .then(response => {
+          this.host_search.loading = false
+          let { status, data } = response.data;
+          if (data.count > 10000) {
+            this.$message({
+              type: 'error',
+              message: '数据超过一万条,请缩小搜索条件'
+            });
+            return false
+          }
+          console.log(data);
+          this.host_user = data
+          this.host_user_data = data.data
+          this.host_user_data.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 重置
+    reset () {
+      this.host_search.host_ip = ''
+    },
+    // 下载
+    download () {
+      switch (this.activeButGroup) {
+        case '1':
+          if (!this.host_network.data || this.host_network.data.data.length == 0) {
+            this.$message({
+              type: 'error',
+              message: '请先搜索需要下载的数据'
+            });
+            return false
+          }
+          if (this.host_network.count > 1000) {
+            this.$message({
+              type: 'error',
+              message: '下载数据不能超出1000条！'
+            });
+            return false
+          }
+          var url1 = "/api/yiiapi/investigate/host-network-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+          window.location.href = url1;
+          break;
+        case '2':
+          if (!this.host_file.data || this.host_file.data.data.length == 0) {
+            this.$message({
+              type: 'error',
+              message: '请先搜索需要下载的数据'
+            });
+            return false
+          }
+          if (this.host_file.count > 1000) {
+            this.$message({
+              type: 'error',
+              message: '下载数据不能超出1000条！'
+            });
+            return false
+          }
+          var url2 = "/api/yiiapi/investigate/host-file-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+          window.location.href = url2;
+          break;
+        case '3':
+          if (!this.host_user.data || this.host_user.data.data.length == 0) {
+            this.$message({
+              type: 'error',
+              message: '请先搜索需要下载的数据'
+            });
+            return false
+          }
+          if (this.host_user.count > 1000) {
+            this.$message({
+              type: 'error',
+              message: '下载数据不能超出1000条！'
+            });
+            return false
+          }
+          var url3 = "/api/yiiapi/investigate/host-user-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+          window.location.href = url3;
+          break;
+        default:
+          break;
+      }
+
+    },
+
+    // 分页-网络
+    handleSizeChange_network (val) {
+      this.host_network_page.rows = val;
+      this.get_data_network();
+    },
+    handleCurrentChange_network (val) {
+      this.host_network_page.page = val
+      this.get_data_network();
+    },
+    // 分页-文件
+    handleSizeChange_file (val) {
+      this.host_file_page.rows = val;
+      this.get_data_file();
+    },
+    handleCurrentChange_file (val) {
+      this.host_file_page.page = val
+      this.get_data_file();
+    },
+    // 分页-用户
+    handleSizeChange_user (val) {
+      this.host_user_page.rows = val;
+      this.get_data_user();
+    },
+    handleCurrentChange_user (val) {
+      this.host_user_page.page = val
+      this.get_data_user();
+    },
+
+
+
+    changeTime (data) {
+      console.log(data);
+      if (data) {
+        this.host_search.start_time = parseInt(data[0].valueOf() / 1000);
+        this.host_search.end_time = parseInt(data[1].valueOf() / 1000)
+      } else {
+        this.host_search.start_time = ''
+        this.host_search.end_time = ''
+      }
+    },
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../assets/css/less/invest-common-table-pattern.less";
-  #invest_host{
-    .invest_form_network{
-      .invest_btn_group{
-        height: 58px;
-        text-align: left;
-        /deep/
-        .el-button-group{
-          padding: 15px 0 9px 0;
-          .el-button{
-            border: 1px solid #0070FF;
-            background: #fff;
-            font-size: 14px;
-            color: #0070FF;
-            width: 112px;
-            height: 34px;
-            padding: 0;
-            font-family: PingFangSC-Regular;
-            &.active{
-              color: #fff;
-              background: #0070FF;
-            }
-            &:first-child{
-              border-right-width:0;
-            }
-          }
-        }
+@import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_invest.less';
+#invest_host {
+  /deep/ .el-button-group {
+    padding: 15px 0 9px 0;
+    .el-button {
+      border: 1px solid #0070ff;
+      background: #fff;
+      font-size: 14px;
+      color: #0070ff;
+      width: 112px;
+      height: 34px;
+      padding: 0;
+      font-family: PingFangSC-Regular;
+      &.active {
+        color: #fff;
+        background: #0070ff;
       }
-    }
-    .invest-point-detail{
-      margin: 26px 0;
-      text-align: left;
-      .invest-point-detail-title{
-        height: 50px;
-        line-height: 50px;
-        border-bottom: 1px solid #ececec;
-        .e-icon-detail{
-          display: inline-block;
-          width: 18px;
-          height: 18px;
-          background-size: 16px;
-          vertical-align: middle;
-          background-repeat: no-repeat;
-          &.e-icon-computer{
-            background-image: url("../../../assets/images/invest/computer.png");
-          }
-          &.e-icon-login{
-            background-image: url("../../../assets/images/invest/user.png");
-          }
-          &.e-icon-process{
-            background-image: url("../../../assets/images/invest/process.png");
-          }
-          &.e-icon-device{
-            background-image: url("../../../assets/images/invest/device.png");
-          }
-          &.e-icon-time{
-            background-image: url("../../../assets/images/invest/time.png");
-          }
-        }
-        .title{
-          display: inline-block;
-          font-size: 16px;
-          font-weight: bold;
-          color: #333;
-          font-family: PingFangSC-Medium;
-        }
-        &.detail-computer{
-          .title{
-            color: #0070FF;
-          }
-          .e-icon{
-            color: #0070FF;
-          }
-        }
-      }
-      .invest-point-detail-content{
-        display: flex;
-        .detail_base_bottom{
-          flex: 1;
-          .item_li{
-            height: 48px;
-            line-height: 48px;
-            display: flex;
-            font-size: 16px;
-            font-family: PingFangSC-Regular;
-            .item_li_title{
-              width: 140px;
-              color: #333333;
-            }
-            .item_li_content{
-              flex: 1;
-              color: #666666;
-              overflow: hidden;
-              text-overflow:ellipsis;
-              white-space: nowrap;
-            }
-          }
-        }
+      &:first-child {
+        border-right-width: 0;
       }
     }
   }
+}
 </style>

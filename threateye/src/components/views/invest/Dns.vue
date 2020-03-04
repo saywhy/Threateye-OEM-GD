@@ -1,123 +1,219 @@
 <template>
- <div id="invest_dns" class="common-invest">
-   <div class="invest">
-     <el-tabs v-model="activeName" @tab-click="handleClick">
-       <el-tab-pane label="网络视角" name="first">
-         <div class="invest_form">
-           <el-form class="common-pattern">
-             <el-row class="common_box">
-               <el-col :span="24" class="common_box_list">
-                 <el-input class="s_key" placeholder="主机IP" v-model="params.ip" clearable>
-                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                 </el-input>
-
-                 <el-input class="s_key" placeholder="DNS服务器IP" v-model="params.server_ip" clearable>
-                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                 </el-input>
-
-                 <el-input class="s_key" placeholder="域名" v-model="params.domain" clearable>
-                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                 </el-input>
-
-                 <el-button class="s_btn">搜索</el-button>
-                 <el-link class="s_link">重置</el-link>
-               </el-col>
-             </el-row>
-           </el-form>
-           <el-link class="s_download">下载</el-link>
-         </div>
-         <div class="invest_table">
-           <el-row class="invest-common-table-pattern">
-             <el-col :span="24">
-               <el-table class="common-table" ref="multipleTable" :data="tableData" v-loading = "loading">
-                 <el-table-column prop="pid" label="序号" width="60" align="center"></el-table-column>
-                 <el-table-column prop="time" label="时间" show-overflow-tooltip ></el-table-column>
-                 <el-table-column prop="dns" label="DNS服务器IP" show-overflow-tooltip></el-table-column>
-                 <el-table-column prop="main_address" label="主机地址" show-overflow-tooltip ></el-table-column>
-                 <el-table-column prop="type" label="类型" show-overflow-tooltip width="100"></el-table-column>
-                 <el-table-column prop="domain" label="域名" show-overflow-tooltip ></el-table-column>
-                 <el-table-column prop="resolve_address" label="解析地址" show-overflow-tooltip ></el-table-column>
-                 <el-table-column prop="ttl" label="TTL" width="100" align="center"></el-table-column>
-               </el-table>
-             </el-col>
-             <el-col :span="24" class="e-pagination">
-               <el-pagination
-                 @size-change="handleSizeChange"
-                 @current-change="handleCurrentChange"
-                 :page-sizes="[5, 10, 20]"
-                 :page-size="pagation.rows"
-                 :total="tableData.length"
-                 layout="total, sizes, prev, pager, next, jumper"
-               ></el-pagination>
-             </el-col>
-           </el-row>
-         </div>
-       </el-tab-pane>
-     </el-tabs>
-   </div>
- </div>
+  <div id="invest_dns"
+       class="common_invest"
+       v-loading.fullscreen.lock="dns_search.loading">
+    <div class="invest_box">
+      <div class="invest_top">
+        <el-input placeholder="主机IP"
+                  class="search_box"
+                  v-model="dns_search.host_ip"
+                  clearable>
+        </el-input>
+        <el-input placeholder="DNS服务器IP"
+                  class="search_box"
+                  v-model="dns_search.dns_ip"
+                  clearable>
+        </el-input>
+        <el-input placeholder="域名"
+                  class="search_box"
+                  v-model="dns_search.domain"
+                  clearable>
+        </el-input>
+        <el-input placeholder="TTL"
+                  class="search_box"
+                  v-model="dns_search.ttl"
+                  clearable>
+        </el-input>
+        <vm-emerge-picker @changeTime='changeTime'
+                          :option='time_list'></vm-emerge-picker>
+        <el-button class="btn_i"
+                   @click="get_data"> 搜索</el-button>
+        <span class="reset"
+              @click="reset">重置</span>
+        <el-button class="btn_right"
+                   @click="download">下载</el-button>
+      </div>
+      <div class="invest_bom">
+        <el-table ref="multipleTable"
+                  class="reset_table"
+                  align="center"
+                  :data="dns_list.data"
+                  tooltip-effect="dark"
+                  style="width: 100%">
+          <el-table-column label="序号"
+                           width="60">
+            <template slot-scope="scope">
+              {{(dns_search.page-1)*(dns_search.rows) + scope.row.index_cn}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="timestamp"
+                           label="时间"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="dns_ip"
+                           label="DNS服务器IP"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="host_ip"
+                           label="主机地址"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="type"
+                           label="类型"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="rrname"
+                           label="域名"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="rdata"
+                           label="解析地址"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="ttl"
+                           label="TTL"
+                           show-overflow-tooltip>
+          </el-table-column>
+        </el-table>
+        <el-pagination class="pagination_box"
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="dns_list.pageNow"
+                       :page-sizes="[10,50,100]"
+                       :page-size="10"
+                       layout="total, sizes, prev, pager, next"
+                       :total="dns_list.count">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 <script type="text/ecmascript-6">
-  import { mapState } from 'vuex'
-  export default {
-      name: "invest_dns",
-      data() {
-        return {
-          activeName: 'first',
-          loading:true,
-          params: {
-            ip: "",
-            server_ip:"",
-            domain: ""
-          },
-          pagation:{
-            pageNow: 1,
-            rows:10
-          }
-        };
+import vmEmergePicker from "@/components/common/vm-emerge-picker";
+export default {
+  name: "invest_dns",
+  components: {
+    vmEmergePicker,
+  },
+  data () {
+    return {
+      time_list: {
+        time: []
       },
-      computed:{
-          ...mapState({
-            tableData:state => state.invest.dnsData
-          })
+      dns_search: {
+        loading: false,
+        host_ip: '',
+        dns_ip: '',
+        domain: '',
+        resolve_ip: '',
+        ttl: '',
+        resolve_result: '',
+        start_time: '',
+        end_time: '',
+        page: 1,
+        rows: 10
       },
-      mounted(){
-        this.getTableInfo();
-      },
-      methods: {
-        //获取table数据
-        getTableInfo(){
-          let params_table = {
-            ...this.params,
-            ...this.pagation
-          }
-          console.log(params_table);
-          this.loading = true;
-          this.$store.dispatch('getDnsData',params_table)
-            .then(resp => {
-              if(resp) this.loading = false;
-            });
-        },
-        //顶部tabs切换事件
-        handleClick(tab, event) {
-          //console.log(tab, event);
-        },
-        //每页显示条数切换事件
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
-          this.pagation.rows = val;
-          this.getTableInfo();
-        },
-        //页面切换事件
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
-          this.pagation.pageNow = val;
-          this.getTableInfo();
-        },
+      dns_list: {
+        count: 0,
+        pageNow: 1,
       }
-    }
+    };
+  },
+  computed: {
+
+  },
+  mounted () {
+  },
+  methods: {
+    get_data () {
+      this.dns_search.loading = true
+      this.$axios.get('/api/yiiapi/investigate/dns-investigation', {
+        params: {
+          host_ip: this.dns_search.host_ip,
+          dns_ip: this.dns_search.dns_ip,
+          domain: this.dns_search.domain,
+          resolve_ip: this.dns_search.resolve_ip,
+          ttl: this.dns_search.ttl,
+          resolve_result: this.dns_search.resolve_result,
+          start_time: this.dns_search.start_time,
+          end_time: this.dns_search.end_time,
+          current_page: this.dns_search.page,
+          per_page_count: this.dns_search.rows
+        }
+      })
+        .then(response => {
+          this.dns_search.loading = false
+          let { status, data } = response.data;
+
+          if (data.count > 10000) {
+            this.$message({
+              type: 'error',
+              message: '数据超过一万条,请缩小搜索条件'
+            });
+            return false
+          }
+          this.dns_list = data
+          this.dns_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 重置
+    reset () {
+      this.dns_search.host_ip = ''
+      this.dns_search.dns_ip = ''
+      this.dns_search.domain = ''
+      this.dns_search.ttl = ''
+    },
+    // 下载
+    download () {
+      console.log(this.dns_list);
+      if (!this.dns_list.data) {
+        this.$message({
+          type: 'error',
+          message: '请先搜索需要下载的数据'
+        });
+        return false
+      }
+      if (this.dns_list.count > 1000) {
+        this.$message({
+          type: 'error',
+          message: '下载数据不能超出1000条！'
+        });
+        return false
+      }
+      var url2 = "/api/yiiapi/investigate/dns-investigation-export?host_ip=" + this.dns_search.host_ip + "&dns_ip=" + this.dns_search.dns_ip + '&domain=' + this.dns_search.domain + '&resolve_ip=' + this.dns_search.resolve_ip + '&ttl=' + this.dns_search.ttl + '&resolve_result=' + this.dns_search.resolve_result + '&start_time=' + this.dns_search.start_time + '&end_time=' + this.dns_search.end_time + '&current_page=0&per_page_count=0';
+      window.location.href = url2;
+
+
+    },
+    // 分页
+    handleSizeChange (val) {
+      this.dns_search.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      console.log(val);
+      this.dns_search.page = val
+      this.get_data();
+    },
+    changeTime (data) {
+      console.log(data);
+      if (data) {
+        this.dns_search.start_time = parseInt(data[0].valueOf() / 1000);
+        this.dns_search.end_time = parseInt(data[1].valueOf() / 1000)
+      } else {
+        this.dns_search.start_time = ''
+        this.dns_search.end_time = ''
+      }
+    },
+  }
+}
 </script>
 <style scoped lang="less">
-  @import "../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../assets/css/less/invest-common-table-pattern.less";
+@import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_invest.less';
 </style>

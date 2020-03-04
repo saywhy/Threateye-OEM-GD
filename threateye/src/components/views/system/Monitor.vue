@@ -320,7 +320,7 @@
         </div>
       </el-dialog>
       <!-- 批量导入 -->
-      <!-- <el-dialog class="import_box pop_box" :visible.sync="monitor_state.import" v-loading="monitor_state.import_loading"> -->
+      <!-- <el-dialog class="import_box pop_box" :visible.sync="monitor_state.import" v-loading="monitor_state.import_"> -->
       <el-dialog class="import_box pop_box"
                  :visible.sync="monitor_state.import">
         <img src="@/assets/images/emerge/closed.png"

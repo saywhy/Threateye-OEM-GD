@@ -1,139 +1,222 @@
 <template>
-  <div id="invest_flow" class="common-invest">
-    <div class="invest">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="网络视角" name="first">
-          <div class="invest_form">
-            <el-form class="common-pattern">
-              <el-row class="common_box">
-                <el-col :span="24" class="common_box_list">
-
-                  <!--主机IP-->
-                  <el-input class="s_key" placeholder="主机IP" v-model="params.host_ip" clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                  </el-input>
-
-                  <!--流量方向-->
-                  <el-dropdown trigger="click" placement='bottom-start' size='148'>
-                    <el-button type="primary" class="b_btn b_btn_status">
-                      <span>状态变更</span>
-                      <i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                      <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
-                      <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
-                      <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
-                      <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-
-                  <!--时间-->
-                  <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-
-                  <el-button class="s_btn">搜索</el-button>
-                  <el-link class="s_link">重置</el-link>
-                </el-col>
-              </el-row>
-            </el-form>
-            <el-link class="s_download">下载</el-link>
-          </div>
-          <div class="invest_table">
-            <el-row class="invest-common-table-pattern">
-              <el-col :span="24">
-                <el-table class="common-table" ref="multipleTable" :data="tableData" v-loading = "loading">
-                  <el-table-column prop="pid" label="序号" width="60" align="center"></el-table-column>
-                  <el-table-column prop="time" label="时间" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="dns" label="DNS服务器IP" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="main_address" label="主机地址" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="type" label="类型" show-overflow-tooltip width="100"></el-table-column>
-                  <el-table-column prop="domain" label="域名" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="resolve_address" label="解析地址" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="ttl" label="TTL" width="100" align="center"></el-table-column>
-                </el-table>
-              </el-col>
-              <el-col :span="24" class="e-pagination">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :page-sizes="[5, 10, 20]"
-                  :page-size="pagation.rows"
-                  :total="tableData.length"
-                  layout="total, sizes, prev, pager, next, jumper"
-                ></el-pagination>
-              </el-col>
-            </el-row>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
+  <div id="invest_flow"
+       class="common_invest"
+       v-loading.fullscreen.lock="flow_search.loading">
+    <div class="invest_box">
+      <div class="invest_top">
+        <el-select class="select_box"
+                   v-model="flow_search.direction"
+                   placeholder="流量方向">
+          <el-option v-for="item in flow_search.direction_list"
+                     :key="item.type"
+                     :label="item.name"
+                     :value="item.type">
+          </el-option>
+        </el-select>
+        <el-input placeholder="主机地址"
+                  class="search_box"
+                  v-model="flow_search.host_ip"
+                  clearable>
+        </el-input>
+        <vm-emerge-picker @changeTime='changeTime'
+                          :option='time_list'></vm-emerge-picker>
+        <el-button class="btn_i"
+                   @click="get_data"> 搜索</el-button>
+        <span class="reset"
+              @click="reset">重置</span>
+        <el-button class="btn_right"
+                   @click="download">下载</el-button>
+      </div>
+      <div class="invest_bom">
+        <el-table ref="multipleTable"
+                  class="reset_table"
+                  align="center"
+                  :data="flow_list_data.data"
+                  tooltip-effect="dark"
+                  style="width: 100%">
+          <el-table-column label="序号"
+                           width="60">
+            <template slot-scope="scope">
+              {{(flow_search.page-1)*(flow_search.rows) + scope.row.index_cn}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="timestamp"
+                           width="280"
+                           label="时间"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="host_ip"
+                           label="主机地址"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column label="流量"
+                           show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.flow_bytes| filterType }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="链接时长"
+                           show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.flow_duration +' S' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="dest_ip"
+                           label="目的地址"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="application"
+                           label="应用"
+                           show-overflow-tooltip>
+          </el-table-column>
+        </el-table>
+        <el-pagination class="pagination_box"
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="flow_list.pageNow"
+                       :page-sizes="[10,50,100]"
+                       :page-size="10"
+                       layout="total, sizes, prev, pager, next"
+                       :total="flow_list.count">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { mapState } from 'vuex'
-  import VmEmergePicker from "@/components/common/vm-emerge-picker";
-  export default {
-    name: "invest_flow",
-    data() {
-      return {
-        activeName: 'first',
-        loading:true,
+import VmEmergePicker from "@/components/common/vm-emerge-picker";
+export default {
+  name: "invest_flow",
+  components: {
+    VmEmergePicker
+  },
+  data () {
+    return {
+      time_list: {
+        time: []
+      },
+      flow_search: {
+        loading: false,
+        direction_list: [
+          { name: '内网到外网', type: '0' },
+          { name: '外网到内网', type: '1' },
+          { name: '内网到内网', type: '2' },
+          { name: '其他', type: '3' },
+        ],
+        direction: '0',
+        host_ip: '',
+        start_time: "",
+        end_time: "",
+        page: 1,
+        rows: 10
+      },
+      flow_list: {
+        count: 0,
+        pageNow: 1,
+      },
+      flow_list_data: {
+      }
+    };
+  },
+  methods: {
+    get_data () {
+      this.flow_search.loading = true
+      console.log(this.flow_search);
+      this.$axios.get('/api/yiiapi/investigate/flow-direction-investigation', {
         params: {
-          process: "",
-          computer:"",
-          startTime: "",
-          endTime: "",
-        },
-        pagation:{
-          pageNow: 1,
-          rows:10
+          flow_direction: this.flow_search.direction,
+          host_ip: this.flow_search.host_ip,
+          start_time: this.flow_search.start_time,
+          end_time: this.flow_search.end_time,
+          current_page: this.flow_search.page,
+          per_page_count: this.flow_search.rows
         }
-      };
-    },
-    components:{
-      VmEmergePicker
-    },
-    computed:{
-      ...mapState({
-        tableData:state => state.invest.dnsData
       })
-    },
-    mounted(){
-      this.getTableInfo();
-    },
-    methods: {
-      //获取table数据
-      getTableInfo(){
-        let params_table = {
-          ...this.params,
-          ...this.pagation
-        }
-        console.log(params_table);
-        this.loading = true;
-        this.$store.dispatch('getDnsData',params_table)
-          .then(resp => {
-            if(resp) this.loading = false;
+        .then(response => {
+          this.flow_search.loading = false
+          let { status, data } = response.data;
+          if (data.count > 10000) {
+            this.$message({
+              type: 'error',
+              message: '数据超过一万条,请缩小搜索条件'
+            });
+            return false
+          }
+          this.flow_list = data
+          this.flow_list_data = data.data
+          this.flow_list_data.data.forEach((item, index) => {
+            item.index_cn = index + 1
           });
-      },
-      //顶部tabs切换事件
-      handleClick(tab, event) {
-        //console.log(tab, event);
-      },
-      //每页显示条数切换事件
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-        this.pagation.rows = val;
-        this.getTableInfo();
-      },
-      //页面切换事件
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-        this.pagation.pageNow = val;
-        this.getTableInfo();
-      },
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 重置
+    reset () {
+      this.flow_search.direction = '0'
+      this.flow_search.host_ip = ''
+    },
+    // 下载
+    download () {
+      if (!this.flow_list.data || this.flow_list.data.data.length == 0) {
+        this.$message({
+          type: 'error',
+          message: '请先搜索需要下载的数据'
+        });
+        return false
+      }
+      if (this.flow_list.count > 1000) {
+        this.$message({
+          type: 'error',
+          message: '下载数据不能超出1000条！'
+        });
+        return false
+      }
+      var url1 = "/api/yiiapi/investigate/flow-direction-investigation-export?host_ip=" + this.flow_search.host_ip +
+        '&flow_direction=' + this.flow_search.direction +
+        '&start_time=' + this.flow_search.start_time +
+        '&end_time=' + this.flow_search.end_time +
+        '&current_page=0&per_page_count=0';
+      window.location.href = url1;
+    },
+    // 分页
+    handleSizeChange (val) {
+      this.flow_search.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      console.log(val);
+      this.flow_search.page = val
+      this.get_data();
+    },
+    changeTime (data) {
+      console.log(data);
+      if (data) {
+        this.flow_search.start_time = parseInt(data[0].valueOf() / 1000);
+        this.flow_search.end_time = parseInt(data[1].valueOf() / 1000)
+      } else {
+        this.flow_search.start_time = ''
+        this.flow_search.end_time = ''
+      }
+    }
+  },
+  filters: {
+    filterType: function (val) {
+      if (val == '') return;
+      if (val == undefined) return;
+      if (val == 0) return '0B';
+      var k = 1024;
+      var size = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        i = Math.floor(Math.log(val) / Math.log(k));
+      return (val / Math.pow(k, i)).toPrecision(3) + ' ' + size[i]
     }
   }
+}
 </script>
 <style scoped lang="less">
-  @import "../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../assets/css/less/invest-common-table-pattern.less";
+@import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_invest.less';
 </style>
+
+

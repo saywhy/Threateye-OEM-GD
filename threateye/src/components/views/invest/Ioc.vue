@@ -1,278 +1,364 @@
 <template>
-  <div id="invest_ioc" class="common-invest">
-    <div class="invest">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <!--网络视角-->
-        <el-tab-pane label="网络视角" name="first">
-          <div class="invest_form invest_form_network">
-            <el-form class="common-pattern">
-              <el-row class="common_box">
-                <el-col :span="24" class="common_box_list">
-                  <el-upload
-                    class="upload-demo"
-                    drag
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    multiple>
-                    <i class="e-icon-upload"></i>
-                    <div class="el-upload__text"><em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">
-                      <p class="tip1">IOC.ioc已上传100%</p>
-                      <p class="tip2">请选择 .txt <a class="tip2_a" href="#">(下载模板)</a> 或者<br/>
-                        .ioc的格式文件搜索</p>
-                    </div>
-                  </el-upload>
-                </el-col>
-              </el-row>
-            </el-form>
+  <div id="invest_ioc"
+       class="common_invest"
+       v-loading.fullscreen.lock="ioc_data.loading">
+    <div class="invest_box">
+      <div class="invest_top">
+        <div class="invest_upload">
+          <el-upload class="upload-demo"
+                     :before-upload="onBeforeUpload"
+                     :on-change="onChange"
+                     :on-success='onsuccess'
+                     :on-error='onerror'
+                     accept=".txt,.ioc"
+                     drag
+                     action="/api/yiiapi/investigate/upload-file"
+                     multiple>
+            <img class="upload_img"
+                 src="@/assets/images/setting/upload_s.png"
+                 alt="">
+            <div class="el-upload__text">
+              <em>点击上传</em>
+            </div>
+            <div slot="tip"
+                 class="el-upload__tip">
+              <span>请选择 .txt
+                <span @click="download_template"
+                      class="common_color">(下载模板)</span> 或者 .ioc的格式文件搜索
+              </span>
+            </div>
+          </el-upload>
+        </div>
+        <div>
+          <el-button class="btn_down"
+                     @click="download_list">下载</el-button>
+          <el-button class="btn_del"
+                     @click="del_list">删除</el-button>
+        </div>
 
-            <el-row class="invest_btn_group">
-              <el-button class="e_key e_download">下载</el-button>
-              <el-button class="e_key e_delete">删除</el-button>
-            </el-row>
-          </div>
-          <div class="invest_table">
-            <el-row class="invest-common-table-pattern">
-              <el-col :span="24">
-                <el-table class="common-table" ref="multipleTable" :data="tableNetData">
-                  <el-table-column prop="pid" label="序号" width="60" align="center"></el-table-column>
-                  <el-table-column prop="time" label="时间" min-width="180" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="ori_address" label="源地址" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="ori_port" label="源端口"  show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="des_address" label="目的地址" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="des_port" label="目的端口" width="120" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="ttl" label="TTL" width="100" align="center"></el-table-column>
-                </el-table>
-              </el-col>
-              <el-col :span="24" class="e-pagination">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :page-sizes="[5, 10, 20]"
-                  :page-size="10"
-                  :total="20"
-                  layout="total, sizes, prev, pager, next, jumper"
-                ></el-pagination>
-              </el-col>
-            </el-row>
-          </div>
-        </el-tab-pane>
-
-        <!--端点视角-->
-        <el-tab-pane label="端点视角" name="second">
-          <div class="invest_form invest_form_point">
-            <el-form class="common-pattern">
-              <el-row class="common_box">
-                <el-col :span="24" class="common_box_list">
-                  <el-upload
-                    class="upload-demo"
-                    drag
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    multiple>
-                    <i class="e-icon-upload"></i>
-                    <div class="el-upload__text"><em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">
-                      <p class="tip1">IOC.ioc已上传100%</p>
-                      <p class="tip2">请选择 .txt <a class="tip2_a" href="#">(下载模板)</a> 或者<br/>
-                        .ioc的格式文件搜索</p>
-                    </div>
-                  </el-upload>
-                </el-col>
-              </el-row>
-            </el-form>
-
-            <el-row class="invest_btn_group">
-              <el-button class="e_key e_download">下载</el-button>
-              <el-button class="e_key e_delete">删除</el-button>
-            </el-row>
-          </div>
-          <div class="invest_table invest_table_point">
-            <el-row class="invest-common-table-pattern">
-              <el-col :span="24">
-                <el-table class="common-table" ref="multipleTable" :data="tablePointData">
-                  <el-table-column prop="pid" label="序号" width="60" align="center"></el-table-column>
-                  <el-table-column prop="computer" label="计算机名" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="computer_ip" label="计算机IP地址"  min-width="100" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="jour_os" label="OS" min-width="150" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="jour_pid" label="PID" width="80" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="file_url" label="文件路径" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="time" label="时间" show-overflow-tooltip ></el-table-column>
-                  <el-table-column prop="jour_name" label="域名 (IP、端口)" min-width="120" show-overflow-tooltip></el-table-column>
-                  <el-table-column prop="action" label="动作" show-overflow-tooltip ></el-table-column>
-                </el-table>
-              </el-col>
-              <el-col :span="24" class="e-pagination">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :page-sizes="[5, 10, 20]"
-                  :page-size="10"
-                  :total="20"
-                  layout="total, sizes, prev, pager, next, jumper"
-                ></el-pagination>
-              </el-col>
-            </el-row>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
+      </div>
+      <div class="invest_bom">
+        <el-table ref="multipleTable"
+                  class="reset_table"
+                  align="center"
+                  :data="ioc_list.data"
+                  tooltip-effect="dark"
+                  @selection-change="handleSelectionChange"
+                  style="width: 100%">
+          <el-table-column label="全选"
+                           prop="type"
+                           width="50">
+          </el-table-column>
+          <el-table-column type="selection"
+                           width="50">
+          </el-table-column>
+          <el-table-column label="序号"
+                           width="60">
+            <template slot-scope="scope">
+              {{(ioc_data.page-1)*(ioc_data.rows) + scope.row.index_cn}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="upload_file_name"
+                           label="文件名"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column label="进度"
+                           width="100"
+                           show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.create_percent+'%' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态"
+                           width="100"
+                           show-overflow-tooltip>
+            <template slot-scope="scope">
+              <span>{{scope.row.create_status ==0?"失败":'成功' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="create_time"
+                           width="180"
+                           label="创建时间"
+                           show-overflow-tooltip>
+          </el-table-column>
+        </el-table>
+        <el-pagination class="pagination_box"
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="ioc_list.pageNow"
+                       :page-sizes="[10,50,100]"
+                       :page-size="10"
+                       layout="total, sizes, prev, pager, next"
+                       :total="ioc_list.count">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import VmEmergePicker from "@/components/common/vm-emerge-picker";
-  export default {
-    name: "invest_ioc",
-    data() {
-      return {
-        activeName: 'first',
-        loading_net:true,
-        loading_point:true,
-        params_net: {
-          source_address: "",
-          source_port:"",
-          destion_address: "",
-          destion_port:"",
-          startTime: "",
-          endTime: "",
-        },
-        params_point: {
-          domain_ip: "",
-          port:"",
-          process: "",
-          startTime: "",
-          endTime: "",
-        },
-        tableNetData: [
-          {
-            pid: '01',
-            time: "2019.11.08 15:33:24 ~ 2019.11.08 15:33:24",
-            ori_address: "192.168.1.187",
-            ori_port: "29284",
-            des_address: "119.255.133.57",
-            des_port: "443",
-            ttl:'— —'
-          },
-          {
-            pid: '02',
-            time: "2019.11.08 15:33:24 ~ 2019.11.08 15:33:24",
-            ori_address: "192.168.1.187",
-            ori_port: "29284",
-            des_address: "119.255.133.57",
-            des_port: "443",
-            ttl: '— —'
-          }
-        ],
-        tablePointData: [
-          {
-            pid: '01',
-            computer: "Vcenter",
-            computer_ip: "192.168.1.90",
-            jour_os: "Windows Server 2008 R2 (64-bit)",
-            jour_pid: "1532",
-            file_url:'c:\\program files\\vmware\\vc…',
-            time: "2019.11.08 15:33:24",
-            jour_name: "192.168.1.184:52906",
-            action:'NETWORK_CONNECT'
-          }
-        ]
-      };
+import VmEmergePicker from "@/components/common/vm-emerge-picker";
+export default {
+  name: "invest_ioc",
+  components: {
+    VmEmergePicker
+  },
+  data () {
+    return {
+      select_list: [],
+      ioc_list: {
+        count: 0,
+        pageNow: 1,
+      },
+      ioc_data: {
+        page: 1,
+        rows: 10,
+        loading: false
+      }
+    };
+  },
+  mounted () {
+    this.get_data()
+  },
+  methods: {
+    // 获取列表
+    get_data () {
+      this.ioc_data.loading = true
+      this.$axios.get('/api/yiiapi/investigate/ioc-scanning-list', {
+        params: {
+          page: this.ioc_data.page,
+          rows: this.ioc_data.rows,
+        }
+      })
+        .then(response => {
+          this.ioc_data.loading = false
+          let { status, data } = response.data;
+          console.log(data);
+          this.ioc_list = data
+          this.ioc_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
+          console.log(status);
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
-    components:{
-      VmEmergePicker
+    // 上传
+    onChange (params) {
+      console.log(params);
+      if (params.status == 'fail') {
+        this.$message(
+          {
+            message: '上传失败',
+            type: 'error',
+          }
+        );
+      }
     },
-    methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      changeTime(data) {
-        this.params_net.startTime = data[0].valueOf();
-        this.params_net.endTime = data[1].valueOf();
-      },
-    }
-  }
-</script>
+    onsuccess (params) {
+      console.log(params);
+      if (params.status == 1) {
+        this.$message(
+          {
+            message: params.msg,
+            type: 'error',
+          }
+        );
+      } else if (params.status == 0) {
+        this.get_data();
+        this.$message(
+          {
+            message: '上传成功',
+            type: 'success',
+          }
+        );
+      }
+    },
+    onerror (params) {
+      if (params.status == 'fail') {
+        this.$message(
+          {
+            message: '上传失败',
+            type: 'error',
+          }
+        );
+      }
+    },
+    onBeforeUpload () {
+    },
+    // 全选择
+    handleSelectionChange (val) {
+      this.select_list = val
+    },
+    // 分页
+    handleSizeChange (val) {
+      this.ioc_data.rows = val;
+      this.get_data();
+    },
+    handleCurrentChange (val) {
+      this.ioc_data.page = val
+      this.get_data();
+    },
+    // 下载模板
+    download_template () {
+      console.log('1231');
+      var url1 = "/api/yiiapi/investigate/download-ioc-template";
+      window.location.href = url1;
+    },
+    // 下载列表
+    download_list () {
+      console.log('1231');
 
+    },
+    // 删除列表
+    del_list () {
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需删除的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.select_list.forEach(element => {
+          id_list.push(element.id)
+        });
+        console.log(id_list);
+        this.$axios.delete('/api/yiiapi/investigate/ioc-scanning-del', {
+          data: {
+            id: id_list
+          }
+        })
+          .then(response => {
+            console.log(response);
+            if (response.data.status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    },
+    // 重置
+    reset () {
+      this.flow_search.direction = '0'
+      this.flow_search.host_ip = ''
+    },
+    // 下载
+    download () {
+      if (!this.flow_list.data || this.flow_list.data.data.length == 0) {
+        this.$message({
+          type: 'error',
+          message: '请先搜索需要下载的数据'
+        });
+        return false
+      }
+      if (this.flow_list.count > 1000) {
+        this.$message({
+          type: 'error',
+          message: '下载数据不能超出1000条！'
+        });
+        return false
+      }
+      var url1 = "/api/yiiapi/investigate/flow-direction-investigation-export?host_ip=" + this.flow_search.host_ip +
+        '&flow_direction=' + this.flow_search.direction +
+        '&start_time=' + this.flow_search.start_time +
+        '&end_time=' + this.flow_search.end_time +
+        '&current_page=0&per_page_count=0';
+      window.location.href = url1;
+    },
+  },
+}
+</script>
 <style scoped lang="less">
-  @import "../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../assets/css/less/invest-common-table-pattern.less";
-  @import "../../../assets/css/less/invest_less/e-button_status.less";
-  #invest_ioc{
-    .invest{
-      .invest_form{
-        .common_box {
-          padding: 0 0 15px 0;
-          .common_box_list{
-            margin: 9px 0 15px;
-            /deep/
-            .el-upload{
-              width: 164px;
-              height: 88px;
-              display: inline-block;
-              .el-upload-dragger{
-                width: 100%;
-                height: 100%;
-                position: relative;
-                background: #f8f8f8;
-                .e-icon-upload{
-                  width: 36px;
-                  height: 36px;
-                  left: 64px;
-                  top: 15px;
-                  position: absolute;
-                  background-repeat: no-repeat;
-                  background-image: url("../../../assets/images/invest/upload.png");
-                  background-size: 36px;
-                }
-                .el-upload__text{
-                  margin-top: 50px;
-                }
-              }
-            }
-            .el-upload__tip{
-              display: inline-block;
-              vertical-align: top;
-              margin-left: 20px;
-              font-family: PingFangSC-Regular;
-              font-size: 14px;
-              color: #999999;
-              .tip2{
-                margin-top: 8px;
-                .tip2_a{
-                  font-family: PingFangSC-Regular;
-                  font-size: 14px;
-                  color: #0070FF;
-                  line-height: 20px;
-                }
-              }
-            }
+@import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_invest.less';
+#invest_ioc {
+  .invest_upload {
+    overflow: auto;
+    margin-bottom: 10px;
+    /deep/ .upload-demo {
+      // float: left;
+      margin-bottom: 10px;
+      .el-upload-list__item:focus {
+        outline: 0;
+      }
+      .el-upload {
+        float: left;
+        .el-upload-dragger {
+          width: 164px;
+          height: 88px;
+          background: #f8f8f8;
+          border: 0;
+          .upload_img {
+            margin-top: 20px;
+            width: 27px;
           }
         }
-        .invest_btn_group{
-          text-align: left;
-          font-size: 0;
-          padding-bottom: 9px;
-          .e_key{
-            display: inline-block;
-            width: 148px;
-            height: 40px;
-            font-size: 14px;
-            color: #0070ff;
-            background: #fff;
-            border: 1px solid #0070FF;
-            &.e_download{
-              background: #0070FF;
-              color: #fff;
-            }
-          }
+      }
+      .el-upload__tip {
+        float: left;
+        width: 164px;
+        height: 88px;
+        margin: 0 10px;
+        font-size: 14px;
+        color: #999999;
+        .common_color {
+          color: #0070ff;
+          cursor: pointer;
+        }
+      }
+      .el-upload-list {
+        float: left;
+        .el-upload-list__item:first-child {
+          margin-top: 0;
         }
       }
     }
   }
-
+  .btn_down {
+    padding: 0;
+    width: 148px;
+    height: 42px;
+    background: #0070ff;
+    color: #fff;
+  }
+  .btn_del {
+    padding: 0;
+    width: 148px;
+    height: 42px;
+    background: #fff;
+    border-color: #0070ff;
+    color: #0070ff;
+  }
+}
 </style>
+
 

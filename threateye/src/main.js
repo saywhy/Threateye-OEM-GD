@@ -21,9 +21,17 @@ Vue.prototype.$echarts = echarts;
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;
+import uploader from 'vue-simple-uploader'
+Vue.use(uploader)
 
 // 引入http
-import { post,fetch,patch,put,deletes } from './https/api'
+import {
+  post,
+  fetch,
+  patch,
+  put,
+  deletes
+} from './https/api'
 
 //定义全局变量
 Vue.prototype.$post = post;
@@ -69,12 +77,12 @@ router.beforeEach((to, from, next) => {
           //const roles = res.data.role;
           const roles = resp;
 
-          if(roles == null){
+          if (roles == null) {
             store.dispatch('LogOut');
-          }else {
+          } else {
             store.dispatch('GenerateRoutes', {
-              roles
-            })
+                roles
+              })
               .then(() => { // 生成可访问的路由表
 
                 router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表

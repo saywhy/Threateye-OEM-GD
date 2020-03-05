@@ -5,7 +5,7 @@
       <el-table-column prop="asset_ip" label="风险资产" show-overflow-tooltip ></el-table-column>
       <el-table-column prop="indicator" label="风险指数">
         <template slot-scope="scope">
-          <div class="sc_index"></div>
+          <el-progress :show-text="false" :percentage="scope.row.indicator"></el-progress>
         </template>
       </el-table-column>
     </el-table>
@@ -18,20 +18,17 @@
     props: {
       bom_mid: {
         type: Array,
-        default:() => [
-          {asset_ip:'192.168.1.193',indicator:21},
-          {asset_ip:'192.168.1.192',indicator:50}
-        ]
+        default:() => []
       }
     },
     computed:{
       tableData(){
         let tableData = this.bom_mid;
 
-        tableData = [
+        /*tableData = [
           {asset_ip:'192.168.1.193',indicator:21},
           {asset_ip:'192.168.1.192',indicator:50},
-        ]
+        ]*/
 
         let that = this;
         tableData.map(function (v,k) {

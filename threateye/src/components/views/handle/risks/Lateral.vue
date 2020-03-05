@@ -104,7 +104,7 @@
             </el-row>
           </el-form>
         </div>
-        <el-table ref="multipleTable" class="handle_table"
+        <el-table ref="multipleTable" class="handle_table common-table"
                   align="center"
                   v-loading="table.loading"
                   :data="table.tableData"
@@ -112,7 +112,7 @@
                   @selection-change="handleSelChange">
           <el-table-column label="全选" prop="type" width="50">
             <template slot-scope="scope">
-              <div class="new_dot" v-show="scope.row.processing_person != null">
+              <div class="new_dot" v-show="scope.row.new_alert != null">
               </div>
             </template>
           </el-table-column>
@@ -154,7 +154,7 @@
           </el-table-column>
           <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="状态" show-overflow-tooltip>
+          <el-table-column label="状态"  width="80">
             <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
           </el-table-column>
         </el-table>
@@ -331,7 +331,7 @@
       changeTime(data) {
         this.params.startTime = data[0].valueOf();
         this.params.endTime = data[1].valueOf();
-        this.get_list_threat();
+        //this.get_list_threat();
       },
       //搜索按鈕點擊事件
       submitClick(){

@@ -55,7 +55,7 @@
                 <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
                 <!--告警类型-->
-                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型"  @change="currentSelChange">
+                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型" @change="currentSelChange">
                   <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
@@ -104,7 +104,7 @@
             </el-row>
           </el-form>
         </div>
-        <el-table ref="multipleTable" class="handle_table"
+        <el-table ref="multipleTable" class="handle_table common-table"
                   align="center"
                   v-loading="table.loading"
                   :data="table.tableData"
@@ -112,7 +112,7 @@
                   @selection-change="handleSelChange">
           <el-table-column label="全选" prop="type" width="50">
             <template slot-scope="scope">
-              <div class="new_dot" v-show="scope.row.processing_person != null">
+              <div class="new_dot" v-show="scope.row.new_alert != null">
               </div>
             </template>
           </el-table-column>
@@ -154,7 +154,7 @@
           </el-table-column>
           <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="状态" show-overflow-tooltip>
+          <el-table-column label="状态" width="80">
             <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
           </el-table-column>
         </el-table>
@@ -284,7 +284,7 @@
       get_list_threat() {
         this.table.loading = true;
         this.$axios.get('/api/yiiapi/externalthreat/list',{
-          params:{
+         /* params:{
             start_time:this.params.startTime,
             end_time:this.params.endTime,
             degree:'',
@@ -293,8 +293,19 @@
             key_word:this.params.key_word,
             page: this.table.pageNow,
             rows: this.table.eachPage
+          }*/
+          params:{
+            start_time:1231232131 ,
+            end_time:6231232131,
+            degree:'',
+            category:'',
+            status:1,
+            key_word:'192.168.1.171',
+            page: 1,
+            rows: 10
           }
         }).then((resp) => {
+
 
           let { status,data } = resp.data;
 
@@ -303,6 +314,7 @@
           if(status == 0){
 
             let {data, count, maxPage,pageNow } = datas;
+            console.log(data)
             this.table.tableData = data;
             this.table.count = count;
             this.table.maxPage = maxPage;
@@ -331,7 +343,7 @@
       changeTime(data) {
         this.params.startTime = data[0].valueOf();
         this.params.endTime = data[1].valueOf();
-        this.get_list_threat();
+       // this.get_list_threat();
       },
       //搜索按鈕點擊事件
       submitClick(){

@@ -9,26 +9,26 @@
           <div class="top_right">
             <el-row class="common_btn">
               <el-col :span="24" class="common_btn_list">
-                <el-dropdown trigger="click" placement='bottom-start' size='124'>
-                  <el-button type="primary" class="b_btn_124 b_btn_status">
+                <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
+                  <el-button type="primary" class="change_btn">
                     <span>状态变更</span>
                     <i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
-                  <el-dropdown-menu slot="dropdown" class="dropdown_ul_box_124">
+                  <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
                     <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
+                    <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
                     <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
                     <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
-                    <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-                <el-dropdown placement='bottom-start' trigger="click">
-                  <el-button type="primary" class="b_btn_124 b_btn_status">
+                <el-dropdown @command="change_task" placement='bottom-start' trigger="click">
+                  <el-button type="primary" class="change_btn">
                     <span>工单任务</span>
                     <i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
-                  <el-dropdown-menu slot="dropdown" class="dropdown_ul_box_124">
+                  <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
                     <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
-                    <el-dropdown-item command="工单">工单</el-dropdown-item>
+                    <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </el-col>
@@ -40,11 +40,11 @@
           <div class="bom_item">
               <li>
                   <span class="title"><i class="b_i b_name"></i>失陷确定性：</span>
-                  <span class="content">已失陷</span>
+                  <span class="content">{{detail.fall_certainty}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>威胁等级：</span>
-                  <span class="content">高危</span>
+                  <span class="content">{{detail.degree}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>资产类型：</span>
@@ -110,64 +110,34 @@
       <!-- tabs列表 -->
       <div class="detail_base_bom">
 
-        <el-table class="handle_table_detail" ref="multipleTable" align="center" :data="handle_data_1.now" tooltip-effect="dark"
-                  style="width: 100%" @selection-change="handleSelectionChange">
-          <el-table-column prop="assets" label="资产" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="assets_val" label="资产值" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="threaten" label="关联威胁" show-overflow-tooltip></el-table-column>
-          <el-table-column label="威胁等级">
-            <template slot-scope="scope">
-              <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                <el-button type="primary" @click.stop>
-                  {{ scope.row.degree }}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
-                    高危
-                  </el-dropdown-item>
-                  <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中危'">
-                    中危
-                  </el-dropdown-item>
-                  <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低危'">
-                    低危
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </template>
-          </el-table-column>
-          <el-table-column prop="is_ok" label="失联确定性" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="status" label="状态"></el-table-column>
-        </el-table>
-        <el-pagination class="handle_pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="handle_data_1.pageNow"
-                       :page-sizes="[10,50,100]" :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="handle_data_1.count">
-        </el-pagination>
-
-        <!--<el-tabs v-model="activeName" @tab-click="handleClick">
-
-          &lt;!&ndash; 网络风险视角 &ndash;&gt;
+        <el-tabs v-model="activeName">
+          <!-- 网络风险视角 -->
           <el-tab-pane label="网络风险视角" class="tabs-item" name="first">
-
-          </el-tab-pane>
-
-          &lt;!&ndash; 端点风险视角 &ndash;&gt;
-          <el-tab-pane label="端点风险视角" class="tabs-item" name="second">
-            <el-table class="handle_table_detail" ref="multipleTable" align="center" :data="handle_data_2.now" tooltip-effect="dark"
-                      style="width: 100%" @selection-change="handleSelectionChange">
-              <el-table-column prop="assets" label="资产" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="assets_val" label="资产值" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="threaten" label="关联威胁" show-overflow-tooltip></el-table-column>
+            <el-table class="handle_table_detail"
+                      ref="multipleTable"
+                      align="center"
+                      :data="table.tableData"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="告警时间" width="150">
+                <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+              </el-table-column>
+              <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="application" label="应用" show-overflow-tooltip>
+              </el-table-column>
               <el-table-column label="威胁等级">
                 <template slot-scope="scope">
                   <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
                     <el-button type="primary" @click.stop>
                       {{ scope.row.degree }}
-                      <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
+                      <i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
@@ -183,63 +153,25 @@
                   </el-dropdown>
                 </template>
               </el-table-column>
-              <el-table-column prop="is_ok" label="失联确定性" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="status" label="状态"></el-table-column>
-            </el-table>
-            <el-pagination class="handle_pagination_box"
-                           @size-change="handleSizeChange"
-                           @current-change="handleCurrentChange"
-                           :current-page="handle_data_2.pageNow"
-                           :page-sizes="[10,50,100]" :page-size="10"
-                           layout="total, sizes, prev, pager, next"
-                           :total="handle_data_2.count">
-            </el-pagination>
-          </el-tab-pane>
-
-          &lt;!&ndash; 日志风险视角 &ndash;&gt;
-          <el-tab-pane label="日志风险视角" class="tabs-item" name="third">
-            <el-table class="handle_table_detail" ref="multipleTable" align="center" :data="handle_data_3.now" tooltip-effect="dark"
-                      style="width: 100%" @selection-change="handleSelectionChange">
-              <el-table-column prop="assets" label="资产" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="assets_val" label="资产值" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="threaten" label="关联威胁" show-overflow-tooltip></el-table-column>
-              <el-table-column label="威胁等级">
-                <template slot-scope="scope">
-                  <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                    <el-button type="primary" @click.stop>
-                      {{ scope.row.degree }}
-                      <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
-                        高危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中危'">
-                        中危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低危'">
-                        低危
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
+              <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
               </el-table-column>
-              <el-table-column prop="is_ok" label="失联确定性" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="status" label="状态"></el-table-column>
+              <el-table-column label="状态" width="80">
+                <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
+              </el-table-column>
             </el-table>
             <el-pagination class="handle_pagination_box"
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
-                           :current-page="handle_data_3.pageNow"
-                           :page-sizes="[10,50,100]" :page-size="10"
-                           layout="total, sizes, prev, pager, next"
-                           :total="handle_data_3.count">
+                           :total="table.count"
+                           :page-sizes="[5,10,20]"
+                           :page-size="table.eachPage"
+                           :current-page="table.pageNow"
+                           layout="total, sizes, prev, pager, next">
             </el-pagination>
           </el-tab-pane>
 
-        </el-tabs>-->
+        </el-tabs>
       </div>
-
     </div>
 </template>
 
@@ -251,125 +183,89 @@ export default {
   components: {backTitle,VmHanleRank},
   data() {
     return {
+      detail:{},
       title_name: "风险资产详情",
       activeName: 'first',
-      handle_data_1: {
-        choose: 0,
+      table: {
+        tableData: [],
+        count: 0,
         pageNow: 1,
-        count: 4,
-        now: [
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "高危",
-            color: "high",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "低危",
-            color: "low",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          }
-        ]
+        maxPage: 1,
+        eachPage: 10,
+        loading:true
       },
-      handle_data_2: {
-        choose: 0,
-        pageNow: 1,
-        count: 4,
-        now: [
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "高危",
-            color: "high",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "低危",
-            color: "low",
-            is_ok: "— —",
-            status: "待处置"
-          }
-        ]
-      },
-      handle_data_3: {
-        choose: 0,
-        pageNow: 1,
-        count: 4,
-        now: [
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "高危",
-            color: "high",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          }
-        ]
-      }
+
+      //弹窗部分
+      state_change: false,
+      process_state: "",
     };
   },
+
+  created(){
+    let detail = this.$route.query.detail;
+    this.detail = detail;
+    this.get_list_assets_detail();
+
+    console.log(this.detail)
+  },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    //获取资产详情列表
+    get_list_assets_detail() {
+      this.$axios.get('/api/yiiapi/asset/alert-list',
+        {
+          params: {
+            asset_ip:'192.168.1.186',
+            page: this.table.pageNow,
+            rows: this.table.eachPage
+          }
+        })
+        .then((resp) => {
+
+          let {status, data} = resp.data;
+
+          let datas = data;
+
+          if (status == 0) {
+
+            let {data, count, maxPage, pageNow} = datas;
+
+            this.table.tableData = data;
+            this.table.count = count;
+            this.table.maxPage = maxPage;
+            this.table.pageNow = pageNow;
+
+          }
+        });
     },
+
+    //每頁多少條切換
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(val)
+      this.table.eachPage = val;
+      this.get_list_assets_detail();
     },
+    //頁數點擊切換
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.table.pageNow = val;
+      this.get_list_assets_detail();
     },
     /*****************************/
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+
+    // 状态变更选择
+    change_state(command) {
+      this.process_state = command;
+      this.open_state();
+    },
+    // 打开状态变更弹窗
+    open_state() {
+      this.state_change = true;
+    },
+    closed_state() {
+      this.state_change = false;
+    },
+    //状态变更取消按钮点击
+    cancel_state() {
+      this.closed_state();
     },
     //改变告警等级
     change_degree(command) {
@@ -381,10 +277,14 @@ export default {
         }
       });
     },
-    detail_click(val) {
-      this.$router.push({ path: "/detail/works", query: { detail: "2222" } });
-      console.log(val);
-    },
+
+    /***************工单任务*****************/
+    change_task(command) {
+      if (command == "新建工单") {
+        this.open_task_new();
+      }
+      this.job_task = command;
+    }
   }
 };
 </script>
@@ -419,7 +319,10 @@ export default {
           .common_btn_list {
             font-size: 0;
             /deep/
-            .b_btn_124 {
+            .el-dropdown {
+              margin-right: 8px;
+            }
+            /*.b_btn_124 {
               font-size: 14px;
               height: 42px;
               width: 124px;
@@ -432,7 +335,7 @@ export default {
                 background: #0070FF;
                 border: 1px solid #0070FF;
               }
-            }
+            }*/
           }
         }
 
@@ -557,7 +460,8 @@ export default {
 
     .detail_base_bom {
       margin-top: 24px;
-      height: 717px;
+      /*height: 717px;*/
+      height: auto;
       background: #fff;
       padding: 24px 56px;
 
@@ -610,19 +514,19 @@ export default {
           }
         }
       }
-
       .handle_pagination_box {
         margin: 24px 0;
         text-align: center;
       }
-      /*.el-tabs{
+      /deep/
+      .el-tabs{
         .el-tabs__header{
           .el-tabs__nav-wrap{
             &:after{
               background-color:#EEF6FF;
             }
             .el-tabs__nav{
-              !*line*!
+              /*line*/
               .el-tabs__active-bar{
                 top: 0!important;
                 width: 164px!important;
@@ -630,7 +534,7 @@ export default {
                 transition: transform .1s cubic-bezier(.645,.045,.355,1),
                 -webkit-transform .1s cubic-bezier(.645,.045,.355,1);
               }
-              !*tabs*!
+              /*tabs*/
               .el-tabs__item{
                 padding: 0!important;
                 width: 164px;
@@ -645,18 +549,19 @@ export default {
             }
           }
         }
-        .el-tabs__content{
-
-        }
-
-      }*/
+      }
     }
 }
 
-.dropdown_ul_box_124 {
-  width: 124px!important;
-  margin-left: 8px;
-}
+
 </style>
+<style lang="less">
+  .dropdown_ul_box {
+    width: 136px!important;
+    margin-right: 8px;
+  }
+</style>
+
+
 
 

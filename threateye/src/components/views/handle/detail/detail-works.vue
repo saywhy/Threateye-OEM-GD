@@ -7,58 +7,64 @@
               <span class="top_left_title">基本信息</span>
           </div>
           <div class="top_right">
-            <el-button class="download_btn">下载</el-button>
+            <el-link target="_blank" href="/api/yiiapi/workorder/reply?id=32">
+              <el-button class="download_btn" @click="worksDetailUpload">下载</el-button>
+            </el-link>
+            <!--<a class="download_btn" href="/api/yiiapi/workorder/reply?id=32">下载</a>-->
           </div>
       </div>
       <div class="detail_base_mid">
           <div class="bom_item">
               <li>
                   <span class="title"><i class="b_i b_name"></i>工单名称：</span>
-                  <span class="content">威胁告警代码ze0001</span>
+                  <span class="content">{{data.name}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>创建人：</span>
-                  <span class="content">admin</span>
+                  <span class="content">{{data.creator}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>经办人：</span>
-                  <span class="content">admin</span>
+                  <span class="content">{{data.new_perator}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>状态：</span>
-                  <span class="content">未处置</span>
+                  <span class="content">{{data.status | work_status}}</span>
               </li>
           </div>
           <div class="bom_item">
               <li>
                   <span class="title">优先级：</span>
-                <span class="content">极高</span>
+                <span class="content">{{data.priority | priority}}</span>
               </li>
               <li>
                   <span class="title">创建时间：</span>
-                  <span class="content">2019.10.22 18:14:32</span>
+                  <span class="content">{{data.created_at | time}}</span>
               </li>
               <li>
                   <span class="title">更新时间：</span>
-                  <span class="content">2019.11.04 15:33:56</span>
+                  <span class="content">{{data.updated_at | time}}</span>
               </li>
               <li>
                   <span class="title">备注：</span>
-                  <span class="content">备注内容备注内容备注内容备注内容备</span>
+                  <span class="content">{{data.remarks}}</span>
               </li>
           </div>
       </div>
       <div class="detail_base_bom">
         <!-- tabs列表 -->
         <el-tabs v-model="activeName" @tab-click="handleClick">
-
           <!-- 资产维度综合告警 -->
           <el-tab-pane label="资产维度综合告警" class="tabs-item" name="first">
-            <el-table class="handle_table_detail" ref="multipleTable" align="center" :data="handle_data_1.now" tooltip-effect="dark"
-                      style="width: 100%" @selection-change="handleSelectionChange">
-              <el-table-column prop="assets" label="资产" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="assets_val" label="资产值" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="threaten" label="关联威胁" show-overflow-tooltip></el-table-column>
+            <el-table class="handle_table_detail"
+                      ref="multipleTable"
+                      align="center"
+                      :data="table_risks.tableData"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column prop="asset_ip" label="资产" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
               <el-table-column label="威胁等级">
                 <template slot-scope="scope">
                   <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
@@ -80,26 +86,45 @@
                   </el-dropdown>
                 </template>
               </el-table-column>
-              <el-table-column prop="is_ok" label="失联确定性" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="status" label="状态"></el-table-column>
+              <el-table-column label="失陷确定性">
+                <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+              </el-table-column>
+              <el-table-column label="状态" width="80">
+                <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+              </el-table-column>
             </el-table>
             <el-pagination class="handle_pagination_box"
-                           @size-change="handleSizeChange"
-                           @current-change="handleCurrentChange"
-                           :current-page="handle_data_1.pageNow"
-                           :page-sizes="[10,50,100]" :page-size="10"
-                           layout="total, sizes, prev, pager, next"
-                           :total="handle_data_1.count">
+                           @size-change="handleSizeChangeRisks"
+                           @current-change="handleCurrentChangeRisks"
+                           :current-page="table_risks.pageNow"
+                           :page-sizes="[5,10,20]"
+                           :total="table_risks.count"
+                           :page-size="table_risks.eachPage"
+                           layout="total, sizes, prev, pager, next">
             </el-pagination>
           </el-tab-pane>
 
           <!-- 网络风险视角 -->
           <el-tab-pane label="网络风险视角" class="tabs-item" name="second">
-            <el-table class="handle_table_detail" ref="multipleTable" align="center" :data="handle_data_2.now" tooltip-effect="dark"
-                      style="width: 100%" @selection-change="handleSelectionChange">
-              <el-table-column prop="assets" label="资产" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="assets_val" label="资产值" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="threaten" label="关联威胁" show-overflow-tooltip></el-table-column>
+            <el-table class="handle_table_detail"
+                      ref="multipleTable"
+                      align="center"
+                      :data="table_alerts.tableData"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="告警时间" width="150">
+                <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+              </el-table-column>
+              <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="application" label="应用" show-overflow-tooltip>
+              </el-table-column>
               <el-table-column label="威胁等级">
                 <template slot-scope="scope">
                   <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
@@ -121,19 +146,23 @@
                   </el-dropdown>
                 </template>
               </el-table-column>
-              <el-table-column prop="is_ok" label="失联确定性" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="status" label="状态"></el-table-column>
+              <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column label="状态" width="80">
+                <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
+              </el-table-column>
             </el-table>
             <el-pagination class="handle_pagination_box"
-                           @size-change="handleSizeChange"
-                           @current-change="handleCurrentChange"
-                           :current-page="handle_data_2.pageNow"
-                           :page-sizes="[10,50,100]" :page-size="10"
-                           layout="total, sizes, prev, pager, next"
-                           :total="handle_data_2.count">
+                           @size-change="handleSizeChangeAlerts"
+                           @current-change="handleCurrentChangeAlerts"
+                           :current-page="table_alerts.pageNow"
+                           :page-sizes="[5,10,20]"
+                           :total="table_alerts.count"
+                           :page-size="table_alerts.eachPage"
+                           layout="total, sizes, prev, pager, next">
             </el-pagination>
-          </el-tab-pane>
 
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="detail_base_cot">
@@ -144,51 +173,28 @@
       </div>
       <div class="detail_base_lst">
          <ul class="lit-list">
-           <li class="item">
+           <li class="item" v-for="item in table_reply.tableData" :key="item.id">
              <img class="lst_left_img" src="@/assets/images/handle/others/user.png" alt="">
-             <span class="lst_left_title">admin</span>
-             <span class="lst_left_time"><i class="lst_time"></i>2019-11-04 14:33:16</span>
-             <p class="lst_left_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.</p>
-           </li>
-           <li class="item">
-             <img class="lst_left_img" src="@/assets/images/handle/others/user.png" alt="">
-             <span class="lst_left_title">admin</span>
-             <span class="lst_left_time"><i class="lst_time"></i>2019-11-04 14:33:16</span>
-             <p class="lst_left_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.</p>
-           </li>
-           <li class="item">
-             <img class="lst_left_img" src="@/assets/images/handle/others/user.png" alt="">
-             <span class="lst_left_title">admin</span>
-             <span class="lst_left_time"><i class="lst_time"></i>2019-11-04 14:33:16</span>
-             <p class="lst_left_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.</p>
-           </li>
-           <li class="item">
-             <img class="lst_left_img" src="@/assets/images/handle/others/user.png" alt="">
-             <span class="lst_left_title">admin</span>
-             <span class="lst_left_time"><i class="lst_time"></i>2019-11-04 14:33:16</span>
-             <p class="lst_left_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.</p>
-           </li>
-           <li class="item">
-             <img class="lst_left_img" src="@/assets/images/handle/others/user.png" alt="">
-             <span class="lst_left_title">admin</span>
-             <span class="lst_left_time"><i class="lst_time"></i>2019-11-04 14:33:16</span>
-             <p class="lst_left_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.</p>
+             <span class="lst_left_title">{{item.username}}</span>
+             <span class="lst_left_time"><i class="lst_time"></i>{{item.created_at | time}}</span>
+             <p class="lst_left_content">{{item.comment}}</p>
            </li>
          </ul>
          <el-pagination class="detail_pagination"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="handle_data_1.pageNow"
-                       :page-sizes="[10,50,100]" :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="handle_data_1.count">
+                       @size-change="handleSizeChangeReply"
+                       @current-change="handleCurrentChangeReply"
+                       :current-page="table_reply.pageNow"
+                       :page-sizes="[5,10,20]"
+                       :page-size="table_reply.eachPage"
+                       :total="table_reply.count"
+                       layout="total, sizes, prev, pager, next">
         </el-pagination>
       </div>
       <div class="detail_base_fot">
-        <textarea class="detail_works_reply"></textarea>
+        <textarea class="detail_works_reply" v-model="reply"></textarea>
       </div>
       <div class="detail_base_anw">
-        <el-button class="detail_works_answer">回复</el-button>
+        <el-button class="detail_works_answer" @click="submitReplyClick">回复</el-button>
       </div>
     </div>
 </template>
@@ -198,106 +204,206 @@ import backTitle from "@/components/common/back-title";
 export default {
   name: "detail-works",
   components: {
-    backTitle
+    backTitle,
   },
   data() {
     return {
+      id: 0,
+      common:{
+        page:1,
+        rows:2
+      },
       title_name: "工单详情",
       activeName: 'first',
-      handle_data_1: {
-        choose: 0,
+      data:{},
+      table_risks: {
+        tableData:[],
+        count: 0,
         pageNow: 1,
-        count: 4,
-        now: [
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "高危",
-            color: "high",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "低危",
-            color: "low",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          }
-        ]
+        maxPage: 1,
+        eachPage: 10
       },
-      handle_data_2: {
-        choose: 0,
+      table_alerts: {
+        tableData:[],
+        count: 0,
         pageNow: 1,
-        count: 4,
-        now: [
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "高危",
-            color: "high",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "中危",
-            color: "mid",
-            is_ok: "— —",
-            status: "待处置"
-          },
-          {
-            assets: "tenm.saicmotor.com",
-            assets_val: "服务器",
-            threaten: "恶意地址",
-            degree: "低危",
-            color: "low",
-            is_ok: "— —",
-            status: "待处置"
-          }
-        ]
-      }
+        maxPage: 1,
+        eachPage: 10
+      },
+      ///
+      table_reply:{
+        tableData: [],
+        count: 0,
+        pageNow: 1,
+        maxPage: 1,
+        eachPage: 10,
+        multipleSelection: []
+      },
+      //回复内容
+      reply: ''
     };
   },
+
+  created(){
+    let newId = this.$route.query.detail;
+
+    this.id = newId;
+
+    this.get_list_works_detail();
+
+    this.get_reply_works_detail();
+  },
+
+
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    //获取工单详情列表
+    get_list_works_detail(){
+      this.$axios.get('/api/yiiapi/workorder/details',
+        {
+          params: {
+            id: this.id,
+            page: this.common.page,
+            rows: this.common.rows
+          }
+        })
+        .then((resp) => {
+
+          //console.log(resp);
+
+          let {status, data} = resp.data;
+
+          if (status == 0) {
+
+            data.new_perator = data.perator.join(',');
+
+            this.data = data;
+
+            if(data.risk_asset != '[]') {
+              this.table_risks.tableData = data.risk_asset.data;
+              this.table_risks.count = data.risk_asset.count;
+              this.table_risks.maxPage = data.risk_asset.maxPage;
+              this.table_risks.pageNow = data.risk_asset.pageNow;
+            }
+
+            if(data.alerts != '[]') {
+              this.table_alerts.tableData = data.alerts.data;
+              this.table_alerts.count = data.alerts.count;
+              this.table_alerts.maxPage = data.alerts.maxPage;
+              this.table_alerts.pageNow = data.alerts.pageNow;
+            }
+
+          }
+        });
     },
 
-    /*****************************/
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log("1111");
+    //回复记录列表
+    get_reply_works_detail(){
+      this.$axios.get('/api/yiiapi/workorder/reply-list',
+        {
+          params: {
+            id: 32,
+            page: this.table_reply.pageNow,
+            rows: this.table_reply.eachPage
+          }
+        })
+        .then((resp) => {
+
+         // console.log(resp)
+
+          let {status, data} = resp.data;
+
+          let datas = data;
+
+          if (status == 0) {
+
+            let {data, count, maxPage, pageNow} = datas;
+
+            this.table_reply.tableData = data;
+            this.table_reply.count = count;
+            this.table_reply.maxPage = maxPage;
+            this.table_reply.pageNow = pageNow;
+          }
+        });
+    },
+
+    /*********************************************/
+    //每頁多少條切換(资产)
+    handleSizeChangeRisks(val){
+      this.table_risks.eachPage = val;
+
+      this.common.page = this.table_risks.pageNow;
+      this.common.rows = this.table_risks.eachPage;
+      this.get_list_works_detail();
+    },
+    //頁數點擊切換(资产)
+    handleCurrentChangeRisks(val){
+      this.table_risks.pageNow = val;
+
+      this.common.page = this.table_risks.pageNow;
+      this.common.rows = this.table_risks.eachPage;
+      this.get_list_works_detail();
+    },
+    /*********************************************/
+    //每頁多少條切換(网络)
+    handleSizeChangeAlerts(val){
+      this.table_alerts.eachPage = val;
+      this.common.page = this.table_alerts.pageNow;
+      this.common.rows = this.table_alerts.eachPage;
+      this.get_list_works_detail();
+    },
+    //頁數點擊切換(网络)
+    handleCurrentChangeAlerts(val){
+      this.table_alerts.pageNow = val;
+
+      this.common.page = this.table_alerts.pageNow;
+      this.common.rows = this.table_alerts.eachPage;
+      this.get_list_works_detail();
+    },
+
+    /*********************************************/
+    //每頁多少條切換(回复)
+    handleSizeChangeReply(val) {
+      this.table_reply.eachPage = val;
+      this.get_reply_works_detail();
+    },
+
+    //頁數點擊切換(回复)
+    handleCurrentChangeReply(val) {
+      this.table_reply.pageNow = val;
+      this.get_reply_works_detail();
+    },
+    /*********************************************/
+    //回复记录
+    submitReplyClick(){
+      this.$axios.post('/api/yiiapi/workorder/reply',
+        {
+          work_order_id: 32,
+          comment:this.reply
+        })
+        .then((resp) => {
+
+          let {status, data} = resp.data;
+
+          if (status == 0) {
+            this.$message.success('提交成功。');
+            this.reply = '';
+            this.get_reply_works_detail();
+          }
+        });
+    },
+
+    //工单中心详情下载
+    worksDetailUpload(){
+      this.$axios.get('/api/yiiapi/workorder/reply',{params:{id:1}})
+        .then(resp => {
+        console.log(resp);
+      });
+    },
+
+    /**********************************************************************************************/
+
+    handleClick(tab, event) {
+      //console.log(tab, event);
     },
 
     //改变告警等级
@@ -399,7 +505,8 @@ export default {
     }
     .detail_base_bom {
       margin-top: 24px;
-      height: 717px;
+      /*height: 717px;*/
+      height: auto;
       background: #fff;
       padding: 24px 56px;
       /deep/
@@ -517,7 +624,9 @@ export default {
         }
       }
     .detail_base_lst {
-      height: 532px;
+      /*height: 532px;*/
+      height: auto;
+      padding-bottom: 24px;
       background: #fff;
       .lit-list{
         margin: 0 56px;
@@ -592,6 +701,7 @@ export default {
         height: 100%;
         border: 1px solid #fff;
         resize:none;
+        padding: 24px;
       }
     }
 

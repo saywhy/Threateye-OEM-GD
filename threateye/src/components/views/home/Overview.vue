@@ -531,9 +531,10 @@
         .el-table__header-wrapper{
           .el-table__header{
             th:nth-child(3){
-              .cell{
+              /*.cell{
                 padding: 0!important;
-              }
+
+              }*/
             }
           }
         }
@@ -542,16 +543,28 @@
             td:nth-child(3){
               .cell{
                 position: relative;
-                height: 16px;
-                background: #F8F8F8;
-                .sc_index{
+                height: 12px;
+                .el-progress{
+                  .el-progress-bar{
+                    vertical-align: super;
+                    .el-progress-bar__outer{
+                      height: 12px!important;
+                      border-radius: 1px;
+                      .el-progress-bar__inner{
+                        border-radius: 1px;
+                        background-color:#5389E0;
+                      }
+                    }
+                  }
+                }
+                /*.sc_index{
                   background: #5389E0;
                   position: absolute;
                   top: 0;
                   left: 0;
                   width: 40%;
                   height: 16px;
-                }
+                }*/
               }
             }
           }

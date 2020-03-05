@@ -141,6 +141,8 @@ export default {
     },
     // 发送测试
     send_test () {
+      // yiiapi/email/test"
+      // /yiiapi/email/save"
       console.log(this.mail);
     },
     add_addr () {

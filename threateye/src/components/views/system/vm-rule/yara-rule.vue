@@ -1,5 +1,6 @@
 <template>
-  <div id="yara_rule">
+  <div id="yara_rule"
+       v-loading.fullscreen.lock="loading">
     <p>
       <img src=""
            alt="">
@@ -27,6 +28,7 @@
                  :on-exceed="handleExceed"
                  :file-list="fileList">
         <el-button class="btn_i"
+                   v-cloak
                    type="primary">{{rule_data.name}}</el-button>
       </el-upload>
       <el-button class="btn_o"
@@ -49,6 +51,7 @@ export default {
         upload_pop: false
       },
       fileList: [],
+      loading: false,
     };
   },
   props: {
@@ -73,6 +76,7 @@ export default {
 
   methods: {
     get_data () {
+      this.loading = true
       this.$axios.get('/api/yiiapi/yararule/get')
         .then(response => {
           console.log(response.data);
@@ -85,6 +89,9 @@ export default {
             this.rule_data.update_time = response.data.msg.update_time
             this.rule_data.name = '上传'
           }
+          setTimeout(() => {
+            this.loading = false
+          }, 500);
         })
         .catch(error => {
           console.log(error);
@@ -226,6 +233,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+[v-cloak] {
+  display: none;
+}
 #yara_rule {
   text-align: left;
   .updata_time {

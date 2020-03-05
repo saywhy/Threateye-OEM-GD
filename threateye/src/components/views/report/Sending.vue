@@ -5,157 +5,292 @@
         <h3 class="title">报表发送</h3>
       </div>
       <el-form class="r_content_main">
-        <el-row type="flex" class="r_main_list">
-          <el-col :span="3"><span class="title">状态</span></el-col>
-          <el-col :span="21"><div class="r_radio">
-            <el-radio v-model="radio1" label="1" class="r_radio_item">启用</el-radio>
-            <el-radio v-model="radio1" label="2" class="r_radio_item">停用</el-radio>
-          </div></el-col>
-        </el-row>
-        <el-row type="flex" class="r_main_list">
-          <el-col :span="3"><span class="title">发送周期</span></el-col>
+        <el-row type="flex"
+                class="r_main_list">
+          <el-col :span="3">
+            <span class="title">状态</span>
+          </el-col>
           <el-col :span="21">
             <div class="r_radio">
-              <el-radio v-model="radio2" label="1" class="r_radio_item">每日</el-radio>
-              <el-radio v-model="radio2" label="2" class="r_radio_item">每周</el-radio>
-              <el-radio v-model="radio2" label="3" class="r_radio_item">每月</el-radio>
+              <el-radio v-model="send_config.status"
+                        label="1"
+                        class="r_radio_item">启用</el-radio>
+              <el-radio v-model="send_config.status"
+                        label="0"
+                        class="r_radio_item">停用</el-radio>
             </div>
           </el-col>
         </el-row>
-        <el-row type="flex" class="r_main_list">
-          <el-col :span="3"><span class="title">发送格式</span></el-col>
-          <el-col :span="21"><div class="r_radio">
-            <el-radio v-model="radio3" label="1" class="r_radio_item">Word</el-radio>
-            <el-radio v-model="radio3" label="2" class="r_radio_item">Execl</el-radio></div>
+        <el-row type="flex"
+                class="r_main_list">
+          <el-col :span="3">
+            <span class="title">发送周期</span>
           </el-col>
-        </el-row>
-        <el-row type="flex" class="r_main_list r_special_list">
-          <el-col :span="3"><span class="title">发件人邮箱</span></el-col>
           <el-col :span="21">
-            <div class="r_main_list_item">
-              <el-input class="report-input" placeholder="" v-model="input" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
-              </el-input>
-              <i class="r_item_icon r_icon_remove"></i>
+            <div class="r_radio">
+              <el-radio v-model="send_config.cycle"
+                        label="dayly"
+                        class="r_radio_item">每日</el-radio>
+              <el-radio v-model="send_config.cycle"
+                        label="weekly"
+                        class="r_radio_item">每周</el-radio>
+              <el-radio v-model="send_config.cycle"
+                        label="monthly"
+                        class="r_radio_item">每月</el-radio>
             </div>
-            <div class="r_main_list_item">
-              <el-input class="report-input" placeholder="" v-model="input" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          </el-col>
+        </el-row>
+        <el-row type="flex"
+                class="r_main_list">
+          <el-col :span="3">
+            <span class="title">发送格式</span>
+          </el-col>
+          <el-col :span="21">
+            <div class="r_radio">
+              <el-radio v-model="send_config.report_type"
+                        label="doc"
+                        class="r_radio_item">Word</el-radio>
+              <el-radio v-model="send_config.report_type"
+                        label="excel"
+                        class="r_radio_item">Execl</el-radio>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row type="flex"
+                class="r_main_list r_special_list">
+          <el-col :span="3">
+            <span class="title">发件人邮箱</span>
+          </el-col>
+          <el-col :span="21">
+            <div class="item_addrs"
+                 v-for="(item,index) in send_config.receiver_list">
+              <el-input class="select_box"
+                        placeholder="请输入标签"
+                        v-model="item.name"
+                        clearable>
               </el-input>
-              <i class="r_item_icon r_icon_add"></i>
+              <img src="@/assets/images/common/add.png"
+                   alt=""
+                   class="img_box"
+                   v-if="item.icon"
+                   @click="add_email">
+              <img src="@/assets/images/common/del.png"
+                   alt=""
+                   class="img_box"
+                   @click="del_email(item,index)"
+                   v-if="!item.icon">
             </div>
           </el-col>
         </el-row>
         <div class="r_btn_group">
-          <el-button class="b_btn b_ok">确定</el-button>
-          <el-button class="b_btn b_cancel">取消</el-button>
+          <el-button class="b_btn b_ok"
+                     @click="edit_data">确定</el-button>
+          <el-button class="b_btn b_cancel"
+                     @click="get_data">取消</el-button>
         </div>
       </el-form>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  export default {
-    name: "report-sending",
-    data() {
-      return {
-        value1: '',
-        radio1: '1',
-        radio2: '1',
-        radio3: '1',
-        input: ''
+export default {
+  name: "report-sending",
+  data () {
+    return {
+      send_config: {
+        cycle: "",
+        receiver: [],
+        receiver_list: [],
+        report_type: '',
+        status: '',
+        receiver_edit: [],
       }
     }
+  },
+  mounted () {
+    this.get_data()
+  },
+  methods: {
+    get_data () {
+      this.$axios.get('/api/yiiapi/report/get-config')
+        .then(response => {
+          let { status, data } = response.data;
+          this.send_config.status = data.status + '';
+          this.send_config.cycle = data.cycle;
+          this.send_config.receiver = data.receiver;
+          this.send_config.report_type = data.report_type;
+          this.send_config.receiver_list = [];
+          console.log(this.send_config);
+          if (this.send_config.receiver.length == 0) {
+            this.send_config.receiver_list.push({
+              name: '',
+              icon: true
+            })
+          } else {
+            this.send_config.receiver.forEach(item => {
+              this.send_config.receiver_list.push({
+                name: item,
+                icon: false
+              })
+            });
+            this.send_config.receiver_list[this.send_config.receiver_list.length - 1].icon = true
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 编辑
+    edit_data () {
+      this.send_config.receiver_edit = []
+      if (this.send_config.receiver_list.length == 0) {
+        this.$message(
+          {
+            message: '请输入发件人邮箱',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.send_config.receiver_list.forEach(item => {
+        if (item.name != '') {
+          this.send_config.receiver_edit.push(item.name)
+        }
+      });
+      this.$axios.post('/api/yiiapi/report/set-config', {
+        status: this.send_config.status,
+        cycle: this.send_config.cycle,
+        report_type: this.send_config.report_type,
+        receiver: this.send_config.receiver_edit,
+      })
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(data);
+          console.log(status);
+          if (status == 'success') {
+            this.get_data();
+            this.$message(
+              {
+                message: '修改成功',
+                type: 'success',
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 添加邮箱
+    add_email () {
+      console.log(1111);
+      console.log(this.send_config.receiver_list);
+      this.send_config.receiver_list.forEach(item => {
+        item.icon = false;
+      });
+      this.send_config.receiver_list.push({ name: '', icon: true })
+    },
+    del_email (item, index) {
+      console.log(this.send_config.receiver_list);
+      this.send_config.receiver_list.splice(index, 1);
+    },
   }
+}
 </script>
 <style scoped lang="less">
-  @import "../../../assets/css/less/report_less/rewrite_radio.less";
-  #report-sending {
-    padding: 24px;
-    .r_top {
-      background: #fff;
-      min-height: 900px;
-      font-family: PingFangSC-Medium;
-      .r_content_top{
-        height: 80px;
-        line-height: 80px;
-        text-align: left;
-        border-bottom: 1px solid #ececec;
-        .title{
-          font-size: 18px;
-          color: #333333;
-          font-weight: 600;
-          padding: 0 24px;
-        }
-      }
-      .r_content_main{
+@import '../../../assets/css/less/report_less/rewrite_radio.less';
+#report-sending {
+  padding: 24px;
+  .r_top {
+    background: #fff;
+    min-height: 900px;
+    font-family: PingFangSC-Medium;
+    .r_content_top {
+      height: 80px;
+      line-height: 80px;
+      text-align: left;
+      border-bottom: 1px solid #ececec;
+      .title {
+        font-size: 18px;
+        color: #333333;
+        font-weight: 600;
         padding: 0 24px;
-        text-align: left;
-        .r_main_list{
-          height: 62px;
-          line-height: 60px;
-          border-bottom: 1px solid #ececec;
-          .title{
+      }
+    }
+    .r_content_main {
+      padding: 0 24px;
+      text-align: left;
+      .r_main_list {
+        // height: 62px;
+        line-height: 60px;
+        border-bottom: 1px solid #ececec;
+        .title {
+          font-size: 14px;
+          color: #333;
+          font-weight: 600;
+        }
+        .r_radio {
+          .r_radio_item {
             font-size: 14px;
             color: #333;
-            font-weight: 600;
           }
-          .r_radio{
-            .r_radio_item{
-              font-size: 14px;
-              color: #333;
-            }
-          }
-          &.r_special_list{
-            border-width: 0;
-            height: auto;
-            min-height: 120px;
-            position: relative;
-            .r_main_list_item{
-              .report-input{
-                width: 340px;
-              }
-              .r_item_icon{
-                height: 16px;
-                width: 16px;
-                display: inline-block;
-                background-size: 16px;
-                background-repeat: no-repeat;
-                vertical-align: middle;
-                &.r_icon_remove{
-                  background-image: url("../../../assets/images/report/remove.png");
-                }
-                &.r_icon_add{
-                  background-image: url("../../../assets/images/report/add.png");
-                }
-              }
+        }
+        &.r_special_list {
+          border-width: 0;
+          height: auto;
+          min-height: 120px;
+          position: relative;
+          .r_main_list_item {
+            .report-input {
+              width: 340px;
             }
           }
         }
-        .r_btn_group{
-          text-align: right;
-          height: 42px;
-          z-index: 999;
-          font-size: 0;
-          /deep/
-          .b_btn{
-            width: 136px;
-            height: 42px;
-            font-size: 16px;
-            vertical-align: text-bottom;
-            border: 1px solid #0070FF;
-            &.b_ok{
-              background: #0070FF;
-              color: #fff;
-            }
-            &.b_cancel{
-              background: #fff;
-              color: #0070FF;
-              margin-left: 24px;
-            }
+      }
+      .r_btn_group {
+        text-align: right;
+        // height: 42px;
+        z-index: 999;
+        font-size: 0;
+        /deep/ .b_btn {
+          width: 136px;
+          // height: 42px;
+          font-size: 16px;
+          vertical-align: text-bottom;
+          border: 1px solid #0070ff;
+          &.b_ok {
+            background: #0070ff;
+            color: #fff;
+          }
+          &.b_cancel {
+            background: #fff;
+            color: #0070ff;
+            margin-left: 24px;
           }
         }
       }
     }
   }
+  .item_addrs {
+    // line-height: 38px;
+    .select_box {
+      width: 340px;
+      height: 38px;
+      line-height: 38px;
+    }
+    /deep/ .el-input__inner {
+      height: 38px;
+      width: 340px;
+      background: #f8f8f8;
+      border: 0;
+    }
+    .img_box {
+      width: 16px;
+      height: 16px;
+      margin-left: 10px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+  }
+}
 </style>

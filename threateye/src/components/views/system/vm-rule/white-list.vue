@@ -1,5 +1,6 @@
 <template>
-  <div id="white_list">
+  <div id="white_list"
+       v-loading.fullscreen.lock="loading">
     <div class="btn_box">
       <el-button class="btn_i"
                  @click="open_add_box">添加白名单</el-button>
@@ -125,6 +126,7 @@ export default {
   name: "white_list",
   data () {
     return {
+      loading: false,
       white_list: {},
       white_data: {
         page: 1,
@@ -151,6 +153,7 @@ export default {
   },
   methods: {
     get_data () {
+      this.loading = true;
       this.$axios.get('/api/yiiapi/whitelist/list', {
         params: {
           page: this.white_data.page,
@@ -158,6 +161,7 @@ export default {
         }
       })
         .then(response => {
+          this.loading = false;
           this.white_list = response.data.data
           this.white_list.data.forEach((item, index) => {
             item.index_cn = index + 1

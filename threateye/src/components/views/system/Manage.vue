@@ -88,7 +88,6 @@
                 {{(equipment_data.page-1)*(equipment_data.rows) + scope.row.index_cn}}
               </template>
             </el-table-column>
-
             <el-table-column label='设备名称'>
               <template slot-scope="scope">
                 <span class="color_span"

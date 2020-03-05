@@ -169,7 +169,6 @@ export default {
           .catch(error => {
             console.log(error);
           })
-
       }
       if (this.report.type == 'csv') {
         this.$axios.post('/api/yiiapi/report/create-report', {

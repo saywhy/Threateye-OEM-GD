@@ -121,3 +121,7 @@ input:-ms-input-placeholder {
   top: 60px !important;
   z-index: 99999 !important;
 }
+
+[v-cloak] {
+  display: none;
+}

@@ -1,5 +1,6 @@
 <template>
-  <div id="rule_base">
+  <div id="rule_base"
+       v-loading.fullscreen.lock="loading">
     <p class="title">实时更新</p>
     <p class="item_box"
        v-for="item in rule"
@@ -11,7 +12,8 @@
       <span class="item_status">{{item.status_cn}}</span>
     </p>
     <el-button type="primary"
-               class="update">更新</el-button>
+               class="update"
+               @click="update_online">更新</el-button>
     <p class="title">离线更新</p>
     <p class="item_box"
        v-for="item in rule"
@@ -36,29 +38,31 @@
         <span class="title_name">上传更新文件</span>
       </div>
       <div class="content">
-        <el-upload class="upload-demo"
-                   :on-success="uploadSuccess"
-                   :before-upload="onBeforeUpload"
-                   :on-change="onChange"
-                   drag
-                   action="https://jsonplaceholder.typicode.com/posts/"
-                   multiple>
+
+        <uploader :options="options"
+                  :autoStart='false'
+                  :fileStatusText='fileStatusText'
+                  @file-added="onFileAdded"
+                  @file-success="onFileSuccess"
+                  @file-progress="onFileProgress"
+                  @file-error="onFileError"
+                  class="uploader-example">
+          <uploader-unsupport></uploader-unsupport>
           <img class="upload_img"
                src="@/assets/images/setting/upload_s.png"
                alt="">
-          <!-- <img class="upload_img" src="@/assets/images/setting/upload_e.png" alt=""> -->
-          <div class="el-upload__text">
-            <em>点击上传</em>
-          </div>
-        </el-upload>
-        <div class="tip_box">
-          <span>温馨提示：请上传文件名为sdk.tgz、ids.tgz、df.tgz、sandbox.tgz或yara.tgz的文件</span>
-        </div>
+          <uploader-drop>
+            <uploader-btn class="select_btn">点击上传</uploader-btn>
+            <span>请上传文件名为sdk.tgz、ids.tgz、df.tgz的文件</span>
+          </uploader-drop>
+          <uploader-list></uploader-list>
+        </uploader>
       </div>
       <div class="btn_box">
         <el-button @click="closed_upload_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn">确定</el-button>
+        <el-button class="ok_btn"
+                   @click="closed_upload_box">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -69,6 +73,28 @@ export default {
   name: "rule_base",
   data () {
     return {
+      loading: false,
+      options: {
+        target: '/api/yiiapi/rulebase/upload-package',
+        chunkSize: '10048000',   //分块大小
+        testChunks: false,     //是否开启服务器分片校验
+        parseTimeRemaining: function (timeRemaining, parsedTimeRemaining) {
+          return parsedTimeRemaining
+            .replace(/\syears?/, '年')
+            .replace(/\days?/, '天')
+            .replace(/\shours?/, '小时')
+            .replace(/\sminutes?/, '分钟')
+            .replace(/\sseconds?/, '秒')
+        },
+      },
+
+      fileStatusText: {
+        success: '成功',
+        error: '错误',
+        uploading: '上传中',
+        paused: '暂停',
+        waiting: '等待'
+      },
       rule: {},
       rule_data: {
         upload_pop: false,
@@ -102,9 +128,11 @@ export default {
   },
   methods: {
     get_data () {
+      this.loading = true
       this.$axios.get('/api/yiiapi/rulebase/get-update-status')
         .then(response => {
           console.log(response);
+          this.loading = false
           if (response.data.status == 0) {
             this.rule = response.data.data
             this.rule.forEach(item => {
@@ -145,7 +173,73 @@ export default {
       console.log("1111");
       this.monitor_state.import_loading = false;
     },
+    // 在线更新
+    update_online () {
+      this.$axios.post('/api/yiiapi/rulebase/realtime-update')
+        .then(response => {
+          console.log(response);
+          let { status, data } = response.data;
+          if (status == 0) {
+            this.get_data()
+            this.$message({
+              type: 'success',
+              message: '开始更新！'
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 离线更新
+    // 上传
+    onFileAdded (file) {
+      console.log(file.name);
+      file.pause()
+      if (file.name == 'sdk.tgz' || file.name == 'ids.tgz' || file.name == 'df.tgz') {
+        setTimeout(() => {
+          file.resume();
+        }, 100)
+      } else {
+        this.$message({
+          message: '请上传文件名为sdk.tgz、ids.tgz、df.tgz的文件',
+          type: 'warning'
+        });
+        setTimeout(() => {
+          file.cancel()
+        }, 100)
+      }
+    },
+    onFileSuccess (rootFile, file, response, chunk) {
+      if (JSON.parse(response).status == 0) {
+        console.log(file);
+        this.$axios.get('/api/yiiapi/sandbox/move-file', {
+          params: {
+            upload_name: file.name,
+          }
+        })
+          .then(response => {
+            let { status, data } = response.data;
+            if (status == 0) {
+              file.cancel()
+              this.get_data();
+              this.$message(
+                {
+                  message: '上传成功',
+                  type: 'success',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
 
+      }
+      console.log(chunk);
+    },
+    onFileProgress (file) { },
+    onFileError () { },
   }
 };
 </script>
@@ -184,23 +278,51 @@ export default {
 #rule_base {
   .el-dialog {
     width: 440px;
-    .el-upload-dragger {
+    /deep/ .uploader-example {
+      width: 100%;
+      margin: 0;
+      padding: 0;
       border: 0;
-      height: 140px;
-      .upload_img {
-        margin-top: 20px;
-        width: 88px;
+      text-align: center;
+      .uploader-drop {
+        border: 0;
+        background: none;
+      }
+      .uploader-list {
+        overflow: auto;
+        .uploader-file {
+          height: 30px;
+          line-height: 30px;
+          border: 0;
+          .uploader-file-icon {
+            display: none;
+          }
+          .uploader-file-actions {
+            display: none;
+          }
+        }
       }
     }
-    .tip_box {
-      font-size: 14px;
-      color: #999999;
-      margin: 24px 0;
-      .download {
-        color: #0070ff;
-        text-decoration: underline;
-        cursor: pointer;
-      }
+
+    .select_btn {
+      border: 0;
+    }
+    .uploader-btn {
+      display: block;
+      border: 0;
+      background: none;
+      color: #0070ff;
+      cursor: pointer;
+    }
+    .uploader-btn:hover {
+      background: none;
+      color: #0070ff;
+      cursor: pointer;
+    }
+    .upload_img {
+      width: 72px;
+      height: 72px;
+      margin-top: 35px;
     }
   }
 }

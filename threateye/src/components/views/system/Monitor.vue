@@ -42,20 +42,21 @@
                            label="IP段名称"
                            show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="ip_segment"
-                           label="IP地址段"
+          <el-table-column label="IP地址段"
                            show-overflow-tooltip>
+
+            <template slot-scope="scope">
+              <li v-for="item in scope.row.ip_segment"
+                  class="btn_tag_box">
+                <p>{{item}}</p>
+              </li>
+            </template>
           </el-table-column>
           <el-table-column prop="network_type"
                            label="网段类型"
                            show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="net_mask"
-                           label="子网掩码"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="tag"
-                           label="标签"
+          <el-table-column label="标签"
                            show-overflow-tooltip>
             <template slot-scope="scope">
               <li v-for="item in scope.row.label"
@@ -170,22 +171,24 @@
                 <span class="title">IP地址段</span>
                 <span class="title_color">*</span>
               </p>
-              <el-input class="select_box"
-                        placeholder="请输入IP地址段"
-                        v-model="monitor_add.ip_segment"
-                        clearable>
-              </el-input>
-            </div>
-            <div class="content_item">
-              <p>
-                <span class="title">子网掩码</span>
-                <span class="title_color">*</span>
-              </p>
-              <el-input class="select_box"
-                        placeholder="请输入子网掩码"
-                        v-model="monitor_add.net_mask"
-                        clearable>
-              </el-input>
+              <div class="item_addrs"
+                   v-for="(item,index) in monitor_add.ip_segment_list">
+                <el-input class="select_box"
+                          placeholder="请输入IP地址段或IP地址"
+                          v-model="item.name"
+                          clearable>
+                </el-input>
+                <img src="@/assets/images/common/add.png"
+                     alt=""
+                     class="img_box"
+                     v-if="item.icon"
+                     @click="add_ip">
+                <img src="@/assets/images/common/del.png"
+                     alt=""
+                     class="img_box"
+                     @click="del_ip(item,index)"
+                     v-if="!item.icon">
+              </div>
             </div>
             <div class="content_item">
               <p>
@@ -283,22 +286,24 @@
                 <span class="title">IP地址段</span>
                 <span class="title_color">*</span>
               </p>
-              <el-input class="select_box"
-                        placeholder="请输入IP地址段"
-                        v-model="monitor_edit.ip_segment"
-                        clearable>
-              </el-input>
-            </div>
-            <div class="content_item">
-              <p>
-                <span class="title">子网掩码</span>
-                <span class="title_color">*</span>
-              </p>
-              <el-input class="select_box"
-                        placeholder="请输入子网掩码"
-                        v-model="monitor_edit.net_mask"
-                        clearable>
-              </el-input>
+              <div class="item_addrs"
+                   v-for="(item,index) in monitor_edit.ip_segment_list">
+                <el-input class="select_box"
+                          placeholder="请输入IP地址段或IP地址"
+                          v-model="item.name"
+                          clearable>
+                </el-input>
+                <img src="@/assets/images/common/add.png"
+                     alt=""
+                     class="img_box"
+                     v-if="item.icon"
+                     @click="add_ip_edit">
+                <img src="@/assets/images/common/del.png"
+                     alt=""
+                     class="img_box"
+                     @click="del_ip_edit(item,index)"
+                     v-if="!item.icon">
+              </div>
             </div>
             <div class="content_item">
               <p>
@@ -380,8 +385,8 @@ export default {
       },
       monitor_add: {
         name: "",
-        ip_segment: "",
-        net_mask: "",
+        ip_segment: [],
+        ip_segment_list: [{ name: '', icon: true }],
         type: "static",
         type_list: ["static", 'dhcp', 'public'],
         person: "",
@@ -391,13 +396,13 @@ export default {
       monitor_edit: {
         id: '',
         name: '',
-        ip_segment: '',
         network_type: '',
         person: '',
         label_list: [],
         tag: [],
-        net_mask: '',
         type_list: ["static", 'dhcp', 'public'],
+        ip_segment: [],
+        ip_segment_list: [],
       },
       select_list: []
     };
@@ -406,6 +411,15 @@ export default {
     this.get_data()
   },
   methods: {
+    isRepeat (arr) {
+      var hash = {};
+      for (var i in arr) {
+        if (hash[arr[i]]) //hash 哈希
+          return true;
+        hash[arr[i]] = true;
+      }
+      return false;
+    },
     // 获取列表
     get_data () {
       this.$axios.get('/api/yiiapi/ipsegment/list', {
@@ -426,16 +440,60 @@ export default {
         })
     },
     // 添加IP
+    add_box () {
+      this.monitor_state.add = true;
+      this.monitor_add.name = '';
+      this.monitor_add.type = 'static';
+      this.monitor_add.person = '';
+      this.monitor_add.tag = [];
+      this.monitor_add.ip_segment = [];
+      this.monitor_add.tag_list = [{ name: '', icon: true }]
+      this.monitor_add.ip_segment_list = [{ name: '', icon: true }]
+    },
     add_data () {
+      var isRepeat_ip_segment = []
+      var isRepeat_tag = []
+      this.monitor_add.ip_segment_list.forEach(item => {
+        if (item.name != '') {
+          isRepeat_ip_segment.push(item.name)
+        }
+      });
+      this.monitor_add.tag_list.forEach(item => {
+        if (item.name != '') {
+          isRepeat_tag.push(item.name)
+        }
+      });
+      if (this.isRepeat(isRepeat_ip_segment)) {
+        this.$message(
+          {
+            message: 'IP地址或地址段有重复项,请重新输入',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.isRepeat(isRepeat_tag)) {
+        this.$message(
+          {
+            message: '标签有重复项,请重新输入',
+            type: 'error',
+          }
+        );
+        return false
+      }
       this.monitor_add.tag_list.forEach(item => {
         if (item.name != '') {
           this.monitor_add.tag.push(item.name)
         }
       });
+      this.monitor_add.ip_segment_list.forEach(item => {
+        if (item.name != '') {
+          this.monitor_add.ip_segment.push(item.name)
+        }
+      });
       this.$axios.post('/api/yiiapi/ipsegment/set-ip-segment', {
         name: this.monitor_add.name,
         ip_segment: this.monitor_add.ip_segment,
-        net_mask: this.monitor_add.net_mask,
         network_type: this.monitor_add.type,
         person: this.monitor_add.person,
         label: this.monitor_add.tag,
@@ -474,6 +532,16 @@ export default {
     del_tag (item, index) {
       this.monitor_add.tag_list.splice(index, 1);
     },
+    //  添加ip地址段
+    add_ip () {
+      this.monitor_add.ip_segment_list.forEach(item => {
+        item.icon = false;
+      });
+      this.monitor_add.ip_segment_list.push({ name: '', icon: true })
+    },
+    del_ip (item, index) {
+      this.monitor_add.ip_segment_list.splice(index, 1);
+    },
     // 编辑标签
     add_tag_edit () {
       this.monitor_edit.label_list.forEach(item => {
@@ -484,6 +552,16 @@ export default {
     del_tag_edit (item, index) {
       this.monitor_edit.label_list.splice(index, 1);
     },
+    // 编辑ip
+    add_ip_edit () {
+      this.monitor_edit.ip_segment_list.forEach(item => {
+        item.icon = false;
+      });
+      this.monitor_edit.ip_segment_list.push({ name: '', icon: true })
+    },
+    del_ip_edit (item, index) {
+      this.monitor_edit.ip_segment_list.splice(index, 1);
+    },
     alert_detail () { },
     edit_box (row) {
       this.monitor_state.edit = true;
@@ -492,12 +570,12 @@ export default {
       var obj_edit = JSON.parse(item_str);
       this.monitor_edit.id = obj_edit.id
       this.monitor_edit.name = obj_edit.name
-      this.monitor_edit.ip_segment = obj_edit.ip_segment
       this.monitor_edit.network_type = obj_edit.network_type
       this.monitor_edit.person = obj_edit.person
-      this.monitor_edit.net_mask = obj_edit.net_mask
       this.monitor_edit.label_list = [];
       this.monitor_edit.tag = [];
+      this.monitor_edit.ip_segment = [];
+      this.monitor_edit.ip_segment_list = [];
       if (obj_edit.label.length == 0) {
         this.monitor_edit.label_list.push({
           name: '',
@@ -512,8 +590,60 @@ export default {
         });
         this.monitor_edit.label_list[this.monitor_edit.label_list.length - 1].icon = true
       }
+
+      if (obj_edit.ip_segment.length == 0) {
+        this.monitor_edit.ip_segment_list.push({
+          name: '',
+          icon: true
+        })
+      } else {
+        obj_edit.ip_segment.forEach(item => {
+          this.monitor_edit.ip_segment_list.push({
+            name: item,
+            icon: false
+          })
+        });
+        this.monitor_edit.ip_segment_list[this.monitor_edit.ip_segment_list.length - 1].icon = true
+      }
     },
     edit_data () {
+
+
+      var isRepeat_ip_segment_edit = []
+      var isRepeat_tag_edit = []
+      this.monitor_edit.ip_segment_list.forEach(item => {
+        if (item.name != '') {
+          isRepeat_ip_segment_edit.push(item.name)
+        }
+      });
+      this.monitor_edit.label_list.forEach(item => {
+        if (item.name != '') {
+          isRepeat_tag_edit.push(item.name)
+        }
+      });
+      if (this.isRepeat(isRepeat_ip_segment_edit)) {
+        this.$message(
+          {
+            message: 'IP地址或地址段有重复项,请重新输入',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.isRepeat(isRepeat_tag_edit)) {
+        this.$message(
+          {
+            message: '标签有重复项,请重新输入',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      this.monitor_edit.ip_segment_list.forEach(item => {
+        if (item.name != '') {
+          this.monitor_edit.ip_segment.push(item.name)
+        }
+      });
       this.monitor_edit.label_list.forEach(item => {
         if (item.name != '') {
           this.monitor_edit.tag.push(item.name)
@@ -523,7 +653,6 @@ export default {
         id: this.monitor_edit.id,
         name: this.monitor_edit.name,
         ip_segment: this.monitor_edit.ip_segment,
-        net_mask: this.monitor_edit.net_mask,
         network_type: this.monitor_edit.network_type,
         person: this.monitor_edit.person,
         label: this.monitor_edit.tag,
@@ -620,16 +749,7 @@ export default {
         });
       });
     },
-    add_box () {
-      this.monitor_state.add = true;
-      this.monitor_add.name = '';
-      this.monitor_add.ip_segment = '';
-      this.monitor_add.net_mask = '';
-      this.monitor_add.type = 'static';
-      this.monitor_add.person = '';
-      this.monitor_add.tag = [];
-      this.monitor_add.tag_list = [{ name: '', icon: true }]
-    },
+
     import_box () {
       this.monitor_state.import = true;
     },
@@ -771,7 +891,6 @@ export default {
         text-align: center;
       }
       .btn_tag_box {
-        float: left;
         margin: 2px;
         .btn_tag {
           background: #5389e0;

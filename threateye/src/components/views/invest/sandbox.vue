@@ -4,6 +4,7 @@
       <div class="top">
         <uploader :options="options"
                   :autoStart='false'
+                  :fileStatusText='fileStatusText'
                   @file-added="onFileAdded"
                   @file-success="onFileSuccess"
                   @file-progress="onFileProgress"
@@ -96,13 +97,18 @@ export default {
         parseTimeRemaining: function (timeRemaining, parsedTimeRemaining) {
           return parsedTimeRemaining
             .replace(/\syears?/, '年')
-            .replace(/\success?/, '成功')
-            .replace(/\waiting?/, '等待')
             .replace(/\days?/, '天')
             .replace(/\shours?/, '小时')
             .replace(/\sminutes?/, '分钟')
             .replace(/\sseconds?/, '秒')
         }
+      },
+      fileStatusText: {
+        success: '成功',
+        error: '错误',
+        uploading: '上传中',
+        paused: '暂停',
+        waiting: '等待'
       },
       sandbox_list: {
       },

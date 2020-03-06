@@ -3,17 +3,18 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import echarts from 'echarts'
 export default {
   name: "agree",
   props: {
     top_right: {
       type: Array,
-      default:() => []
+      default:() =>{}
     }
   },
   data(){
     return {
-      flow_statistics:{
+      flow_statistics: {
         time: [],
         http: [],
         https: [],
@@ -32,67 +33,68 @@ export default {
   },
   created(){
     let chartData = this.top_right;
-
+    //console.log(chartData)
     let that = this;
 
     for (var k in chartData) {
       this.flow_statistics.title.push(k);
     }
+
     if(chartData.http && chartData.http.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.time.unshift(item.statistics_time);
-        this.flow_statistics.http.unshift(item.flow);
+      chartData.http.forEach(function (item,key) {
+        that.flow_statistics.time.unshift(item.statistics_time);
+        that.flow_statistics.http.unshift(item.flow);
       })
     }
     if(chartData.https && chartData.https.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.https.unshift(item.flow);
+      chartData.https.forEach(function (item,key) {
+        that.flow_statistics.https.unshift(item.flow);
       })
     }
     if(chartData.ssh && chartData.ssh.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.ssh.unshift(item.flow);
+      chartData.ssh.forEach(function (item,key) {
+        that.flow_statistics.ssh.unshift(item.flow);
       })
     }
 
     if(chartData.ftp && chartData.ftp.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.ftp.unshift(item.flow);
+      chartData.ftp.forEach(function (item,key) {
+        that.flow_statistics.ftp.unshift(item.flow);
       })
     }
 
     if(chartData.dns && chartData.dns.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.dns.unshift(item.flow);
+      chartData.dns.forEach(function (item,key) {
+        that.flow_statistics.dns.unshift(item.flow);
       })
     }
 
     if(chartData.imap && chartData.imap.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.imap.unshift(item.flow);
+      chartData.imap.forEach(function (item,key) {
+        that.flow_statistics.imap.unshift(item.flow);
       })
     }
 
     if(chartData.smb && chartData.smb.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.smb.unshift(item.flow);
+      chartData.smb.forEach(function (item,key) {
+        that.flow_statistics.smb.unshift(item.flow);
       })
     }
 
     if(chartData.pop3 && chartData.pop3.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.pop3.unshift(item.flow);
+      chartData.pop3.forEach(function (item,key) {
+        that.flow_statistics.pop3.unshift(item.flow);
       })
     }
 
     if(chartData.smtp && chartData.smtp.length){
-      chartData.forEach(function (item,key) {
-        this.flow_statistics.smtp.unshift(item.flow);
+      chartData.smtp.forEach(function (item,key) {
+        that.flow_statistics.smtp.unshift(item.flow);
       })
     }
 
     if(this.flow_statistics.title) {
-      this.flow_statistics.title.forEach(function (item,key) {
+      that.flow_statistics.title.forEach(function (item,key) {
         if (item == 'http') {
           that.flow_statistics.item = {
             name: 'HTTP',
@@ -102,7 +104,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.http,
-            areaStyle: {
+            /*areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -112,7 +114,7 @@ export default {
                   color: 'rgba(199, 237, 250,0.2)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: '#f7b851'
@@ -135,7 +137,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.https,
-            areaStyle: {
+            /*areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -145,7 +147,7 @@ export default {
                   color: 'rgba(216, 244, 247,1)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: '#58c8da'
@@ -168,7 +170,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.ssh,
-            areaStyle: {
+        /*    areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -176,7 +178,7 @@ export default {
                   offset: 1,
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
 
@@ -199,7 +201,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.ftp,
-            areaStyle: {
+            /*areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -209,7 +211,7 @@ export default {
                   color: 'rgba(255,128,0,0.2)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: 'rgba(255,128,0,0.9)'
@@ -232,17 +234,17 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.dns,
-            areaStyle: {
+            /*areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  /*color: $scope.colorType.rgbaLow8*/
+                  /!*color: $scope.colorType.rgbaLow8*!/
                 }, {
                   offset: 1,
-                  /*color: $scope.colorType.rgbaLow2*/
+                  /!*color: $scope.colorType.rgbaLow2*!/
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 /*color: $scope.colorType.rgbaLow10*/
@@ -265,7 +267,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.imap,
-            areaStyle: {
+           /* areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -275,7 +277,7 @@ export default {
                   color: 'rgba(0,0,255,0.2)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: 'rgba(0,0,255,0.9)'
@@ -298,7 +300,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.imap,
-            areaStyle: {
+           /* areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -308,7 +310,7 @@ export default {
                   color: 'rgba(204,204,153,0.2)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: 'rgba(204,204,153,0.9)'
@@ -331,7 +333,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.imap,
-            areaStyle: {
+           /* areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -341,7 +343,7 @@ export default {
                   color: 'rgba(51,153,153,0.2)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: 'rgba(51,153,153,0.9)'
@@ -364,7 +366,7 @@ export default {
             symbol: 'circle',
             symbolSize: 6,
             data: that.flow_statistics.imap,
-            areaStyle: {
+           /* areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
@@ -374,7 +376,7 @@ export default {
                   color: 'rgba(102,102,153,0.2)'
                 }], false)
               }
-            },
+            },*/
             itemStyle: {
               normal: {
                 color: 'rgba(102,102,153,0.9)'
@@ -429,11 +431,11 @@ export default {
           }
         },
         legend: {
-          bottom: 5,
+          bottom: -5,
           left: 5,
           orient: "horizontal",
           textStyle: {
-            fontSize: 12
+            fontSize: 10
           },
           selected: {
             // 选中'系列1'

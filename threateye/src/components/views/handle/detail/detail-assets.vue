@@ -4,7 +4,7 @@
       <div class="detail_base_top">
           <div class="top_left">
             <img src="@/assets/images/handle/others/detail_a_1.png" alt="">
-            <span class="top_left_title">tenm.saicmotor.com</span>
+            <span class="top_left_title">{{assets_top.asset_ip}}</span>
           </div>
           <div class="top_right">
             <el-row class="common_btn">
@@ -40,33 +40,33 @@
           <div class="bom_item">
               <li>
                   <span class="title"><i class="b_i b_name"></i>失陷确定性：</span>
-                  <span class="content">{{detail.fall_certainty}}</span>
+                  <span class="content">{{assets_top.fall_certainty}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>威胁等级：</span>
-                  <span class="content">{{detail.degree}}</span>
+                  <span class="content">{{assets_top.degree | degree}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>资产类型：</span>
-                  <span class="content">服务器</span>
+                  <span class="content">{{assets_top.new_base_category}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>分支：</span>
-                  <span class="content">总部</span>
+                  <span class="content">{{assets_top.new_branch}}</span>
               </li>
           </div>
           <div class="bom_item">
               <li>
                   <span class="title">业务：</span>
-                <span class="content">业务1</span>
+                <span class="content">{{assets_top.new_department}}</span>
               </li>
               <li>
                   <span class="title">工单名称：</span>
-                  <span class="content">告警1</span>
+                  <span class="content">{{assets_top.workorder_name}}</span>
               </li>
               <li>
                   <span class="title">工单状态：</span>
-                  <span class="content">未关联工单</span>
+                  <span class="content">{{assets_top.workorder_status | risk_status}}</span>
               </li>
           </div>
       </div>
@@ -186,6 +186,7 @@ export default {
       detail:{},
       title_name: "风险资产详情",
       activeName: 'first',
+      assets_top:{},
       table: {
         tableData: [],
         count: 0,
@@ -202,15 +203,55 @@ export default {
   },
 
   created(){
+
     let detail = this.$route.query.detail;
     this.detail = detail;
     this.get_list_assets_detail();
+    this.get_list_assets_detail_top();
 
     console.log(this.detail)
   },
   methods: {
+    //获取资产详情顶部
+    get_list_assets_detail_top() {
+
+      console.log(this.detail.asset_ip)
+      this.$axios.get('/api/yiiapi/asset/asset-details',
+        {
+          params: {
+            asset_ip: '192.168.1.194'
+          }
+        })
+        .then((resp) => {
+
+          console.log(resp)
+
+          let {status, data} = resp.data;
+
+          if (status == 0) {
+
+            let base_category = data.label.base_category;
+
+            if(base_category.includes('终端')){
+              data.new_base_category = '终端';
+            }else if(base_category.includes('服务器')){
+              data.new_base_category = '终端';
+            }else if(base_category.includes('网络设备')){
+              data.new_base_category = '网络设备';
+            }
+
+
+            data.new_branch = data.label.branch.join(',');
+            data.new_department = data.label.department.join(',');
+
+            this.assets_top = data;
+          }
+        });
+    },
+
     //获取资产详情列表
     get_list_assets_detail() {
+
       this.$axios.get('/api/yiiapi/asset/alert-list',
         {
           params: {
@@ -220,6 +261,8 @@ export default {
           }
         })
         .then((resp) => {
+
+          //console.log(resp)
 
           let {status, data} = resp.data;
 
@@ -240,7 +283,6 @@ export default {
 
     //每頁多少條切換
     handleSizeChange(val) {
-      console.log(val)
       this.table.eachPage = val;
       this.get_list_assets_detail();
     },

@@ -301,7 +301,7 @@ export default {
       this.$axios.get('/api/yiiapi/workorder/reply-list',
         {
           params: {
-            id: 32,
+            id: this.id,
             page: this.table_reply.pageNow,
             rows: this.table_reply.eachPage
           }
@@ -377,7 +377,7 @@ export default {
     submitReplyClick(){
       this.$axios.post('/api/yiiapi/workorder/reply',
         {
-          work_order_id: 32,
+          work_order_id: this.id,
           comment:this.reply
         })
         .then((resp) => {

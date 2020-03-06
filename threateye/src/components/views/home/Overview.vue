@@ -195,7 +195,7 @@
         top_mid:{},
         top_mid_show:false,
 
-        top_right:[],
+        top_right:{},
         top_right_show:false,
         ///////////
 
@@ -239,7 +239,7 @@
       init_top_left(){
         this.$axios.get('/api/yiiapi/alert/system-state')
           .then((resp) => {
-            //console.log(resp)
+           // console.log(resp)
             let {status,data} = resp.data;
             if(status == 0){
               this.top_left = data;
@@ -255,9 +255,6 @@
             let {status,data} = resp.data;
 
             if(status == 0){
-              /*this.top_mid.statistics_time = data.statistics_time;
-              this.top_mid.flow_diff = data.flow_diff;
-              this.top_mid.file_count_diff = data.file_count_diff;*/
               this.top_mid = data;
               this.top_mid_show = true;
             }
@@ -267,10 +264,11 @@
       init_top_right(){
         this.$axios.get('/api/yiiapi/alert/protocol-flow-statistics')
           .then((resp) => {
-            //console.log(resp);
+            console.log('11111111111');
+            console.log(resp);
 
             let {status,data} = resp.data;
-
+            //console.log(data)
             if(status == 0){
               this.top_right = data;
               this.top_right_show = true;
@@ -304,7 +302,7 @@
       init_mid_right() {
         this.$axios.get('/api/yiiapi/alert/threat-type')
           .then((resp) => {
-           // console.log(resp)
+
             let {status,data} = resp.data;
             if(status == 0){
               this.mid_right = data;
@@ -331,7 +329,7 @@
       init_bom_mid() {
         this.$axios.get('/api/yiiapi/alert/risk-asset-top5')
           .then((resp) => {
-            console.log(resp)
+           // console.log(resp)
             let {status,data} = resp.data;
             if(status == 0){
               this.bom_mid = data;

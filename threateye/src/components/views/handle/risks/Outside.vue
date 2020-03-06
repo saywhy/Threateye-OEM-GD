@@ -116,7 +116,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column type="selection" width="30">
+          <el-table-column type="selection" width="40">
           </el-table-column>
           <el-table-column label="告警时间" width="150">
             <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
@@ -284,7 +284,7 @@
       get_list_threat() {
         this.table.loading = true;
         this.$axios.get('/api/yiiapi/externalthreat/list',{
-         /* params:{
+          params:{
             start_time:this.params.startTime,
             end_time:this.params.endTime,
             degree:'',
@@ -293,8 +293,8 @@
             key_word:this.params.key_word,
             page: this.table.pageNow,
             rows: this.table.eachPage
-          }*/
-          params:{
+          }
+         /* params:{
             start_time:1231232131 ,
             end_time:6231232131,
             degree:'',
@@ -303,8 +303,11 @@
             key_word:'192.168.1.171',
             page: 1,
             rows: 10
-          }
+          }*/
         }).then((resp) => {
+
+
+          console.log(resp);
 
 
           let { status,data } = resp.data;

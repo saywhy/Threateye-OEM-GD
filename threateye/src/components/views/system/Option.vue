@@ -29,10 +29,10 @@
                           :disabled="disabled.time"
                           placeholder="选择日期时间">
           </el-date-picker>
-          <el-button type="primary"
+          <!-- <el-button type="primary"
                      class="btn_o margin_left">获取本地时间</el-button>
           <el-button type="primary"
-                     class="btn_o">获取系统时间</el-button>
+                     class="btn_o">获取系统时间</el-button> -->
         </div>
         <div class="item">
           <p class="item_title">时区选择</p>
@@ -48,9 +48,9 @@
             </el-option>
           </el-select>
         </div>
-        <p style="margin-bottom:12px;">
+        <!-- <p style="margin-bottom:12px;">
           <el-checkbox v-model="option.checked">自动与NTP服务器同步</el-checkbox>
-        </p>
+        </p> -->
         <div class="item">
           <p class="item_title">NTP服务器</p>
           <el-input class="select_box"
@@ -59,11 +59,12 @@
                     :disabled="disabled.ntp"
                     clearable>
           </el-input>
-          <el-button type="primary"
-                     class="btn_o margin_left">立即同步</el-button>
+          <!-- <el-button type="primary"
+                     class="btn_o margin_left">立即同步</el-button> -->
         </div>
         <el-button type="primary"
-                   class="btn_i">保存</el-button>
+                   class="btn_i"
+                   @click="save_time">保存</el-button>
       </div>
       <div class="bottom">
         <p class="title">
@@ -342,6 +343,56 @@ export default {
         default:
           break;
       }
+    },
+    //保存时间与日期
+    save_time () {
+      var set_data = {}
+      var url = ''
+      switch (this.option.method) {
+        case 1:
+          set_data.time = this.option.time
+          set_data.zone = this.option.zone
+          url = 'manual-time-synchronization'
+          break;
+        case 2:
+          set_data.zone = this.option.zone
+          url = 'local-time-synchronization'
+          break;
+        case 3:
+          set_data.server = this.option.ntp
+          url = 'ntp-time-synchronization'
+          break;
+        default:
+          break;
+      }
+      console.log(this.option);
+      this.$axios.put('/api/yiiapi/seting/' + url, set_data)
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(status);
+          if (status == 0) {
+            this.get_data()
+            this.$message(
+              {
+                message: '修改成功',
+                type: 'success',
+              }
+            );
+          } else {
+            this.$message(
+              {
+                message: data.msg,
+                type: 'error',
+              }
+            );
+          }
+
+
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 获取登录ip
     get_login_ip () {

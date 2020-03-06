@@ -13,7 +13,8 @@
                    class="btn_o"
                    @click="import_box">导入</el-button>
         <el-button type="primary"
-                   class="btn_o">导出</el-button>
+                   class="btn_o"
+                   @click="download">导出</el-button>
       </div>
       <div class="monitor_table">
         <el-table ref="multipleTable"
@@ -338,11 +339,15 @@
         </div>
         <div class="content">
           <el-upload class="upload-demo"
-                     :on-success="uploadSuccess"
-                     :before-upload="onBeforeUpload"
-                     :on-change="onChange"
+                     ref="uploadExcel"
+                     :auto-upload="false"
+                     :before-upload="beforeUploadFile"
+                     :on-change="fileChange"
+                     :on-success="handleSuccess"
+                     :on-error="handleError"
+                     :file-list="fileList"
                      drag
-                     action="https://jsonplaceholder.typicode.com/posts/"
+                     action="/api/yiiapi/ipsegment/upload-excel"
                      multiple>
             <img class="upload_img"
                  src="@/assets/images/setting/upload_s.png"
@@ -354,13 +359,15 @@
           </el-upload>
           <div class="tip_box">
             <span>温馨提示：请选择 .xlsx 的文件，且文件大小不得超过100M。没有模板？</span>
-            <span class="download">点击这里下载</span>
+            <span class="download"
+                  @click="download_template">点击这里下载</span>
           </div>
         </div>
         <div class="btn_box">
           <el-button @click="closed_import_box"
                      class="cancel_btn">取消</el-button>
-          <el-button class="ok_btn">确定</el-button>
+          <el-button class="ok_btn"
+                     @click="uploadFile">确定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -404,7 +411,8 @@ export default {
         ip_segment: [],
         ip_segment_list: [],
       },
-      select_list: []
+      select_list: [],
+      fileList: []
     };
   },
   mounted () {
@@ -681,7 +689,6 @@ export default {
           console.log(error);
         })
     },
-
     // 分页
     handleSizeChange (val) {
       this.monitor_page.rows = val;
@@ -749,35 +756,72 @@ export default {
         });
       });
     },
-
     import_box () {
       this.monitor_state.import = true;
     },
     closed_add_box () {
       this.monitor_state.add = false;
     },
-
     closed_edit_box () {
       this.monitor_state.edit = false;
     },
     closed_import_box () {
       this.monitor_state.import = false;
     },
-    uploadSuccess () {
-      console.log("1111");
-      this.monitor_state.import_loading = false;
+    // 下载模板
+    download_template () {
+      var url1 = '/api/yiiapi/ipsegment/template-download';
+      window.location.href = url1;
     },
-    // 上传文件同时需要提交数据给后台接口，这时就要用到:data属性。
-    // uploadData() {
-    //   console.log(22222);
-    // },
-    onBeforeUpload () {
-      console.log("onBeforeUpload");
-      this.monitor_state.import_loading = true;
+    // 导入
+    // 文件状态改变时的钩子
+    fileChange (file, fileList) {
+      // console.log(file)
+      // console.log(file.raw)
+      // console.log(fileList)
     },
-    onChange () {
-      this.monitor_state.import_loading = false;
-      console.log("onChange");
+    // 上传文件之前的钩子, 参数为上传的文件,若返回 false 或者返回 Promise 且被 reject，则停止上传
+    beforeUploadFile (file) {
+      let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let size = file.size / 1024 / 1024
+    },
+    // 文件上传成功时的钩子
+    handleSuccess (res, file, fileList) {
+      console.log(res);
+      if (res.status == 1) {
+        this.$message(
+          {
+            message: res.msg,
+            type: 'error',
+          }
+        );
+      } else if (res.status == 0) {
+        this.get_data();
+        this.monitor_state.import = false;
+        this.$message(
+          {
+            message: '上传成功',
+            type: 'success',
+          }
+        );
+      }
+    },
+    // 文件上传失败时的钩子
+    handleError (err, file, fileList) {
+      this.$message(
+        {
+          message: err,
+          type: 'error',
+        }
+      );
+    },
+    uploadFile () {
+      this.$refs.uploadExcel.submit()
+    },
+    // 导出
+    download () {
+      var url2 = '/api/yiiapi/ipsegment/export';
+      window.location.href = url2;
     }
   },
   filters: {

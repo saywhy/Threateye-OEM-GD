@@ -1,351 +1,604 @@
 <template>
-    <div id="Network" v-cloak>
-        <div class="e_line">
-            <p class="title" @mouseover="mouseOver()">实时告警监测</p>
-            <vm-emerge-line></vm-emerge-line>
-        </div>
-        <div class="alert_box">
-            <p class="title">告警监测</p>
-            <div class="search_box">
-                <div class="search">
-                    <el-input class="search_key" placeholder="搜索关键词" v-model="key" clearable>
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                    <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-                    <el-select class="search_key" v-model="alert" clearable placeholder="请选择告警类型">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-select class="search_key" v-model="status" clearable placeholder="请选择处理状态">
-                        <el-option v-for="item in select_state" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-button class="search_btn">搜索</el-button>
-                    <span class="search_reset" @click="reset_search">重置</span>
-                </div>
-            </div>
-            <div class="change_box">
-                <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
-                    <el-button type="primary" class="change_btn">
-                        <span>状态变更</span>
-                        <i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                        <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
-                        <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
-                        <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
-                        <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <el-dropdown @command="change_task" placement='bottom-start' trigger="click">
-                    <el-button type="primary" class="change_btn">
-                        <span>工单任务</span>
-                        <i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                        <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
-                        <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <el-button class="edit_btn">编辑标签</el-button>
-            </div>
-            <div>
-                <el-table ref="multipleTable" class="network_table" align="center" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" @row-click="alert_detail">
-                    <el-table-column label="全选" prop="type" width="50">
-                        <template slot-scope="scope">
-                            <div class="new_dot" v-show="scope.row.type=='new'">
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column type="selection" width="30">
-                    </el-table-column>
-                    <el-table-column label="告警时间" width="150">
-                        <template slot-scope="scope">{{ scope.row.date }}</template>
-                    </el-table-column>
-                    <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column prop="application" label="应用" show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column label="威胁等级">
-                        <template slot-scope="scope">
-                            <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                                <el-button type="primary" @click.stop>
-                                    {{ scope.row.degree }}
-                                    <i class="el-icon-arrow-down el-icon--right"></i>
-                                </el-button>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
-                                        高危
-                                    </el-dropdown-item>
-                                    <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中危'">
-                                        中危
-                                    </el-dropdown-item>
-                                    <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低危'">
-                                        低危
-                                    </el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column prop="status" label="状态" show-overflow-tooltip>
-                    </el-table-column>
-                </el-table>
-                <el-pagination class="pagination_box" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table_data.pageNow" :page-sizes="[10,50,100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="table_data.count">
-                </el-pagination>
-            </div>
-        </div>
-        <!-- 弹窗 -->
-        <!-- 状态变更 -->
-        <el-dialog class="pop_state_box" width='480px' :visible.sync="state_change">
-            <img src="@/assets/images/emerge/closed.png" @click="closed_state" class="closed_img" alt="">
-            <div class="title">
-                <div class="mask"></div>
-                <span class="title_name">状态变更</span>
-            </div>
-            <div class="content">
-                <p class="content_p" style="font-size:0">
-                    <span style="font-size:14px">是否将已勾选的</span>
-                    <span style="font-size:14px">两</span>
-                    <span style="font-size:14px">项状态变更为“</span>
-                    <span style="font-size:14px">{{process_state}}</span>
-                    <span style="font-size:14px">”?</span>
-                </p>
-            </div>
-            <div class="btn_box">
-                <el-button @click="cancel_state" class="cancel_btn">取消</el-button>
-                <el-button @click="ok_state" class="ok_btn">确定</el-button>
-            </div>
-        </el-dialog>
-        <!-- 任务工单 -->
-        <!-- 新建工单 -->
-        <el-dialog class="task_new_box" width='840px' :visible.sync="task.new">
-            <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
-            <div class="title">
-                <div class="mask"></div>
-                <span class="title_name">新建工单</span>
-            </div>
-            <div class="step_box">
-                <div class="step_box1">
-                    <span class="step1_span" :class="task.new_contet?'step_now':'step_past'">基本信息</span>
-                    <img src="@/assets/images/emerge/selected01.png" class="selected_img" alt="">
-                </div>
-                <div class="step_box2">
-                    <span class="step2_span" :class="!task.new_contet?'step_now':'step_past'">处置内容</span>
-                </div>
-            </div>
-            <!-- 基本信息 -->
-            <div class="task_new_content" v-if="task.new_contet">
-                <div class="content_top">
-                    <div class="content_top_left">
-                        <li class="left_item">
-                            <div class="title">
-                                <span>工单名称</span>
-                                <span class="improtant_ico">*</span>
-                            </div>
-                            <el-input class="task_new_input" placeholder="请输入工单名称" v-model="task_new.name" clearable>
-                            </el-input>
-                        </li>
-                        <li class="left_item">
-                            <div class="title">
-                                <span>经办人</span>
-                                <span class="improtant_ico">*</span>
-                            </div>
-                            <el-select class="task_new_input" v-model="task_new.operator" clearable placeholder="请选择经办人">
-                                <el-option v-for="item in task_new.operator_list" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </li>
-                    </div>
-                    <div class="content_top_right">
-                        <li class="right_item">
-                            <div class="title">
-                                <span>优先级</span>
-                                <span class="improtant_ico">*</span>
-                            </div>
-                            <el-select class="task_new_input" v-model="task_new.level" clearable placeholder="请选择优先级">
-                                <el-option v-for="item in task_new.level_list" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </li>
-                        <li class="right_item">
-                            <el-checkbox-group v-model="task_new.notice">
-                                <el-checkbox label="邮件通知">邮件通知</el-checkbox>
-                                <el-checkbox label="短信通知">短信通知</el-checkbox>
-                                <el-checkbox label="消息中心通知">消息中心通知</el-checkbox>
-                            </el-checkbox-group>
-                        </li>
-                    </div>
-                </div>
-                <div class="content_remarks">
-                    <p class="title">备注</p>
-                    <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="task_new.textarea">
-                    </el-input>
-                </div>
-                <div class="content_table">
-                    <el-table :data="task_new.task_list" style="width: 100%">
-                        <el-table-column prop="name" label="经办人">
-                        </el-table-column>
-                        <el-table-column prop="class" label="部门">
-                        </el-table-column>
-                        <el-table-column prop="email" label="邮箱">
-                        </el-table-column>
-                    </el-table>
-                    <el-pagination class="pagination_box" @size-change="task_list_size_change" :current-page="task_new.task_list_page.pageNow" :page-sizes="[5,10,20]" :page-size="5" layout="total,sizes, prev, pager, next" :total="task_new.task_list.length">
-                    </el-pagination>
-                </div>
-                <div class="btn_box">
-                    <el-button @click="closed_task_new" class="cancel_btn">取消</el-button>
-                    <el-button @click="next_task_new" class="next_btn">下一步</el-button>
-                </div>
-            </div>
-            <!-- 处置内容 -->
-            <div class="task_handle_content" v-if="!task.new_contet">
-                <div class="handle_content_top">
-                    <el-dropdown placement='bottom-start' @command="handle.add" trigger="click">
-                        <el-button type="primary" class="change_btn">
-                            <span>新增</span>
-                            <i class="el-icon-arrow-down el-icon--right"></i>
-                        </el-button>
-                        <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                            <el-dropdown-item command="资产综合">资产综合</el-dropdown-item>
-                            <el-dropdown-item command="网络">网络</el-dropdown-item>
-                            <el-dropdown-item command="端点">端点</el-dropdown-item>
-                            <el-dropdown-item command="日志">日志</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                    <el-button class="ref">刷新</el-button>
-                    <el-button class="cel">删除</el-button>
-                </div>
-                <div class='table_box'>
-                    <ul class="table_box_title">
-                        <li v-for="(tab,index) in handle.table_title" @click="table(index)" :class="{active:handle.active==index}">
-                            {{tab}}
-                        </li>
-                    </ul>
-                    <div>
-                        <div v-show="handle.active==0">
-                            <el-table ref="multipleTable" align="center" :data="handle.assets_list" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                                <el-table-column type="selection" width="50">
-                                </el-table-column>
-                                <el-table-column label="资产" prop="assets" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="group" label="资产组" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="relation" label="关联威胁" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="degree" label="威胁等级">
-                                </el-table-column>
-                                <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="status" label="状态" show-overflow-tooltip>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination class="pagination_box" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table_data.pageNow" :page-sizes="[10,50,100]" :page-size="10" layout="total, sizes, prev, pager, next" :total="table_data.count">
-                            </el-pagination>
-                        </div>
-                        <div v-show="handle.active==1">
-                            <el-table ref="multipleTable" align="center" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                                <el-table-column type="selection" width="55">
-                                </el-table-column>
-                                <el-table-column label="告警时间" show-overflow-tooltip>
-                                    <template slot-scope="scope">{{ scope.row.date }}</template>
-                                </el-table-column>
-                                <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="application" label="应用" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="degree" label="威胁等级">
-                                </el-table-column>
-                                <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="status" label="状态" show-overflow-tooltip>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination class="pagination_box" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table_data.pageNow" :page-sizes="[10,50,100]" :page-size="10" layout="total, sizes, prev, pager, next" :total="table_data.count">
-                            </el-pagination>
-                        </div>
-                        <div v-show="handle.active==2">
-                            <el-table ref="multipleTable" align="center" :data="handle.endpoint_list" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                                <el-table-column type="selection" width="50">
-                                </el-table-column>
-                                <el-table-column label="计算机名" prop="name" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="date" label="时间" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="degree" label="威胁等级">
-                                </el-table-column>
-                                <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="status" label="状态" show-overflow-tooltip>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination class="pagination_box" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table_data.pageNow" :page-sizes="[10,50,100]" :page-size="10" layout="total, sizes, prev, pager, next" :total="table_data.count">
-                            </el-pagination>
-                        </div>
-                        <div v-show="handle.active==3">
-                            <el-table ref="multipleTable" align="center" :data="handle.log_list" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                                <el-table-column type="selection" width="50">
-                                </el-table-column>
-                                <el-table-column label="告警时间" prop="date" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="category" label="威胁类型" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="assets" label="风险资产" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="info" label="告警信息" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="degree" label="威胁等级">
-                                </el-table-column>
-                                <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
-                                </el-table-column>
-                                <el-table-column prop="status" label="状态" show-overflow-tooltip>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination class="pagination_box" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table_data.pageNow" :page-sizes="[10,50,100]" :page-size="10" layout="total, sizes, prev, pager, next" :total="table_data.count">
-                            </el-pagination>
-                        </div>
-                    </div>
-                </div>
-                <div class="btn_box">
-                    <el-button @click="closed_task_new" class="cancel_btn">取消</el-button>
-                    <el-button @click="prev_task_handle" class="prev_btn">上一步</el-button>
-                    <el-button class="prev_btn">分配</el-button>
-                    <el-button class="prev_btn">保存</el-button>
-                </div>
-            </div>
-
-        </el-dialog>
+  <div id="Network"
+       v-cloak>
+    <div class="e_line"
+         v-loading="e_line.loading">
+      <p class="title"
+         @mouseover.native="mouseOver()">实时告警监测</p>
+      <vm-emerge-line :data='echarts_data'
+                      v-if="e_line.data_show"></vm-emerge-line>
     </div>
+    <div class="alert_box">
+      <p class="title">告警监测</p>
+      <div class="search_box">
+        <div class="search">
+          <el-input class="search_key"
+                    placeholder="搜索关键词"
+                    v-model="key"
+                    clearable>
+            <i slot="prefix"
+               class="el-input__icon el-icon-search"></i>
+          </el-input>
+          <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
+          <el-select class="search_key"
+                     v-model="alert"
+                     clearable
+                     placeholder="请选择告警类型">
+            <el-option v-for="item in options"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+          <el-select class="search_key"
+                     v-model="status"
+                     clearable
+                     placeholder="请选择处理状态">
+            <el-option v-for="item in select_state"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+          <el-button class="search_btn"
+                     @click="get_search">搜索</el-button>
+          <span class="search_reset"
+                @click="reset_search">重置</span>
+        </div>
+      </div>
+      <div class="change_box">
+        <el-dropdown @command="change_state"
+                     trigger="click"
+                     placement='bottom-start'
+                     size='148'>
+          <el-button type="primary"
+                     class="change_btn">
+            <span>状态变更</span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown"
+                            class="dropdown_ul_box">
+            <el-dropdown-item command="处置中"
+                              class="select_item">处置中</el-dropdown-item>
+            <el-dropdown-item command="已忽略"
+                              class="select_item">已忽略</el-dropdown-item>
+            <el-dropdown-item command="误报"
+                              class="select_item">误报</el-dropdown-item>
+            <el-dropdown-item command="已处置"
+                              class="select_item">已处置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown @command="change_task"
+                     placement='bottom-start'
+                     trigger="click">
+          <el-button type="primary"
+                     class="change_btn">
+            <span>工单任务</span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown"
+                            class="dropdown_ul_box">
+            <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
+            <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button class="edit_btn">编辑标签</el-button>
+      </div>
+      <div v-loading="network.loading">
+        <el-table ref="multipleTable"
+                  class="network_table"
+                  align="center"
+                  :data="network_list.data"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange"
+                  @row-click="alert_detail">
+          <el-table-column label="全选"
+                           prop="type"
+                           width="50">
+            <template slot-scope="scope">
+              <div class="new_dot"
+                   v-show="scope.row.status=='1'">
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column type="selection"
+                           width="30">
+          </el-table-column>
+          <el-table-column label="告警时间"
+                           width="150">
+            <template slot-scope="scope">{{ scope.row.alert_time*1000 |formatDate }}</template>
+          </el-table-column>
+          <el-table-column prop="category"
+                           label="告警类型"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="indicator"
+                           label="威胁指标"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="src_ip"
+                           label="源地址"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="dest_ip"
+                           label="目的地址"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="application"
+                           label="应用"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column label="威胁等级">
+            <template slot-scope="scope">
+              <el-dropdown @command="change_degree"
+                           trigger="click"
+                           class="degree_box"
+                           :class="scope.row.color">
+                <el-button type="primary"
+                           @click.stop>
+                  {{ scope.row.degree }}
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="['高',scope.$index,'high']"
+                                    v-if="scope.row.degree !='高'">
+                    高
+                  </el-dropdown-item>
+                  <el-dropdown-item :command="['中',scope.$index,'mid']"
+                                    v-if="scope.row.degree !='中'">
+                    中
+                  </el-dropdown-item>
+                  <el-dropdown-item :command="['低',scope.$index,'low']"
+                                    v-if="scope.row.degree !='低'">
+                    低
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+          <el-table-column prop="fall"
+                           label="失陷确定性"
+                           show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="status"
+                           label="状态"
+                           show-overflow-tooltip>
+          </el-table-column>
+        </el-table>
+        <el-pagination class="pagination_box"
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="network_list.pageNow"
+                       :page-sizes="[10,50,100]"
+                       :page-size="10"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="network_list.count">
+        </el-pagination>
+      </div>
+    </div>
+    <!-- 弹窗 -->
+    <!-- 状态变更 -->
+    <el-dialog class="pop_state_box"
+               width='480px'
+               :visible.sync="state_change">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_state"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">状态变更</span>
+      </div>
+      <div class="content">
+        <p class="content_p"
+           style="font-size:0">
+          <span style="font-size:14px">是否将已勾选的</span>
+          <span style="font-size:14px">两</span>
+          <span style="font-size:14px">项状态变更为“</span>
+          <span style="font-size:14px">{{process_state}}</span>
+          <span style="font-size:14px">”?</span>
+        </p>
+      </div>
+      <div class="btn_box">
+        <el-button @click="cancel_state"
+                   class="cancel_btn">取消</el-button>
+        <el-button @click="ok_state"
+                   class="ok_btn">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 任务工单 -->
+    <!-- 新建工单 -->
+    <el-dialog class="task_new_box"
+               width='840px'
+               :visible.sync="task.new">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_task_new"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">新建工单</span>
+      </div>
+      <div class="step_box">
+        <div class="step_box1">
+          <span class="step1_span"
+                :class="task.new_contet?'step_now':'step_past'">基本信息</span>
+          <img src="@/assets/images/emerge/selected01.png"
+               class="selected_img"
+               alt="">
+        </div>
+        <div class="step_box2">
+          <span class="step2_span"
+                :class="!task.new_contet?'step_now':'step_past'">处置内容</span>
+        </div>
+      </div>
+      <!-- 基本信息 -->
+      <div class="task_new_content"
+           v-if="task.new_contet">
+        <div class="content_top">
+          <div class="content_top_left">
+            <li class="left_item">
+              <div class="title">
+                <span>工单名称</span>
+                <span class="improtant_ico">*</span>
+              </div>
+              <el-input class="task_new_input"
+                        placeholder="请输入工单名称"
+                        v-model="task_new.name"
+                        clearable>
+              </el-input>
+            </li>
+            <li class="left_item">
+              <div class="title">
+                <span>经办人</span>
+                <span class="improtant_ico">*</span>
+              </div>
+              <el-select class="task_new_input"
+                         v-model="task_new.operator"
+                         clearable
+                         placeholder="请选择经办人">
+                <el-option v-for="item in task_new.operator_list"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </li>
+          </div>
+          <div class="content_top_right">
+            <li class="right_item">
+              <div class="title">
+                <span>优先级</span>
+                <span class="improtant_ico">*</span>
+              </div>
+              <el-select class="task_new_input"
+                         v-model="task_new.level"
+                         clearable
+                         placeholder="请选择优先级">
+                <el-option v-for="item in task_new.level_list"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </li>
+            <li class="right_item">
+              <el-checkbox-group v-model="task_new.notice">
+                <el-checkbox label="邮件通知">邮件通知</el-checkbox>
+                <el-checkbox label="短信通知">短信通知</el-checkbox>
+                <el-checkbox label="消息中心通知">消息中心通知</el-checkbox>
+              </el-checkbox-group>
+            </li>
+          </div>
+        </div>
+        <div class="content_remarks">
+          <p class="title">备注</p>
+          <el-input type="textarea"
+                    :rows="4"
+                    placeholder="请输入内容"
+                    v-model="task_new.textarea">
+          </el-input>
+        </div>
+        <div class="content_table">
+          <el-table :data="task_new.task_list"
+                    style="width: 100%">
+            <el-table-column prop="name"
+                             label="经办人">
+            </el-table-column>
+            <el-table-column prop="class"
+                             label="部门">
+            </el-table-column>
+            <el-table-column prop="email"
+                             label="邮箱">
+            </el-table-column>
+          </el-table>
+          <el-pagination class="pagination_box"
+                         @size-change="task_list_size_change"
+                         :current-page="task_new.task_list_page.pageNow"
+                         :page-sizes="[5,10,20]"
+                         :page-size="5"
+                         layout="total,sizes, prev, pager, next"
+                         :total="task_new.task_list.length">
+          </el-pagination>
+        </div>
+        <div class="btn_box">
+          <el-button @click="closed_task_new"
+                     class="cancel_btn">取消</el-button>
+          <el-button @click="next_task_new"
+                     class="next_btn">下一步</el-button>
+        </div>
+      </div>
+      <!-- 处置内容 -->
+      <div class="task_handle_content"
+           v-if="!task.new_contet">
+        <div class="handle_content_top">
+          <el-dropdown placement='bottom-start'
+                       @command="handle.add"
+                       trigger="click">
+            <el-button type="primary"
+                       class="change_btn">
+              <span>新增</span>
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown"
+                              class="dropdown_ul_box">
+              <el-dropdown-item command="资产综合">资产综合</el-dropdown-item>
+              <el-dropdown-item command="网络">网络</el-dropdown-item>
+              <el-dropdown-item command="端点">端点</el-dropdown-item>
+              <el-dropdown-item command="日志">日志</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-button class="ref">刷新</el-button>
+          <el-button class="cel">删除</el-button>
+        </div>
+        <div class='table_box'>
+          <ul class="table_box_title">
+            <li v-for="(tab,index) in handle.table_title"
+                @click="table(index)"
+                :class="{active:handle.active==index}">
+              {{tab}}
+            </li>
+          </ul>
+          <div>
+            <div v-show="handle.active==0">
+              <el-table ref="multipleTable"
+                        align="center"
+                        :data="handle.assets_list"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handleSelectionChange">
+                <el-table-column type="selection"
+                                 width="50">
+                </el-table-column>
+                <el-table-column label="资产"
+                                 prop="assets"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="group"
+                                 label="资产组"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="relation"
+                                 label="关联威胁"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="degree"
+                                 label="威胁等级">
+                </el-table-column>
+                <el-table-column prop="fall"
+                                 label="失陷确定性"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="status"
+                                 label="状态"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange"
+                             @current-change="handleCurrentChange"
+                             :current-page="table_data.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="table_data.count">
+              </el-pagination>
+            </div>
+            <div v-show="handle.active==1">
+              <el-table ref="multipleTable"
+                        align="center"
+                        :data="tableData3"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handleSelectionChange">
+                <el-table-column type="selection"
+                                 width="55">
+                </el-table-column>
+                <el-table-column label="告警时间"
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.date |formatDate }}</template>
+                </el-table-column>
+                <el-table-column prop="category"
+                                 label="告警类型"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="indicator"
+                                 label="威胁指标"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="src_ip"
+                                 label="源地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="dest_ip"
+                                 label="目的地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="application"
+                                 label="应用"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="degree"
+                                 label="威胁等级">
+                </el-table-column>
+                <el-table-column prop="fall"
+                                 label="失陷确定性"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="status"
+                                 label="状态"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange"
+                             @current-change="handleCurrentChange"
+                             :current-page="table_data.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="table_data.count">
+              </el-pagination>
+            </div>
+            <div v-show="handle.active==2">
+              <el-table ref="multipleTable"
+                        align="center"
+                        :data="handle.endpoint_list"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handleSelectionChange">
+                <el-table-column type="selection"
+                                 width="50">
+                </el-table-column>
+                <el-table-column label="计算机名"
+                                 prop="name"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="category"
+                                 label="告警类型"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="date"
+                                 label="时间"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="indicator"
+                                 label="威胁指标"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="degree"
+                                 label="威胁等级">
+                </el-table-column>
+                <el-table-column prop="fall"
+                                 label="失陷确定性"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="status"
+                                 label="状态"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange"
+                             @current-change="handleCurrentChange"
+                             :current-page="table_data.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="table_data.count">
+              </el-pagination>
+            </div>
+            <div v-show="handle.active==3">
+              <el-table ref="multipleTable"
+                        align="center"
+                        :data="handle.log_list"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handleSelectionChange">
+                <el-table-column type="selection"
+                                 width="50">
+                </el-table-column>
+                <el-table-column label="告警时间"
+                                 prop="date"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="category"
+                                 label="威胁类型"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="assets"
+                                 label="风险资产"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="info"
+                                 label="告警信息"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="degree"
+                                 label="威胁等级">
+                </el-table-column>
+                <el-table-column prop="fall"
+                                 label="失陷确定性"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="status"
+                                 label="状态"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange"
+                             @current-change="handleCurrentChange"
+                             :current-page="table_data.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="table_data.count">
+              </el-pagination>
+            </div>
+          </div>
+        </div>
+        <div class="btn_box">
+          <el-button @click="closed_task_new"
+                     class="cancel_btn">取消</el-button>
+          <el-button @click="prev_task_handle"
+                     class="prev_btn">上一步</el-button>
+          <el-button class="prev_btn">分配</el-button>
+          <el-button class="prev_btn">保存</el-button>
+        </div>
+      </div>
+
+    </el-dialog>
+  </div>
 </template>
 <script type="text/ecmascript-6">
 import vmEmergeLine from "./vm-emerge/vm-emerge-line";
 import vmEmergePicker from "@/components/common/vm-emerge-picker";
+import moment from 'moment'
 export default {
   name: "Network",
   components: {
     vmEmergeLine,
     vmEmergePicker
   },
-  data() {
+  data () {
     return {
+      echarts_data: {},
+      e_line: {
+        loading: true,
+        data_show: false,
+      },
+      network_list: {},
+      network: {
+        loading: false,
+        handle: {
+          page: 1,
+          rows: 10
+        },
+        start_time: '',
+        end_time: '',
+      },
       picker_data: {
         time: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)]
       },
@@ -397,138 +650,7 @@ export default {
           label: "已处置"
         }
       ],
-      tableData3: [
-        {
-          type: "new",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "低危",
-          color: "low",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "new",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "中危",
-          color: "mid",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "old",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "低危",
-          color: "low",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "new",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "高危",
-          color: "high",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "new",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "高危",
-          color: "high",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "old",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "中危",
-          color: "mid",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "new",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "低危",
-          color: "low",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "old",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "高危",
-          color: "high",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "old",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "高危",
-          color: "high",
-          fall: "— —",
-          status: "待处置"
-        },
-        {
-          type: "old",
-          date: "2019.11.08 15:33:24",
-          category: "恶意地址",
-          indicator: "223.17.229.272",
-          src_ip: "192.166.1.156",
-          dest_ip: "223.17.229.272",
-          application: "http",
-          degree: "高危",
-          color: "high",
-          fall: "— —",
-          status: "待处置"
-        }
-      ],
+
       multipleSelection: [],
       table_data: {
         count: 102,
@@ -693,16 +815,76 @@ export default {
       }
     };
   },
+  mounted () {
+    // this.get_echarts();
+    this.get_data();
+  },
   methods: {
-    table(index) {
+    // 获取折现图表
+    get_echarts () {
+      this.$axios.get('/api/yiiapi/alert/alert-trend')
+        .then(response => {
+          this.echarts_data = response.data.data
+          console.log(this.echarts_data);
+          this.e_line.loading = false
+          this.e_line.data_show = true
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 获取告警列表
+    get_data () {
+      this.network.loading = true;
+      this.$axios.get('/api/yiiapi/alert/list', {
+        params: {
+          start_time: this.network.start_time,
+          end_time: this.network.end_time,
+          key_word: "",
+          category: "",
+          status: '',
+          degree: "",
+          page: this.network.handle.page,
+          rows: this.network.handle.rows,
+        }
+      })
+        .then(response => {
+          this.network_list = response.data.data;
+          console.log(this.network_list);
+
+          this.network_list.data.forEach(item => {
+            switch (item.degree) {
+              case '高':
+                item.color = 'high'
+                break;
+              case '中':
+                item.color = 'mid'
+                break;
+              case '低':
+                item.color = 'low'
+                break;
+              default:
+                break;
+            }
+          });
+          this.network.loading = false
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 搜索
+    get_search () {
+      this.get_data();
+    },
+    table (index) {
       this.handle.active = index;
     },
-    changeTime(data) {
-      console.log(data);
-      console.log(data[0].valueOf());
-      console.log(data[1].valueOf());
+    changeTime (data) {
+      this.network.start_time = data[0].valueOf() / 1000;
+      this.network.end_time = data[1].valueOf() / 1000;
     },
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.multipleTable.toggleRowSelection(row);
@@ -711,43 +893,45 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val;
       console.log("1111");
     },
-    alert_detail(val) {
-      this.$router.push({ path: "/detail/network", query: { detail: "2222" } });
+    alert_detail (val) {
       console.log(val);
+      this.$router.push({ path: "/detail/network", query: { detail: val.id } });
     },
     // 分页
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleSizeChange (val) {
+      this.network.handle.rows = val;
+      this.get_data();
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    handleCurrentChange (val) {
+      this.network.handle.page = val
+      this.get_data();
     },
     // 重置
-    reset_search() {
+    reset_search () {
       this.key = "";
       this.time = "";
       this.alert = "";
       this.status = "";
     },
     // 状态变更选择
-    change_state(command) {
+    change_state (command) {
       this.process_state = command;
       this.open_state();
     },
-    change_task(command) {
+    change_task (command) {
       if (command == "新建工单") {
         this.open_task_new();
       }
       this.job_task = command;
     },
     //改变告警等级
-    change_degree(command) {
+    change_degree (command) {
       console.log(command);
-      this.tableData3.forEach(function(item, index) {
+      this.network_list.data.forEach(function (item, index) {
         if (command[1] == index) {
           item.degree = command[0];
           item.color = command[2];
@@ -755,21 +939,21 @@ export default {
       });
     },
     // 打开状态变更弹窗
-    open_state() {
+    open_state () {
       this.state_change = true;
     },
-    closed_state() {
+    closed_state () {
       this.state_change = false;
     },
-    cancel_state() {
+    cancel_state () {
       this.closed_state();
     },
-    ok_state() {
+    ok_state () {
       this.closed_state();
     },
 
     // 新建工单
-    open_task_new() {
+    open_task_new () {
       this.task.new = true;
       this.task.new_contet = true;
       this.task_new.name = "";
@@ -778,20 +962,25 @@ export default {
       this.task_new.textarea = "";
       this.task_new.notice = ["邮件通知"];
     },
-    closed_task_new() {
+    closed_task_new () {
       this.task.new = false;
     },
-    next_task_new() {
+    next_task_new () {
       this.task.new_contet = false;
       this.handle.active = 0;
     },
-    prev_task_handle() {
+    prev_task_handle () {
       this.task.new_contet = true;
     },
-    task_list_size_change(val) {
+    task_list_size_change (val) {
       console.log(`每页 ${val} 条`);
     }
-  }
+  },
+  filters: {
+    formatDate: function (value) {
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
+    }
+  },
 };
 </script>
 <style lang="less">
@@ -979,7 +1168,7 @@ export default {
         height: 36px;
         margin: 20px 0 24px 0;
         .step_box1 {
-          background-image: url("../../../assets/images/emerge/step1.png");
+          background-image: url('../../../assets/images/emerge/step1.png');
           background-repeat: no-repeat;
           background-size: 100% 100%;
           width: 120px;
@@ -1000,7 +1189,7 @@ export default {
         .step_box2 {
           width: 120px;
           height: 36px;
-          background-image: url("../../../assets/images/emerge/step2.png");
+          background-image: url('../../../assets/images/emerge/step2.png');
           background-repeat: no-repeat;
           background-size: 100% 100%;
           float: left;

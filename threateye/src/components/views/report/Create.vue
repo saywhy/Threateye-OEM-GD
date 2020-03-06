@@ -54,12 +54,6 @@
         </el-row>
       </el-form>
     </div>
-    <div class="r_middle">
-      <div class="r_btn_middle_group">
-        <el-button class="b_btn b_download">下载</el-button>
-        <el-button class="b_btn b_delete">删除</el-button>
-      </div>
-    </div>
     <div class="r_bottom">
       <el-row class="common-table-pattern">
         <el-col :span="24">
@@ -68,11 +62,6 @@
                     :data="report_lsit.data"
                     style="width: 100%;"
                     @selection-change="handleSelectionChange">
-            <el-table-column label="全选"
-                             width="40"></el-table-column>
-            <el-table-column align='left'
-                             type="selection"
-                             width="40"></el-table-column>
             <el-table-column label="序号"
                              width="80">
               <template slot-scope="scope">
@@ -92,6 +81,18 @@
             </el-table-column>
             <el-table-column prop="report_type"
                              label="格式"></el-table-column>
+            <el-table-column label='操作'>
+              <template slot-scope="scope">
+                <img src="@/assets/images/common/download.png"
+                     class="img_icon"
+                     alt=""
+                     @click.stop='download(scope.row)'>
+                <img src="@/assets/images/common/delete.png"
+                     class="img_icon"
+                     alt=""
+                     @click.stop='del_box(scope.row)'>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
         <el-col :span="24"
@@ -179,7 +180,8 @@ export default {
         })
           .then(response => {
             let { status, data } = response.data;
-            if (data.status == 0) {
+            if (status == 0) {
+              this.get_data();
               this.$message(
                 {
                   message: '报表生成成功',
@@ -221,6 +223,55 @@ export default {
         .catch(error => {
           console.log(error);
         })
+    },
+    // 下载
+    download (item) {
+      console.log(item);
+      var url1 = '/api/yiiapi/report/download-report?id=' + item.id;
+      window.location.href = url1;
+    },
+    // 删除
+    del_box (item) {
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete('/api/yiiapi/report/delete', {
+          data: {
+            id: item.id,
+            report_name: item.report_name
+          }
+        })
+          .then(response => {
+            let { status, data } = response.data;
+            if (status == 0) {
+              this.get_data();
+              this.$message(
+                {
+                  message: '删除成功',
+                  type: 'success',
+                }
+              );
+            } else {
+              this.$message(
+                {
+                  message: '删除失败',
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
     },
     changeTime (data) {
       console.log(data);
@@ -367,6 +418,10 @@ export default {
     background: #fff;
     padding: 0 24px;
     min-height: 441px;
+  }
+  .img_icon {
+    cursor: pointer;
+    margin-right: 10px;
   }
 }
 </style>

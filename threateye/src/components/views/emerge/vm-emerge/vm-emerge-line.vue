@@ -6,9 +6,9 @@
 export default {
   name: "vm-emerge-line",
   props: {
-    option: {
-      type: Object,
-      default: () => {}
+    data: {
+      type: Array,
+      default: () => [{statistics_time:'2000-01-01 12:00',alert_count:0}]
     }
   },
   mounted() {
@@ -16,55 +16,107 @@ export default {
   },
   methods: {
     drawLine() {
+
+      let data = this.data;
+
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("emergeLine"));
+
+      myChart.showLoading({ text: '正在加载数据...' });
+
+      myChart.clear();
       // 绘制图表
-      this.$axios.get("/static/data/aqi.json").then(function(data) {
-        myChart.setOption({
-          grid: {
-            top: "18%",
-            left: "2%",
-            right: "4%",
-            bottom: "18%",
-            containLabel: true
-          },
-          xAxis: {
-            data: data.map(function(item) {
-              return item[0];
-            })
-          },
-          yAxis: {
-            splitLine: {
-              show: false
-            }
-          },
-          dataZoom: [
-            {
-              startValue: "2014-06-01"
-            },
-            {
-              type: "inside"
-            }
-          ],
-          series: {
-            name: "Beijing AQI",
-            type: "line",
+      myChart.setOption({
+        grid: {
+          top: "18%",
+          left: "2%",
+          right: "4%",
+          bottom: "18%",
+          containLabel: true
+        },
+        xAxis: {
+          //网格样式
+          axisLine: {
             lineStyle: {
-              color: "#DC5F5F",
-              opacity: 0.5
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666",
             },
-            areaStyle: {
-              color: "#DC5F5F",
-              opacity: 0.12
-            },
-            data: data.map(function(item) {
-              return item[1];
-            })
+            formatter: function (val) {
+
+              var strs = val.split(' '); //字符串数组
+
+              let str = strs[0] + '\n' + strs[1];
+
+              return str;
+
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: data.map(function(item) {
+            return item.statistics_time;
+          })
+        },
+        yAxis: {
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+        },
+        dataZoom: [
+          {
+            startValue: data[0].statistics_time
+          },
+          {
+            type: "inside"
           }
-        });
-        window.addEventListener("resize", () => {
-          myChart.resize();
-        });
+        ],
+        series: {
+          name: "Beijing AQI",
+          type: "line",
+          lineStyle: {
+            color: "#DC5F5F",
+            opacity: 0.5
+          },
+          areaStyle: {
+            color: "#DC5F5F",
+            opacity: 0.12
+          },
+          data: data.map(function(item) {
+            return item.alert_count;
+          })
+        }
+      });
+
+      myChart.hideLoading();
+
+      window.addEventListener("resize", () => {
+        myChart.resize();
       });
     }
   }

@@ -1108,7 +1108,8 @@
       //新加到工单确定
       add_ok_state() {
 
-        let selected_attr = this.table.multipleSelection.map(x => {return x.alert_id});
+        let selected_attr = this.table_alerts.multipleSelection
+          .map(x => {return x.alert_id});
 
         this.add_params.multiple = selected_attr;
 

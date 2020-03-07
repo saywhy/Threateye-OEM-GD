@@ -7,10 +7,9 @@
               <span class="top_left_title">基本信息</span>
           </div>
           <div class="top_right">
-            <el-link target="_blank" href="/api/yiiapi/workorder/reply?id=32">
-              <el-button class="download_btn" @click="worksDetailUpload">下载</el-button>
+            <el-link target="_blank" :href="loadlinks">
+              <el-button class="download_btn">下载</el-button>
             </el-link>
-            <!--<a class="download_btn" href="/api/yiiapi/workorder/reply?id=32">下载</a>-->
           </div>
       </div>
       <div class="detail_base_mid">
@@ -43,7 +42,7 @@
               </li>
               <li>
                   <span class="title">更新时间：</span>
-                  <span class="content">{{data.updated_at | time}}</span>
+                  <span class="content">{{data.updated_at | time }}</span>
               </li>
               <li>
                   <span class="title">备注：</span>
@@ -209,6 +208,7 @@ export default {
   data() {
     return {
       id: 0,
+      loadlinks:'/yiiapi/workorder/download?id=',
       common:{
         page:1,
         rows:2
@@ -245,12 +245,11 @@ export default {
   },
 
   created(){
-    let newId = this.$route.query.detail;
-
+    let newId = this.$route.query.id;
     this.id = newId;
+    this.loadlinks += newId;
 
     this.get_list_works_detail();
-
     this.get_reply_works_detail();
   },
 
@@ -267,8 +266,6 @@ export default {
           }
         })
         .then((resp) => {
-
-          //console.log(resp);
 
           let {status, data} = resp.data;
 
@@ -392,14 +389,6 @@ export default {
         });
     },
 
-    //工单中心详情下载
-    worksDetailUpload(){
-      this.$axios.get('/api/yiiapi/workorder/reply',{params:{id:1}})
-        .then(resp => {
-        console.log(resp);
-      });
-    },
-
     /**********************************************************************************************/
 
     handleClick(tab, event) {
@@ -428,7 +417,7 @@ export default {
       height: 62px;
       background: #fff;
       position: relative;
-      border-bottom: 1px solid #ececec;
+      /*border-bottom: 1px solid #ececec;*/
       .top_left {
         position: absolute;
         top: 50%;
@@ -448,16 +437,23 @@ export default {
       .top_right {
         float: right;
         line-height: 62px;
-        .download_btn {
-          height: 34px;
-          width: 116px;
-          padding: 0;
-          color: #fff;
-          font-size: 14px;
-          background: #0070ff;
-          border: 1px solid #0070ff;
-          font-family: PingFangSC-Medium;
+        /deep/
+        .el-link{
+          &:after{
+            border-bottom: 0 !important;
+          }
+          .download_btn {
+            height: 34px;
+            width: 116px;
+            padding: 0;
+            color: #fff;
+            font-size: 14px;
+            background: #0070ff;
+            border: 1px solid #0070ff;
+            font-family: PingFangSC-Medium;
+          }
         }
+
       }
     }
     .detail_base_mid {
@@ -465,6 +461,7 @@ export default {
       background: #fff;
       display: flex;
       height: 247px;
+      width: 100%;
       .bom_item {
         flex: 1;
         li {
@@ -689,7 +686,7 @@ export default {
       }
       .detail_pagination{
         text-align: center;
-        margin-top: 24px;
+        padding-top: 24px;
       }
     }
     .detail_base_fot {

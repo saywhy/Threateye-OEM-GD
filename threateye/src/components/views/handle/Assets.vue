@@ -693,6 +693,9 @@
 
               //console.log(data)
             }
+          })
+          .catch(error => {
+            console.log(error);
           });
       },
 
@@ -767,7 +770,9 @@
       /************************************/
       //进入详情页
       detailClick(row, column, event) {
-        this.$router.push({path: '/detail/assets', query: {detail: row}});
+        console.log(row)
+        this.$router.push({path:'/detail/assets',name: 'detail_assets',
+          query: {asset_ip:row.asset_ip}});
       },
 
       /***********************************以下是弹窗部分****************************************/
@@ -1185,7 +1190,8 @@
       //新加到工单确定
       add_ok_state() {
 
-        let selected_attr = this.table.multipleSelection.map(x => {return x.asset_ip});
+        let selected_attr = this.table_assets.multipleSelection
+          .map(x => {return x.asset_ip});
 
         this.add_params.multiple = selected_attr;
 

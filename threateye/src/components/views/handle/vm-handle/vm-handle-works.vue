@@ -527,10 +527,10 @@
         this.$axios.get('/api/yiiapi/workorder/list',
           {
             params: {
-              /*stime:this.params.startTime,
-              etime:this.params.endTime,*/
-              stime:'123',
-              etime:'123123123123',
+              stime:this.params.startTime,
+              etime:this.params.endTime,
+              /*stime:'123',
+              etime:'123123123123',*/
               status: this.params.status,
               priority:this.params.priority,
               key_word: this.params.key,
@@ -556,9 +556,6 @@
               this.table.pageNow = pageNow;
               this.table.loading = false;
 
-              this.message = data.filter(x => {
-                return x.if_new == '1'
-              })
             }
           });
       },
@@ -609,13 +606,28 @@
 
       //工单列表跳转
       detail_click(row) {
-        this.$router.push({ path: "/detail/works", query: { detail: row.id} });
+        this.$router.push({ path: "/detail/works", query: { id: row.id} });
       },
       /*******************下载**********************/
-      worksdownload(){
-        this.$axios.get('/api/yiiapi/workorder/download?id=1')
+      worksdownload() {
+        this.$axios.get('/api/yiiapi/workorder/export',{
+          params:{
+            stime:this.params.startTime,
+            etime:this.params.endTime,
+            /*stime:'123',
+            etime:'123123123123',*/
+            status: this.params.status || 'all',
+            priority:this.params.priority,
+            key_word: this.params.key,
+            owned: this.owned
+          }
+        })
           .then(resp => {
-            // console.log(resp)
+            let { status,data} = resp;
+
+             if(status == 200){
+               this.$message.success('下载成功');
+             }
           })
       },
       /*******************删除**********************/
@@ -623,10 +635,8 @@
         let that = this;
 
         let multiple = this.table.multipleSelection;
-        let selected = multiple.map(x => {
-          return x.id;
-        });
-        console.log(selected)
+        let selected = multiple.map(x => {return x.id;});
+
         this.$confirm('是否确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -728,7 +738,6 @@
       //下一步时候验证工单名称，优先级、经办人等参数
       next_task_new() {
 
-        console.log(this.task_params.operator)
         if(this.task_params.name == ''){
           this.$message.error('工单名称不能为空');
         }else if(this.task_params.level == ''){

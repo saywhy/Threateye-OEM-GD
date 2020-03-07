@@ -1167,7 +1167,7 @@
   @import "../../../assets/css/less/common-table-pattern.less";
   #Network {
     text-align: left;
-    padding: 36px 56px 24px 24px;
+    padding:24px;
     .e_line {
       height: 322px;
       background: #ffffff;

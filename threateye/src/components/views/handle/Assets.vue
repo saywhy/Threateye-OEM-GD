@@ -91,6 +91,7 @@
             <el-link class="s_link" @click="resetClick();">重置</el-link>
           </el-col>
         </el-row>
+        <!--按钮组-->
         <el-row class="common_btn">
           <el-col :span="24" class="common_btn_list">
             <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
@@ -245,7 +246,7 @@
           </el-input>
         </div>
         <div class="content_table">
-          <el-table :data="table_operator.tableData" style="width: 100%">
+          <el-table :data="table_operator.tableData_new" style="width: 100%">
             <el-table-column prop="username" label="经办人"></el-table-column>
             <el-table-column prop="department" label="部门"></el-table-column>
             <el-table-column prop="email_addr" label="邮箱"></el-table-column>
@@ -290,7 +291,7 @@
           <div>
             <div v-show="handle.active == 0">
               <el-table align="center"
-                        :data="table_assets.tableData"
+                        :data="table_assets.tableData_new"
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_assets">
@@ -311,9 +312,10 @@
               </el-table>
               <el-pagination class="pagination_box"
                              @current-change="hcc_table_assets"
-                             :page-sizes="[5]" :page-size="5"
+                             :page-sizes="[5]"
+                             :page-size="5"
                              :current-page="table_assets.pageNow"
-                             :total="table_assets.tableData.length"
+                             :total="table_assets.count"
                              layout="total, sizes, prev, pager, next">
               </el-pagination>
             </div>
@@ -510,7 +512,6 @@
           new: false,
           new_contet: true
         },
-
         task_params:{
           name: "",
           level: "",
@@ -520,7 +521,6 @@
           textarea: "",
           multiple:[]
         },
-
         task_new: {
           level_list: [
             {
@@ -545,6 +545,7 @@
         //经办人数组
         table_operator:{
           tableData: [],
+          tableData_new:[],
           count: 0,
           pageNow: 1,
           maxPage: 1,
@@ -813,6 +814,8 @@
       //状态变更确定按钮点击
       ok_state() {
 
+        let selected = this.table.multipleSelection;
+
         //资产ID处理
         let asset_ip_group = selected.map(x => {return x.asset_ip;});
 
@@ -899,6 +902,13 @@
           this.table_assets.count = sel_table_data.length;
 
 
+          let pageNow = this.table_assets.pageNow;
+
+          let handle_data = this.table_assets.tableData.slice((pageNow-1) * 5,pageNow * 5)
+
+          this.table_assets.tableData_new = handle_data;
+
+
           //获取用户列表(经办人使用)
           this.$axios.get('/api/yiiapi/site/user-list')
             .then(resp => {
@@ -923,6 +933,15 @@
       closed_task_new () {
         this.task.new = false;
         this.$refs.multipleTable.clearSelection();
+        this.task_params = {
+          name: "",
+            level: "",
+            operator: "",
+            new_operator:[],
+            notice: ['email'],
+            textarea: "",
+            multiple:[]
+        };
       },
 
       //下一步时候验证工单名称，优先级、经办人等参数
@@ -957,6 +976,11 @@
           this.table_operator.tableData.unshift(item);
         }
 
+        let pageNow = this.table_operator.pageNow;
+
+        let handle_data_operator = this.table_operator.tableData.slice((pageNow-1) * 5,pageNow * 5);
+        this.table_operator.tableData_new = handle_data_operator;
+
         let selected_name_attr = this.table_operator.tableData.map(x => {return x.username});
 
         this.task_params.new_operator = selected_name_attr;
@@ -970,6 +994,8 @@
       //tabs下第一个table页数点击(资产)
       hcc_table_assets(val) {
         this.table_assets.pageNow = val;
+        let handle_data = this.table_assets.tableData.slice((val-1) * 5,val * 5);
+        this.table_assets.tableData_new = handle_data;
       },
 
       //tab下第一个table多选
@@ -1098,7 +1124,7 @@
       },
 
       //获取列表
-      get_table_works_list(){
+      get_table_works_list() {
         this.$axios.get('/api/yiiapi/asset/workorder-list',{
           params:{
             page: this.table_add_works.pageNow,
@@ -1524,7 +1550,6 @@
           .step_box {
             height: 36px;
             margin: 20px 0 24px 0;
-
             .step_box1 {
               background-image: url("../../../assets/images/emerge/step1.png");
               background-repeat: no-repeat;
@@ -1574,6 +1599,7 @@
           }
 
           .task_new_content {
+            /*height: 480px;*/
             .content_top {
               overflow: hidden;
 

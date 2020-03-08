@@ -8,26 +8,26 @@
       </div>
       <div id="graph">
         <button @click="show_detail">detail</button>
-        <div class="list list1">　　　　　　
-          <div class="list_child">
-            <div class="list_child_child">
+        <div class="list list1">　
+          <el-tooltip class="item" effect="dark" :content="tips1" placement="right">
+            <el-button>
               <img src="@/assets/images/home/common/img1.png" class="l_img" alt="">
-            </div>
-          </div>
+            </el-button>
+          </el-tooltip>　　　　　
         </div>
         <div class="list list2">　　　　　　
-          <div class="list_child">
-            <div class="list_child_child">
+          <el-tooltip class="item" effect="dark" :content="tips2" placement="left">
+            <el-button>
               <img src="@/assets/images/home/common/img2.png" class="l_img" alt="">
-            </div>
-          </div>
+            </el-button>
+          </el-tooltip>　
         </div>
         <div class="list list3">　　　　　　
-          <div class="list_child">
-            <div class="list_child_child">
+          <el-tooltip class="item" effect="dark" :content="tips3" placement="right">
+            <el-button>
               <img src="@/assets/images/home/common/img3.png" class="l_img" alt="">
-            </div>
-          </div>
+            </el-button>
+          </el-tooltip>　
         </div>
       </div>
     </el-dialog>
@@ -60,12 +60,11 @@
     name: "safe",
     data() {
       return {
-        state_detail: false
+        state_detail: false,
+        tips1:'引擎提示文字',
+        tips2:'沙箱提示文字',
+        tips3:'探针提示文字'
       };
-    },
-    created() {
-    },
-    mounted() {
     },
     methods: {
       closed_sys_box() {
@@ -573,8 +572,11 @@
 </script>
 
 <style lang="less">
+  .el-tooltip__popper{
+    z-index: 9999!important;
+  }
   .sys_box {
-    z-index: 99990 !important;
+    z-index: 3000 !important;
 
     .el-dialog {
       width: 842px;
@@ -590,11 +592,11 @@
 
         .closed_img {
           position: absolute;
-          top: -10px;
-          right: -10px;
+          top: -18px;
+          right: -18px;
           cursor: pointer;
-          width: 24px;
-          height: 24px;
+          width: 46px;
+          height: 46px;
         }
         .title {
           height: 24px;
@@ -626,47 +628,33 @@
           height: calc(100% - 24px);
           border: 1px solid red;
           position: relative;
-
           .list {
-            width: 200px;
-            height: 250px;
-            overflow: hidden;
+            width: 72px;
+            height: 72px;
             position: absolute;
-
-            transform: rotate(30deg) scale(.3);
-            overflow: hidden;
-            .list_child {
-              width: 100%;
-              height: 100%;
-              overflow: hidden;
-              transform: rotate(-60deg);
-
-              .list_child_child {
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                transform: rotate(-60deg);
-                background-color: #f2f2f2;
-
-                .l_img {
-                  width: 136px;
-                  height: 136px;
-                  margin-top: 56px;
-                  transform: rotate(90deg);
-                }
+            /deep/
+            .el-button{
+              padding: 0;
+              border-width: 0;
+              &:hover{
+                background-color: #fff;
+              }
+              .l_img{
+                width: 72px;
+                height: 72px;
               }
             }
             &.list1{
-              top: -10px;
-              left: 286px;
+              top: 70px;
+              left: 354px;
             }
             &.list2{
-              bottom: 10px;
-              left: 210px;
+              bottom: 90px;
+              left: 260px;
             }
             &.list3{
-              bottom: 10px;
-              right: 210px;
+              bottom: 90px;
+              right: 260px;
             }
           }
         }

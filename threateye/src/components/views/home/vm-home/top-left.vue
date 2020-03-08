@@ -8,7 +8,12 @@ export default {
   props: {
     top_left: {
       type: Object,
-      default:{
+      default:() => {}
+    }
+  },
+  data(){
+    return {
+      data:{
         dev_info:[],
         healthy_count:0,
         warning_count:0,
@@ -16,15 +21,22 @@ export default {
       }
     }
   },
+  created(){
+   let data = this.top_left
+    this.data = data;
+  },
   mounted() {
     this.graph();
   },
   methods: {
     graph() {
 
-      let warning_count = this.top_left.warning_count;
-      let healthy_count = this.top_left.healthy_count;
-      let offline_count = this.top_left.offline_count;
+      let warning_count = this.data.warning_count;
+      let healthy_count = this.data.healthy_count;
+      let offline_count = this.data.offline_count;
+      let dev_info = this.data.dev_info;
+
+      console.log(dev_info)
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("status"));

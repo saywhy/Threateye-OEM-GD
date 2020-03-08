@@ -239,7 +239,7 @@
       init_top_left(){
         this.$axios.get('/api/yiiapi/alert/system-state')
           .then((resp) => {
-           // console.log(resp)
+            console.log(resp)
             let {status,data} = resp.data;
             if(status == 0){
               this.top_left = data;
@@ -264,9 +264,6 @@
       init_top_right(){
         this.$axios.get('/api/yiiapi/alert/protocol-flow-statistics')
           .then((resp) => {
-            console.log('11111111111');
-            console.log(resp);
-
             let {status,data} = resp.data;
             //console.log(data)
             if(status == 0){

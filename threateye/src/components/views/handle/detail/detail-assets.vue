@@ -43,7 +43,7 @@
           <div class="bom_item">
               <li>
                   <span class="title"><i class="b_i b_name"></i>失陷确定性：</span>
-                  <span class="content">{{assets_top.fall_certainty}}</span>
+                  <span class="content">{{assets_top.fall_certainty | certainty}}</span>
               </li>
               <li>
                   <span class="title"><i class="b_i"></i>威胁等级：</span>
@@ -562,7 +562,6 @@ export default {
         {
           params: {
            asset_ip: this.detail.asset_ip
-           // asset_ip: '192.168.1.194'
           }
         })
         .then((resp) => {
@@ -650,7 +649,6 @@ export default {
 
     //改变告警等级
     change_degree(command) {
-      //console.log(command);
       this.table.tableData.forEach(function(item, index) {
         if (command[1] == index) {
           item.degree = command[0];

@@ -303,36 +303,6 @@
             </li>
           </ul>
           <div>
-            <!--<div v-show="handle.active == 0">
-              <el-table align="center"
-                        :data="table_assets.tableData_new"
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                        @selection-change="handle_sel_table_assets">
-                <el-table-column label="全选" width="40"></el-table-column>
-                <el-table-column align='left' type="selection" width="40"></el-table-column>
-                <el-table-column prop="asset_ip" label="资产"></el-table-column>
-                <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
-                <el-table-column label="威胁等级">
-                  <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
-                </el-table-column>
-                <el-table-column label="失陷确定性">
-                  <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
-                </el-table-column>
-                <el-table-column label="状态" width="80">
-                  <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
-                </el-table-column>
-              </el-table>
-              <el-pagination class="pagination_box"
-                             @current-change="hcc_table_assets"
-                             :page-sizes="[5]"
-                             :page-size="5"
-                             :current-page="table_assets.pageNow"
-                             :total="table_assets.count"
-                             layout="total, sizes, prev, pager, next">
-              </el-pagination>
-            </div>-->
             <div v-show="handle.active==0">
               <el-table align="center"
                         :data="table_alerts.tableData_new"
@@ -681,6 +651,7 @@
           }
         })
       },
+
       //每頁多少條切換
       handleSizeChange(val) {
         this.table.eachPage = val;

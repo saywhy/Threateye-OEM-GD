@@ -211,11 +211,14 @@ export default {
       loadlinks:'/yiiapi/workorder/download?id=',
       common:{
         page:1,
-        rows:2
+        rows: 10
       },
       title_name: "工单详情",
       activeName: 'first',
-      data:{},
+      data:{
+        created_at:'1583668901',
+        updated_at:'1583668910'
+      },
       table_risks: {
         tableData:[],
         count: 0,
@@ -267,30 +270,45 @@ export default {
         })
         .then((resp) => {
 
+          console.log(resp.data)
+
           let {status, data} = resp.data;
 
           if (status == 0) {
 
-            data.new_perator = data.perator.join(',');
-            data.map(function (v,k) {
-              switch (v.degree) {
-                case '高':
-                  v.color = 'high';
-                  break;
-                case '中':
-                  v.color = 'mid';
-                  break;
-                case '低':
-                  v.color = 'low';
-                  break;
-                default:
-                  break;
-              }
-            });
+            if(data.perator.length > 0){
+
+              let attr = [];
+
+              data.perator.map(x => {
+                attr.push(x.perator)
+              });
+
+              data.new_perator = attr.join(',');
+            }else {
+              data.new_perator = '';
+            }
 
             this.data = data;
 
             if(data.risk_asset != '[]') {
+
+              data.risk_asset.data.map(function (v,k) {
+                switch (v.degree) {
+                  case '高':
+                    v.color = 'high';
+                    break;
+                  case '中':
+                    v.color = 'mid';
+                    break;
+                  case '低':
+                    v.color = 'low';
+                    break;
+                  default:
+                    break;
+                }
+              });
+
               this.table_risks.tableData = data.risk_asset.data;
               this.table_risks.count = data.risk_asset.count;
               this.table_risks.maxPage = data.risk_asset.maxPage;
@@ -298,6 +316,22 @@ export default {
             }
 
             if(data.alerts != '[]') {
+
+              data.alerts.data.map(function (v,k) {
+                switch (v.degree) {
+                  case '高':
+                    v.color = 'high';
+                    break;
+                  case '中':
+                    v.color = 'mid';
+                    break;
+                  case '低':
+                    v.color = 'low';
+                    break;
+                  default:
+                    break;
+                }
+              });
               this.table_alerts.tableData = data.alerts.data;
               this.table_alerts.count = data.alerts.count;
               this.table_alerts.maxPage = data.alerts.maxPage;
@@ -319,8 +353,6 @@ export default {
           }
         })
         .then((resp) => {
-
-         // console.log(resp)
 
           let {status, data} = resp.data;
 
@@ -350,7 +382,6 @@ export default {
     //頁數點擊切換(资产)
     handleCurrentChangeRisks(val){
       this.table_risks.pageNow = val;
-
       this.common.page = this.table_risks.pageNow;
       this.common.rows = this.table_risks.eachPage;
       this.get_list_works_detail();
@@ -413,12 +444,22 @@ export default {
     //改变告警等级
     change_degree(command) {
       console.log(command);
-      this.tableData3.forEach(function(item, index) {
-        if (command[1] == index) {
-          item.degree = command[0];
-          item.color = command[2];
-        }
-      });
+      if(this.table_risks.tableData.length == 0){
+        this.table_alerts.tableData.forEach(function(item, index) {
+          if (command[1] == index) {
+            item.degree = command[0];
+            item.color = command[2];
+          }
+        });
+      }else {
+        this.table_risks.tableData.forEach(function(item, index) {
+          if (command[1] == index) {
+            item.degree = command[0];
+            item.color = command[2];
+          }
+        });
+      }
+
     }
   }
 };

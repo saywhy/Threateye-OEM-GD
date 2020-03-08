@@ -62,10 +62,10 @@
           },
           series: [
             {
-              name:'外部威胁类型',
+              name:'威胁类型',
               type:'pie',
               center: ['70%', '50%'],
-              radius: ['36%', '60%'],
+              radius: ['45%', '60%'],
               avoidLabelOverlap: false,
               hoverOffset: 5,
               label: {

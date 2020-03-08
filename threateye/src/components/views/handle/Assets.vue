@@ -583,7 +583,7 @@
           notice: ['email'],
           remarks: "",
           multiple:[]
-        },
+        }
       };
     },
     created() {
@@ -691,7 +691,6 @@
               this.table.pageNow = pageNow;
               this.table.loading = false;
 
-              //console.log(data)
             }
           })
           .catch(error => {
@@ -798,7 +797,7 @@
       open_state() {
         let sel_table_data = this.table.multipleSelection;
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
           return false;
         } else {
           this.state_change = true;
@@ -901,10 +900,7 @@
 
           return false;
 
-        } else {
-
-
-        }*/
+        } else {}*/
 
         this.table_assets.tableData = sel_table_data;
         this.table_assets.count = sel_table_data.length;
@@ -1025,7 +1021,7 @@
             priority:this.task_params.level,
             perator:this.task_params.new_operator,
             remarks:this.task_params.textarea,
-            risk_asset: this.task_params.multiple,
+            risk_asset:this.task_params.multiple,
             remind:this.task_params.notice
           })
           .then((resp) => {

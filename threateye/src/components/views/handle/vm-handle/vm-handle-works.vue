@@ -529,7 +529,7 @@
             params: {
               stime:this.params.startTime,
               etime:this.params.endTime,
-              /*stime:'123',
+             /* stime:'123',
               etime:'123123123123',*/
               status: this.params.status,
               priority:this.params.priority,
@@ -555,6 +555,8 @@
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
               this.table.loading = false;
+
+              //console.log(data)
 
             }
           });
@@ -592,6 +594,7 @@
       },
       //多选获取选中数据
       handleSelChange(val) {
+
         this.table.multipleSelection = val;
 
         if(val.length == 1){
@@ -616,7 +619,7 @@
             etime:this.params.endTime,
             /*stime:'123',
             etime:'123123123123',*/
-            status: this.params.status || 'all',
+            status: this.params.status,
             priority:this.params.priority,
             key_word: this.params.key,
             owned: this.owned

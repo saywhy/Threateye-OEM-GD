@@ -61,7 +61,7 @@
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <!--<el-button class="edit_btn">编辑标签</el-button>-->
+            <el-button class="edit_btn" @click="edit_tag_box">编辑标签</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -371,6 +371,32 @@
       </div>
     </el-dialog>
 
+    <!-- 弹窗 -->
+    <!-- 编辑标签 -->
+    <el-dialog class="pop_state_label" :visible.sync="edit_tag.pop">
+      <img src="@/assets/images/emerge/closed.png" @click="closed_edit_tag_box" class="closed_img" alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">编辑标签</span>
+      </div>
+      <div class="content">
+        <div class="content_item">
+          <div class="item_addrs" v-for="(item,index) in edit_tag.tag_list">
+            <el-input class="select_box" placeholder="请输入标签" v-model="item.name" clearable>
+            </el-input>
+            <img src="@/assets/images/common/add.png" alt="" class="img_box" v-if="item.icon" @click="add_tag">
+            <img src="@/assets/images/common/del.png" alt="" class="img_box" @click="del_tag(item,index)" v-if="!item.icon">
+          </div>
+        </div>
+      </div>
+      <div class="btn_box">
+        <el-button @click="closed_edit_tag_box"
+                   class="cancel_btn">取消</el-button>
+        <el-button class="ok_btn"
+                   @click="edit_tag_true">确定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -415,8 +441,8 @@
           key: "",
           type: "",
           status: "",
-          start_time:'',
-          end_time:''
+          startTime:'',
+          endTime:''
         },
         options_types: [
           {
@@ -462,6 +488,10 @@
             label: "误报"
           }
         ],
+        edit_tag: {
+          tag_list: [],
+          pop: false
+        },
         table: {
           tableData: [],
           count: 0,
@@ -552,6 +582,13 @@
           remarks: "",
           multiple:[]
         },
+        // attack_stage
+        network_detail: {
+          attack_stage_cn: '',
+          label_obj: [],
+          src_label_obj: [],
+          dest_label_obj: [],
+        },
       };
     },
     mounted () {
@@ -577,8 +614,8 @@
         this.table.loading = true;
         this.$axios.get('/api/yiiapi/alert/list', {
           params: {
-            start_time: this.params.start_time,
-            end_time: this.params.end_time,
+            start_time: this.params.startTime,
+            end_time: this.params.endTime,
             key_word: this.params.key,
             category: this.params.type,
             status: this.params.status,
@@ -616,6 +653,8 @@
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
               this.table.loading = false;
+
+              //console.log(data)
             }
 
           })
@@ -625,8 +664,8 @@
       },
 
       changeTime(data) {
-        this.params.start_time = data[0].valueOf() / 1000;
-        this.params.end_time = data[1].valueOf() / 1000;
+        this.params.startTime = data[0].valueOf() / 1000;
+        this.params.endTime = data[1].valueOf() / 1000;
       },
 
       //搜索按鈕點擊事件
@@ -640,8 +679,8 @@
             key: "",
             type: "",
             status: "",
-            start_time:'',
-            end_time:''
+            startTime:'',
+            endTime:''
         };
         this.get_list_risk();
       },
@@ -725,8 +764,6 @@
 
         let selected = this.table.multipleSelection;
 
-        console.log(selected)
-
         //资产ID处理
         let id_group = selected.map(x => {return x.id;});
 
@@ -801,7 +838,6 @@
 
         this.table_alerts.tableData_new = handle_data;
 
-
         //获取用户列表(经办人使用)
         this.$axios.get('/api/yiiapi/site/user-list')
           .then(resp => {
@@ -862,6 +898,7 @@
         let level_list = this.table_operator.tableData;
 
         let selected_id_attr = level_list.map(x => {return x.id});
+
         if(selected_id_attr.includes(item.id)){
           this.$message.error('已存在');
         }else {
@@ -893,7 +930,7 @@
       //tab下第一个table多选
       handle_sel_table_alerts(val) {
         this.table_alerts.multipleSelection = val;
-        let selected = val.map(x => {return x.id});
+        let selected = val.map(x => {return x.alert_id});
         this.task_params.multiple = selected;
       },
 
@@ -1125,8 +1162,106 @@
         this.table_add_works.pageNow = val;
 
         this.get_table_works_list();
-      }
+      },
 
+
+
+
+      /**********************编辑标签*************************/
+      // 编辑标签
+      edit_tag_box () {
+
+        let sel_table_data = this.table.multipleSelection;
+
+        if(sel_table_data.length == 0){
+
+          this.$message({message:'请选择一条告警记录',type: 'warning'});
+
+          return false;
+
+        } else if(sel_table_data.length > 1){
+
+          this.$message({message:'选择条数只能为一条',type: 'warning'});
+
+          return false;
+        }else {
+          this.edit_tag.tag_list = [];
+          console.log(this.network_detail.label_obj);
+          if (this.network_detail.label_obj.length == 0) {
+            this.edit_tag.tag_list.push({ name: '', icon: true })
+          } else {
+            this.network_detail.label_obj.forEach(element => {
+              var obj = {
+                name: element,
+                icon: false
+              }
+              this.edit_tag.tag_list.push(obj)
+            });
+            this.edit_tag.tag_list[this.edit_tag.tag_list.length - 1].icon = true
+          }
+          this.edit_tag.pop = true
+        }
+
+
+      },
+
+      closed_edit_tag_box () {
+        this.edit_tag.pop = false;
+      },
+
+      //  添加标签
+      add_tag () {
+        this.edit_tag.tag_list.forEach(item => {
+          item.icon = false;
+        });
+        this.edit_tag.tag_list.push({ name: '', icon: true })
+      },
+      del_tag (item, index) {
+        this.edit_tag.tag_list.splice(index, 1);
+      },
+
+      edit_tag_true () {
+        console.log(this.edit_tag.tag_list);
+        // /alert/label-edit
+        var label_list = [];
+        this.edit_tag.tag_list.forEach(element => {
+          if (element.name != '') {
+            label_list.push(element.name)
+          }
+        });
+
+        let selected_id = this.table.multipleSelection[0].id;
+
+        this.$axios.put('/api/yiiapi/alert/label-edit', {
+          id: selected_id,
+          label: label_list
+        })
+          .then(response => {
+            let { status, data } = response.data;
+            if (status == 0) {
+              this.$message(
+                {
+                  message: '修改标签成功',
+                  type: 'success',
+                }
+              );
+              this.edit_tag.pop = false;
+
+              this.$refs.multipleTable.clearSelection();
+              this.get_list_risk();
+            } else {
+              this.$message(
+                {
+                  message: data.msg,
+                  type: 'error',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }
     }
 
   };
@@ -1723,84 +1858,104 @@
         }
       }
     }
+
+    //编辑标签
+    /deep/
+    .pop_state_label {
+      .el-dialog {
+        width: 440px;
+        .el-dialog__header {
+          display: none;
+        }
+        .el-dialog__body {
+          width: 440px;
+
+          .closed_img {
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            cursor: pointer;
+            width: 46px;
+            height: 46px;
+          }
+
+          .title {
+            height: 24px;
+            line-height: 24px;
+            text-align: left;
+
+            .title_name {
+              font-size: 20px;
+              color: #333333;
+              line-height: 24px;
+              font-weight: 500;
+            }
+
+            .mask {
+              width: 24px;
+              height: 0px;
+              border-top: 0px;
+              border-right: 2px solid transparent;
+              border-bottom: 5px solid #0070ff;
+              border-left: 2px solid transparent;
+              transform: rotate3d(0, 0, 1, 90deg);
+              display: inline-block;
+              margin-right: -5px;
+              margin-bottom: 4px;
+              margin-left: -10px;
+            }
+          }
+
+          .content {
+            padding: 24px 0;
+            .content_item {
+              margin-bottom: 24px;
+              .item_addrs {
+                margin-bottom: 12px;
+                display: flex;
+              }
+              .img_box {
+                width: 16px;
+                height: 16px;
+                margin-left: 10px;
+                margin-top: 14px;
+                cursor: pointer;
+              }
+              .title {
+                font-size: 12px;
+                color: #999999;
+              }
+              .title_color {
+                color: #ff5f5c;
+              }
+              .select_box {
+                width: 100%;
+                height: 38px;
+                margin-top: 6px;
+                .el-input__inner {
+                  background: #f8f8f8;
+                  border: 0;
+                }
+              }
+            }
+          }
+
+          .btn_box{
+            text-align: center;
+            /deep/
+            .el-button{
+              border: 1px solid #0070ff;
+              &.ok_btn{
+                background-color: #0070ff;
+                color: #fff;
+              }
+              &.cancel_btn{
+                color: #0070ff;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 </style>
-<!--<style lang="less">
-.dropdown_ul_box {
-  width: 148px;
-  .el-dropdown-menu__item:hover {
-    color: #606266;
-  }
-}
-.el-pagination {
-  text-align: center;
-}
-.network_table {
-  .degree_box {
-    button {
-      height: 30px;
-      width: 72px;
-      padding: 0;
-      border: 0;
-    }
-  }
-  .high {
-    button {
-      background: #dc5f5f;
-    }
-  }
-  .mid {
-    button {
-      background: #e0c840;
-    }
-  }
-  .low {
-    button {
-      background: #47cad9;
-    }
-  }
-  thead {
-    font-family: PingFangSC-Medium;
-    font-size: 14px;
-    color: #333333;
-    th {
-      background: #f8f8f8;
-      border: 0 !important;
-    }
-  }
-  th:nth-child(1) {
-    .cell {
-      padding: 0;
-      text-align: right;
-      font-size: 14px;
-      color: #999999;
-    }
-  }
-  tbody {
-    td {
-      font-family: PingFangSC-Regular;
-      font-size: 14px;
-      color: #333333;
-    }
-  }
-  .el-table-column&#45;&#45;selection {
-    .cell {
-      padding: 0 !important;
-      text-align: center;
-    }
-    .select_all {
-      font-family: PingFangSC-Regular;
-      font-size: 14px;
-      color: #999999;
-    }
-  }
-  .new_dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 8px;
-    background: #ff5f5c;
-    float: right;
-  }
-}
-
-</style>-->

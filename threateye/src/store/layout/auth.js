@@ -4,11 +4,13 @@ export function forRoleList(auth) {
   let roles = [];
   if(auth == ''){
     console.log('无权限');
+
     roles = null;
 
     location.reload();
 
     return false;
+
   }else {
     //真实状态
     auth.forEach(function (v,k) {

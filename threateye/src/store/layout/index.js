@@ -68,21 +68,29 @@ export default {
           }
         ).then(resp => {
 
-          console.log(resp)
+          let datas = resp.data;
 
-          let { status, data} = resp;
+          console.log(datas)
+
+          let {status,msg,data} = datas;
+
+          let tips ='输入用户名或密码错误';
+          if(msg.username){
+            tips = msg.username[0];
+          }else if(msg.password){
+            tips = msg.password[0];
+          }else {
+            tips = msg;
+          }
           //用户名密码正确
-          if(status == 200){
-           data.token = ( data.token == undefined )?
-             userInfo.username: data.token;
-
-            setToken(data.token);
-            commit('SET_TOKEN', data.token);
-            resolve(true);
+          if(status == 202){
+             let isTaken = ( data == '' )? userInfo.username: data.token
+             setToken(isTaken);
+             commit('SET_TOKEN', isTaken);
+             resolve([true,tips]);
           //用户名密码错误
           } else {
-            console.log('用户名或密码错误。');
-            resolve(false);
+             resolve([false,tips]);
           }
         }).catch(error => {
             console.log(error);

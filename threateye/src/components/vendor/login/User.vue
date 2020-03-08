@@ -84,7 +84,8 @@
         contentHeight: 48,
         loginForm: {
           username: 'admin',
-          password: 'Hoohoolab*123'
+          //password: 'Hoohoolab*123'
+          password: '!@#QWEasd123'
         },
         code:'',
         identifyCodes: '1234567890',
@@ -161,12 +162,13 @@
             this.$store.dispatch('LoginByUsername', this.loginForm)
               .then((resp) => {
                 //返回成功跳转
-                if(resp){
+                if(resp[0]){
+                  this.$message.success(resp[1]);
                   this.$router.push('/', () => {});//登录成功之后重定向到首页
                   this.count = 0;
                   //失败
                 } else {
-                  this.$message.error('用户名或密码错误。');
+                  this.$message.error(resp[1]);
                   this.count ++;
                  //this.loginForm = {username: '', password: ''};
                 }

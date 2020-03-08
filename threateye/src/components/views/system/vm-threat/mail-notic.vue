@@ -20,17 +20,17 @@
       </div>
       <p class="title">
         SMTP启用安全连接SSL启用：
-        <el-switch v-model="ssl_switch">
+        <el-switch v-model="mail.ssl_switch">
         </el-switch>
       </p>
-      <div class="left_item">
+      <!-- <div class="left_item">
         <p>发件邮箱账号:</p>
         <el-input class="select_box"
                   placeholder="请输入发件邮箱账号"
                   v-model="mail.user"
                   clearable>
         </el-input>
-      </div>
+      </div> -->
       <div class="left_item">
         <p>邮箱地址:</p>
         <el-input class="select_box"
@@ -49,7 +49,8 @@
       </div>
       <div class="left_item">
         <el-button type="primary"
-                   class="save_btn">保存</el-button>
+                   class="save_btn"
+                   @click="send_save">保存</el-button>
         <el-button type="primary"
                    class="test_btn"
                    @click='send_test'>发送测试邮件</el-button>
@@ -60,7 +61,7 @@
       <div class="mid_item">
         <p>邮箱地址</p>
         <div class="item_addrs"
-             v-for="(item,index) in receipt_addrs">
+             v-for="(item,index) in mail.alertEmail_list">
           <el-input class="select_box"
                     placeholder="请输入邮箱地址"
                     v-model="item.name"
@@ -69,13 +70,13 @@
           <img src="@/assets/images/common/add.png"
                alt=""
                class="img_box"
-               v-if="item.add"
+               v-if="item.icon"
                @click="add_addr">
           <img src="@/assets/images/common/del.png"
                alt=""
                class="img_box"
                @click="del_addr(item,index)"
-               v-if="!item.add">
+               v-if="!item.icon">
         </div>
       </div>
       <div class="mid_item">
@@ -86,7 +87,7 @@
                   autosize
                   resize='none'
                   placeholder="请输入发送内容"
-                  v-model="mail.info"
+                  v-model="mail.content"
                   clearable>
         </el-input>
       </div>
@@ -106,9 +107,20 @@ export default {
   data () {
     return {
       mail: {
+        alertEmail_list: [{
+          name: "",
+          icon: true
+        }],
+        content: "",
+        ssl_switch: true,
+        host: "",
+        info: "",
+        password: "",
+        port: '',
+        send: true,
+        user: "",
+        username: "",
       },
-      ssl_switch: true,
-      receipt_addrs: [{ name: '', add: true }]
     };
   },
   props: {
@@ -125,15 +137,37 @@ export default {
     get_data () {
       this.$axios.get('/api/yiiapi/email/get')
         .then(response => {
-          console.log(response);
-          this.mail = response.data.data
-          this.mail.user = '';
-          this.mail.info = '';
-          if (this.mail.encryption == 'ssl') {
+          let { status, data } = response.data;
+          console.log(data);
+          this.mail.port = data.port
+          this.mail.content = data.content
+          this.mail.host = data.host
+          this.mail.username = data.username
+          this.mail.send = data.send
+          if (data.encryption == 'ssl') {
             this.ssl_switch = true
           } else {
             this.ssl_switch = false
           }
+          this.mail.alertEmail_list = []
+          if (data.alertEmail.length == 0) {
+            this.alertEmail_list.push(
+              {
+                name: '',
+                icon: true,
+              }
+            )
+          } else {
+            data.alertEmail.forEach(element => {
+              var obj = {
+                name: element,
+                icon: false,
+              }
+              this.mail.alertEmail_list.push(obj)
+            });
+            this.mail.alertEmail_list[this.mail.alertEmail_list.length - 1].icon = true
+          }
+
         })
         .catch(error => {
           console.log(error);
@@ -141,19 +175,148 @@ export default {
     },
     // 发送测试
     send_test () {
+      var encryption = ''
+      var alertEmail = []
+      this.mail.alertEmail_list.forEach(element => {
+        if (element.name != '') {
+          alertEmail.push(element.name)
+        }
+      });
+      if (alertEmail.length == 0) {
+        this.$message(
+          {
+            message: '请输入收件箱地址',
+            type: 'error',
+          }
+        );
+        return false;
+      }
+      if (this.mail.password == '') {
+        this.$message(
+          {
+            message: '请输入邮箱密码',
+            type: 'error',
+          }
+        );
+        return false;
+      }
+      if (this.mail.ssl_switch) {
+        encryption = 'ssl'
+      } else {
+        encryption = ''
+      }
+      this.$axios.post('/api/yiiapi/email/test', {
+        encryption: encryption,
+        host: this.mail.host,
+        port: this.mail.port,
+        username: this.mail.username,
+        password: this.mail.password,
+        send: this.mail.send,
+        content: this.mail.content,
+        alertEmail: alertEmail,
+      })
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(status);
+          console.log(data);
+          if (status == 0) {
+            // this.get_data()
+            this.$message(
+              {
+                message: '发送测试邮件通知成功',
+                type: 'success',
+              }
+            );
+          } else {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
+          }
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
       // yiiapi/email/test"
       // /yiiapi/email/save"
       console.log(this.mail);
+      // {"encryption":"ssl","host":"smtp.163.com","port":465,"username":"haoxueyong123@163.com","password":"hao123","alertEmail":["945683550@qq.com","495239534@qq.com"],"send":true,"content":"youjian neitong "}
     },
-    add_addr () {
-      this.receipt_addrs.forEach(item => {
-        item.add = false;
+    // 保存配置
+    send_save () {
+      var encryption = ''
+      var alertEmail = []
+      this.mail.alertEmail_list.forEach(element => {
+        if (element.name != '') {
+          alertEmail.push(element.name)
+        }
       });
-      this.receipt_addrs.push({ name: '', add: true })
+      if (alertEmail.length == 0) {
+        this.$message(
+          {
+            message: '请输入收件箱地址',
+            type: 'error',
+          }
+        );
+        return false;
+      }
+      if (this.mail.password == '') {
+        this.$message(
+          {
+            message: '请输入邮箱密码',
+            type: 'error',
+          }
+        );
+        return false;
+      }
+      if (this.mail.ssl_switch) {
+        encryption = 'ssl'
+      } else {
+        encryption = ''
+      }
+      this.$axios.post('/api/yiiapi/email/save', {
+        encryption: encryption,
+        host: this.mail.host,
+        port: this.mail.port,
+        username: this.mail.username,
+        password: this.mail.password,
+        send: this.mail.send,
+        content: this.mail.content,
+        alertEmail: alertEmail,
+      })
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(status);
+          console.log(data);
+          if (status == 0) {
+            this.get_data()
+            this.$message(
+              {
+                message: '设置邮件通知成功',
+                type: 'success',
+              }
+            );
+          }
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    //  添加邮箱
+    add_addr () {
+      this.mail.alertEmail_list.forEach(item => {
+        item.icon = false;
+      });
+      this.mail.alertEmail_list.push({ name: '', icon: true })
     },
     del_addr (item, index) {
-      this.receipt_addrs.splice(index, 1);
-    }
+      this.mail.alertEmail_list.splice(index, 1);
+    },
+
   }
 };
 </script>

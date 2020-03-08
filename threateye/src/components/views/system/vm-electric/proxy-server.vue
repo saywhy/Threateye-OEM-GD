@@ -3,7 +3,7 @@
     <div class="left">
       <div class="left_item">
         <span>代理启停:</span>
-        <el-switch v-model="proxy.switch">
+        <el-switch v-model="proxy.proxy_switch">
         </el-switch>
       </div>
       <div class="left_item">
@@ -22,7 +22,7 @@
         <p>代理地址</p>
         <el-input class="select_box"
                   placeholder="请输入代理地址"
-                  v-model="proxy.addr"
+                  v-model="proxy.ip"
                   clearable>
         </el-input>
       </div>
@@ -36,19 +36,20 @@
       </div>
       <div class="left_item">
         <el-button type="primary"
-                   class="save_btn">保存</el-button>
+                   class="save_btn"
+                   @click="set_proxy">保存</el-button>
       </div>
     </div>
     <div class="mid">
       <div class="mid_item">
         <span>密码验证:</span>
-        <el-switch v-model="proxy.pswd_switch"></el-switch>
+        <el-switch v-model="proxy.verify_passwd"></el-switch>
       </div>
       <div class="mid_item">
         <p>用户名</p>
         <el-input class="select_box"
                   placeholder="请输入用户名"
-                  v-model="proxy.name"
+                  v-model="proxy.user"
                   clearable>
         </el-input>
       </div>
@@ -56,8 +57,8 @@
         <p>用户密码</p>
         <el-input class="select_box"
                   placeholder="请输入用户密码"
-                  v-model="proxy.pswd"
-                  clearable>
+                  v-model="proxy.password"
+                  show-password>
         </el-input>
       </div>
     </div>
@@ -71,12 +72,13 @@ export default {
   data () {
     return {
       proxy: {
-        switch: true,
-        pswd_switch: true,
-        pswd: "",
+        proxy_switch: true,
+        verify_passwd: true,
         type: "",
-        addr: "",
+        ip: "",
         port: "",
+        user: "",
+        password: "",
         type_list: [
           {
             name: "http"
@@ -101,8 +103,62 @@ export default {
     get_data () {
       this.$axios.get('/api/yiiapi/seting/get-proxy-server')
         .then(response => {
-          console.log(response);
-          response.data.data[0]
+          let { status, data } = response.data;
+          console.log(data.data[0].PROXYCONF);
+          this.proxy.type = data.data[0].PROXYCONF.type
+          this.proxy.ip = data.data[0].PROXYCONF.ip
+          this.proxy.port = data.data[0].PROXYCONF.port
+          this.proxy.user = data.data[0].PROXYCONF.user
+          this.proxy.password = data.data[0].PROXYCONF.password
+          if (data.data[0].PROXYCONF.verify_passwd == 'yes') {
+            this.proxy.verify_passwd = true
+          } else {
+            this.proxy.verify_passwd = false
+          }
+          if (data.data[0].PROXYCONF.proxy_switch == 'yes') {
+            this.proxy.proxy_switch = true
+          } else {
+            this.proxy.proxy_switch = false
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    set_proxy () {
+      var proxy_switch = ''
+      var verify_passwd = ''
+      if (this.proxy.proxy_switch) {
+        proxy_switch = 'yes'
+      } else {
+        proxy_switch = 'no'
+      }
+      if (this.proxy.verify_passwd) {
+        verify_passwd = 'yes'
+      } else {
+        verify_passwd = 'no'
+      }
+      this.$axios.put('/api/yiiapi/seting/set-proxy-server', {
+        proxy_switch: proxy_switch,
+        type: this.proxy.type,
+        ip: this.proxy.ip,
+        port: this.proxy.port,
+        verify_passwd: verify_passwd,
+        user: this.proxy.user,
+        password: this.proxy.password
+      })
+        .then(response => {
+          let { status, data } = response.data;
+          if (status == 0) {
+            this.get_data();
+            this.$message(
+              {
+                message: '修改代理成功',
+                type: 'success',
+              }
+            );
+          }
+          console.log(data.data);
         })
         .catch(error => {
           console.log(error);

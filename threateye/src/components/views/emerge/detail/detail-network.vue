@@ -57,6 +57,7 @@
               <span class="item_li_title">源地址:</span>
               <el-dropdown @command="change_state_src"
                            trigger="click"
+                           class="src_dropdown_box"
                            placement='bottom-start'
                            size='148'>
                 <el-button class="change_src_btn">
@@ -64,6 +65,7 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown"
+                                  style="width200px;"
                                   class="dropdown_ul_box_detail">
                   <el-dropdown-item command='1'
                                     class="select_item">威胁追查</el-dropdown-item>
@@ -74,7 +76,24 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">目的地址:</span>
-              <span class="item_li_content"> {{network_detail.dest_ip}}</span>
+              <el-dropdown @command="change_state_dest"
+                           trigger="click"
+                           class="src_dropdown_box"
+                           placement='bottom-start'
+                           size='148'>
+                <el-button class="change_src_btn">
+                  <span>{{network_detail.dest_ip}}</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown"
+                                  style="width200px;"
+                                  class="dropdown_ul_box_detail">
+                  <el-dropdown-item command='1'
+                                    class="select_item">威胁追查</el-dropdown-item>
+                  <el-dropdown-item command="2"
+                                    class="select_item">添加到外部动态列表</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </li>
             <li class="item_li">
               <span class="item_li_title">源标签:</span>
@@ -1836,8 +1855,94 @@ export default {
     // 加入外部链接
     change_state_src (item) {
       console.log(item);
+      // 只能是1和2；动态类型，1Ip，2url
+      // 选择“威胁追查“后就直接跳到威胁调查页面的IP/URL通讯调查页面，把该IP地址作为搜索条件得出搜索结果。
+      //加入外部链接
+      if (item == '2') {
+        this.$confirm('本地址会被加入外部动态列表，第三方设备读取后可以对本地址进行告警提示或者拦截。', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post('/api/yiiapi/alert/join-external-dynamics', {
+            addr: this.network_detail.src_ip,
+            type: 1
+          })
+            .then(response => {
+              let { status, data } = response.data;
+              console.log(data);
+              if (status == 0) {
+                this.$message(
+                  {
+                    message: '加入外部动态列表成功',
+                    type: 'success',
+                  }
+                );
+              } else {
+                this.$message(
+                  {
+                    message: data.msg,
+                    type: 'error',
+                  }
+                );
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+      }
     },
 
+    // 加入外部链接
+    change_state_dest (item) {
+      console.log(item);
+      //加入外部链接
+      if (item == '2') {
+        this.$confirm('本地址会被加入外部动态列表，第三方设备读取后可以对本地址进行告警提示或者拦截。', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post('/api/yiiapi/alert/join-external-dynamics', {
+            addr: this.network_detail.dest_ip,
+            type: 1
+          })
+            .then(response => {
+              let { status, data } = response.data;
+              console.log(data);
+              if (status == 0) {
+                this.$message(
+                  {
+                    message: '加入外部动态列表成功',
+                    type: 'success',
+                  }
+                );
+              } else {
+                this.$message(
+                  {
+                    message: data.msg,
+                    type: 'error',
+                  }
+                );
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+      }
+    },
 
 
 
@@ -2320,8 +2425,8 @@ export default {
 @import '../../../../assets/css/less/reset_css/reset_tab.less';
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
 .dropdown_ul_box_detail {
-  width: 124px;
-  top: 209px !important;
+  // width: 124px;
+  // top: 209px !important;
   .el-dropdown-menu__item:hover {
     color: #606266;
   }

@@ -7,6 +7,9 @@
       <el-button type="primary"
                  class="btn_o"
                  @click="del_user">删除</el-button>
+      <el-button type="primary"
+                 class="btn_o"
+                 @click="edit_pswd">修改密码</el-button>
     </div>
     <div class="user_table">
       <el-table ref="multipleTable"
@@ -312,6 +315,46 @@ export default {
   },
 
   methods: {
+    // 修改密码
+    edit_pswd () {
+      this.$axios.get('/api/yiiapi/site/get-self-password-reset-token')
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(status);
+          console.log(data.data.token);
+          let token = data.data.token
+
+          // site/reset-self-password
+          this.$axios.post('/api/yiiapi/site/reset-self-password?token=' + token, {
+            ResetPasswordForm: {
+              password: "Hoohoolab*1234",
+              mobile: "151111211111",
+              mail_addr: "12312312@qq.com",
+              department: '123'
+            },
+            old_password: "Hoohoolab*123"
+          })
+            .then(response => {
+              let { status, data } = response.data;
+              console.log(status);
+              console.log(data);
+
+
+
+            })
+            .catch(error => {
+              console.log(error);
+            })
+
+
+
+
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     get_menu () {
       this.$axios.get('/api/yiiapi/site/menu')
         .then(response => {

@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="0" id="Nav" v-cloak>
     <el-col :span="3" style="width: 11.5%;">
-      <div class="header-logo" align="left">
+      <div class="header-logo" align="left"  @click="enter_home">
         <img class="e-image" :src="logoSrc">
       </div>
     </el-col>
@@ -72,6 +72,9 @@
       login(){
         this.$router.push('/', () => {});
       },
+      enter_home(){
+        this.$router.push({path:'/home/overview'});
+      },
       //退出
       logout() {
         this.$store.dispatch('LogOut').then(() => {
@@ -100,6 +103,7 @@
         margin: 9px 0;
         width: 152px;
         height: 42px;
+        cursor: pointer;
       }
     }
     .el-col {

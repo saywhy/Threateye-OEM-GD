@@ -61,7 +61,7 @@ export default {
         xAxis: {
           type: 'value',
           min: 0,
-          max:maxNum,
+          /*max:maxNum,*/
           splitLine: {
             show: true,
             lineStyle: {
@@ -114,7 +114,7 @@ export default {
             color:'#5389E0',
             data: num
           },
-          {
+          /*{
             type: 'bar',
             stack: '总量',
             label: {
@@ -128,8 +128,7 @@ export default {
                 backgroundColor:'red'
               }
             }
-          },
-
+          },*/
         ]
       });
       window.addEventListener("resize", () => {

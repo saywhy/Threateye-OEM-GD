@@ -117,7 +117,17 @@ export default {
       }
     };
   },
-
+  mounted () {
+    console.log(this.$route.query.detail);
+    if (this.$route.query.src_ip && this.$route.query.src_ip != '') {
+      this.url_search.src_ip = this.$route.query.src_ip;
+      this.get_data();
+    }
+    if (this.$route.query.dest_ip && this.$route.query.dest_ip != '') {
+      this.url_search.dst_ip = this.$route.query.detail;
+      this.get_data();
+    }
+  },
   methods: {
     get_data () {
       this.url_search.loading = true

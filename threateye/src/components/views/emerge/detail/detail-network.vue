@@ -42,8 +42,8 @@
             </el-button>
             <el-dropdown-menu slot="dropdown"
                               class="dropdown_ul_box_detail">
-              <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
-              <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
+              <el-dropdown-item command="1">新建工单</el-dropdown-item>
+              <el-dropdown-item command="2">添加到工单</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <el-button class="edit_btn"
@@ -522,7 +522,7 @@
       </el-tabs>
     </div>
     <!-- 编辑标签 -->
-    <el-dialog class="add_box pop_box"
+    <el-dialog class="add_tag pop_box"
                :visible.sync="edit_tag.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_tag_box"
@@ -559,6 +559,278 @@
                    class="cancel_btn">取消</el-button>
         <el-button class="ok_btn"
                    @click="edit_tag_true">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 弹窗 -->
+    <!-- 添加到工单 -->
+    <el-dialog class="pop_state_add pop_box"
+               :visible.sync="worksheets_data.pop">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="add_closed_state"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">添加到工单</span>
+      </div>
+      <div class="content">
+        <div class="add_works">
+          <el-table ref="multipleTable"
+                    class="reset_table"
+                    align="center"
+                    :data="worksheets_list.data"
+                    tooltip-effect="dark"
+                    @selection-change="handleSelectionChange"
+                    style="width: 100%">
+            <el-table-column label="选择"
+                             width="55">
+              <template slot-scope="scope">
+                <el-radio v-model="worksheets_data.tableRadio"
+                          :label="scope.row">
+                  <i></i>
+                </el-radio>
+              </template>
+
+            </el-table-column>
+            <el-table-column prop="name"
+                             label="工单名称"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="creator"
+                             label="创建人"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column label="优先级"
+                             width="120">
+              <template slot-scope="scope">{{ scope.row.priority_cn}}</template>
+            </el-table-column>
+            <el-table-column prop="perator_cn"
+                             label="经办人"
+                             show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column label="状态"
+                             width="80"
+                             show-overflow-tooltip>
+              <template slot-scope="scope">{{ scope.row.status_cn }}</template>
+            </el-table-column>
+          </el-table>
+          <el-pagination class="pagination_box"
+                         @size-change="handleSizeChange_add"
+                         @current-change="handleCurrentChange_add"
+                         :current-page="worksheets_list.pageNow"
+                         :page-sizes="[10,50,100]"
+                         :page-size="10"
+                         layout="total, sizes, prev, pager, next"
+                         :total="worksheets_list.count">
+          </el-pagination>
+        </div>
+      </div>
+      <div class="btn_box">
+        <el-button @click="add_closed_state"
+                   class="cancel_btn">取消</el-button>
+        <el-button @click="add_ok_worksheets"
+                   class="ok_btn">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 弹窗 -->
+    <!-- 新建工单任务 -->
+    <el-dialog class="task_new_box pop_box"
+               :visible.sync="new_worksheets_data.pop">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_task_new"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">新建工单</span>
+      </div>
+      <div class="step_box">
+        <div class="step_box1">
+          <span class="step1_span"
+                :class="new_worksheets_data.new_contet?'step_now':'step_past'">基本信息</span>
+          <img src="@/assets/images/emerge/selected01.png"
+               class="selected_img"
+               alt="">
+        </div>
+        <div class="step_box2">
+          <span class="step2_span"
+                :class="!new_worksheets_data.new_contet?'step_now':'step_past'">处置内容</span>
+        </div>
+      </div>
+      <!-- 基本信息 -->
+      <div class="task_new_content"
+           v-if="new_worksheets_data.new_contet">
+        <div class="content_top">
+          <div class="content_top_left">
+            <li class="left_item">
+              <div class="title">
+                <span>工单名称</span>
+                <span class="improtant_ico">*</span>
+              </div>
+              <el-input class="task_new_input"
+                        placeholder="请输入工单名称"
+                        v-model="new_worksheets_list.name"
+                        clearable>
+              </el-input>
+            </li>
+            <li class="left_item">
+              <div class="title">
+                <span>经办人</span>
+                <span class="improtant_ico">*</span>
+              </div>
+              <el-select class="task_new_input"
+                         v-model="new_worksheets_list.operator"
+                         clearable
+                         placeholder="请选择经办人">
+                <el-option v-for="item in new_worksheets_data.operator_list"
+                           @click.native="select_changced(item)"
+                           :key="item.id"
+                           :label="item.username"
+                           :value="item.username">
+                </el-option>
+              </el-select>
+            </li>
+          </div>
+          <div class="content_top_right">
+            <li class="right_item">
+              <div class="title">
+                <span>优先级</span>
+                <span class="improtant_ico">*</span>
+              </div>
+              <el-select class="task_new_input"
+                         v-model="new_worksheets_list.level"
+                         clearable
+                         placeholder="请选择优先级">
+                <el-option v-for="item in new_worksheets_data.level_list"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </li>
+            <li class="right_item">
+              <el-checkbox-group v-model="new_worksheets_list.notice">
+                <el-checkbox label="email"
+                             value="email">邮件通知</el-checkbox>
+                <el-checkbox label="message"
+                             value="message">短信通知</el-checkbox>
+                <el-checkbox label="news"
+                             value="news">消息中心通知</el-checkbox>
+              </el-checkbox-group>
+            </li>
+          </div>
+        </div>
+        <div class="content_remarks">
+          <p class="title">备注</p>
+          <el-input type="textarea"
+                    :rows="4"
+                    placeholder="请输入内容"
+                    v-model="new_worksheets_list.textarea">
+          </el-input>
+        </div>
+        <div class="content_table">
+          <el-table :data="new_worksheets_data.table_operator.tableData"
+                    style="width: 100%">
+            <el-table-column prop="username"
+                             label="经办人"></el-table-column>
+            <el-table-column prop="department"
+                             label="部门"></el-table-column>
+            <el-table-column prop="email_addr"
+                             label="邮箱"></el-table-column>
+          </el-table>
+          <el-pagination class="pagination_box"
+                         @current-change="hcc_table_operator"
+                         :page-sizes="[5]"
+                         :page-size="5"
+                         :current-page="new_worksheets_data.table_operator.pageNow"
+                         :total="new_worksheets_data.table_operator.tableData.length"
+                         layout="total,sizes, prev, pager, next">
+          </el-pagination>
+        </div>
+        <div class="btn_box">
+          <el-button @click="closed_task_new"
+                     class="cancel_btn">取消</el-button>
+          <el-button @click="next_task"
+                     class="next_btn">下一步</el-button>
+        </div>
+      </div>
+
+      <!-- 处置内容 -->
+      <div class="task_handle_content"
+           v-if="!new_worksheets_data.new_contet">
+        <div class='table_box'>
+          <div>
+            <div>
+              <el-table align="center"
+                        :data="new_worksheets_data.network_detail"
+                        tooltip-effect="dark"
+                        style="width: 100%">
+                <el-table-column prop="category"
+                                 label="告警类型"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="indicator"
+                                 label="威胁指标"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="src_ip"
+                                 label="源地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="dest_ip"
+                                 label="目的地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="application"
+                                 label="应用"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="degree"
+                                 label="威胁等级"
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.degree=='high'">高</span>
+                    <span v-if="scope.row.degree=='medium'">中</span>
+                    <span v-if="scope.row.degree=='low'">低</span>
+                  </template>
+
+                </el-table-column>
+                <el-table-column label="失陷确定性"
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'未知':'已失陷' }}</template>
+
+                </el-table-column>
+                <el-table-column label="状态"
+                                 width="80">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.status==0">未确认</span>
+                    <span v-if="scope.row.status==1">已确认</span>
+                    <span v-if="scope.row.status==2">已处置</span>
+                    <span v-if="scope.row.status==3">已忽略</span>
+                    <span v-if="scope.row.status==4">误报</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @current-change="1"
+                             :current-page="1"
+                             :total="1"
+                             layout="total, sizes, prev, pager, next">
+              </el-pagination>
+            </div>
+          </div>
+        </div>
+        <div class="btn_box">
+          <el-button @click="closed_task_new"
+                     class="cancel_btn">取消</el-button>
+          <el-button @click="prev_task_handle"
+                     class="prev_btn">上一步</el-button>
+          <el-button @click="prev_task_handle_assign"
+                     class="prev_btn">分配</el-button>
+          <el-button @click="prev_task_handle_save"
+                     class="prev_btn">保存</el-button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -977,7 +1249,82 @@ export default {
         tag_list: [
         ],
         pop: false
-      }
+      },
+
+
+      //添加到工单
+      worksheets_data: {
+        page: 1,
+        rows: 10,
+        pop: false,
+        tableRadio: {},
+        level_list: [
+          {
+            value: "highest",
+            label: "极高"
+          },
+          {
+            value: "high",
+            label: "高"
+          },
+          {
+            value: "midium",
+            label: "中"
+          },
+          {
+            value: "low",
+            label: "低"
+          }
+        ],
+        status_type: [
+          '待分配', '已分配', '处置中', '已取消', '已处置'
+        ]
+      },
+      worksheets_list: {},
+      new_worksheets_list: {
+        name: "",
+        level: "",
+        operator: "",
+        new_operator: [],
+        notice: ['email'],
+        textarea: "",
+        multiple: [],
+
+      },
+      new_worksheets_data: {
+        pop: false,
+        new_contet: true,
+        operator_list: [],
+        level_list: [
+          {
+            value: "highest",
+            label: "极高"
+          },
+          {
+            value: "high",
+            label: "高"
+          },
+          {
+            value: "midium",
+            label: "中"
+          },
+          {
+            value: "low",
+            label: "低"
+          }
+        ],
+        //经办人数组
+        table_operator: {
+          tableData: [],
+          tableData_new: [],
+          count: 0,
+          pageNow: 1,
+          maxPage: 1,
+          eachPage: 5
+        },
+        // 告警数组
+        network_detail: []
+      },
     };
   },
   components: {
@@ -1857,6 +2204,9 @@ export default {
       console.log(item);
       // 只能是1和2；动态类型，1Ip，2url
       // 选择“威胁追查“后就直接跳到威胁调查页面的IP/URL通讯调查页面，把该IP地址作为搜索条件得出搜索结果。
+      if (item == '1') {
+        this.$router.push({ path: "/invest/url", query: { src_ip: this.network_detail.src_ip, dest_ip: '' } });
+      }
       //加入外部链接
       if (item == '2') {
         this.$confirm('本地址会被加入外部动态列表，第三方设备读取后可以对本地址进行告警提示或者拦截。', '提示', {
@@ -1902,6 +2252,9 @@ export default {
     // 加入外部链接
     change_state_dest (item) {
       console.log(item);
+      if (item == '1') {
+        this.$router.push({ path: "/invest/url", query: { dest_ip: this.network_detail.dest_ip, src_ip: '' } });
+      }
       //加入外部链接
       if (item == '2') {
         this.$confirm('本地址会被加入外部动态列表，第三方设备读取后可以对本地址进行告警提示或者拦截。', '提示', {
@@ -1946,7 +2299,6 @@ export default {
 
 
 
-    change_task () { },
     time_active (index) {
       console.log("111");
       this.time_choose = index;
@@ -1965,11 +2317,683 @@ export default {
     handleSelectionChange () { },
     handleClick (tab, event) {
       console.log(tab);
-    }
+    },
+    //工单任务选择
+    change_task (command) {
+      if (command == "1") {
+        this.new_worksheets_list.name = ''
+        this.new_worksheets_list.level = ''
+        this.new_worksheets_list.operator = ''
+        this.new_worksheets_list.new_operator = ''
+        this.new_worksheets_list.notice = ['email']
+        this.new_worksheets_list.textarea = ''
+        this.new_worksheets_list.multiple = []
+
+        this.new_worksheets_data.operator_list = []
+        this.new_worksheets_data.operator_list = []
+        this.new_worksheets_data.table_operator.tableData = []
+        this.new_worksheets_data.table_operator.tableData = []
+        this.new_worksheets_data.table_operator.count = 0
+        this.new_worksheets_data.table_operator.pageNow = 1
+        this.new_worksheets_data.table_operator.maxPage = 1
+        this.new_worksheets_data.table_operator.eachPage = 5
+        this.new_worksheets_data.network_detail = []
+        this.get_user_list();
+      } else if (command == "2") {
+        this.worksheets_data.tableRadio = {};
+        this.get_worksheets_list()
+      }
+    },
+    // 添加到工单
+    //获取工单列表
+    get_worksheets_list () {
+      this.$axios.get('/api/yiiapi/asset/workorder-list', {
+        params: {
+          page: this.worksheets_data.page,
+          rows: this.worksheets_data.rows
+        }
+      }).then((resp) => {
+        let { status, data } = resp.data;
+        console.log(data);
+        console.log(status);
+        if (status == 0) {
+          console.log(data);
+          this.worksheets_list = data
+          this.worksheets_list.pageNow = data.pageNow * 1
+          this.worksheets_data.pop = true;
+          this.worksheets_list.data.forEach(element => {
+            element.perator_cn = JSON.parse(element.perator).join(',')
+            this.worksheets_data.level_list.forEach(item => {
+              if (element.priority == item.value) {
+                element.priority_cn = item.label
+              }
+            });
+            this.worksheets_data.status_type.forEach((ele, index) => {
+              if (element.status == index) {
+                element.status_cn = this.worksheets_data.status_type[index]
+              }
+            });
+
+
+          });
+
+
+          // data.map(function (v, k) {
+          //   v.new_perator = (JSON.parse(v.perator)).join(',');
+          //   v.checked = false;
+          // });
+          // this.table_add_works.tableData = data;
+          // this.table_add_works.count = count;
+          // this.table_add_works.maxPage = maxPage;
+          // this.table_add_works.pageNow = Number(pageNow);
+          // this.table_add_works.loading = false;
+        }
+      })
+    },
+    handleSizeChange_add (val) {
+      this.worksheets_data.rows = val;
+      this.worksheets_data.tableRadio = {}
+      this.get_worksheets_list();
+    },
+    handleCurrentChange_add (val) {
+      this.worksheets_data.page = val;
+      this.worksheets_data.tableRadio = {}
+      this.get_worksheets_list();
+    },
+
+    // -新加到工单取消状态
+    add_closed_state () {
+      this.worksheets_data.pop = false;
+    },
+
+
+    //新加到工单确定
+    add_ok_worksheets () {
+      console.log(this.worksheets_data.tableRadio);
+      if (Object.keys(this.worksheets_data.tableRadio).length == 0) {
+        this.$message(
+          {
+            message: '请选择工单',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      var te_alert = []
+      te_alert.push(this.$route.query.detail)
+      this.$axios.post('/api/yiiapi/alert/add-workorder',
+        {
+          id: this.worksheets_data.tableRadio.id,
+          type: "alert",
+          name: this.worksheets_data.tableRadio.name,
+          priority: this.worksheets_data.tableRadio.priority,
+          remind: this.worksheets_data.tableRadio.remind,
+          remarks: this.worksheets_data.tableRadio.remarks,
+          te_alert: te_alert,
+        })
+        .then((resp) => {
+          let { status, msg, data } = resp.data;
+          console.log(data);
+          if (status == 0) {
+            this.$message.success('添加成功');
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+          this.add_closed_state();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    ///-------------------------新建工单
+
+    closed_task_new () {
+      this.new_worksheets_data.pop = false
+    },
+    //获取用户列表(经办人使用)
+    get_user_list () {
+      this.$axios.get('/api/yiiapi/site/user-list')
+        .then(resp => {
+          let { status, data } = resp.data;
+          if (status == 0) {
+            this.new_worksheets_data.operator_list = data;
+          } else {
+            this.new_worksheets_data.operator_list = [];
+          }
+          this.new_worksheets_data.pop = true
+          this.new_worksheets_data.new_contet = true;
+        })
+        .catch(err => {
+          console.log('用户列表错误');
+          console.log(err);
+        })
+    },
+
+    //经办人change处理
+    select_changced (item) {
+      console.log(item);
+      // this.new_worksheets_data.table_operator.tableData.push(item)
+      let level_list = this.new_worksheets_data.table_operator.tableData;
+      let selected_id_attr = level_list.map(x => { return x.id });
+      if (selected_id_attr.includes(item.id)) {
+        this.$message.error('已存在');
+      } else {
+        this.new_worksheets_data.table_operator.tableData.unshift(item);
+      }
+      let pageNow = this.new_worksheets_data.table_operator.pageNow;
+      let handle_data_operator = this.new_worksheets_data.table_operator.tableData.slice((pageNow - 1) * 5, pageNow * 5);
+      this.new_worksheets_data.table_operator.tableData_new = handle_data_operator;
+      let selected_name_attr = this.new_worksheets_data.table_operator.tableData.map(x => { return x.username });
+      console.log(selected_name_attr);
+      console.log(this.new_worksheets_data.table_operator.tableData);
+      // this.task_params.new_operator = selected_name_attr;
+    },
+    //经办人页数点击
+    hcc_table_operator (val) {
+      this.new_worksheets_data.table_operator.pageNow = val;
+    },
+    //下一步时候验证工单名称，优先级、经办人等参数
+    next_task () {
+      if (this.new_worksheets_list.name == '') {
+        this.$message.error('工单名称不能为空');
+        return false
+      }
+      if (this.new_worksheets_list.level == '') {
+        this.$message.error('优先级未选择');
+        return false
+      }
+      if (this.new_worksheets_list.level == '') {
+        this.$message.error('优先级未选择');
+        return false
+      }
+      if (this.new_worksheets_list.operator == '') {
+        this.$message.error('经办人未选择');
+        return false
+      }
+      this.new_worksheets_data.new_contet = false;
+      // this.handle.active = 0;
+      this.new_worksheets_data.network_detail.push(this.network_detail)
+      console.log(this.network_detail);
+    },
+    // 上一步
+    prev_task_handle () {
+      this.new_worksheets_data.network_detail = [];
+      this.new_worksheets_data.new_contet = true;
+    },
+    // 分配
+    prev_task_handle_assign () {
+      this.$axios.put('/api/yiiapi/alert/distribution-workorder',
+        {
+          name: this.task_params.name,
+          priority: this.task_params.level,
+          perator: this.task_params.new_operator,
+          remarks: this.task_params.textarea,
+          te_alert: this.task_params.multiple,
+          remind: this.task_params.notice
+        })
+        .then((resp) => {
+          let { status, msg, data } = resp.data;
+          console.log(data);
+          if (status == 0) {
+            this.$message.success('分配成功');
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 保存
+    prev_task_handle_save () {
+
+    },
+
+
   }
 };
 </script>
+<style lang="less">
+@import '../../../../assets/css/less/reset_css/reset_tab.less';
+@import '../../../../assets/css/less/reset_css/reset_pop.less';
+.dropdown_ul_box_detail {
+  // width: 124px;
+  // top: 209px !important;
+  .el-dropdown-menu__item:hover {
+    color: #606266;
+  }
+}
+// tab栏
+.emerge_table {
+  th {
+    .cell {
+      font-family: PingFangSC-Medium;
+      font-size: 14px;
+      color: #333333;
+    }
+  }
+  td {
+    .cell {
+      font-family: PingFangSC-Regular;
+      font-size: 14px;
+      color: #333333;
+    }
+  }
+}
+.detail-network {
+  .pagination_box {
+    margin: 24px 0;
+    text-align: center;
+  }
+  // 弹窗编辑标签
+  .add_tag {
+    .el-dialog {
+      width: 440px;
+      .el-dialog__body {
+        width: 440px;
+        .content {
+          padding: 24px 0;
+          .content_item {
+            margin-bottom: 24px;
+            .item_addrs {
+              margin-bottom: 12px;
+              display: flex;
+            }
+            .img_box {
+              width: 16px;
+              height: 16px;
+              margin-left: 10px;
+              margin-top: 14px;
+              cursor: pointer;
+            }
+            .title {
+              font-size: 12px;
+              color: #999999;
+            }
+            .title_color {
+              color: #ff5f5c;
+            }
+            .select_box {
+              width: 100%;
+              height: 38px;
+              margin-top: 6px;
+              .el-input__inner {
+                background: #f8f8f8;
+                border: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  //添加到工单
+  .pop_state_add {
+    .el-dialog {
+      width: 960px;
+      .el-dialog__body {
+        width: 960px;
+        .content {
+          padding-top: 24px;
+          // 修改radio 改成对号
+          .el-radio__input.is-checked .el-radio__inner::after {
+            transform: rotate(45deg) scaleY(1);
+          }
+          .el-radio__inner::after {
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+            background-color: transparent;
+            content: '';
+            border: 1px solid #fff;
+            border-left: 0;
+            border-top: 0;
+            height: 0.4375rem;
+            left: 0.25rem;
+            position: absolute;
+            top: 1px;
+            -webkit-transform: rotate(45deg) scaleY(0);
+            transform: rotate(45deg) scaleY(0);
+            width: 0.1875rem;
+            -webkit-transition: -webkit-transform 0.15s ease-in 0.05s;
+            transition: -webkit-transform 0.15s ease-in 0.05s;
+            transition: transform 0.15s ease-in 0.05s;
+            transition: transform 0.15s ease-in 0.05s,
+              -webkit-transform 0.15s ease-in 0.05s;
+            transition: transform 0.15s ease-in 0.05s,
+              -webkit-transform 0.15s ease-in 0.05s;
+            -webkit-transform-origin: center;
+            transform-origin: center;
+          }
+          .el-radio__inner {
+            border-radius: 2px;
+          }
+        }
+      }
+    }
+  }
+  //  新建工单
+  .task_new_box {
+    .el-dialog {
+      width: 960px;
+      .el-dialog__body {
+        width: 960px;
+        .closed_img {
+          position: absolute;
+          top: -18px;
+          right: -18px;
+          cursor: pointer;
+          width: 46px;
+          height: 46px;
+        }
 
+        .title {
+          height: 24px;
+          line-height: 24px;
+          text-align: left;
+
+          .title_name {
+            font-size: 20px;
+            color: #333333;
+            line-height: 24px;
+            font-weight: 500;
+          }
+
+          .mask {
+            width: 24px;
+            height: 0px;
+            border-top: 0px;
+            border-right: 2px solid transparent;
+            border-bottom: 5px solid #0070ff;
+            border-left: 2px solid transparent;
+            transform: rotate3d(0, 0, 1, 90deg);
+            display: inline-block;
+            margin-right: -5px;
+            margin-bottom: 4px;
+            margin-left: -10px;
+          }
+        }
+
+        .step_box {
+          height: 36px;
+          margin: 20px 0 24px 0;
+          .step_box1 {
+            background-image: url('../../../../assets/images/emerge/step1.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            width: 120px;
+            height: 36px;
+            float: left;
+            position: relative;
+            line-height: 36px;
+            text-align: center;
+
+            .step1_span {
+              font-size: 14px;
+            }
+
+            .selected_img {
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+          }
+
+          .step_box2 {
+            width: 120px;
+            height: 36px;
+            background-image: url('../../../../assets/images/emerge/step2.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            float: left;
+            position: relative;
+            line-height: 36px;
+            text-align: center;
+            margin-left: -10px;
+
+            .step2_span {
+              font-size: 14px;
+            }
+          }
+
+          .step_now {
+            color: #0070ff;
+          }
+
+          .step_past {
+            color: #999999;
+          }
+        }
+
+        .task_new_content {
+          /*height: 480px;*/
+          .content_top {
+            overflow: hidden;
+
+            .content_top_left {
+              float: left;
+              width: 45%;
+
+              .left_item {
+                margin-bottom: 16px;
+                display: flex;
+
+                .title {
+                  width: 100px;
+                  line-height: 38px;
+
+                  .improtant_ico {
+                    color: #ff3a36;
+                  }
+                }
+
+                .task_new_input {
+                  flex: 1;
+
+                  .el-input__inner {
+                    height: 38px;
+                  }
+                }
+              }
+            }
+
+            .content_top_right {
+              float: right;
+              width: 45%;
+
+              .right_item {
+                margin-bottom: 16px;
+                display: flex;
+
+                .title {
+                  width: 100px;
+                  line-height: 38px;
+
+                  .improtant_ico {
+                    color: #ff3a36;
+                  }
+                }
+
+                .task_new_input {
+                  flex: 1;
+
+                  .el-input__inner {
+                    height: 38px;
+                  }
+                }
+              }
+            }
+          }
+
+          .content_remarks {
+            .title {
+              font-size: 12px;
+              color: #999999;
+            }
+
+            /deep/ .el-textarea {
+              height: 92px;
+              textarea {
+                resize: none;
+                height: 92px;
+                font-size: 14px;
+                color: #333;
+                font-family: PingFangSC-Regular;
+              }
+            }
+            .el-textarea__inner:hover {
+              border: none;
+            }
+
+            .el-textarea__inner {
+              border: none;
+              background: #f8f8f8;
+            }
+          }
+
+          .content_table {
+            margin-top: 16px;
+
+            /deep/ .el-table td {
+              padding: 0;
+              height: 32px;
+            }
+            /deep/ .el-table th {
+              padding: 0;
+              height: 36px;
+              background: #f8f8f8;
+              .cell {
+                font-weight: bold;
+              }
+            }
+
+            /deep/ .el-pagination {
+              margin-top: 20px;
+              text-align: center;
+            }
+          }
+
+          .btn_box {
+            margin-top: 36px;
+            margin-bottom: 24px;
+            height: 42px;
+            text-align: center;
+
+            .cancel_btn {
+              border: 1px solid #0070ff;
+              background: #fff;
+              color: #0070ff;
+              width: 136px;
+              height: 42px;
+              font-size: 16px;
+            }
+
+            .next_btn {
+              background-color: #0070ff;
+              color: #fff;
+              width: 136px;
+              height: 42px;
+              font-size: 16px;
+            }
+          }
+        }
+
+        .task_handle_content {
+          .handle_content_top {
+            height: 42px;
+            text-align: left;
+            .change_btn,
+            .ref {
+              background-color: #0070ff;
+              border-color: #0070ff;
+              width: 136px;
+              height: 42px;
+              color: #fff;
+            }
+
+            .cel {
+              border: 1px solid #0070ff;
+              background: #fff;
+              color: #0070ff;
+              width: 136px;
+              height: 42px;
+              margin-left: 0;
+            }
+          }
+
+          .table_box {
+            margin-top: 24px;
+
+            .table_box_title {
+              height: 38px;
+              li {
+                height: 38px;
+                width: 92px;
+                float: left;
+                font-size: 14px;
+                line-height: 38px;
+                color: #bbbbbb;
+                text-align: center;
+                border-top: 2px solid #fff;
+              }
+
+              li.active {
+                cursor: pointer;
+                background: #eef6ff;
+                color: #0070ff;
+                border-top: 2px solid #0070ff;
+              }
+            }
+            /deep/ .el-table {
+              font-size: 12px;
+              thead.has-gutter {
+                th {
+                  color: #333333;
+                  background: #f8f8f8;
+                  .cell {
+                    font-weight: bold;
+                  }
+                }
+              }
+              .cell {
+                color: #333333;
+              }
+            }
+
+            /deep/ .el-pagination {
+              margin-top: 20px;
+              text-align: center;
+            }
+          }
+
+          .btn_box {
+            margin-top: 36px;
+            margin-bottom: 24px;
+            height: 42px;
+            text-align: center;
+
+            .cancel_btn {
+              border: 1px solid #0070ff;
+              background: #fff;
+              color: #0070ff;
+              width: 136px;
+              height: 42px;
+              font-size: 16px;
+            }
+
+            .prev_btn {
+              background-color: #0070ff;
+              color: #fff;
+              width: 136px;
+              height: 42px;
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>
 <style scoped lang="less">
 .detail-network {
   background: #f8f8f8;
@@ -2416,76 +3440,6 @@ export default {
       }
       .el-table__row {
         height: 42px;
-      }
-    }
-  }
-}
-</style>
-<style lang="less">
-@import '../../../../assets/css/less/reset_css/reset_tab.less';
-@import '../../../../assets/css/less/reset_css/reset_pop.less';
-.dropdown_ul_box_detail {
-  // width: 124px;
-  // top: 209px !important;
-  .el-dropdown-menu__item:hover {
-    color: #606266;
-  }
-}
-// tab栏
-.emerge_table {
-  th {
-    .cell {
-      font-family: PingFangSC-Medium;
-      font-size: 14px;
-      color: #333333;
-    }
-  }
-  td {
-    .cell {
-      font-family: PingFangSC-Regular;
-      font-size: 14px;
-      color: #333333;
-    }
-  }
-}
-.detail-network {
-  // 弹窗编辑标签
-  .el-dialog {
-    width: 440px;
-    .el-dialog__body {
-      width: 440px;
-      .content {
-        padding: 24px 0;
-        .content_item {
-          margin-bottom: 24px;
-          .item_addrs {
-            margin-bottom: 12px;
-            display: flex;
-          }
-          .img_box {
-            width: 16px;
-            height: 16px;
-            margin-left: 10px;
-            margin-top: 14px;
-            cursor: pointer;
-          }
-          .title {
-            font-size: 12px;
-            color: #999999;
-          }
-          .title_color {
-            color: #ff5f5c;
-          }
-          .select_box {
-            width: 100%;
-            height: 38px;
-            margin-top: 6px;
-            .el-input__inner {
-              background: #f8f8f8;
-              border: 0;
-            }
-          }
-        }
       }
     }
   }

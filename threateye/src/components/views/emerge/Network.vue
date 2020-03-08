@@ -392,8 +392,7 @@
       <div class="btn_box">
         <el-button @click="closed_edit_tag_box"
                    class="cancel_btn">取消</el-button>
-        <el-button class="ok_btn"
-                   @click="edit_tag_true">确定</el-button>
+        <el-button class="ok_btn" @click="edit_tag_true">确定</el-button>
       </div>
     </el-dialog>
 
@@ -409,6 +408,7 @@
       vmEmergeLine,
       vmEmergePicker
     },
+
     filters: {
       //处理状态(处置-资产维度)
       'alert_status': function (args) {

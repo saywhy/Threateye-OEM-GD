@@ -89,34 +89,6 @@
             <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
-            <!--<el-table-column label="威胁等级">
-              <template slot-scope="scope">
-                <el-dropdown @command="change_degree"
-                             trigger="click"
-                             class="degree_box"
-                             :class="scope.row.color">
-                  <el-button type="primary"
-                             @click.stop>
-                    {{ scope.row.degree }}
-                    <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                  </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="['高',scope.$index,'high']"
-                                      v-if="scope.row.degree !='高'">
-                      高
-                    </el-dropdown-item>
-                    <el-dropdown-item :command="['中',scope.$index,'mid']"
-                                      v-if="scope.row.degree !='中'">
-                      中
-                    </el-dropdown-item>
-                    <el-dropdown-item :command="['低',scope.$index,'low']"
-                                      v-if="scope.row.degree !='低'">
-                      低
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-table-column>-->
             <el-table-column label="威胁等级">
               <template slot-scope="scope">
                 <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
@@ -125,13 +97,13 @@
                     <i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
+                    <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
                       高危
                     </el-dropdown-item>
-                    <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中危'">
+                    <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中'">
                       中危
                     </el-dropdown-item>
-                    <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低危'">
+                    <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低'">
                       低危
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -616,30 +588,29 @@
           }
         })
           .then(resp => {
-            /*this.network_list.data.forEach(item => {
-              switch (item.degree) {
-                case '高':
-                  item.color = 'high'
-                  break;
-                case '中':
-                  item.color = 'mid'
-                  break;
-                case '低':
-                  item.color = 'low'
-                  break;
-                default:
-                  break;
-              }
-            });*/
-            let {status, data} = resp.data;
 
-           // console.log(resp.data)
+            let {status, data} = resp.data;
 
             let datas = data;
 
             if (status == 0) {
 
               let {data, count, maxPage, pageNow} = datas;
+              data.map(function (v,k) {
+                switch (v.degree) {
+                  case '高':
+                    v.color = 'high';
+                    break;
+                  case '中':
+                    v.color = 'mid';
+                    break;
+                  case '低':
+                    v.color = 'low';
+                    break;
+                  default:
+                    break;
+                }
+              });
               this.table.tableData = data;
               this.table.count = count;
               this.table.maxPage = maxPage;
@@ -812,42 +783,41 @@
 
         let sel_table_data = this.table.multipleSelection;
 
-        if(sel_table_data.length == 0){
+        /*if(sel_table_data.length == 0){
 
           this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
 
           return false;
 
-        } else {
+        } else {}*/
 
-          this.table_alerts.tableData = sel_table_data;
-          this.table_alerts.count = sel_table_data.length;
+        this.table_alerts.tableData = sel_table_data;
+
+        this.table_alerts.count = sel_table_data.length;
+
+        let pageNow = this.table_alerts.pageNow;
+
+        let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+
+        this.table_alerts.tableData_new = handle_data;
 
 
-          let pageNow = this.table_alerts.pageNow;
-
-          let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
-
-          this.table_alerts.tableData_new = handle_data;
-
-
-          //获取用户列表(经办人使用)
-          this.$axios.get('/api/yiiapi/site/user-list')
-            .then(resp => {
-              let {status, data} = resp.data;
-              if (status == 0) {
-                this.task_new.operator_list = data;
-              }else {
-                this.task_new.operator_list = [];
-              }
-              this.task.new = true;
-              this.task.new_contet = true;
-            })
-            .catch(err => {
-              console.log('用户列表错误');
-              console.log(err);
-            })
-        }
+        //获取用户列表(经办人使用)
+        this.$axios.get('/api/yiiapi/site/user-list')
+          .then(resp => {
+            let {status, data} = resp.data;
+            if (status == 0) {
+              this.task_new.operator_list = data;
+            }else {
+              this.task_new.operator_list = [];
+            }
+            this.task.new = true;
+            this.task.new_contet = true;
+          })
+          .catch(err => {
+            console.log('用户列表错误');
+            console.log(err);
+          })
 
       },
 
@@ -1186,7 +1156,7 @@
     /*.el-input__inner {
       height: 38px;
     }*/
-    
+
     .alert_risk {
       border-radius: 4px;
       margin-top: 20px;

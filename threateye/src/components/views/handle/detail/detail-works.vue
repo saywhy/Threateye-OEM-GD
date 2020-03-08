@@ -72,13 +72,13 @@
                       <i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
+                      <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
                         高危
                       </el-dropdown-item>
-                      <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中危'">
+                      <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中'">
                         中危
                       </el-dropdown-item>
-                      <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低危'">
+                      <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低'">
                         低危
                       </el-dropdown-item>
                     </el-dropdown-menu>
@@ -272,6 +272,21 @@ export default {
           if (status == 0) {
 
             data.new_perator = data.perator.join(',');
+            data.map(function (v,k) {
+              switch (v.degree) {
+                case '高':
+                  v.color = 'high';
+                  break;
+                case '中':
+                  v.color = 'mid';
+                  break;
+                case '低':
+                  v.color = 'low';
+                  break;
+                default:
+                  break;
+              }
+            });
 
             this.data = data;
 

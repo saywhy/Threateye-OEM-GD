@@ -50,6 +50,7 @@
                            width="50">
           </el-table-column>
           <el-table-column type="selection"
+                           :selectable="checkSelectable"
                            width="50">
           </el-table-column>
           <el-table-column label="序号"
@@ -205,9 +206,30 @@ export default {
       var url1 = "/api/yiiapi/investigate/download-ioc-template";
       window.location.href = url1;
     },
+    // 禁止选中的项目
+    checkSelectable (row) {
+      return row.create_status == "1"
+    },
     // 下载列表
     download_list () {
-      console.log('1231');
+      console.log(this.select_list);
+      if (this.select_list.length == 0) {
+        this.$message(
+          {
+            message: '请先选中需下载的信息',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      var id_list = []
+      this.select_list.forEach(element => {
+        id_list.push(element.id)
+      });
+      console.log(id_list);
+      var id_list_str = JSON.stringify(id_list)
+      var url1 = "/api/yiiapi/investigate/ioc-scanning-download?id=" + id_list_str;
+      window.location.href = url1;
 
     },
     // 删除列表
@@ -270,29 +292,6 @@ export default {
     reset () {
       this.flow_search.direction = '0'
       this.flow_search.host_ip = ''
-    },
-    // 下载
-    download () {
-      if (!this.flow_list.data || this.flow_list.data.data.length == 0) {
-        this.$message({
-          type: 'error',
-          message: '请先搜索需要下载的数据'
-        });
-        return false
-      }
-      if (this.flow_list.count > 1000) {
-        this.$message({
-          type: 'error',
-          message: '下载数据不能超出1000条！'
-        });
-        return false
-      }
-      var url1 = "/api/yiiapi/investigate/flow-direction-investigation-export?host_ip=" + this.flow_search.host_ip +
-        '&flow_direction=' + this.flow_search.direction +
-        '&start_time=' + this.flow_search.start_time +
-        '&end_time=' + this.flow_search.end_time +
-        '&current_page=0&per_page_count=0';
-      window.location.href = url1;
     },
   },
 }

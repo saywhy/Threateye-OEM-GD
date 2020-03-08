@@ -240,10 +240,7 @@ export default {
         .catch(error => {
           console.log(error);
         })
-      // yiiapi/email/test"
-      // /yiiapi/email/save"
       console.log(this.mail);
-      // {"encryption":"ssl","host":"smtp.163.com","port":465,"username":"haoxueyong123@163.com","password":"hao123","alertEmail":["945683550@qq.com","495239534@qq.com"],"send":true,"content":"youjian neitong "}
     },
     // 保存配置
     send_save () {

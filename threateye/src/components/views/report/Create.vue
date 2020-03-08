@@ -1,5 +1,6 @@
 <template>
-  <div id="report_create">
+  <div id="report_create"
+       v-loading.fullscreen.lock="report.loading">
     <div class="r_top">
       <div class="r_content_top">
         <h3 class="title">报表生成</h3>
@@ -108,6 +109,16 @@
         </el-col>
       </el-row>
     </div>
+    <div class="echarts">
+      <!-- 未处理告警 -->
+      <div id="untreatedalarm_report"></div>
+      <!-- // 柱状图-威胁应用协议 -->
+      <div id="application_protocol"></div>
+      <!-- 告警趋势 -->
+      <div id="alert_trend"></div>
+      <!-- 威胁类型 -->
+      <div id="alert_type"></div>
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -121,12 +132,34 @@ export default {
         type: 'doc',
         start_time: '',
         end_time: '',
+        loading: false
       },
       report_data: {
         page: 1,
         rows: 10
       },
       report_lsit: {},
+      untreatedAlarm_data: {
+        low_total_count: 0,
+        medium_total_count: 0,
+        high_total_count: 0,
+        base64: ''
+      },
+      application_protocol_data: {
+        application_protocol_name: [],
+        application_protocol_value: [],
+        base64: ''
+      },
+      alert_trend_data: {
+        alert_trend_name: [],
+        alert_trend_value: [],
+        base64: '',
+      },
+      alert_type_data: {
+        alert_type_name: [],
+        alert_type_value: [],
+        base64: '',
+      },
     }
   },
   components: { VmEmergePicker },
@@ -137,6 +170,7 @@ export default {
     // 生成报表
     create () {
       console.log(this.report);
+
       if (this.report.name == '') {
         this.$message(
           {
@@ -155,6 +189,7 @@ export default {
         );
         return false
       }
+      this.report.loading = true
       if (this.report.type == 'doc') {
         this.$axios.get('/api/yiiapi/report/create-echarts-img', {
           params: {
@@ -166,6 +201,54 @@ export default {
         })
           .then(response => {
             let { status, data } = response.data;
+            console.log(data);
+
+            // 未处理告警
+            if (data.threat_level) {
+              this.untreatedAlarm(data.threat_level);
+            }
+            //威胁使用应用协议
+            if (data.threat_protocol) {
+              this.application_protocol(data.threat_protocol);
+            }
+            //告警趋势
+            if (data.alert_trend) {
+              this.alert_trend(data.alert_trend);
+            }
+            //告警类型
+            if (data.alert_type) {
+              this.alert_type(data.alert_type);
+            }
+
+            setTimeout(() => {
+              this.$axios.post('/api/yiiapi/report/create-report', {
+                stime: this.report.start_time / 1000,
+                etime: this.report.end_time / 1000,
+                report_name: this.report.name,
+                report_type: 'doc',
+                threat_level: this.untreatedAlarm_data.base64,
+                threat_protocol: this.application_protocol_data.base64,
+                alert_type: this.alert_type_data.base64,
+                alert_trend: this.alert_trend_data.base64,
+              })
+                .then(response => {
+                  let { status, data } = response.data;
+                  if (status == 0) {
+                    this.report.loading = false
+                    this.get_data();
+                    this.$message(
+                      {
+                        message: '报表生成成功',
+                        type: 'success',
+                      }
+                    );
+                  }
+
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+            }, 100);
           })
           .catch(error => {
             console.log(error);
@@ -181,6 +264,7 @@ export default {
           .then(response => {
             let { status, data } = response.data;
             if (status == 0) {
+              this.report.loading = false
               this.get_data();
               this.$message(
                 {
@@ -201,9 +285,312 @@ export default {
             console.log(error);
           })
       }
-
-
     },
+    untreatedAlarm (params) {
+      if (params.length == 0) {
+        this.untreatedAlarm_data.low_total_count = 0;
+        this.untreatedAlarm_data.medium_total_count = 0;
+        this.untreatedAlarm_data.high_total_count = 0;
+      } else {
+        params.forEach(element => {
+          if (element.degree == "low") {
+            this.untreatedAlarm_data.low_total_count = element.total_count
+          } else if (element.degree == "medium") {
+            this.untreatedAlarm_data.medium_total_count = element.total_count
+          } else if (element.degree == "high") {
+            this.untreatedAlarm_data.high_total_count = element.total_count
+          }
+        });
+      }
+      var myChart = this.$echarts.init(document.getElementById("untreatedalarm_report"));
+      var option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{b}:{c}({d}%)"
+        },
+        grid: {
+          show: true,
+          left: 'center',
+          right: 'center',
+          top: 'center',
+          bottom: 'center'
+        },
+        series: [{
+          name: '未处理告警',
+          type: 'pie',
+          animation: false,
+          radius: '60%',
+          center: ['50%', '50%'],
+          hoverAnimation: false, //是否开启 hover 在扇区上的放大动画效果。
+          hoverOffset: 0, //高亮扇区的偏移距离。
+          selectedMode: 'single',
+          data: [{
+            value: this.untreatedAlarm_data.high_total_count,
+            name: '高危',
+            itemStyle: {
+              normal: {
+                color: '#962116'
+              }
+            }
+          },
+          {
+            value: this.untreatedAlarm_data.medium_total_count,
+            name: '中危',
+            itemStyle: {
+              normal: {
+                color: '#F5BF41'
+              }
+            }
+          },
+          {
+            value: this.untreatedAlarm_data.low_total_count,
+            name: '低危',
+            itemStyle: {
+              normal: {
+                color: '#4AA46E'
+              }
+            }
+          }
+          ],
+          itemStyle: {
+            normal: {
+              label: {
+                show: true,
+                formatter: '{b} : {c} \n ({d}%)'
+              },
+              labelLine: {
+                show: true
+              }
+            },
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }]
+      };
+      myChart.setOption(option);
+      this.untreatedAlarm_data.base64 = myChart.getDataURL();
+    },
+    application_protocol (params) {
+      this.application_protocol_data.application_protocol_name = [];
+      this.application_protocol_data.application_protocol_value = [];
+      params.forEach(element => {
+        this.application_protocol_data.application_protocol_name.push(element.application);
+        this.application_protocol_data.application_protocol_value.push(element.count);
+      });
+      var myChart = this.$echarts.init(document.getElementById("application_protocol"));
+      var option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          top: '5%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          data: this.application_protocol_data.application_protocol_name,
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: '60',
+            margin: 5,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        },
+        yAxis: [{
+          type: 'value',
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            margin: 3,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        }],
+        series: [{
+          // name: '高危',
+          type: 'bar',
+          barWidth: 20,
+          animation: false,
+          stack: '搜索引擎',
+          itemStyle: {
+            normal: {
+              barBorderRadius: [4, 4, 4, 4], //柱形图圆角，初始化效果
+              color: 'rgba(150,33,22,.8)'
+            }
+          },
+          data: this.application_protocol_data.application_protocol_value
+        }]
+      };
+      myChart.setOption(option);
+      this.application_protocol_data.base64 = myChart.getDataURL();
+    },
+    alert_trend (params) {
+      this.alert_trend_data.alert_trend_name = [];
+      this.alert_trend_data.alert_trend_value = [];
+      params.forEach(element => {
+        this.alert_trend_data.alert_trend_name.push(element.date_time);
+        this.alert_trend_data.alert_trend_value.push(element.count - 0);
+      });
+      var myChart = this.$echarts.init(document.getElementById("alert_trend"));
+      var option_file = {
+        grid: {
+          left: 100,
+          right: 70,
+          top: 15,
+          bottom: 100
+        },
+        xAxis: {
+          type: 'category',
+          data: this.alert_trend_data.alert_trend_name,
+          boundaryGap: false,
+          splitLine: {
+            show: false,
+            interval: 'auto', //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+            maxInterval: 3600 * 24 * 1000,
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: '60',
+            margin: 5,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            margin: 5,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        },
+        series: [{
+          name: '文件',
+          type: 'line',
+          smooth: true,
+          animation: false,
+          showSymbol: false,
+          symbol: 'circle',
+          symbolSize: 6,
+          data: this.alert_trend_data.alert_trend_value,
+          areaStyle: {
+            normal: {
+              color: this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(150,33,22,.8)'
+              }, {
+                offset: 1,
+                color: 'rgba(150,33,22,.2)'
+              }], false)
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: 'rgba(150,33,22,1)'
+            }
+          },
+          lineStyle: {
+            normal: {
+              width: 3
+            }
+          }
+        }]
+      };
+      myChart.setOption(option_file);
+      this.alert_trend_data.base64 = myChart.getDataURL();
+    },
+    alert_type (params) {
+      this.alert_type_data.alert_type_name = [];
+      this.alert_type_data.alert_type_value = [];
+      params.forEach(element => {
+        this.alert_type_data.alert_type_name.push(element.alert_type);
+        this.alert_type_data.alert_type_value.push(element.alert_count);
+      });
+      var myChart = this.$echarts.init(document.getElementById("alert_type"));
+      var option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          top: '5%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          data: this.alert_type_data.alert_type_name,
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: '60',
+            margin: 5,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        },
+        yAxis: [{
+          type: 'value',
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            margin: 5,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        }],
+        series: [{
+          // name: '高危',
+          type: 'bar',
+          barWidth: 20,
+          animation: false,
+          stack: '搜索引擎',
+          itemStyle: {
+            normal: {
+              barBorderRadius: [4, 4, 4, 4], //柱形图圆角，初始化效果
+              color: 'rgba(150,33,22,.8)'
+            }
+          },
+          data: this.alert_type_data.alert_type_value
+        }]
+      };
+      myChart.setOption(option);
+      this.alert_type_data.base64 = myChart.getDataURL();
+    },
+
     // 获取列表
     get_data () {
       this.$axios.get('/api/yiiapi/report/list', {
@@ -422,6 +809,17 @@ export default {
   .img_icon {
     cursor: pointer;
     margin-right: 10px;
+  }
+  .echarts {
+    // display: none;
+  }
+  #untreatedalarm_report,
+  #application_protocol,
+  #alert_trend,
+  #alert_type {
+    border: 1px solid red;
+    width: 1000px;
+    height: 600px;
   }
 }
 </style>

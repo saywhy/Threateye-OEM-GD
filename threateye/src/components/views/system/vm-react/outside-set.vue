@@ -122,7 +122,7 @@
           <el-input class="select_box"
                     placeholder="请输入密码"
                     v-model="outside_pop.edit.pswd"
-                    clearable>
+                    show-password>
           </el-input>
         </div>
 

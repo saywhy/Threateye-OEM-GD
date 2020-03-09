@@ -7,9 +7,9 @@
       <el-button type="primary"
                  class="btn_o"
                  @click="del_user">删除</el-button>
-      <el-button type="primary"
+      <!-- <el-button type="primary"
                  class="btn_o"
-                 @click="edit_pswd">修改密码</el-button>
+                 @click="edit_pswd">修改密码</el-button> -->
     </div>
     <div class="user_table">
       <el-table ref="multipleTable"

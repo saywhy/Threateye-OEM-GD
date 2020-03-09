@@ -43,14 +43,13 @@
                       placeholder="请输入报表名称"
                       v-model="report.name"
                       clearable>
-              <i slot="prefix"
-                 class="el-input__icon el-icon-search"></i>
             </el-input>
           </el-col>
           <div class="r_btn_group">
             <el-button class="b_btn b_ok"
                        @click="create">确定</el-button>
-            <el-button class="b_btn b_cancel">取消</el-button>
+            <el-button class="b_btn b_cancel"
+                       @click="reseet">取消</el-button>
           </div>
         </el-row>
       </el-form>
@@ -589,6 +588,12 @@ export default {
       };
       myChart.setOption(option);
       this.alert_type_data.base64 = myChart.getDataURL();
+    },
+    // 取消
+    reseet () {
+      this.report.name = ''
+      this.report.type = 'doc'
+      this.report.type = 'doc'
     },
 
     // 获取列表

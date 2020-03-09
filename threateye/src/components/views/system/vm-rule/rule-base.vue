@@ -180,11 +180,13 @@ export default {
           console.log(response);
           let { status, data } = response.data;
           if (status == 0) {
-            this.get_data()
             this.$message({
               type: 'success',
               message: '开始更新！'
             });
+            setTimeout(() => {
+              this.get_data()
+            }, 100);
           }
         })
         .catch(error => {

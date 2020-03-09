@@ -162,11 +162,11 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">工单名称:</span>
-              <span class="item_li_content">{{network_detail.job_name}}</span>
+              <span class="item_li_content">{{network_detail.work_name}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
-              <span class="item_li_content">{{network_detail.status_cn}}</span>
+              <span class="item_li_content">{{network_detail.work_order_status_cn}}</span>
             </li>
           </ul>
         </div>
@@ -1277,10 +1277,11 @@ export default {
           }
         ],
         status_type: [
-          '待分配', '已分配', '处置中', '已取消', '已处置'
+          '无', '待分配', '已分配', '处置中', '已取消', '已处置'
         ]
       },
       worksheets_list: {},
+      // 新建工单
       new_worksheets_list: {
         name: "",
         level: "",
@@ -1344,6 +1345,11 @@ export default {
         }
       })
         .then(response => {
+
+
+
+
+
           console.log(response.data.data);
           this.network_detail = response.data.data
           this.network_detail.attack_stage_cn = ''
@@ -1358,28 +1364,33 @@ export default {
           } else {
             this.network_detail.label_obj = JSON.parse(this.network_detail.label)
           }
+          // 获取当前告警的工单状态
+          this.$axios.get('/api/yiiapi/alert/workorders', {
+            params: {
+              id: this.$route.query.detail
+            }
+          })
+            .then(response => {
+              console.log(response.data);
+              switch (response.data.data.work_order_status) {
+                case '':
+                  this.network_detail.work_order_status_cn = '未关联工单'
+                  break;
+                case '1':
+                  this.network_detail.work_order_status_cn = '未分配'
+                  break;
+                case '2':
+                  this.network_detail.work_order_status_cn = '已分配'
+                  break;
+                default:
+                  break;
+              }
+              this.network_detail.work_name = response.data.data.name
 
-
-          // 工单状态
-          switch (this.network_detail.status) {
-            case 1:
-              this.network_detail.status_cn = '待分配'
-              break;
-            case 2:
-              this.network_detail.status_cn = '已分配'
-              break;
-            case 3:
-              this.network_detail.status_cn = '处置中'
-              break;
-            case 4:
-              this.network_detail.status_cn = '已取消'
-              break;
-            case 5:
-              this.network_detail.status_cn = '已处置'
-              break;
-            default:
-              break;
-          }
+            })
+            .catch(error => {
+              console.log(error);
+            })
           this.network_times = [];
           this.network_times.push(this.network_detail)
           if (this.network_detail.alarm_merger.length != 0) {
@@ -2340,6 +2351,19 @@ export default {
         this.new_worksheets_data.network_detail = []
         this.get_user_list();
       } else if (command == "2") {
+        // 添加到工单，只有告警状态 0 1
+        // 0未确认，1已确认，2已处置，3已忽略，4误报
+        console.log(this.network_detail);
+        if (this.network_detail.status != 1 && this.network_detail.status != 0) {
+          this.$message(
+            {
+              message: '告警状态为已处置,已忽略,误报的不能添加到工单',
+              type: 'error',
+            }
+          );
+          return false
+        }
+
         this.worksheets_data.tableRadio = {};
         this.get_worksheets_list()
       }
@@ -2347,7 +2371,7 @@ export default {
     // 添加到工单
     //获取工单列表
     get_worksheets_list () {
-      this.$axios.get('/api/yiiapi/asset/workorder-list', {
+      this.$axios.get('/api/yiiapi/alert/workorder-list', {
         params: {
           page: this.worksheets_data.page,
           rows: this.worksheets_data.rows
@@ -2373,20 +2397,7 @@ export default {
                 element.status_cn = this.worksheets_data.status_type[index]
               }
             });
-
-
           });
-
-
-          // data.map(function (v, k) {
-          //   v.new_perator = (JSON.parse(v.perator)).join(',');
-          //   v.checked = false;
-          // });
-          // this.table_add_works.tableData = data;
-          // this.table_add_works.count = count;
-          // this.table_add_works.maxPage = maxPage;
-          // this.table_add_works.pageNow = Number(pageNow);
-          // this.table_add_works.loading = false;
         }
       })
     },
@@ -2419,15 +2430,24 @@ export default {
         );
         return false
       }
+      // this.worksheets_data.tableRadio
       var te_alert = []
-      te_alert.push(this.$route.query.detail)
+      JSON.parse(this.worksheets_data.tableRadio.te_alert).forEach(element => {
+        if (element != '') {
+          te_alert.push(element * 1)
+        }
+      });
+      te_alert.push(this.$route.query.detail * 1)
+      console.log(te_alert);
+
       this.$axios.post('/api/yiiapi/alert/add-workorder',
         {
           id: this.worksheets_data.tableRadio.id,
           type: "alert",
           name: this.worksheets_data.tableRadio.name,
+          perator: JSON.parse(this.worksheets_data.tableRadio.perator),
           priority: this.worksheets_data.tableRadio.priority,
-          remind: this.worksheets_data.tableRadio.remind,
+          remind: JSON.parse(this.worksheets_data.tableRadio.remind),
           remarks: this.worksheets_data.tableRadio.remarks,
           te_alert: te_alert,
         })
@@ -2436,6 +2456,7 @@ export default {
           console.log(data);
           if (status == 0) {
             this.$message.success('添加成功');
+            this.get_data()
           } else if (status == 1) {
             this.$message.error(msg);
           }
@@ -2522,27 +2543,35 @@ export default {
     },
     // 分配
     prev_task_handle_assign () {
-      this.$axios.put('/api/yiiapi/alert/distribution-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: this.task_params.new_operator,
-          remarks: this.task_params.textarea,
-          te_alert: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
-          let { status, msg, data } = resp.data;
-          console.log(data);
-          if (status == 0) {
-            this.$message.success('分配成功');
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      // {"id":"1","name":"453ssss6467","priority":"high","perator":["zhangsan","李21312四"],"remarks":"123123123123","te_alert":[3,4,5,6],"remind":["email","message","news"]}
+      console.log(this.new_worksheets_list);
+      console.log(this.new_worksheets_data);
+
+      var te_alert = []
+      te_alert.push(this.network_detail.id)
+
+
+      // this.$axios.put('/api/yiiapi/alert/distribution-workorder',
+      //   {
+      //     name: this.task_params.name,
+      //     priority: this.task_params.level,
+      //     perator: this.task_params.new_operator,
+      //     remarks: this.task_params.textarea,
+      //     te_alert: te_alert,
+      //     remind: this.task_params.notice
+      //   })
+      //   .then((resp) => {
+      //     let { status, msg, data } = resp.data;
+      //     console.log(data);
+      //     if (status == 0) {
+      //       this.$message.success('分配成功');
+      //     } else if (status == 1) {
+      //       this.$message.error(msg);
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     // 保存
     prev_task_handle_save () {
@@ -2585,7 +2614,7 @@ export default {
     margin: 24px 0;
     text-align: center;
   }
-  
+
   // 弹窗编辑标签
   .add_tag {
     .el-dialog {

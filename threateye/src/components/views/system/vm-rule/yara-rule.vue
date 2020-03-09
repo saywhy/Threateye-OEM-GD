@@ -29,7 +29,9 @@
                  :file-list="fileList">
         <el-button class="btn_i"
                    v-cloak
-                   type="primary">{{rule_data.name}}</el-button>
+                   type="primary">
+          <span> {{rule_data.name}}</span>
+        </el-button>
       </el-upload>
       <el-button class="btn_o"
                  @click="del_yara">删除</el-button>

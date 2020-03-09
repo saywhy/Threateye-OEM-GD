@@ -110,7 +110,7 @@ export default {
 
       let roles = forRoleList(resp);
 
-      //console.log(roles)
+      console.log(roles);
       commit('SET_ROLES', roles);
       return roles;
     },

@@ -1,3 +1,7 @@
+import {
+  removeToken
+} from "./cookie";
+
 export function forRoleList(auth) {
 
   auth = auth.data.data;
@@ -7,7 +11,9 @@ export function forRoleList(auth) {
 
     roles = null;
 
-    location.reload();
+    //删除token
+    removeToken();
+    //location.reload();
 
     return false;
 

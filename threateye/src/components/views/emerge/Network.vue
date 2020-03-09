@@ -89,12 +89,13 @@
             <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
-            <el-table-column label="威胁等级">
+            <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
+            <!--<el-table-column label="威胁等级">
               <template slot-scope="scope">
                 <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
                   <el-button type="primary" @click.stop>
                     {{ scope.row.degree }}
-                    <i class="el-icon-arrow-down el-icon--right"></i>
+                    <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
@@ -109,7 +110,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip></el-table-column>
             <el-table-column label="状态" show-overflow-tooltip>
               <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>

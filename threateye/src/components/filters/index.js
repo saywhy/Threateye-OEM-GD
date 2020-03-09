@@ -81,6 +81,24 @@ Vue.filter('risk_status',function(args){
   return str;
 });
 
+//处理状态(告警)
+Vue.filter('alert_status',function(args){
+  let str = '';
+  if(args == 0){
+    str = '未确认';
+  }else if(args == 1){
+    str = '已确认';
+  }else if(args == 2){
+    str = '已处置';
+  }else if(args == 3){
+    str = '已忽略';
+  }else if(args == 4){
+    str = '误报';
+  }
+  return str;
+});
+
+
 //处理状态(处置-工单中心)
 Vue.filter('work_status',function(args){
   let str = '';

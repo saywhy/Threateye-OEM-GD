@@ -90,27 +90,6 @@
             <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
             <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
-            <!--<el-table-column label="威胁等级">
-              <template slot-scope="scope">
-                <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                  <el-button type="primary" @click.stop>
-                    {{ scope.row.degree }}
-                    <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                  </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
-                      高危
-                    </el-dropdown-item>
-                    <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中'">
-                      中危
-                    </el-dropdown-item>
-                    <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低'">
-                      低危
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-table-column>-->
             <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip></el-table-column>
             <el-table-column label="状态" show-overflow-tooltip>
               <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
@@ -269,12 +248,10 @@
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_alerts">
-                <el-table-column label="全选" prop="type" width="40"></el-table-column>
+                <el-table-column label="全选" prop="type" width="40">
+                </el-table-column>
                 <el-table-column type="selection" width="40">
                 </el-table-column>
-                <!--<el-table-column label="告警时间" width="120" show-overflow-tooltip>
-                  <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-                </el-table-column>-->
                 <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
@@ -403,25 +380,6 @@
     components: {
       vmEmergeLine,
       vmEmergePicker
-    },
-
-    filters: {
-      //处理状态(处置-资产维度)
-      'alert_status': function (args) {
-        let str = '';
-        if(args == 0){
-          str = '未确认';
-        }else if(args == 1){
-          str = '已确认';
-        }else if(args == 2){
-          str = '已处置';
-        }else if(args == 3){
-          str = '已忽略';
-        }else if(args == 4){
-          str = '误报';
-        }
-        return str;
-      }
     },
     data () {
       return {
@@ -629,21 +587,7 @@
             if (status == 0) {
 
               let {data, count, maxPage, pageNow} = datas;
-              data.map(function (v,k) {
-                switch (v.degree) {
-                  case '高':
-                    v.color = 'high';
-                    break;
-                  case '中':
-                    v.color = 'mid';
-                    break;
-                  case '低':
-                    v.color = 'low';
-                    break;
-                  default:
-                    break;
-                }
-              });
+
               this.table.tableData = data;
               this.table.count = count;
               this.table.maxPage = maxPage;
@@ -816,43 +760,52 @@
 
         let sel_table_data = this.table.multipleSelection;
 
+        let sel_table_attr = sel_table_data.map(x => {return x.status});
+
         if(sel_table_data.length == 0){
-
           this.$message({message:'您未选中列表或列表为空',type: 'warning'});
-
           return false;
 
         } else {
 
-          this.table_alerts.tableData = sel_table_data;
+          if(sel_table_attr.includes('2')
+            || sel_table_attr.includes('3')
+            || sel_table_attr.includes('4'))
+          {
 
-          this.table_alerts.count = sel_table_data.length;
+            this.$message({message: '告警状态为已处置,已忽略,误报的不能新建', type: 'error'});
 
-          let pageNow = this.table_alerts.pageNow;
+          } else {
 
-          let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+            this.table_alerts.tableData = sel_table_data;
 
-          this.table_alerts.tableData_new = handle_data;
+            this.table_alerts.count = sel_table_data.length;
 
-          //获取用户列表(经办人使用)
-          this.$axios.get('/api/yiiapi/site/user-list')
-            .then(resp => {
-              let {status, data} = resp.data;
-              if (status == 0) {
-                this.task_new.operator_list = data;
-              }else {
-                this.task_new.operator_list = [];
-              }
-              this.task.new = true;
-              this.task.new_contet = true;
-            })
-            .catch(err => {
-              console.log('用户列表错误');
-              console.log(err);
-            })
+            let pageNow = this.table_alerts.pageNow;
 
+            let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+
+            this.table_alerts.tableData_new = handle_data;
+
+            //获取用户列表(经办人使用)
+            this.$axios.get('/api/yiiapi/site/user-list')
+              .then(resp => {
+                let {status, data} = resp.data;
+                if (status == 0) {
+                  this.task_new.operator_list = data;
+                }else {
+                  this.task_new.operator_list = [];
+                }
+                this.task.new = true;
+                this.task.new_contet = true;
+              })
+              .catch(err => {
+                console.log('用户列表错误');
+                console.log(err);
+              })
+
+          }
         }
-
       },
 
       //关闭新建工单
@@ -957,26 +910,28 @@
 
               this.$message.success('分配成功');
 
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.table_operator.tableData_new = [];
+
+              this.get_list_risk();
+
             }else if (status == 1){
 
               this.$message.error(msg);
 
             }
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);
@@ -991,7 +946,7 @@
           {
             name: this.task_params.name,
             priority:this.task_params.level,
-            perator:this.task_params.new_operator,
+            perator: [],
             remarks:this.task_params.textarea,
             te_alert: this.task_params.multiple,
             remind:this.task_params.notice
@@ -1002,25 +957,26 @@
 
             if (status == 0) {
               this.$message.success('保存成功');
+
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.table_operator.tableData_new = [];
+              this.get_list_risk();
+
             }else if (status == 1){
               this.$message.error(msg);
             }
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
 
           })
           .catch(err => {
@@ -1040,20 +996,30 @@
 
         let sel_table_data = this.table.multipleSelection;
 
+        let sel_table_attr = sel_table_data.map(x => {return x.status});
+
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
           return false;
-        }else {
 
-          this.add_state_change = true;
+        } else {
 
-          this.get_table_works_list();
+          if(sel_table_attr.includes('2')
+            || sel_table_attr.includes('3')
+            || sel_table_attr.includes('4'))
+          {
+            this.$message({message: '告警状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
+          }else {
+            this.add_state_change = true;
+            this.get_table_works_list();
+
+          }
         }
       },
 
       //获取列表
       get_table_works_list() {
-        this.$axios.get('/api/yiiapi/asset/workorder-list',{
+        this.$axios.get('/api/yiiapi/alert/workorder-list',{
           params:{
             page: this.table_add_works.pageNow,
             rows: this.table_add_works.eachPage
@@ -1104,51 +1070,59 @@
           });
           this.add_params.id = row.id;
           this.add_params.name = row.name;
-          this.add_params.level  = row.priority;
+          this.add_params.level = row.priority;
           this.add_params.perator = JSON.parse(row.perator);
           this.add_params.remarks = row.remarks;
+          this.add_params.remind = JSON.parse(row.remind);
         }
       },
 
       //新加到工单确定
       add_ok_state() {
 
-        let selected_attr = this.table_alerts.multipleSelection
-          .map(x => {return x.alert_id});
+        let selected_attr = this.table.multipleSelection.map(x => {return x.alert_id * 1});
 
         this.add_params.multiple = selected_attr;
 
         this.$axios.post('/api/yiiapi/alert/add-workorder',
           {
             id:this.add_params.id,
+            type: "alert",
             name: this.add_params.name,
             priority: this.add_params.level,
             perator: this.add_params.perator,
-            remind:this.add_params.notice,
+            remind:this.add_params.remind,
             remarks:this.add_params.remarks,
             te_alert: this.add_params.multiple
           })
+
           .then((resp) => {
 
             let {status, msg, data} = resp.data;
 
             if (status == 0) {
-              this.$message.success('添加成功');
-            } else if (status == 1){
-              this.$message.error(msg);
-            }
 
-            //不管成功与否，状态清空
-            this.add_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.add_closed_state();
+              this.$message.success('添加成功');
+
+              //不管成功与否，状态清空
+              this.add_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.add_closed_state();
+
+              this.get_list_risk();
+
+            } else if (status == 1){
+
+              this.$message.error(msg);
+
+            }
           })
           .catch(err => {
             console.log(err);
@@ -1162,8 +1136,6 @@
 
         this.get_table_works_list();
       },
-
-
 
 
       /**********************编辑标签*************************/

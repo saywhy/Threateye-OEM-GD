@@ -113,7 +113,7 @@
           <el-table-column label="全选" prop="type" width="50">
             <template slot-scope="scope">
               <template slot-scope="scope">
-                <div class="new_dot" v-show="scope.row.status=='1'"></div>
+                <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
               </template>
             </template>
           </el-table-column>
@@ -134,31 +134,10 @@
           </el-table-column>
           <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
           </el-table-column>
-         <!-- <el-table-column label="威胁等级">
-            <template slot-scope="scope">
-              <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                <el-button type="primary" @click.stop>
-                  {{ scope.row.degree }}
-                  <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
-                    高危
-                  </el-dropdown-item>
-                  <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中'">
-                    中危
-                  </el-dropdown-item>
-                  <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低'">
-                    低危
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </template>
-          </el-table-column>-->
           <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="状态"  width="80">
-            <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
+            <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
           </el-table-column>
         </el-table>
         <el-pagination
@@ -284,20 +263,6 @@
 
       <!-- 处置内容 -->
       <div class="task_handle_content" v-if="!task.new_contet">
-        <!--<div class="handle_content_top">
-          &lt;!&ndash;<el-dropdown placement='bottom-start' @command="handle.add" trigger="click">
-            <el-button type="primary" class="change_btn">
-              <span>新增</span>
-              <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-              <el-dropdown-item command="资产">资产</el-dropdown-item>
-              <el-dropdown-item command="告警">告警</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>&ndash;&gt;
-          <el-button class="ref">刷新</el-button>
-          <el-button class="cel">删除</el-button>
-        </div>-->
         <div class='table_box'>
           <ul class="table_box_title">
             <li v-for="(tab,index) in handle.table_title"
@@ -312,12 +277,7 @@
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_alerts">
-                <el-table-column label="全选" prop="type" width="40">
-                  <template slot-scope="scope">
-                    <div class="new_dot" v-show="scope.row.new_alert != null">
-                    </div>
-                  </template>
-                </el-table-column>
+                <el-table-column label="全选" prop="type" width="40"></el-table-column>
                 <el-table-column type="selection" width="40">
                 </el-table-column>
                 <!--<el-table-column label="告警时间" width="120" show-overflow-tooltip>
@@ -338,7 +298,7 @@
                 <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label="状态"  width="80">
-                  <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
+                  <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                 </el-table-column>
               </el-table>
               <el-pagination class="pagination_box"
@@ -454,12 +414,16 @@
         ],
         options_status: [
           {
+            value: "0",
+            label: "未确认"
+          },
+          {
             value: "1",
-            label: "待处理"
+            label: "已确认"
           },
           {
             value: "2",
-            label: "处置中"
+            label: "已处置"
           },
           {
             value: "3",
@@ -468,10 +432,6 @@
           {
             value: "4",
             label: "误报"
-          },
-          {
-            value: "5",
-            label: "已处置"
           }
         ],
         params: {
@@ -629,28 +589,13 @@
           if(status == 0){
 
             let {data, count, maxPage,pageNow } = datas;
-            data.map(function (v,k) {
-              switch (v.degree) {
-                case '高':
-                  v.color = 'high';
-                  break;
-                case '中':
-                  v.color = 'mid';
-                  break;
-                case '低':
-                  v.color = 'low';
-                  break;
-                default:
-                  break;
-              }
-            });
             this.table.tableData = data;
             this.table.count = count;
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
             this.table.loading = false;
 
-            //console.log(data)
+            console.log(data)
           }
         })
       },
@@ -805,43 +750,52 @@
 
         let sel_table_data = this.table.multipleSelection;
 
+        let sel_table_attr = sel_table_data.map(x => {return x.status});
+
         if(sel_table_data.length == 0){
-
           this.$message({message:'您未选中列表或列表为空',type: 'warning'});
-
           return false;
 
-        } else {
+        }  else {
 
-          this.table_alerts.tableData = sel_table_data;
-          this.table_alerts.count = sel_table_data.length;
+          if(sel_table_attr.includes('2')
+            || sel_table_attr.includes('3')
+            || sel_table_attr.includes('4'))
+          {
 
+            this.$message({message: '告警状态为已处置,已忽略,误报的不能新建', type: 'error'});
 
-          let pageNow = this.table_alerts.pageNow;
+          } else{
 
-          let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+            this.table_alerts.tableData = sel_table_data;
+            this.table_alerts.count = sel_table_data.length;
 
-          this.table_alerts.tableData_new = handle_data;
+            let pageNow = this.table_alerts.pageNow;
 
-          //获取用户列表(经办人使用)
-          this.$axios.get('/api/yiiapi/site/user-list')
-            .then(resp => {
-              let {status, data} = resp.data;
-              if (status == 0) {
-                this.task_new.operator_list = data;
-              }else {
-                this.task_new.operator_list = [];
-              }
-              this.task.new = true;
-              this.task.new_contet = true;
-            })
-            .catch(err => {
-              console.log('用户列表错误');
-              console.log(err);
-            })
+            let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5);
+
+            this.table_alerts.tableData_new = handle_data;
+
+            //获取用户列表(经办人使用)
+            this.$axios.get('/api/yiiapi/site/user-list')
+              .then(resp => {
+                let {status, data} = resp.data;
+
+                if (status == 0) {
+                  this.task_new.operator_list = data;
+                }else {
+                  this.task_new.operator_list = [];
+                }
+                this.task.new = true;
+                this.task.new_contet = true;
+              })
+              .catch(err => {
+                console.log('用户列表错误');
+                console.log(err);
+              })
+          }
+
         }
-
-
 
       },
 
@@ -946,26 +900,29 @@
 
               this.$message.success('分配成功');
 
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.table_operator.tableData_new = [];
+
+              this.get_list_threat();
+
             }else if (status == 1){
 
               this.$message.error(msg);
 
             }
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
 
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);
@@ -980,7 +937,7 @@
           {
             name: this.task_params.name,
             priority:this.task_params.level,
-            perator:this.task_params.new_operator,
+            perator:[],
             remarks:this.task_params.textarea,
             te_alert: this.task_params.multiple,
             remind:this.task_params.notice
@@ -991,25 +948,28 @@
 
             if (status == 0) {
               this.$message.success('保存成功');
+
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.table_operator.tableData_new = [];
+              this.get_list_threat();
+
             }else if (status == 1){
               this.$message.error(msg);
             }
 
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
 
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);
@@ -1028,12 +988,24 @@
 
         let sel_table_data = this.table.multipleSelection;
 
-        if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+        let sel_table_attr = sel_table_data.map(x => {
+          return x.status
+        });
+
+        if (sel_table_data.length == 0) {
+          this.$message({message: '您未选中列表或列表为空', type: 'warning'});
           return false;
-        }else {
-          this.add_state_change = true;
-          this.get_table_works_list();
+
+        } else {
+
+          if (sel_table_attr.includes('2')
+            || sel_table_attr.includes('3')
+            || sel_table_attr.includes('4')) {
+            this.$message({message: '告警状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
+          } else {
+            this.add_state_change = true;
+            this.get_table_works_list();
+          }
         }
       },
 
@@ -1099,8 +1071,7 @@
       //新加到工单确定
       add_ok_state() {
 
-        let selected_attr = this.table_alerts.multipleSelection
-          .map(x => {return x.alert_id});
+        let selected_attr = this.table.multipleSelection.map(x => {return x.alert_id});
 
         this.add_params.multiple = selected_attr;
 
@@ -1120,21 +1091,25 @@
 
             if (status == 0) {
               this.$message.success('添加成功');
+
+              this.add_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+
+              this.add_closed_state();
+
+              this.get_list_threat();
+
             } else if (status == 1){
               this.$message.error(msg);
             }
 
-            //不管成功与否，状态清空
-            this.add_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.add_closed_state();
           })
           .catch(err => {
             console.log(err);

@@ -158,7 +158,7 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">攻击阶段:</span>
-              <span class="item_li_content">{{network_times[0].attack_stage_cn}}</span>
+              <span class="item_li_content">{{network_detail.attack_stage_cn }}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">工单名称:</span>
@@ -764,8 +764,12 @@
             <div>
               <el-table align="center"
                         :data="new_worksheets_data.network_detail"
+                        @selection-change="select_alert_new"
                         tooltip-effect="dark"
                         style="width: 100%">
+                <!-- <el-table-column type="selection"
+                                 width="40">
+                </el-table-column> -->
                 <el-table-column prop="category"
                                  label="告警类型"
                                  show-overflow-tooltip>
@@ -812,12 +816,6 @@
                   </template>
                 </el-table-column>
               </el-table>
-              <el-pagination class="pagination_box"
-                             @current-change="1"
-                             :current-page="1"
-                             :total="1"
-                             layout="total, sizes, prev, pager, next">
-              </el-pagination>
             </div>
           </div>
         </div>
@@ -906,6 +904,7 @@ export default {
       ],
       suggest_list: [
         {
+          name: '',
           des: '',
           handle: [],
           reinforce: [],
@@ -1290,7 +1289,7 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-
+        select_list: []
       },
       new_worksheets_data: {
         pop: false,
@@ -1372,6 +1371,7 @@ export default {
           })
             .then(response => {
               console.log(response.data);
+              this.network_detail.work_order_status = response.data.data.work_order_status
               switch (response.data.data.work_order_status) {
                 case '':
                   this.network_detail.work_order_status_cn = '未关联工单'
@@ -2010,6 +2010,9 @@ export default {
           // 攻击阶段
           this.attack_stage_list.forEach(element => {
             element.count = 0;
+            if (this.network_detail.attack_stage == element.name) {
+              this.network_detail.attack_stage_cn = element.value
+            }
           });
           this.network_times.forEach(item => {
             console.log(item);
@@ -2332,6 +2335,8 @@ export default {
     //工单任务选择
     change_task (command) {
       if (command == "1") {
+
+
         this.new_worksheets_list.name = ''
         this.new_worksheets_list.level = ''
         this.new_worksheets_list.operator = ''
@@ -2339,6 +2344,7 @@ export default {
         this.new_worksheets_list.notice = ['email']
         this.new_worksheets_list.textarea = ''
         this.new_worksheets_list.multiple = []
+        this.new_worksheets_list.select_list = []
 
         this.new_worksheets_data.operator_list = []
         this.new_worksheets_data.operator_list = []
@@ -2349,6 +2355,17 @@ export default {
         this.new_worksheets_data.table_operator.maxPage = 1
         this.new_worksheets_data.table_operator.eachPage = 5
         this.new_worksheets_data.network_detail = []
+        // 存在被创建工单的告警
+        if (this.network_detail.work_order_status != '') {
+          this.$message(
+            {
+              message: '存在被创建工单的告警',
+              type: 'error',
+            }
+          );
+          return false
+        }
+
         this.get_user_list();
       } else if (command == "2") {
         // 添加到工单，只有告警状态 0 1
@@ -2363,7 +2380,16 @@ export default {
           );
           return false
         }
-
+        // 存在被创建工单的告警
+        if (this.network_detail.work_order_status != '') {
+          this.$message(
+            {
+              message: '存在被创建工单的告警',
+              type: 'error',
+            }
+          );
+          return false
+        }
         this.worksheets_data.tableRadio = {};
         this.get_worksheets_list()
       }
@@ -2541,40 +2567,78 @@ export default {
       this.new_worksheets_data.network_detail = [];
       this.new_worksheets_data.new_contet = true;
     },
+    // 添加工单 选择告警列表
+    select_alert_new (val) {
+      this.new_worksheets_list.select_list = val
+      console.log(val);
+    },
     // 分配
     prev_task_handle_assign () {
-      // {"id":"1","name":"453ssss6467","priority":"high","perator":["zhangsan","李21312四"],"remarks":"123123123123","te_alert":[3,4,5,6],"remind":["email","message","news"]}
-      console.log(this.new_worksheets_list);
-      console.log(this.new_worksheets_data);
-
       var te_alert = []
-      te_alert.push(this.network_detail.id)
-
-
-      // this.$axios.put('/api/yiiapi/alert/distribution-workorder',
-      //   {
-      //     name: this.task_params.name,
-      //     priority: this.task_params.level,
-      //     perator: this.task_params.new_operator,
-      //     remarks: this.task_params.textarea,
-      //     te_alert: te_alert,
-      //     remind: this.task_params.notice
-      //   })
-      //   .then((resp) => {
-      //     let { status, msg, data } = resp.data;
-      //     console.log(data);
-      //     if (status == 0) {
-      //       this.$message.success('分配成功');
-      //     } else if (status == 1) {
-      //       this.$message.error(msg);
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
+      var perator_list = []
+      te_alert.push(this.network_detail.id * 1)
+      this.new_worksheets_data.table_operator.tableData.forEach(element => {
+        perator_list.push(element.username)
+      });
+      console.log(te_alert);
+      console.log(perator_list);
+      console.log(this.new_worksheets_list);
+      this.$axios.put('/api/yiiapi/alert/distribution-workorder',
+        {
+          name: this.new_worksheets_list.name,
+          priority: this.new_worksheets_list.level,
+          perator: perator_list,
+          remarks: this.new_worksheets_list.textarea,
+          te_alert: te_alert,
+          remind: this.new_worksheets_list.notice
+        })
+        .then((resp) => {
+          let { status, msg, data } = resp.data;
+          console.log(data);
+          if (status == 0) {
+            this.get_data();
+            this.$message.success('分配成功');
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     // 保存
     prev_task_handle_save () {
+      var te_alert = []
+      var perator_list = []
+      te_alert.push(this.network_detail.id * 1)
+      console.log(te_alert);
+      console.log(this.new_worksheets_list);
+      this.$axios.post('/api/yiiapi/alert/add-workorder',
+        {
+          type: "alert",
+          name: this.new_worksheets_list.name,
+          // perator: [],
+          priority: this.new_worksheets_list.level,
+          remind: this.new_worksheets_list.notice,
+          remarks: this.new_worksheets_list.textarea,
+          te_alert: te_alert,
+        })
+        .then((resp) => {
+          let { status, msg, data } = resp.data;
+          console.log(data);
+          if (status == 0) {
+            this.$message.success('添加成功');
+            this.get_data()
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+          this.add_closed_state();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+
 
     },
 
@@ -2585,6 +2649,10 @@ export default {
 <style lang="less">
 @import '../../../../assets/css/less/reset_css/reset_tab.less';
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
+.el-input__inner {
+  background: #f8f8f8;
+  border: 0;
+}
 .dropdown_ul_box_detail {
   // width: 124px;
   // top: 209px !important;

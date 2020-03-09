@@ -1,5 +1,6 @@
 <template>
-    <div id="status"></div>
+
+  <div id="status"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -8,28 +9,28 @@ export default {
   props: {
     top_left: {
       type: Object,
-      default:() => {}
+      default: () => { }
     }
   },
-  data(){
+  data () {
     return {
-      data:{
-        dev_info:[],
-        healthy_count:0,
-        warning_count:0,
-        offline_count:0
+      data: {
+        dev_info: [],
+        healthy_count: 0,
+        warning_count: 0,
+        offline_count: 0
       }
     }
   },
-  created(){
-   let data = this.top_left
+  created () {
+    let data = this.top_left
     this.data = data;
   },
-  mounted() {
+  mounted () {
     this.graph();
   },
   methods: {
-    graph() {
+    graph () {
 
       let warning_count = this.data.warning_count;
       let healthy_count = this.data.healthy_count;
@@ -75,7 +76,7 @@ export default {
             },
             itemStyle: {
               // color: ["#0288D1", "#CDDC39", "#4CAF50"]
-              color: function(params) {
+              color: function (params) {
                 return params.data.color;
               }
             },
@@ -101,7 +102,7 @@ export default {
               }
             },
             itemStyle: {
-              color: function(params) {
+              color: function (params) {
                 return params.data.color;
               }
             },

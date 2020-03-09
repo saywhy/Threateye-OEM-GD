@@ -3,6 +3,9 @@
     <div class="outside_content">
       <div class="content_left content_common">
         <p class="title">恶意IP列表：</p>
+        <p>
+          <span>{{hostip}}/MaliciousIP?uname=账号&passwd=密码</span>
+        </p>
         <div class="list_box">
           <p class="list_title_box">
             <span>IP:</span>
@@ -25,6 +28,9 @@
       </div>
       <div class="content_right content_common">
         <p class="title">恶意域名列表：</p>
+        <p>
+          <span>{{hostip}}/MaliciousURL?uname=账号&passwd=密码</span>
+        </p>
         <div class="list_box">
           <p class="list_title_box">
             <span>域名:</span>
@@ -127,7 +133,8 @@ export default {
           show: false,
           url: ""
         },
-      }
+      },
+      hostip: '',
     }
   },
   props: {
@@ -139,10 +146,24 @@ export default {
   mounted () {
     this.get_list('1')
     this.get_list('2')
+    this.get_ip()
     // 必填；只能是1和2；动态类型，1Ip，2url
   },
 
   methods: {
+    // 获取当前IP
+    get_ip () {
+      this.$axios.get('/api/yiiapi/linkage/get-hostip')
+        .then(response => {
+          console.log(response.data);
+          this.hostip = response.data.data.url
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+    },
     // 获取列表
     get_list (type) {
       this.$axios.get('/api/yiiapi/linkage/list', {

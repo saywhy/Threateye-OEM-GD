@@ -1344,17 +1344,10 @@ export default {
         }
       })
         .then(response => {
-
-
-
-
-
           console.log(response.data.data);
           this.network_detail = response.data.data
           this.network_detail.attack_stage_cn = ''
-          // this.network_detail.label_obj = []
-          // this.network_detail.src_label_obj = []
-          // this.network_detail.dest_label_obj = []
+      
           this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
           this.network_detail.dest_label_obj = JSON.parse(this.network_detail.dest_label)
 

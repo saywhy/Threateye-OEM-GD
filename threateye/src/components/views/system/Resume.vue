@@ -3,15 +3,80 @@
        class="container">
     <div class="content_box">
       <p class="title">恢复出场设置</p>
-      <el-button class="btn_i">恢复出场设置</el-button>
+      <el-button class="btn_i"
+                 @click="restore">恢复出场设置</el-button>
       <p class="title marin_top">重启平台</p>
-      <el-button class="btn_i">立即重启</el-button>
+      <el-button class="btn_i"
+                 @click="reboot">立即重启</el-button>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
 export default {
-  name: "system_control_resume"
+  name: "system_control_resume",
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    restore () {
+      this.$confirm('此操作将恢复出场设置, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.put('/api/yiiapi/seting/restore')
+          .then(response => {
+            let { status, data } = response.data;
+            if (status == 0) {
+              this.$message(
+                {
+                  message: '执行恢复出场设置成功',
+                  type: 'success',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
+    },
+    reboot () {
+      this.$confirm('此操作将重启平台, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.put('/api/yiiapi/seting/reboot')
+          .then(response => {
+            let { status, data } = response.data;
+            if (status == 0) {
+              this.$message(
+                {
+                  message: '执行重启平台成功',
+                  type: 'success',
+                }
+              );
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
+    },
+  }
 }
 </script>
 

@@ -808,7 +808,7 @@ export default {
   }
   .r_bottom {
     background: #fff;
-    padding: 0 24px;
+    padding: 24px;
     min-height: 441px;
   }
   .img_icon {
@@ -816,7 +816,7 @@ export default {
     margin-right: 10px;
   }
   .echarts {
-    // display: none;
+    display: none;
   }
   #untreatedalarm_report,
   #application_protocol,

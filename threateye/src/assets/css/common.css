@@ -125,3 +125,9 @@ input:-ms-input-placeholder {
 [v-cloak] {
   display: none;
 }
+
+.el-input__inner {
+  background-color: #f8f8f8;
+  border-width: 0;
+  outline: none;
+}

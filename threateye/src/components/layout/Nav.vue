@@ -266,7 +266,8 @@
                     if(this.user_edit.password != ''){
                       setTimeout(() => {
                         removeToken();
-                        location.reload();
+                       // location.reload();
+                        this.$router.push('/login');
                       },2000);
                     }
 
@@ -444,6 +445,9 @@
           padding: 24px 0;
           .content_item {
             margin-bottom: 24px;
+            p{
+              text-align: left;
+            }
             .title {
               font-size: 12px;
               color: #999999;

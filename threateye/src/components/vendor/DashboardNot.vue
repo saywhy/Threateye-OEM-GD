@@ -35,7 +35,7 @@
       padding: 0 24px;
       position: fixed;
       width: 100%;
-      z-index: 1000;
+      z-index: 3000;
       height: auto!important;
     }
     .dashboard-list{

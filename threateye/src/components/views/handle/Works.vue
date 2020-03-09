@@ -70,7 +70,7 @@
   @import "../../../assets/css/less/invest-common-pattern.less";
   @import "../../../assets/css/less/invest-common-table-pattern.less";
   .handle-works{
-    padding: 24px;
+   /* padding: 24px;*/
   }
 </style>
 

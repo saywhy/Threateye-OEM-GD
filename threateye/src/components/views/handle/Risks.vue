@@ -10,7 +10,7 @@
 
 <script>
     export default {
-        name: "Risks",
+      name: "Risks"
     }
 </script>
 

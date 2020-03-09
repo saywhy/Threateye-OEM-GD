@@ -112,8 +112,9 @@
                   @selection-change="handleSelChange">
           <el-table-column label="全选" prop="type" width="50">
             <template slot-scope="scope">
-              <div class="new_dot" v-show="scope.row.new_alert != null">
-              </div>
+              <template slot-scope="scope">
+                <div class="new_dot" v-show="scope.row.status=='1'"></div>
+              </template>
             </template>
           </el-table-column>
           <el-table-column type="selection" width="40">
@@ -834,40 +835,43 @@
 
         let sel_table_data = this.table.multipleSelection;
 
-       /* if(sel_table_data.length == 0){
+        if(sel_table_data.length == 0){
 
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
 
           return false;
 
-        } else {}*/
+        } else {
 
-        this.table_alerts.tableData = sel_table_data;
-        this.table_alerts.count = sel_table_data.length;
+          this.table_alerts.tableData = sel_table_data;
+          this.table_alerts.count = sel_table_data.length;
 
 
-        let pageNow = this.table_alerts.pageNow;
+          let pageNow = this.table_alerts.pageNow;
 
-        let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+          let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
 
-        this.table_alerts.tableData_new = handle_data;
+          this.table_alerts.tableData_new = handle_data;
 
-        //获取用户列表(经办人使用)
-        this.$axios.get('/api/yiiapi/site/user-list')
-          .then(resp => {
-            let {status, data} = resp.data;
-            if (status == 0) {
-              this.task_new.operator_list = data;
-            }else {
-              this.task_new.operator_list = [];
-            }
-            this.task.new = true;
-            this.task.new_contet = true;
-          })
-          .catch(err => {
-            console.log('用户列表错误');
-            console.log(err);
-          })
+          //获取用户列表(经办人使用)
+          this.$axios.get('/api/yiiapi/site/user-list')
+            .then(resp => {
+              let {status, data} = resp.data;
+              if (status == 0) {
+                this.task_new.operator_list = data;
+              }else {
+                this.task_new.operator_list = [];
+              }
+              this.task.new = true;
+              this.task.new_contet = true;
+            })
+            .catch(err => {
+              console.log('用户列表错误');
+              console.log(err);
+            })
+        }
+
+
 
       },
 
@@ -1331,6 +1335,494 @@
       /deep/
       .handle-pagination{
         margin: 20px 0;
+      }
+    }
+
+    /* 弹窗 */
+    /* 状态变更 */
+    /deep/
+    .pop_state_box {
+      .el-dialog {
+        .el-dialog__header {
+          display: none;
+        }
+
+        .el-dialog__body {
+          height: 260px;
+          padding: 30px;
+
+          .closed_img {
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            cursor: pointer;
+            width: 46px;
+            height: 46px;
+          }
+
+          .title {
+            height: 24px;
+            line-height: 24px;
+            text-align: left;
+
+            .title_name {
+              font-size: 20px;
+              color: #333333;
+              line-height: 24px;
+              font-weight: 500;
+            }
+
+            .mask {
+              width: 24px;
+              height: 0px;
+              border-top: 0px;
+              border-right: 2px solid transparent;
+              border-bottom: 5px solid #0070ff;
+              border-left: 2px solid transparent;
+              transform: rotate3d(0, 0, 1, 90deg);
+              display: inline-block;
+              margin-right: -5px;
+              margin-bottom: 4px;
+              margin-left: -10px;
+            }
+          }
+
+          .content {
+            height: 128px;
+            padding-top: 48px;
+          }
+
+          .btn_box {
+            height: 42px;
+            text-align: center;
+            margin-bottom: 24px;
+
+            .ok_btn {
+              width: 136px;
+              height: 42px;
+              background: #0070ff;
+              color: #fff;
+            }
+
+            .cancel_btn {
+              width: 136px;
+              height: 42px;
+              border-color: #0070ff;
+              background: #fff;
+              color: #0070ff;
+            }
+          }
+        }
+      }
+    }
+
+    // 新建工单
+    /deep/
+    .task_new_box {
+      .el-dialog {
+        .el-dialog__header {
+          display: none;
+        }
+
+        .el-dialog__body {
+          padding: 30px;
+
+          .closed_img {
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            cursor: pointer;
+            width: 46px;
+            height: 46px;
+          }
+
+          .title {
+            height: 24px;
+            line-height: 24px;
+            text-align: left;
+
+            .title_name {
+              font-size: 20px;
+              color: #333333;
+              line-height: 24px;
+              font-weight: 500;
+            }
+
+            .mask {
+              width: 24px;
+              height: 0px;
+              border-top: 0px;
+              border-right: 2px solid transparent;
+              border-bottom: 5px solid #0070ff;
+              border-left: 2px solid transparent;
+              transform: rotate3d(0, 0, 1, 90deg);
+              display: inline-block;
+              margin-right: -5px;
+              margin-bottom: 4px;
+              margin-left: -10px;
+            }
+          }
+
+          .step_box {
+            height: 36px;
+            margin: 20px 0 24px 0;
+            .step_box1 {
+              background-image: url("../../../../assets/images/emerge/step1.png");
+              background-repeat: no-repeat;
+              background-size: 100% 100%;
+              width: 120px;
+              height: 36px;
+              float: left;
+              position: relative;
+              line-height: 36px;
+              text-align: center;
+
+              .step1_span {
+                font-size: 14px;
+              }
+
+              .selected_img {
+                position: absolute;
+                left: 0;
+                top: 0;
+              }
+            }
+
+            .step_box2 {
+              width: 120px;
+              height: 36px;
+              background-image: url("../../../../assets/images/emerge/step2.png");
+              background-repeat: no-repeat;
+              background-size: 100% 100%;
+              float: left;
+              position: relative;
+              line-height: 36px;
+              text-align: center;
+              margin-left: -10px;
+
+              .step2_span {
+                font-size: 14px;
+              }
+            }
+
+            .step_now {
+              color: #0070ff;
+            }
+
+            .step_past {
+              color: #999999;
+            }
+          }
+
+          .task_new_content {
+            /*height: 480px;*/
+            .content_top {
+              overflow: hidden;
+
+              .content_top_left {
+                float: left;
+                width: 45%;
+
+                .left_item {
+                  margin-bottom: 16px;
+                  display: flex;
+
+                  .title {
+                    width: 100px;
+                    line-height: 38px;
+
+                    .improtant_ico {
+                      color: #ff3a36;
+                    }
+                  }
+
+                  .task_new_input {
+                    flex: 1;
+
+                    .el-input__inner {
+                      height: 38px;
+                    }
+                  }
+                }
+              }
+
+              .content_top_right {
+                float: right;
+                width: 45%;
+
+                .right_item {
+                  margin-bottom: 16px;
+                  display: flex;
+
+                  .title {
+                    width: 100px;
+                    line-height: 38px;
+
+                    .improtant_ico {
+                      color: #ff3a36;
+                    }
+                  }
+
+                  .task_new_input {
+                    flex: 1;
+
+                    .el-input__inner {
+                      height: 38px;
+                    }
+                  }
+                }
+              }
+            }
+
+            .content_remarks {
+              .title {
+                font-size: 12px;
+                color: #999999;
+              }
+
+              /deep/
+              .el-textarea{
+                height: 92px;
+                textarea {
+                  resize: none;
+                  height: 92px;
+                  font-size: 14px;
+                  color: #333;
+                  font-family: PingFangSC-Regular;
+                }
+              }
+              .el-textarea__inner:hover {
+                border: none;
+              }
+
+              .el-textarea__inner {
+                border: none;
+                background: #f8f8f8;
+              }
+            }
+
+            .content_table {
+              margin-top: 16px;
+
+              /deep/
+              .el-table td {
+                padding: 0;
+                height: 32px;
+              }
+              /deep/
+              .el-table th {
+                padding: 0;
+                height: 36px;
+                background: #f8f8f8;
+                .cell{
+                  font-weight: bold;
+                }
+              }
+
+              /deep/
+              .el-pagination {
+                margin-top: 20px;
+                text-align: center;
+              }
+            }
+
+            .btn_box {
+              margin-top: 36px;
+              margin-bottom: 24px;
+              height: 42px;
+              text-align: center;
+
+              .cancel_btn {
+                border: 1px solid #0070ff;
+                background: #fff;
+                color: #0070ff;
+                width: 136px;
+                height: 42px;
+                font-size: 16px;
+              }
+
+              .next_btn {
+                background-color: #0070ff;
+                color: #fff;
+                width: 136px;
+                height: 42px;
+                font-size: 16px;
+              }
+            }
+          }
+
+          .task_handle_content {
+            .handle_content_top {
+              height: 42px;
+              text-align: left;
+              .change_btn,
+              .ref {
+                background-color: #0070ff;
+                border-color: #0070ff;
+                width: 136px;
+                height: 42px;
+                color: #fff;
+              }
+
+              .cel {
+                border: 1px solid #0070ff;
+                background: #fff;
+                color: #0070ff;
+                width: 136px;
+                height: 42px;
+                margin-left: 0;
+              }
+            }
+
+            .table_box {
+              margin-top: 24px;
+
+              .table_box_title {
+                height: 38px;
+                li {
+                  height: 38px;
+                  width: 92px;
+                  float: left;
+                  font-size: 14px;
+                  line-height: 38px;
+                  color: #bbbbbb;
+                  text-align: center;
+                  border-top: 2px solid #fff;
+                }
+
+                li.active {
+                  cursor: pointer;
+                  background: #eef6ff;
+                  color: #0070ff;
+                  border-top: 2px solid #0070ff;
+                }
+              }
+              /deep/
+              .el-table {
+                font-size: 12px;
+                thead.has-gutter{
+                  th{
+                    color: #333333;
+                    background: #f8f8f8;
+                    .cell {
+                      font-weight: bold;
+                    }
+                  }
+                }
+                .cell {
+                  color: #333333;
+                }
+              }
+
+              /deep/
+              .el-pagination {
+                margin-top: 20px;
+                text-align: center;
+              }
+            }
+
+            .btn_box {
+              margin-top: 36px;
+              margin-bottom: 24px;
+              height: 42px;
+              text-align: center;
+
+              .cancel_btn {
+                border: 1px solid #0070ff;
+                background: #fff;
+                color: #0070ff;
+                width: 136px;
+                height: 42px;
+                font-size: 16px;
+              }
+
+              .prev_btn {
+                background-color: #0070ff;
+                color: #fff;
+                width: 136px;
+                height: 42px;
+                font-size: 16px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //添加到工单
+    /deep/
+    .pop_state_add {
+      .el-dialog {
+        .el-dialog__header {
+          display: none;
+        }
+
+        .el-dialog__body {
+          max-height: 640px;
+          padding: 30px;
+
+          .closed_img {
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            cursor: pointer;
+            width: 46px;
+            height: 46px;
+          }
+
+          .title {
+            height: 24px;
+            line-height: 24px;
+            text-align: left;
+
+            .title_name {
+              font-size: 20px;
+              color: #333333;
+              line-height: 24px;
+              font-weight: 500;
+            }
+
+            .mask {
+              width: 24px;
+              height: 0px;
+              border-top: 0px;
+              border-right: 2px solid transparent;
+              border-bottom: 5px solid #0070ff;
+              border-left: 2px solid transparent;
+              transform: rotate3d(0, 0, 1, 90deg);
+              display: inline-block;
+              margin-right: -5px;
+              margin-bottom: 4px;
+              margin-left: -10px;
+            }
+          }
+
+          .content {
+            padding-top: 48px;
+          }
+
+          .btn_box {
+            height: 42px;
+            text-align: center;
+            margin-bottom: 24px;
+            margin-top: 36px;
+
+            .ok_btn {
+              width: 136px;
+              height: 42px;
+              background: #0070ff;
+              color: #fff;
+            }
+
+            .cancel_btn {
+              width: 136px;
+              height: 42px;
+              border-color: #0070ff;
+              background: #fff;
+              color: #0070ff;
+            }
+          }
+        }
       }
     }
   }

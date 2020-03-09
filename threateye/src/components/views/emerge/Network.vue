@@ -552,7 +552,7 @@
         },
         handle: {
           add: "",
-          table_title: ["资产"],
+          table_title: ["告警"],
           active: 0
         },
         table_alerts: {
@@ -821,40 +821,42 @@
 
         let sel_table_data = this.table.multipleSelection;
 
-        /*if(sel_table_data.length == 0){
+        if(sel_table_data.length == 0){
 
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
 
           return false;
 
-        } else {}*/
+        } else {
 
-        this.table_alerts.tableData = sel_table_data;
+          this.table_alerts.tableData = sel_table_data;
 
-        this.table_alerts.count = sel_table_data.length;
+          this.table_alerts.count = sel_table_data.length;
 
-        let pageNow = this.table_alerts.pageNow;
+          let pageNow = this.table_alerts.pageNow;
 
-        let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+          let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
 
-        this.table_alerts.tableData_new = handle_data;
+          this.table_alerts.tableData_new = handle_data;
 
-        //获取用户列表(经办人使用)
-        this.$axios.get('/api/yiiapi/site/user-list')
-          .then(resp => {
-            let {status, data} = resp.data;
-            if (status == 0) {
-              this.task_new.operator_list = data;
-            }else {
-              this.task_new.operator_list = [];
-            }
-            this.task.new = true;
-            this.task.new_contet = true;
-          })
-          .catch(err => {
-            console.log('用户列表错误');
-            console.log(err);
-          })
+          //获取用户列表(经办人使用)
+          this.$axios.get('/api/yiiapi/site/user-list')
+            .then(resp => {
+              let {status, data} = resp.data;
+              if (status == 0) {
+                this.task_new.operator_list = data;
+              }else {
+                this.task_new.operator_list = [];
+              }
+              this.task.new = true;
+              this.task.new_contet = true;
+            })
+            .catch(err => {
+              console.log('用户列表错误');
+              console.log(err);
+            })
+
+        }
 
       },
 
@@ -1024,6 +1026,7 @@
             };
             this.table_operator.tableData = [];
             this.$refs.multipleTable.clearSelection();
+
           })
           .catch(err => {
             console.log(err);

@@ -77,7 +77,7 @@
                     @row-click="detail_click">
             <el-table-column label="全选" prop="type" width="50">
               <template slot-scope="scope">
-                <div class="new_dot" v-show="scope.row.status=='1'"></div>
+                <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
               </template>
             </el-table-column>
             <el-table-column type="selection" width="40"></el-table-column>
@@ -269,12 +269,7 @@
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_alerts">
-                <el-table-column label="全选" prop="type" width="40">
-                  <template slot-scope="scope">
-                    <div class="new_dot" v-show="scope.row.status=='1'">
-                    </div>
-                  </template>
-                </el-table-column>
+                <el-table-column label="全选" prop="type" width="40"></el-table-column>
                 <el-table-column type="selection" width="40">
                 </el-table-column>
                 <!--<el-table-column label="告警时间" width="120" show-overflow-tooltip>
@@ -655,7 +650,7 @@
               this.table.pageNow = pageNow;
               this.table.loading = false;
 
-              //console.log(data)
+              console.log(data)
             }
 
           })

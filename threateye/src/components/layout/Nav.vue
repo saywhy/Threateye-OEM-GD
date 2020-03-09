@@ -28,20 +28,20 @@
             </div>
             <el-dropdown-menu slot="dropdown" class="nav-dropdown-menu">
               <!-- <router-link :to="{path: '/'}">-->
-              <a target='_blank' @click="enter_home()">
+              <!--<a target='_blank' @click="enter_home()">
                 <el-dropdown-item>
                   home
                 </el-dropdown-item>
-              </a>
+              </a>-->
               <!--</router-link>-->
-              <a target='_blank' href="https://github.com/liyihoo/iView-Web">
+              <!--<a target='_blank' href="https://github.com/liyihoo/iView-Web">
                 <el-dropdown-item>
                   github地址
                 </el-dropdown-item>
-              </a>
+              </a>-->
               <a target='_blank' @click="modifyPassword()">
                 <el-dropdown-item>
-                  修改密码
+                  修改个人信息
                 </el-dropdown-item>
               </a>
               <el-dropdown-item divided>
@@ -79,6 +79,12 @@
         </div>
         <div class="content_item">
           <p>
+            <span class="title">旧密码</span>
+          </p>
+          <el-input class="select_box" placeholder="请再次输入密码" v-model="user_edit.old_password" show-password></el-input>
+        </div>
+        <div class="content_item">
+          <p>
             <span class="title">部门</span>
           </p>
           <el-input class="select_box" placeholder="请输入部门" v-model="user_edit.department" clearable></el-input>
@@ -108,6 +114,8 @@
 
 <script type="text/ecmascript-6">
   import { mapState,mapGetters } from 'vuex';
+
+  import {getToken, setToken, removeToken} from "@/store/layout/cookie";
   export default {
     name: 'Nav',
     data() {
@@ -125,13 +133,13 @@
         user_edit: {
           password: "",
           Re_password: "",
+          old_password:"",
           department: "",
           mobile: "",
           email_addr: "",
           role: "",
           id: "",
-          allow_ip: '',
-          role_list: []
+          allow_ip: ''
         },
       };
     },
@@ -143,7 +151,6 @@
         'addRouters'
       ])
     },
-
     methods:{
       /*login(){
         this.$router.push('/', () => {});
@@ -151,18 +158,46 @@
       enter_home(){
         this.$router.push({path:'/home/overview'});
       },
-      //修改密码
+      // 正则验证密码
+      regex (password) {
+        var reg = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9])');
+        return reg.test(password)
+      },
+      // 获取密码长度
+      getPwdLength () {
+        this.$axios.get('/api/yiiapi/site/get-passwd-length')
+          .then(response => {
+           // console.log(response);
+            this.user_data.password = response.data.data
+            this.user_data.placeholder = '请输入包含大写、小写、数字和特殊字符其中三项,' + response.data.data.min_passwd_len + '-' + response.data.data.max_passwd_len + '位密码'
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      },
+
+      //修改个人信息
       modifyPassword(){
 
+        this.getPwdLength();
         this.pass_state = true;
-
       },
       closed_edit_box () {
         this.pass_state = false;
+        this.user_edit = {
+          password: "",
+          Re_password: "",
+          old_password:"",
+          department: "",
+          mobile: "",
+          email_addr: "",
+          role: "",
+          id: "",
+          allow_ip: ''
+        };
       },
 
       edit_user () {
-        console.log(this.user_edit);
         if (this.user_edit.password != this.user_edit.Re_password) {
           this.$message(
             {
@@ -181,45 +216,94 @@
           );
           return false
         }
-        this.$axios.get('/api/yiiapi/user/get-password-reset-token', {
-          params: {
-            id: this.user_edit.id
-          }
-        })
+        if(this.user_edit.old_password == ''){
+          this.$message(
+            {
+              message: '旧密码不能为空',
+              type: 'error',
+            }
+          );
+          return false
+        }
+
+        //!@#QWEasd123 Lele#easy123 Lele@19930901
+        this.$axios.get('/api/yiiapi/site/get-self-password-reset-token')
+
           .then(response => {
+
             console.log(response.data);
-            this.token_data = response.data.data
-            localStorage.setItem("token", response.data.data.token);
-            this.$axios.put('/api/yiiapi/user/reset-password?token=' + localStorage.getItem("token"), {
-              ResetPasswordForm: {
-                password: this.user_edit.password,
-                allow_ip: this.user_edit.allow_ip,
-                role: this.user_edit.role,
-                email_addr: this.user_edit.email_addr,
-                mobile: this.user_edit.mobile,
-                department: this.user_edit.department,
-              }
-            })
-              .then(response => {
-                this.user_state.edit = false;
-                if (response.data.status == 0) {
-                  this.get_data();
-                  this.$message({
-                    message: '修改用户成功',
-                    type: 'success'
-                  });
-                } else {
-                  this.$message(
-                    {
-                      message: response.data.msg,
-                      type: 'error',
+
+            let { status, msg, data} = response.data;
+
+            if(status == 0){
+
+              setToken(data.data.token);
+
+              localStorage.setItem("token", data.data.token);
+
+              this.$axios.put('/api/yiiapi/site/reset-self-password?token=' + localStorage.getItem("token"), {
+                ResetPasswordForm: {
+                  password: this.user_edit.password,
+                  email_addr: this.user_edit.email_addr,
+                  mobile: this.user_edit.mobile,
+                  department: this.user_edit.department,
+                },
+                old_password:this.user_edit.old_password
+              })
+                .then(response => {
+
+                  this.pass_state = false;
+
+                  localStorage.removeItem("token");
+
+                  if (response.data.status == 0) {
+
+                    this.$message({
+                      message: '修改用户成功',
+                      type: 'success'
+                    });
+
+                    if(this.user_edit.password != ''){
+                      setTimeout(() => {
+                        removeToken();
+                        location.reload();
+                      },2000);
                     }
-                  );
+
+                  } else {
+                    this.$message(
+                      {
+                        message: response.data.msg,
+                        type: 'error',
+                      }
+                    );
+                  }
+
+                  this.user_edit = {
+                    password: "",
+                    Re_password: "",
+                    old_password:"",
+                    department: "",
+                    mobile: "",
+                    email_addr: "",
+                    role: "",
+                    id: "",
+                    allow_ip: ''
+                  };
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+            }else {
+              this.$message(
+                {
+                  message: msg,
+                  type: 'error',
                 }
-              })
-              .catch(error => {
-                console.log(error);
-              })
+              );
+            }
+
+
           })
           .catch(error => {
             console.log(error);
@@ -247,7 +331,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-
   #Nav {
     .nav_user{
       .header-logo{
@@ -394,16 +477,12 @@
   }
   #Nav{
     .pop_box_password {
-      border: 1px solid blue;
       .el-dialog {
         background: #FFFFFF;
         border-radius: 4px;
-
-
         .el-dialog__header {
           display: none;
         }
-
         .el-dialog__body {
           padding: 30px;
 

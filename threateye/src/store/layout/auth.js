@@ -13,7 +13,7 @@ export function forRoleList(auth) {
 
     //删除token
     removeToken();
-    //location.reload();
+    location.reload();
 
     return false;
 

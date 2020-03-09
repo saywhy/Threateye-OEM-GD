@@ -13,7 +13,9 @@ import {
   forRoleList,
   formatList
 } from './auth'
-import {fetch} from "../../https/api";
+import {
+  fetch
+} from "../../https/api";
 
 export default {
   state: {
@@ -61,39 +63,41 @@ export default {
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
-        axios.post('/api/yiiapi/site/login',
-          {
-            "LoginForm": userInfo,
-            "login-button": ""
-          }
-        ).then(resp => {
+        axios.post('/api/yiiapi/site/login', {
+          "LoginForm": userInfo,
+          "login-button": ""
+        }).then(resp => {
 
           let datas = resp.data;
 
           console.log(datas)
 
-          let {status,msg,data} = datas;
+          let {
+            status,
+            msg,
+            data
+          } = datas;
 
-          let tips ='输入用户名或密码错误';
-          if(msg.username){
+          let tips = '输入用户名或密码错误';
+          if (msg.username) {
             tips = msg.username[0];
-          }else if(msg.password){
+          } else if (msg.password) {
             tips = msg.password[0];
-          }else {
+          } else {
             tips = msg;
           }
           //用户名密码正确
-          if(status == 202){
-             let isTaken = ( data == '' )? userInfo.username: data.token
-             setToken(isTaken);
-             commit('SET_TOKEN', isTaken);
-             resolve([true,tips]);
-          //用户名密码错误
+          if (status == 202 || status == 0) {
+            let isTaken = (data == '') ? userInfo.username : data.token
+            setToken(isTaken);
+            commit('SET_TOKEN', isTaken);
+            resolve([true, tips]);
+            //用户名密码错误
           } else {
-             resolve([false,tips]);
+            resolve([false, tips]);
           }
         }).catch(error => {
-            console.log(error);
+          console.log(error);
         })
       });
     },
@@ -110,7 +114,7 @@ export default {
 
       let roles = forRoleList(resp);
 
-     // console.log(roles);
+      // console.log(roles);
       commit('SET_ROLES', roles);
       return roles;
     },
@@ -134,9 +138,11 @@ export default {
       commit
     }, data) {
       return new Promise(resolve => {
-        const {roles} = data;
+        const {
+          roles
+        } = data;
 
-       // console.log(roles)
+        // console.log(roles)
         const accessedRouters = formatList(asyncRouterMap, roles);
 
         commit('SET_ROUTERS', accessedRouters);

@@ -131,7 +131,7 @@ export default {
   methods: {
     get_data () {
       this.url_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/ipurl-communication-investigation', {
+      this.$axios.get('/yiiapi/investigate/ipurl-communication-investigation', {
         params: {
           src_ip: this.url_search.src_ip,
           dst_ip: this.url_search.dst_ip,
@@ -187,7 +187,7 @@ export default {
         });
         return false
       }
-      var url1 = "/api/yiiapi/investigate/ipurl-communication-investigation-export?src_ip=" + this.url_search.src_ip +
+      var url1 = "/yiiapi/investigate/ipurl-communication-investigation-export?src_ip=" + this.url_search.src_ip +
         '&dst_ip=' + this.url_search.dst_ip +
         '&src_port=' + this.url_search.src_port +
         '&dst_port=' + this.url_search.dst_port +

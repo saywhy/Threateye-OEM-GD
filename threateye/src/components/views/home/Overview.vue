@@ -319,7 +319,7 @@ export default {
   methods: {
     //第一排（左）
     init_top_left () {
-      this.$axios.get('/api/yiiapi/alert/system-state')
+      this.$axios.get('/yiiapi/alert/system-state')
         .then((resp) => {
           console.log(resp)
           let { status, data } = resp.data;
@@ -331,7 +331,7 @@ export default {
     },
     //第一排（中）
     init_top_mid () {
-      this.$axios.get('/api/yiiapi/alert/flow-file-statistics')
+      this.$axios.get('/yiiapi/alert/flow-file-statistics')
         .then((resp) => {
           //console.log(resp)
           let { status, data } = resp.data;
@@ -344,7 +344,7 @@ export default {
     },
     //第一排（右）
     init_top_right () {
-      this.$axios.get('/api/yiiapi/alert/protocol-flow-statistics')
+      this.$axios.get('/yiiapi/alert/protocol-flow-statistics')
         .then((resp) => {
           let { status, data } = resp.data;
           //console.log(data)
@@ -357,7 +357,7 @@ export default {
 
     //第二排（左）
     init_mid_left () {
-      this.$axios.get('/api/yiiapi/alert/get-last7-days-alarm')
+      this.$axios.get('/yiiapi/alert/get-last7-days-alarm')
         .then((resp) => {
           let { status, data } = resp.data;
           if (status == 0) {
@@ -368,7 +368,7 @@ export default {
     },
     //第二排（中）
     init_mid_mid () {
-      this.$axios.get('/api/yiiapi/alert/untreated-alarm-type')
+      this.$axios.get('/yiiapi/alert/untreated-alarm-type')
         .then((resp) => {
           let { status, data } = resp.data;
           if (status == 0) {
@@ -379,7 +379,7 @@ export default {
     },
     //第二排（右）
     init_mid_right () {
-      this.$axios.get('/api/yiiapi/alert/threat-type')
+      this.$axios.get('/yiiapi/alert/threat-type')
         .then((resp) => {
 
           let { status, data } = resp.data;
@@ -393,7 +393,7 @@ export default {
 
     //第三排（左）
     init_bom_left () {
-      this.$axios.get('/api/yiiapi/alert/threat-top5')
+      this.$axios.get('/yiiapi/alert/threat-top5')
         .then((resp) => {
           // /console.log(resp)
 
@@ -406,7 +406,7 @@ export default {
     },
     //第三排（中）
     init_bom_mid () {
-      this.$axios.get('/api/yiiapi/alert/risk-asset-top5')
+      this.$axios.get('/yiiapi/alert/risk-asset-top5')
         .then((resp) => {
           // console.log(resp)
           let { status, data } = resp.data;
@@ -419,7 +419,7 @@ export default {
 
     //第三排（右）
     init_bom_right () {
-      this.$axios.get('/api/yiiapi/alert/list-top5')
+      this.$axios.get('/yiiapi/alert/list-top5')
         .then((resp) => {
           // console.log(resp)
           let { status, data } = resp.data;
@@ -436,7 +436,7 @@ export default {
       this.get_data()
     },
     get_data () {
-      this.$axios.get('/api/yiiapi/alert/system-state')
+      this.$axios.get('/yiiapi/alert/system-state')
         .then(response => {
           let { status, data } = response.data;
           console.log(data);

@@ -212,7 +212,7 @@ export default {
     // 获取列表
     get_data (name) {
       this.router_data.loading = true
-      this.$axios.get('/api/yiiapi/seting/route-list', {
+      this.$axios.get('/yiiapi/seting/route-list', {
         params: {
           page: this.router_data.page,
           rows: this.router_data.rows,
@@ -247,7 +247,7 @@ export default {
       this.router_add.next_step = '';
     },
     add_router () {
-      this.$axios.post('/api/yiiapi/seting/route-add', {
+      this.$axios.post('/yiiapi/seting/route-add', {
         ip: this.router_add.ip,
         net_mask: this.router_add.net_mask,
         next_step: this.router_add.next_step
@@ -288,7 +288,7 @@ export default {
     },
     // 编辑
     edit_router () {
-      this.$axios.put('/api/yiiapi//seting/route-edit', {
+      this.$axios.put('/yiiapi//seting/route-edit', {
         id: this.router_edit.id,
         ip: this.router_edit.ip,
         net_mask: this.router_edit.net_mask,
@@ -337,7 +337,7 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.id)
         });
-        this.$axios.delete('/api/yiiapi/seting/del', {
+        this.$axios.delete('/yiiapi/seting/del', {
           data: {
             id: id_list
           }

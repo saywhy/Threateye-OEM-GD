@@ -317,7 +317,7 @@ export default {
   methods: {
     // 修改密码
     edit_pswd () {
-      this.$axios.get('/api/yiiapi/site/get-self-password-reset-token')
+      this.$axios.get('/yiiapi/site/get-self-password-reset-token')
         .then(response => {
           let { status, data } = response.data;
           console.log(status);
@@ -325,7 +325,7 @@ export default {
           let token = data.data.token
 
           // site/reset-self-password
-          this.$axios.post('/api/yiiapi/site/reset-self-password?token=' + token, {
+          this.$axios.post('/yiiapi/site/reset-self-password?token=' + token, {
             ResetPasswordForm: {
               password: "Hoohoolab*1234",
               mobile: "151111211111",
@@ -356,7 +356,7 @@ export default {
         })
     },
     get_menu () {
-      this.$axios.get('/api/yiiapi/site/menu')
+      this.$axios.get('/yiiapi/site/menu')
         .then(response => {
           console.log(response);
         })
@@ -366,7 +366,7 @@ export default {
     },
     // 获取用户列表
     get_data () {
-      this.$axios.get('/api/yiiapi/user/page', {
+      this.$axios.get('/yiiapi/user/page', {
         params: {
           page: this.user_data.page,
           rows: this.user_data.rows,
@@ -385,7 +385,7 @@ export default {
     },
     // 获取角色列表
     role_list () {
-      this.$axios.get('/api/yiiapi/user/role-list', {
+      this.$axios.get('/yiiapi/user/role-list', {
         params: {
           page: 1,
           rows: 999,
@@ -402,7 +402,7 @@ export default {
     },
     // 获取密码长度
     getPwdLength () {
-      this.$axios.get('/api/yiiapi/site/get-passwd-length')
+      this.$axios.get('/yiiapi/site/get-passwd-length')
         .then(response => {
           console.log(response);
           this.user_data.password = response.data.data
@@ -455,7 +455,7 @@ export default {
         );
         return false
       }
-      this.$axios.post('/api/yiiapi/user/user-add', {
+      this.$axios.post('/yiiapi/user/user-add', {
         username: this.user_add.username,
         password: this.user_add.password,
         role: this.user_add.role,
@@ -535,7 +535,7 @@ export default {
         );
         return false
       }
-      this.$axios.get('/api/yiiapi/user/get-password-reset-token', {
+      this.$axios.get('/yiiapi/user/get-password-reset-token', {
         params: {
           id: this.user_edit.id
         }
@@ -544,7 +544,7 @@ export default {
           console.log(response.data);
           this.token_data = response.data.data
           localStorage.setItem("token", response.data.data.token);
-          this.$axios.put('/api/yiiapi/user/reset-password?token=' + localStorage.getItem("token"), {
+          this.$axios.put('/yiiapi/user/reset-password?token=' + localStorage.getItem("token"), {
             ResetPasswordForm: {
               password: this.user_edit.password,
               allow_ip: this.user_edit.allow_ip,
@@ -600,7 +600,7 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.id)
         });
-        this.$axios.delete('/api/yiiapi/user/user-del', {
+        this.$axios.delete('/yiiapi/user/user-del', {
           data: {
             id: id_list
           }

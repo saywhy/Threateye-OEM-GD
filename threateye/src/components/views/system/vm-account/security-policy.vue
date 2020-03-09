@@ -124,7 +124,7 @@ export default {
 
     get_data () {
       this.security_policy_status.loading = true
-      this.$axios.get('/api/yiiapi/securitypolicy/get-security-policy')
+      this.$axios.get('/yiiapi/securitypolicy/get-security-policy')
         .then(response => {
           console.log(response);
           this.security_policy = response.data.data;
@@ -146,7 +146,7 @@ export default {
         this.security_policy.status = '0'
       }
       console.log(this.security_policy);
-      this.$axios.put('/api/yiiapi/securitypolicy/set-security-policy', {
+      this.$axios.put('/yiiapi/securitypolicy/set-security-policy', {
         min_passwd_len: this.security_policy.min_passwd_len,
         max_passwd_len: this.security_policy.max_passwd_len,
         passwd_regular_edit_time: this.security_policy.passwd_regular_edit_time,

@@ -96,7 +96,7 @@ export default {
 
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/userlog/page', {
+      this.$axios.get('/yiiapi/userlog/page', {
         params: {
           username: this.audit_data.key,
           start_time: this.audit_data.start_time,
@@ -149,7 +149,7 @@ export default {
       }
     },
     download () {
-      var url2 = "/api/yiiapi/userlog/export?username=" + this.audit_data.key + "&start_time=" + this.audit_data.start_time + '&end_time=' + this.audit_data.end_time;
+      var url2 = "/yiiapi/userlog/export?username=" + this.audit_data.key + "&start_time=" + this.audit_data.start_time + '&end_time=' + this.audit_data.end_time;
       window.location.href = url2;
     }
   }

@@ -26,7 +26,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.put('/api/yiiapi/seting/restore')
+        this.$axios.put('/yiiapi/seting/restore')
           .then(response => {
             let { status, data } = response.data;
             if (status == 0) {
@@ -54,7 +54,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.put('/api/yiiapi/seting/reboot')
+        this.$axios.put('/yiiapi/seting/reboot')
           .then(response => {
             let { status, data } = response.data;
             if (status == 0) {

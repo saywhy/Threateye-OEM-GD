@@ -555,7 +555,7 @@
     methods: {
       //资产頂部
       get_list_top() {
-        this.$axios.get('/api/yiiapi/alert/risk-asset-top')
+        this.$axios.get('/yiiapi/alert/risk-asset-top')
           .then((resp) => {
             let data = resp.data.data;
             this.data_top = data;
@@ -566,7 +566,7 @@
 
       //全部資產列表
       get_list_all() {
-        this.$axios.get('/api/yiiapi/alert/all-asset-labels')
+        this.$axios.get('/yiiapi/alert/all-asset-labels')
           .then((resp) => {
 
             let {status, data} = resp.data;
@@ -613,7 +613,7 @@
 
         params.label = JSON.stringify(params.label);
 
-        this.$axios.get('/api/yiiapi/alert/risk-asset',
+        this.$axios.get('/yiiapi/alert/risk-asset',
           {
             params: {
               label: params.label,
@@ -794,7 +794,7 @@
           change_status = 4;
         }
 
-        this.$axios.put('/api/yiiapi/alert/change-asset-status', {
+        this.$axios.put('/yiiapi/alert/change-asset-status', {
           asset_ip: asset_ip_group,
           status: change_status
         })
@@ -879,7 +879,7 @@
             this.table_assets.tableData_new = handle_data;
 
             //获取用户列表(经办人使用)
-            this.$axios.get('/api/yiiapi/site/user-list')
+            this.$axios.get('/yiiapi/site/user-list')
               .then(resp => {
                 let {status, data} = resp.data;
                 if (status == 0) {
@@ -983,7 +983,7 @@
       //新建工单分配
       prev_task_handle_assign() {
 
-        this.$axios.put('/api/yiiapi/asset/distribution-workorder',
+        this.$axios.put('/yiiapi/asset/distribution-workorder',
           {
             name: this.task_params.name,
             priority:this.task_params.level,
@@ -1032,7 +1032,7 @@
       //新建工单保存
       prev_task_handle_save() {
 
-        this.$axios.post('/api/yiiapi/asset/add-workorder',
+        this.$axios.post('/yiiapi/asset/add-workorder',
           {
             name: this.task_params.name,
             priority:this.task_params.level,
@@ -1108,7 +1108,7 @@
 
       //获取列表
       get_table_works_list() {
-        this.$axios.get('/api/yiiapi/asset/workorder-list',{
+        this.$axios.get('/yiiapi/asset/workorder-list',{
           params:{
             page: this.table_add_works.pageNow,
             rows: this.table_add_works.eachPage
@@ -1173,7 +1173,7 @@
 
         this.add_params.multiple = selected_attr;
 
-        this.$axios.post('/api/yiiapi/asset/add-workorder',
+        this.$axios.post('/yiiapi/asset/add-workorder',
           {
             id:this.add_params.id,
             name: this.add_params.name,

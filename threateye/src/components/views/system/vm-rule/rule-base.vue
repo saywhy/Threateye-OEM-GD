@@ -75,7 +75,7 @@ export default {
     return {
       loading: false,
       options: {
-        target: '/api/yiiapi/rulebase/upload-package',
+        target: '/yiiapi/rulebase/upload-package',
         chunkSize: '10048000',   //分块大小
         testChunks: false,     //是否开启服务器分片校验
         parseTimeRemaining: function (timeRemaining, parsedTimeRemaining) {
@@ -129,7 +129,7 @@ export default {
   methods: {
     get_data () {
       this.loading = true
-      this.$axios.get('/api/yiiapi/rulebase/get-update-status')
+      this.$axios.get('/yiiapi/rulebase/get-update-status')
         .then(response => {
           console.log(response);
           this.loading = false
@@ -175,7 +175,7 @@ export default {
     },
     // 在线更新
     update_online () {
-      this.$axios.post('/api/yiiapi/rulebase/realtime-update')
+      this.$axios.post('/yiiapi/rulebase/realtime-update')
         .then(response => {
           console.log(response);
           let { status, data } = response.data;
@@ -215,7 +215,7 @@ export default {
     onFileSuccess (rootFile, file, response, chunk) {
       if (JSON.parse(response).status == 0) {
         console.log(file);
-        this.$axios.get('/api/yiiapi/sandbox/move-file', {
+        this.$axios.get('/yiiapi/sandbox/move-file', {
           params: {
             upload_name: file.name,
           }

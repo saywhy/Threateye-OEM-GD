@@ -290,7 +290,7 @@ export default {
   methods: {
     // 获取数据
     get_data () {
-      this.$axios.get('/api/yiiapi/seting/time-synchronization')
+      this.$axios.get('/yiiapi/seting/time-synchronization')
         .then(response => {
           let { status, data } = response.data;
           console.log(data.data[0]);
@@ -366,7 +366,7 @@ export default {
           break;
       }
       console.log(this.option);
-      this.$axios.put('/api/yiiapi/seting/' + url, set_data)
+      this.$axios.put('/yiiapi/seting/' + url, set_data)
         .then(response => {
           let { status, data } = response.data;
           console.log(status);
@@ -396,7 +396,7 @@ export default {
     },
     // 获取登录ip
     get_login_ip () {
-      this.$axios.get('/api/yiiapi/seting/get-allow-ip')
+      this.$axios.get('/yiiapi/seting/get-allow-ip')
         .then(response => {
           let { status, data } = response.data;
           this.option.login_ip = []
@@ -428,7 +428,7 @@ export default {
           ip_list.push(item.ip)
         }
       });
-      this.$axios.put('/api/yiiapi/seting/set-allow-ip', {
+      this.$axios.put('/yiiapi/seting/set-allow-ip', {
         ip: ip_list
       })
         .then(response => {

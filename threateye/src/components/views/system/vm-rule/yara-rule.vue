@@ -14,7 +14,7 @@
                  @click="download">下载</el-button>
       <el-upload class="upload-demo"
                  style="display: inline-block;"
-                 action="/api/yiiapi/yararule/upload"
+                 action="/yiiapi/yararule/upload"
                  :on-preview="handlePreview"
                  :on-remove="handleRemove"
                  :before-remove="beforeRemove"
@@ -79,7 +79,7 @@ export default {
   methods: {
     get_data () {
       this.loading = true
-      this.$axios.get('/api/yiiapi/yararule/get')
+      this.$axios.get('/yiiapi/yararule/get')
         .then(response => {
           console.log(response.data);
           if (response.data.status == 0) {
@@ -111,7 +111,7 @@ export default {
         );
         return false
       }
-      this.$axios.get('/api/yiiapi/site/check-auth-exist', {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
         params: {
           pathInfo: 'yararule/download',
         }
@@ -120,7 +120,7 @@ export default {
           console.log(response.data);
           if (response.data.status == 0) {
             var tt = new Date().getTime();
-            var url = '/api/yiiapi/yararule/download';
+            var url = '/yiiapi/yararule/download';
             var form = $("<form>"); //定义一个form表单
             form.attr("style", "display:none");
             form.attr("target", "");
@@ -188,7 +188,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.get('/api/yiiapi/yararule/del')
+        this.$axios.get('/yiiapi/yararule/del')
           .then(response => {
             console.log(response.data.data);
             if (response.data.data.status == 0) {

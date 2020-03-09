@@ -221,7 +221,7 @@ export default {
     // 获取列表
     get_data () {
       this.syslog_data.loading = true;
-      this.$axios.get('/api/yiiapi/syslog/list', {
+      this.$axios.get('/yiiapi/syslog/list', {
         params: {
           page: this.syslog_data.page,
           rows: this.syslog_data.rows
@@ -245,7 +245,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.delete('/api/yiiapi/syslog/del-conf', {
+        this.$axios.delete('/yiiapi/syslog/del-conf', {
           data: {
             id: item.id
           }
@@ -296,7 +296,7 @@ export default {
       } else {
         this.syslog_pop.add.status = '0'
       }
-      this.$axios.post('/api/yiiapi/syslog/add-conf', {
+      this.$axios.post('/yiiapi/syslog/add-conf', {
         server_ip: this.syslog_pop.add.server_ip,
         server_port: this.syslog_pop.add.server_port,
         protocol: this.syslog_pop.add.protocol,
@@ -342,7 +342,7 @@ export default {
       } else {
         this.syslog_pop.edit.status = '0'
       }
-      this.$axios.put('/api/yiiapi/syslog/edit-conf', {
+      this.$axios.put('/yiiapi/syslog/edit-conf', {
         id: this.syslog_pop.edit.id,
         server_ip: this.syslog_pop.edit.ip,
         server_port: this.syslog_pop.edit.port,

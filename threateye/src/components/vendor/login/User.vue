@@ -115,8 +115,10 @@ export default {
       count: 0,
       contentHeight: 48,
       loginForm: {
-        username: 'admin',
-        password: 'Hoohoolab*123'
+        // username: 'admin',
+        username: '',
+        password: ''
+        // password: 'Hoohoolab*123'
         // password: '!@#QWEasd123'
       },
       code: '',

@@ -127,7 +127,7 @@ export default {
   methods: {
     get_data () {
       this.dns_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/dns-investigation', {
+      this.$axios.get('/yiiapi/investigate/dns-investigation', {
         params: {
           host_ip: this.dns_search.host_ip,
           dns_ip: this.dns_search.dns_ip,
@@ -185,7 +185,7 @@ export default {
         });
         return false
       }
-      var url2 = "/api/yiiapi/investigate/dns-investigation-export?host_ip=" + this.dns_search.host_ip + "&dns_ip=" + this.dns_search.dns_ip + '&domain=' + this.dns_search.domain + '&resolve_ip=' + this.dns_search.resolve_ip + '&ttl=' + this.dns_search.ttl + '&resolve_result=' + this.dns_search.resolve_result + '&start_time=' + this.dns_search.start_time + '&end_time=' + this.dns_search.end_time + '&current_page=0&per_page_count=0';
+      var url2 = "/yiiapi/investigate/dns-investigation-export?host_ip=" + this.dns_search.host_ip + "&dns_ip=" + this.dns_search.dns_ip + '&domain=' + this.dns_search.domain + '&resolve_ip=' + this.dns_search.resolve_ip + '&ttl=' + this.dns_search.ttl + '&resolve_result=' + this.dns_search.resolve_result + '&start_time=' + this.dns_search.start_time + '&end_time=' + this.dns_search.end_time + '&current_page=0&per_page_count=0';
       window.location.href = url2;
 
 

@@ -114,7 +114,7 @@ export default {
   methods: {
     get_data () {
       this.file_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/file-investigation', {
+      this.$axios.get('/yiiapi/investigate/file-investigation', {
         params: {
           file_name: this.file_search.file_name,
           md5: this.file_search.md5,
@@ -167,7 +167,7 @@ export default {
         });
         return false
       }
-      var url1 = "/api/yiiapi/investigate/file-investigation-export?file_name=" + this.file_search.file_name +
+      var url1 = "/yiiapi/investigate/file-investigation-export?file_name=" + this.file_search.file_name +
         '&md5=' + this.file_search.md5 +
         '&host_ip=' + this.file_search.host_ip +
         '&start_time=' + this.file_search.start_time +

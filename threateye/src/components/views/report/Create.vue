@@ -190,7 +190,7 @@ export default {
       }
       this.report.loading = true
       if (this.report.type == 'doc') {
-        this.$axios.get('/api/yiiapi/report/create-echarts-img', {
+        this.$axios.get('/yiiapi/report/create-echarts-img', {
           params: {
             stime: this.report.start_time,
             etime: this.report.end_time,
@@ -220,7 +220,7 @@ export default {
             }
 
             setTimeout(() => {
-              this.$axios.post('/api/yiiapi/report/create-report', {
+              this.$axios.post('/yiiapi/report/create-report', {
                 stime: this.report.start_time / 1000,
                 etime: this.report.end_time / 1000,
                 report_name: this.report.name,
@@ -254,7 +254,7 @@ export default {
           })
       }
       if (this.report.type == 'csv') {
-        this.$axios.post('/api/yiiapi/report/create-report', {
+        this.$axios.post('/yiiapi/report/create-report', {
           stime: this.report.start_time / 1000,
           etime: this.report.end_time / 1000,
           report_name: this.report.name,
@@ -598,7 +598,7 @@ export default {
 
     // 获取列表
     get_data () {
-      this.$axios.get('/api/yiiapi/report/list', {
+      this.$axios.get('/yiiapi/report/list', {
         params: {
           page: this.report_data.page,
           rows: this.report_data.rows,
@@ -619,7 +619,7 @@ export default {
     // 下载
     download (item) {
       console.log(item);
-      var url1 = '/api/yiiapi/report/download-report?id=' + item.id;
+      var url1 = '/yiiapi/report/download-report?id=' + item.id;
       window.location.href = url1;
     },
     // 删除
@@ -629,7 +629,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.delete('/api/yiiapi/report/delete', {
+        this.$axios.delete('/yiiapi/report/delete', {
           data: {
             id: item.id,
             report_name: item.report_name

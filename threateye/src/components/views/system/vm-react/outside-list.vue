@@ -153,7 +153,7 @@ export default {
   methods: {
     // 获取当前IP
     get_ip () {
-      this.$axios.get('/api/yiiapi/linkage/get-hostip')
+      this.$axios.get('/yiiapi/linkage/get-hostip')
         .then(response => {
           console.log(response.data);
           this.hostip = response.data.data.url
@@ -166,7 +166,7 @@ export default {
     },
     // 获取列表
     get_list (type) {
-      this.$axios.get('/api/yiiapi/linkage/list', {
+      this.$axios.get('/yiiapi/linkage/list', {
         params: {
           type: type,
           page: 1,
@@ -229,7 +229,7 @@ export default {
         default:
           break;
       }
-      this.$axios.post('/api/yiiapi/linkage/add', {
+      this.$axios.post('/yiiapi/linkage/add', {
         addr: addr_params,
         type: num,
       })
@@ -286,7 +286,7 @@ export default {
       }).then(() => {
         var id_list = []
         id_list.push(item.id)
-        this.$axios.delete('/api/yiiapi/linkage/del', {
+        this.$axios.delete('/yiiapi/linkage/del', {
           data: {
             id: id_list
           }

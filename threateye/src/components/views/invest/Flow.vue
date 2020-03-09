@@ -122,7 +122,7 @@ export default {
     get_data () {
       this.flow_search.loading = true
       console.log(this.flow_search);
-      this.$axios.get('/api/yiiapi/investigate/flow-direction-investigation', {
+      this.$axios.get('/yiiapi/investigate/flow-direction-investigation', {
         params: {
           flow_direction: this.flow_search.direction,
           host_ip: this.flow_search.host_ip,
@@ -173,7 +173,7 @@ export default {
         });
         return false
       }
-      var url1 = "/api/yiiapi/investigate/flow-direction-investigation-export?host_ip=" + this.flow_search.host_ip +
+      var url1 = "/yiiapi/investigate/flow-direction-investigation-export?host_ip=" + this.flow_search.host_ip +
         '&flow_direction=' + this.flow_search.direction +
         '&start_time=' + this.flow_search.start_time +
         '&end_time=' + this.flow_search.end_time +

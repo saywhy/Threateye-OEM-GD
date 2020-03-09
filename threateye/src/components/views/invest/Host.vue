@@ -235,7 +235,7 @@ export default {
     // 网络通讯
     get_data_network () {
       this.host_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/host-network-investigation', {
+      this.$axios.get('/yiiapi/investigate/host-network-investigation', {
         params: {
           host_ip: this.host_search.host_ip,
           start_time: this.host_search.start_time,
@@ -268,7 +268,7 @@ export default {
     // 文件
     get_data_file () {
       this.host_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/host-file-investigation', {
+      this.$axios.get('/yiiapi/investigate/host-file-investigation', {
         params: {
           host_ip: this.host_search.host_ip,
           start_time: this.host_search.start_time,
@@ -301,7 +301,7 @@ export default {
     // 用户
     get_data_user () {
       this.host_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/host-user-investigation', {
+      this.$axios.get('/yiiapi/investigate/host-user-investigation', {
         params: {
           host_ip: this.host_search.host_ip,
           start_time: this.host_search.start_time,
@@ -353,7 +353,7 @@ export default {
             });
             return false
           }
-          var url1 = "/api/yiiapi/investigate/host-network-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+          var url1 = "/yiiapi/investigate/host-network-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
           window.location.href = url1;
           break;
         case '2':
@@ -371,7 +371,7 @@ export default {
             });
             return false
           }
-          var url2 = "/api/yiiapi/investigate/host-file-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+          var url2 = "/yiiapi/investigate/host-file-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
           window.location.href = url2;
           break;
         case '3':
@@ -389,7 +389,7 @@ export default {
             });
             return false
           }
-          var url3 = "/api/yiiapi/investigate/host-user-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+          var url3 = "/yiiapi/investigate/host-user-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
           window.location.href = url3;
           break;
         default:

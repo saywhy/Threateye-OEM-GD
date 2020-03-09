@@ -99,7 +99,7 @@ export default {
   methods: {
     get_data () {
       this.user_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/user-investigation', {
+      this.$axios.get('/yiiapi/investigate/user-investigation', {
         params: {
           username: this.user_search.username,
           host_ip: this.user_search.host_ip,
@@ -150,7 +150,7 @@ export default {
         });
         return false
       }
-      var url1 = "/api/yiiapi/investigate/user-investigation-export?username=" + this.user_search.username +
+      var url1 = "/yiiapi/investigate/user-investigation-export?username=" + this.user_search.username +
         '&host_ip=' + this.user_search.host_ip +
         '&start_time=' + this.user_search.start_time +
         '&end_time=' + this.user_search.end_time +

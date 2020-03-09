@@ -461,7 +461,7 @@
     methods:{
       //获取资产列表
       get_list_assets_info(){
-        this.$axios.get('/api/yiiapi/workorder/asset-list')
+        this.$axios.get('/yiiapi/workorder/asset-list')
           .then((resp) => {
 
 
@@ -486,7 +486,7 @@
       },
       //获取告警列表
       get_list_alerts_info(){
-        this.$axios.get('/api/yiiapi/workorder/alert-list')
+        this.$axios.get('/yiiapi/workorder/alert-list')
           .then((resp) => {
             let {status, data} = resp.data;
             console.log(data)
@@ -499,7 +499,7 @@
       },
       //工单中心列表
       get_list_works(){
-        this.$axios.get('/api/yiiapi/workorder/list',
+        this.$axios.get('/yiiapi/workorder/list',
           {
             params: {
               stime:this.params.startTime,
@@ -586,7 +586,7 @@
       },
       /*******************下载**********************/
       worksdownload() {
-        this.$axios.get('/api/yiiapi/workorder/export',{
+        this.$axios.get('/yiiapi/workorder/export',{
           params:{
             stime:this.params.startTime,
             etime:this.params.endTime,
@@ -616,7 +616,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          that.$axios.delete('/api/yiiapi/workorder/del', {
+          that.$axios.delete('/yiiapi/workorder/del', {
             data: {
               id: selected
             }
@@ -673,7 +673,7 @@
         this.table_alerts.tableData_new = alerts_data;
 
         //获取用户列表(经办人使用)
-        this.$axios.get('/api/yiiapi/site/user-list')
+        this.$axios.get('/yiiapi/site/user-list')
           .then(resp => {
             let {status, data} = resp.data;
             if (status == 0) {
@@ -814,7 +814,7 @@
           Object.assign(all_params, {id:this.task.id});
         }
 
-        this.$axios.put('/api/yiiapi/workorder/distribution',all_params)
+        this.$axios.put('/yiiapi/workorder/distribution',all_params)
           .then((resp) => {
             let {status,msg, data} = resp.data;
 
@@ -872,7 +872,7 @@
           Object.assign(all_params, {id:this.task.id});
         }
 
-        this.$axios.post('/api/yiiapi/workorder/add',all_params)
+        this.$axios.post('/yiiapi/workorder/add',all_params)
 
           .then((resp) => {
 

@@ -63,7 +63,7 @@ export default {
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
-        axios.post('/api/yiiapi/site/login', {
+        axios.post('/yiiapi/site/login', {
           "LoginForm": userInfo,
           "login-button": ""
         }).then(resp => {
@@ -110,7 +110,7 @@ export default {
       //测试数据
       //let resp = await axios('/static/data/auth.json');
       //真实数据
-      let resp = await axios('/api/yiiapi/site/menu');
+      let resp = await axios('/yiiapi/site/menu');
 
       let roles = forRoleList(resp);
 

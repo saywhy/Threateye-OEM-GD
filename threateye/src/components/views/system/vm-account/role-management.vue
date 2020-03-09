@@ -390,7 +390,7 @@ export default {
 
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/user/role-list', {
+      this.$axios.get('/yiiapi/user/role-list', {
         params: {
           page: this.role_data.page,
           rows: this.role_data.rows
@@ -464,7 +464,7 @@ export default {
       this.$refs.tree.getCheckedNodes().forEach(item => {
         this.role_add.permissions_id.push(item.id)
       });
-      this.$axios.post('/api/yiiapi/user/add-role', {
+      this.$axios.post('/yiiapi/user/add-role', {
         name: this.role_add.name,
         description: this.role_add.describe,
         permissions_id: this.role_add.permissions_id,
@@ -512,7 +512,7 @@ export default {
       this.$refs.tree_edit.getCheckedNodes().forEach(item => {
         this.role_edit.permissions_id_edit.push(item.id)
       });
-      this.$axios.post('/api/yiiapi/user/edit-role', {
+      this.$axios.post('/yiiapi/user/edit-role', {
         id: this.role_edit.id,
         old_name: JSON.parse(this.old_role_edit).name,
         name: this.role_edit.name,
@@ -565,7 +565,7 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.name)
         });
-        this.$axios.delete('/api/yiiapi/user/del-role', {
+        this.$axios.delete('/yiiapi/user/del-role', {
           data: {
             role_name: id_list
           }

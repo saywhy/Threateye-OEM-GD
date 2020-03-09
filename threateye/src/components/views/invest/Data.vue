@@ -114,7 +114,7 @@ export default {
   methods: {
     get_data () {
       this.data_search.loading = true
-      this.$axios.get('/api/yiiapi/investigate/flowsize-timelength-investigation', {
+      this.$axios.get('/yiiapi/investigate/flowsize-timelength-investigation', {
         params: {
 
           flow_size: this.data_search.flow_size,
@@ -168,7 +168,7 @@ export default {
         });
         return false
       }
-      var url1 = "/api/yiiapi/investigate/flowsize-timelength-investigation-export?flow_size=" + this.data_search.flow_size +
+      var url1 = "/yiiapi/investigate/flowsize-timelength-investigation-export?flow_size=" + this.data_search.flow_size +
         '&flow_duration=' + this.data_search.flow_duration +
         '&host_ip=' + this.data_search.host_ip +
         '&start_time=' + this.data_search.start_time +

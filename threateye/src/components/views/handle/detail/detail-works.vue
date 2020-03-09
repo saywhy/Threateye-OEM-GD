@@ -263,7 +263,7 @@ export default {
   methods: {
     //获取工单详情列表
     get_list_works_detail(){
-      this.$axios.get('/api/yiiapi/workorder/details',
+      this.$axios.get('/yiiapi/workorder/details',
         {
           params: {
             id: this.id,
@@ -347,7 +347,7 @@ export default {
 
     //回复记录列表
     get_reply_works_detail(){
-      this.$axios.get('/api/yiiapi/workorder/reply-list',
+      this.$axios.get('/yiiapi/workorder/reply-list',
         {
           params: {
             id: this.id,
@@ -421,7 +421,7 @@ export default {
     /*********************************************/
     //回复记录
     submitReplyClick(){
-      this.$axios.post('/api/yiiapi/workorder/reply',
+      this.$axios.post('/yiiapi/workorder/reply',
         {
           work_order_id: this.id,
           comment:this.reply

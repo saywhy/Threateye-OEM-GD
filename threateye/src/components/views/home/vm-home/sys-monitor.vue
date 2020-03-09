@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/alert/system-state')
+      this.$axios.get('/yiiapi/alert/system-state')
         .then(response => {
           let { status, data } = response.data;
           console.log(data);

@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/report/get-config')
+      this.$axios.get('/yiiapi/report/get-config')
         .then(response => {
           let { status, data } = response.data;
           this.send_config.status = data.status + '';
@@ -157,7 +157,7 @@ export default {
           this.send_config.receiver_edit.push(item.name)
         }
       });
-      this.$axios.post('/api/yiiapi/report/set-config', {
+      this.$axios.post('/yiiapi/report/set-config', {
         status: this.send_config.status,
         cycle: this.send_config.cycle,
         report_type: this.send_config.report_type,

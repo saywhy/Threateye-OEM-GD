@@ -12,7 +12,7 @@
                      :on-error='onerror'
                      accept=".txt,.ioc"
                      drag
-                     action="/api/yiiapi/investigate/upload-file"
+                     action="/yiiapi/investigate/upload-file"
                      multiple>
             <img class="upload_img"
                  src="@/assets/images/setting/upload_s.png"
@@ -124,7 +124,7 @@ export default {
     // 获取列表
     get_data () {
       this.ioc_data.loading = true
-      this.$axios.get('/api/yiiapi/investigate/ioc-scanning-list', {
+      this.$axios.get('/yiiapi/investigate/ioc-scanning-list', {
         params: {
           page: this.ioc_data.page,
           rows: this.ioc_data.rows,
@@ -203,7 +203,7 @@ export default {
     // 下载模板
     download_template () {
       console.log('1231');
-      var url1 = "/api/yiiapi/investigate/download-ioc-template";
+      var url1 = "/yiiapi/investigate/download-ioc-template";
       window.location.href = url1;
     },
     // 禁止选中的项目
@@ -228,7 +228,7 @@ export default {
       });
       console.log(id_list);
       var id_list_str = JSON.stringify(id_list)
-      var url1 = "/api/yiiapi/investigate/ioc-scanning-download?id=" + id_list_str;
+      var url1 = "/yiiapi/investigate/ioc-scanning-download?id=" + id_list_str;
       window.location.href = url1;
 
     },
@@ -253,7 +253,7 @@ export default {
           id_list.push(element.id)
         });
         console.log(id_list);
-        this.$axios.delete('/api/yiiapi/investigate/ioc-scanning-del', {
+        this.$axios.delete('/yiiapi/investigate/ioc-scanning-del', {
           data: {
             id: id_list
           }

@@ -208,7 +208,7 @@ export default {
     },
     // 获取密码长度
     getPwdLength () {
-      this.$axios.get('/api/yiiapi/site/get-passwd-length')
+      this.$axios.get('/yiiapi/site/get-passwd-length')
         .then(response => {
           // console.log(response);
           this.user_data.password = response.data.data
@@ -270,7 +270,7 @@ export default {
       }
 
       //!@#QWEasd123 Lele#easy123 Lele@19930901
-      this.$axios.get('/api/yiiapi/site/get-self-password-reset-token')
+      this.$axios.get('/yiiapi/site/get-self-password-reset-token')
 
         .then(response => {
 
@@ -284,7 +284,7 @@ export default {
 
             localStorage.setItem("token", data.data.token);
 
-            this.$axios.put('/api/yiiapi/site/reset-self-password?token=' + localStorage.getItem("token"), {
+            this.$axios.put('/yiiapi/site/reset-self-password?token=' + localStorage.getItem("token"), {
               ResetPasswordForm: {
                 password: this.user_edit.password,
                 email_addr: this.user_edit.email_addr,
@@ -308,7 +308,7 @@ export default {
                   if (this.user_edit.password != '') {
                     setTimeout(() => {
                       removeToken();
-                      this.$axios.get('/api/yiiapi/site/logout')
+                      this.$axios.get('/yiiapi/site/logout')
                         .then(response => {
                           if (response.data.status == 0) {
                             console.log('退出');
@@ -368,7 +368,7 @@ export default {
     },
     //退出
     logout () {
-      this.$axios.get('/api/yiiapi/site/logout')
+      this.$axios.get('/yiiapi/site/logout')
         .then(response => {
           if (response.data.status == 0) {
             console.log('退出');

@@ -10,16 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      '/api': {
-        target: 'https://192.168.1.245/', // 后台api
-        changeOrigin: true, //是否跨域
-        secure: false,
-        pathRewrite: {
-          '^/api': '' //需要rewrite的,
-        }
-      }
-    },
+    // proxyTable: {
+    //   '/api': {
+    //     target: 'https://192.168.1.245/', // 后台api
+    //     changeOrigin: true, //是否跨域
+    //     secure: false,
+    //     pathRewrite: {
+    //       '^/api': '' //需要rewrite的,
+    //     }
+    //   }
+    // },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

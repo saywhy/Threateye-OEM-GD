@@ -187,7 +187,7 @@ export default {
   methods: {
     // 获取列表
     get_list (type) {
-      this.$axios.get('/api/yiiapi/linkage/list', {
+      this.$axios.get('/yiiapi/linkage/list', {
         params: {
           type: type,
           page: 1,
@@ -209,7 +209,7 @@ export default {
     },
     // 获取开关状态
     get_switch () {
-      this.$axios.get('/api/yiiapi/externalaccess/get-status')
+      this.$axios.get('/yiiapi/externalaccess/get-status')
         .then(response => {
           console.log(response);
           if (response.data.data.status == '0') {
@@ -233,7 +233,7 @@ export default {
         switch_status = 0
       }
       console.log(switch_status);
-      this.$axios.put('/api/yiiapi/externalaccess/change-status', {
+      this.$axios.put('/yiiapi/externalaccess/change-status', {
         status: switch_status
       })
         .then(response => {
@@ -264,7 +264,7 @@ export default {
     },
     // 获取当前IP
     get_ip () {
-      this.$axios.get('/api/yiiapi/linkage/get-hostip')
+      this.$axios.get('/yiiapi/linkage/get-hostip')
         .then(response => {
           console.log(response.data);
         })
@@ -275,7 +275,7 @@ export default {
     },
     // 获取用户列表
     get_user_list () {
-      this.$axios.get('/api/yiiapi/externalaccess/list', {
+      this.$axios.get('/yiiapi/externalaccess/list', {
         params: {
           page: this.user_data.page,
           rows: this.user_data.rows
@@ -314,7 +314,7 @@ export default {
         );
         return false
       }
-      this.$axios.post('/api/yiiapi/externalaccess/add', {
+      this.$axios.post('/yiiapi/externalaccess/add', {
         uname: this.outside_pop.add.user,
         passwd: this.outside_pop.add.pswd,
       })
@@ -372,7 +372,7 @@ export default {
         );
         return false
       }
-      this.$axios.put('/api/yiiapi/externalaccess/edit', {
+      this.$axios.put('/yiiapi/externalaccess/edit', {
         "passwd": "dsfdafgfdagr"
       })
         .then(response => {
@@ -408,7 +408,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.delete('/api/yiiapi/externalaccess/del', {
+        this.$axios.delete('/yiiapi/externalaccess/del', {
           data: {
             id: item.id
           }

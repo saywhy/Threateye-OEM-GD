@@ -165,7 +165,7 @@ export default {
   },
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/license/get', {
+      this.$axios.get('/yiiapi/license/get', {
         params: {
           page: this.license_data.page,
           rows: this.license_data.rows
@@ -200,7 +200,7 @@ export default {
         );
         return false
       }
-      this.$axios.post('/api/yiiapi/license/online', {
+      this.$axios.post('/yiiapi/license/online', {
         SN: this.licence_pop.cdk,
         key: this.licence_pop.key
 
@@ -253,7 +253,7 @@ export default {
     uploadSectionFile (params) {
       this.readData(params.file)
       setTimeout(() => {
-        this.$axios.post('/api/yiiapi/license/import', this.file_data)
+        this.$axios.post('/yiiapi/license/import', this.file_data)
           .then(response => {
             console.log(response);
             if (response.data.status == 1) {

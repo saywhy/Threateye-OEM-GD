@@ -1338,7 +1338,7 @@ export default {
     // 获取数据
     get_data () {
       console.log(this.$route.query.detail);
-      this.$axios.get('/api/yiiapi/alert/alert-details', {
+      this.$axios.get('/yiiapi/alert/alert-details', {
         params: {
           id: this.$route.query.detail
         }
@@ -1357,7 +1357,7 @@ export default {
             this.network_detail.label_obj = JSON.parse(this.network_detail.label)
           }
           // 获取当前告警的工单状态
-          this.$axios.get('/api/yiiapi/alert/workorders', {
+          this.$axios.get('/yiiapi/alert/workorders', {
             params: {
               id: this.$route.query.detail
             }
@@ -2045,12 +2045,12 @@ export default {
         funDownload(item.network_event.payload, "payload.dat");
       }
       if (value.value == "点击下载" && value.name == '文件下载') {
-        window.open('/api/yiiapi/alert/get-file?md5=' + value.md5);
+        window.open('/yiiapi/alert/get-file?md5=' + value.md5);
       }
     },
     // 当前受威胁资产
     new_list () {
-      this.$axios.get('/api/yiiapi/alert/get-same-indicator-alert', {
+      this.$axios.get('/yiiapi/alert/get-same-indicator-alert', {
         params: {
           indicator: this.network_detail.indicator,
           is_deal: 0,
@@ -2076,7 +2076,7 @@ export default {
     },
     // 历史受威胁资产
     old_list () {
-      this.$axios.get('/api/yiiapi/alert/get-same-indicator-alert', {
+      this.$axios.get('/yiiapi/alert/get-same-indicator-alert', {
         params: {
           indicator: this.network_detail.indicator,
           is_deal: 2,
@@ -2106,7 +2106,7 @@ export default {
       console.log(item);
       var id_list = []
       id_list.push(this.$route.query.detail)
-      this.$axios.put('/api/yiiapi/alert/do-alarm', {
+      this.$axios.put('/yiiapi/alert/do-alarm', {
         id: id_list,
         status: item
       })
@@ -2160,7 +2160,7 @@ export default {
           label_list.push(element.name)
         }
       });
-      this.$axios.put('/api/yiiapi/alert/label-edit', {
+      this.$axios.put('/yiiapi/alert/label-edit', {
         id: this.$route.query.detail,
         label: label_list
       })
@@ -2221,7 +2221,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.post('/api/yiiapi/alert/join-external-dynamics', {
+          this.$axios.post('/yiiapi/alert/join-external-dynamics', {
             addr: this.network_detail.src_ip,
             type: 1
           })
@@ -2269,7 +2269,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.post('/api/yiiapi/alert/join-external-dynamics', {
+          this.$axios.post('/yiiapi/alert/join-external-dynamics', {
             addr: this.network_detail.dest_ip,
             type: 1
           })
@@ -2390,7 +2390,7 @@ export default {
     // 添加到工单
     //获取工单列表
     get_worksheets_list () {
-      this.$axios.get('/api/yiiapi/alert/workorder-list', {
+      this.$axios.get('/yiiapi/alert/workorder-list', {
         params: {
           page: this.worksheets_data.page,
           rows: this.worksheets_data.rows
@@ -2459,7 +2459,7 @@ export default {
       te_alert.push(this.$route.query.detail * 1)
       console.log(te_alert);
 
-      this.$axios.post('/api/yiiapi/alert/add-workorder',
+      this.$axios.post('/yiiapi/alert/add-workorder',
         {
           id: this.worksheets_data.tableRadio.id,
           type: "alert",
@@ -2492,7 +2492,7 @@ export default {
     },
     //获取用户列表(经办人使用)
     get_user_list () {
-      this.$axios.get('/api/yiiapi/site/user-list')
+      this.$axios.get('/yiiapi/site/user-list')
         .then(resp => {
           let { status, data } = resp.data;
           if (status == 0) {
@@ -2576,7 +2576,7 @@ export default {
       console.log(te_alert);
       console.log(perator_list);
       console.log(this.new_worksheets_list);
-      this.$axios.put('/api/yiiapi/alert/distribution-workorder',
+      this.$axios.put('/yiiapi/alert/distribution-workorder',
         {
           name: this.new_worksheets_list.name,
           priority: this.new_worksheets_list.level,
@@ -2606,7 +2606,7 @@ export default {
       te_alert.push(this.network_detail.id * 1)
       console.log(te_alert);
       console.log(this.new_worksheets_list);
-      this.$axios.post('/api/yiiapi/alert/add-workorder',
+      this.$axios.post('/yiiapi/alert/add-workorder',
         {
           type: "alert",
           name: this.new_worksheets_list.name,

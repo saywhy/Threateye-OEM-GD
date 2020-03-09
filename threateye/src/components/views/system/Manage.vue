@@ -229,7 +229,7 @@ export default {
   methods: {
     // 获取列表
     get_data () {
-      this.$axios.get('/api/yiiapi/dev/list', {
+      this.$axios.get('/yiiapi/dev/list', {
         params: {
           page: this.equipment_data.page,
           rows: this.equipment_data.rows,
@@ -249,7 +249,7 @@ export default {
         })
     },
     get_top () {
-      this.$axios.get('/api/yiiapi/dev/top')
+      this.$axios.get('/yiiapi/dev/top')
         .then(response => {
           console.log(response);
           this.equipment_top = response.data.data;
@@ -295,7 +295,7 @@ export default {
         );
         return false
       }
-      this.$axios.post('/api/yiiapi/dev/add', {
+      this.$axios.post('/yiiapi/dev/add', {
         name: this.equipment_pop.name,
         type: this.equipment_pop.type,
         ip: this.equipment_pop.ip,
@@ -344,7 +344,7 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.id)
         });
-        this.$axios.delete('/api/yiiapi/dev/del', {
+        this.$axios.delete('/yiiapi/dev/del', {
           data: {
             id: id_list
           }

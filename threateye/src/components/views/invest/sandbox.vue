@@ -91,7 +91,7 @@ export default {
   data () {
     return {
       options: {
-        target: '/api/yiiapi/sandbox/upload',
+        target: '/yiiapi/sandbox/upload',
         chunkSize: '10048000',   //分块大小
         testChunks: false,     //是否开启服务器分片校验
         parseTimeRemaining: function (timeRemaining, parsedTimeRemaining) {
@@ -143,7 +143,7 @@ export default {
     onFileSuccess (rootFile, file, response, chunk) {
       if (JSON.parse(response).status == 0) {
         console.log(file);
-        this.$axios.get('/api/yiiapi/sandbox/move-file', {
+        this.$axios.get('/yiiapi/sandbox/move-file', {
           params: {
             upload_name: file.name,
           }
@@ -172,7 +172,7 @@ export default {
     onFileError () { },
     // 获取列表
     get_data () {
-      this.$axios.get('/api/yiiapi/sandbox/list', {
+      this.$axios.get('/yiiapi/sandbox/list', {
         params: {
           page: this.sandbox_data.page,
           rows: this.sandbox_data.rows,
@@ -208,7 +208,7 @@ export default {
     // 下载
     download (item) {
       console.log(item);
-      var url1 = '/api/yiiapi/sandbox/download-file?id=' + item.id;
+      var url1 = '/yiiapi/sandbox/download-file?id=' + item.id;
       window.location.href = url1;
     },
     // 删除
@@ -219,7 +219,7 @@ export default {
         type: 'warning'
       }).then(() => {
 
-        this.$axios.delete('/api/yiiapi/sandbox/del', {
+        this.$axios.delete('/yiiapi/sandbox/del', {
           data: {
             id: item.id
           }

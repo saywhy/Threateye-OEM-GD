@@ -74,7 +74,7 @@ export default {
   methods: {
     // 获取列表
     get_data () {
-      this.$axios.get('/api/yiiapi/faultlog/list', {
+      this.$axios.get('/yiiapi/faultlog/list', {
         params: {
           page: this.fault_data.page,
           rows: this.fault_data.rows
@@ -90,7 +90,7 @@ export default {
     },
     // 故障检测
     faultlog_testing () {
-      this.$axios.get('/api/yiiapi/faultlog/testing')
+      this.$axios.get('/yiiapi/faultlog/testing')
         .then(response => {
           console.log(response);
           if (response.data.status == 0) {
@@ -133,7 +133,7 @@ export default {
         });
         console.log(id_list);
         var id_list_str = JSON.stringify(id_list)
-        var url2 = "/api/yiiapi/faultlog/download?id=" + id_list_str;
+        var url2 = "/yiiapi/faultlog/download?id=" + id_list_str;
         window.location.href = url2;
         this.select_list = []
       }).catch(() => {
@@ -165,7 +165,7 @@ export default {
           id_list.push(element.id)
         });
         console.log(id_list);
-        this.$axios.delete('/api/yiiapi/faultlog/del', {
+        this.$axios.delete('/yiiapi/faultlog/del', {
           data: {
             id: id_list
           }

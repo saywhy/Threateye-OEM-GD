@@ -135,7 +135,7 @@ export default {
 
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/email/get')
+      this.$axios.get('/yiiapi/email/get')
         .then(response => {
           let { status, data } = response.data;
           console.log(data);
@@ -205,7 +205,7 @@ export default {
       } else {
         encryption = ''
       }
-      this.$axios.post('/api/yiiapi/email/test', {
+      this.$axios.post('/yiiapi/email/test', {
         encryption: encryption,
         host: this.mail.host,
         port: this.mail.port,
@@ -274,7 +274,7 @@ export default {
       } else {
         encryption = ''
       }
-      this.$axios.post('/api/yiiapi/email/save', {
+      this.$axios.post('/yiiapi/email/save', {
         encryption: encryption,
         host: this.mail.host,
         port: this.mail.port,

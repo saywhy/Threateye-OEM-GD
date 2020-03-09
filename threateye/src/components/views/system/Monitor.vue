@@ -347,7 +347,7 @@
                      :on-error="handleError"
                      :file-list="fileList"
                      drag
-                     action="/api/yiiapi/ipsegment/upload-excel"
+                     action="/yiiapi/ipsegment/upload-excel"
                      multiple>
             <img class="upload_img"
                  src="@/assets/images/setting/upload_s.png"
@@ -430,7 +430,7 @@ export default {
     },
     // 获取列表
     get_data () {
-      this.$axios.get('/api/yiiapi/ipsegment/list', {
+      this.$axios.get('/yiiapi/ipsegment/list', {
         params: {
           page: this.monitor_page.page,
           rows: this.monitor_page.rows,
@@ -499,7 +499,7 @@ export default {
           this.monitor_add.ip_segment.push(item.name)
         }
       });
-      this.$axios.post('/api/yiiapi/ipsegment/set-ip-segment', {
+      this.$axios.post('/yiiapi/ipsegment/set-ip-segment', {
         name: this.monitor_add.name,
         ip_segment: this.monitor_add.ip_segment,
         network_type: this.monitor_add.type,
@@ -657,7 +657,7 @@ export default {
           this.monitor_edit.tag.push(item.name)
         }
       });
-      this.$axios.put('/api/yiiapi/ipsegment/edit-ip-segment', {
+      this.$axios.put('/yiiapi/ipsegment/edit-ip-segment', {
         id: this.monitor_edit.id,
         name: this.monitor_edit.name,
         ip_segment: this.monitor_edit.ip_segment,
@@ -722,7 +722,7 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.id)
         });
-        this.$axios.delete('/api/yiiapi/ipsegment/del', {
+        this.$axios.delete('/yiiapi/ipsegment/del', {
           data: {
             id: id_list
           }
@@ -770,7 +770,7 @@ export default {
     },
     // 下载模板
     download_template () {
-      var url1 = '/api/yiiapi/ipsegment/template-download';
+      var url1 = '/yiiapi/ipsegment/template-download';
       window.location.href = url1;
     },
     // 导入
@@ -820,7 +820,7 @@ export default {
     },
     // 导出
     download () {
-      var url2 = '/api/yiiapi/ipsegment/export';
+      var url2 = '/yiiapi/ipsegment/export';
       window.location.href = url2;
     }
   },

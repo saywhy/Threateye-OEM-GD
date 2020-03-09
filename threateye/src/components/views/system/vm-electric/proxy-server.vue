@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     get_data () {
-      this.$axios.get('/api/yiiapi/seting/get-proxy-server')
+      this.$axios.get('/yiiapi/seting/get-proxy-server')
         .then(response => {
           let { status, data } = response.data;
           console.log(data.data[0].PROXYCONF);
@@ -138,7 +138,7 @@ export default {
       } else {
         verify_passwd = 'no'
       }
-      this.$axios.put('/api/yiiapi/seting/set-proxy-server', {
+      this.$axios.put('/yiiapi/seting/set-proxy-server', {
         proxy_switch: proxy_switch,
         type: this.proxy.type,
         ip: this.proxy.ip,

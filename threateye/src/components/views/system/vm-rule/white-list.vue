@@ -8,7 +8,7 @@
                  @click="download">下载模板</el-button>
       <el-upload class="upload-demo"
                  style="display: inline-block;"
-                 action="/api/yiiapi/whitelist/add-import"
+                 action="/yiiapi/whitelist/add-import"
                  :on-preview="handlePreview"
                  :on-remove="handleRemove"
                  :before-remove="beforeRemove"
@@ -154,7 +154,7 @@ export default {
   methods: {
     get_data () {
       this.loading = true;
-      this.$axios.get('/api/yiiapi/whitelist/list', {
+      this.$axios.get('/yiiapi/whitelist/list', {
         params: {
           page: this.white_data.page,
           rows: this.white_data.rows
@@ -188,7 +188,7 @@ export default {
         );
         return false
       }
-      this.$axios.post('/api/yiiapi/whitelist/add', {
+      this.$axios.post('/yiiapi/whitelist/add', {
         indicator: this.white_add.indicator,
         alert_type: this.white_add.type
       })
@@ -230,7 +230,7 @@ export default {
     },
     // 下载模板
     download () {
-      var url2 = "/api/yiiapi/whitelist/download-ioc-template";
+      var url2 = "/yiiapi/whitelist/download-ioc-template";
       window.location.href = url2;
     },
     // 批量上传
@@ -305,7 +305,7 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.id)
         });
-        this.$axios.delete('/api/yiiapi/whitelist/del', {
+        this.$axios.delete('/yiiapi/whitelist/del', {
           data: {
             id: id_list
           }

@@ -1,6 +1,8 @@
 import Vue from 'vue'
-Vue.filter('time',function(date){
 
+import moment from "moment"
+
+/*Vue.filter('time',function(date){
   date = Number(date)
   if(date.length == 10){
     date = date * 1000;
@@ -13,6 +15,13 @@ Vue.filter('time',function(date){
   var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
   var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
   return YYYY + MM + DD +" "+hh + mm + ss;
+});*/
+
+Vue.filter('time',function(value){
+  if(value.length == 10){
+    value = value * 1000;
+  }
+  return moment(value).format('YYYY-MM-DD HH:mm:ss')
 });
 
 Vue.filter('dispose',function(args){

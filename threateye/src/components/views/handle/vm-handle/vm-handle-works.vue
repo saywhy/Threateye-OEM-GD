@@ -556,7 +556,7 @@
               this.table.pageNow = pageNow;
               this.table.loading = false;
 
-              //console.log(data)
+              console.log(data)
 
             }
           });

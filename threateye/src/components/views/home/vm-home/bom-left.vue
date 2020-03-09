@@ -1,9 +1,9 @@
 <template>
   <el-col class="vm-move-threat">
     <el-table class="common-table" ref="multipleTable" :data="tableData">
-      <el-table-column prop="id" label="排名" width="40" align="center"></el-table-column>
+      <el-table-column prop="id" label="排名" width="60" align="center" show-overflow-tooltip ></el-table-column>
       <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip ></el-table-column>
-      <el-table-column prop="category" label="威胁类型" width="100"></el-table-column>
+      <el-table-column prop="category" label="威胁类型" show-overflow-tooltip></el-table-column>
     </el-table>
   </el-col>
 </template>

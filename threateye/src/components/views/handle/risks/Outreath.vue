@@ -119,7 +119,7 @@
           </el-table-column>
           <el-table-column type="selection" width="40">
           </el-table-column>
-          <el-table-column label="告警时间" width="150">
+          <el-table-column label="告警时间" width="200">
             <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
           </el-table-column>
           <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
@@ -134,7 +134,8 @@
           </el-table-column>
           <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
+          <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
           </el-table-column>
           <el-table-column label="状态" width="80">
             <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>

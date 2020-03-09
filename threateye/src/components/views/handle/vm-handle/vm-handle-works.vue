@@ -74,13 +74,13 @@
           <div class="new_dot" v-show="scope.row.if_new == '1'"></div>
         </template>
       </el-table-column>
-      <el-table-column type="selection" width="30">
+      <el-table-column type="selection" width="40">
       </el-table-column>
       <el-table-column prop="name" label="工单名称" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="creator" label="创建人" width="100" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="创建时间" width="140">
+      <el-table-column label="创建时间" width="160" show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.created_at | time }}</template>
       </el-table-column>
       <el-table-column label="优先级" width="80">
@@ -88,7 +88,7 @@
       </el-table-column>
       <el-table-column prop="perator" label="经办人" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="更新时间" width="140">
+      <el-table-column label="更新时间" width="160" show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
       </el-table-column>
       <el-table-column prop="remarks" label="备注" show-overflow-tooltip>

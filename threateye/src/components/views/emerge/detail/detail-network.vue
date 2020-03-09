@@ -2585,6 +2585,7 @@ export default {
     margin: 24px 0;
     text-align: center;
   }
+  
   // 弹窗编辑标签
   .add_tag {
     .el-dialog {

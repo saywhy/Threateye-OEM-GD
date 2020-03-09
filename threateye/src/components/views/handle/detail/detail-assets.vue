@@ -137,31 +137,10 @@
               </el-table-column>
               <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
               </el-table-column>
-              <!--<el-table-column label="威胁等级">
-                <template slot-scope="scope">
-                  <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                    <el-button type="primary" @click.stop>
-                      {{ scope.row.degree }}
-                      <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
-                        高危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中'">
-                        中危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低'">
-                        低危
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
-              </el-table-column>-->
               <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="状态" width="80">
-                <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
+                <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
               </el-table-column>
             </el-table>
             <el-pagination class="handle_pagination_box"
@@ -288,20 +267,6 @@
 
         <!-- 处置内容 -->
         <div class="task_handle_content" v-if="!task.new_contet">
-          <!--<div class="handle_content_top">
-            &lt;!&ndash;<el-dropdown placement='bottom-start' @command="handle.add" trigger="click">
-              <el-button type="primary" class="change_btn">
-                <span>新增</span>
-                <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="资产">资产</el-dropdown-item>
-                <el-dropdown-item command="告警">告警</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>&ndash;&gt;
-            <el-button class="ref">刷新</el-button>
-            <el-button class="cel">删除</el-button>
-          </div>-->
           <div class='table_box'>
             <ul class="table_box_title">
               <li v-for="(tab,index) in handle.table_title"
@@ -517,17 +482,39 @@ export default {
   created(){
 
     let asset_ip = this.$route.query.asset_ip;
+    let status = this.$route.query.status;
     this.detail.asset_ip = asset_ip;
+    this.detail.status = status;
 
     this.get_list_assets_detail();
     this.get_assets_detail_top();
-    this.get_list_assets_info();
-
+  //  this.get_list_assets_info();
+    this.get_data();
   },
   methods: {
+    //
+    get_data(){
+      this.$axios.get('/api/yiiapi/asset/asset-details',{
+        params: {
+          asset_ip: this.detail.asset_ip
+        }
+      }).then(resp => {
+        console.log("^^^^^^^^^^^")
+        console.log(resp)
+
+        let {status, data} = resp.data;
+        if(status == 0){
+          let attr = [];
+          attr.push(data);
+          this.table_assets.tableData = attr;
+          this.table_assets.count = 1;
+          this.table_assets.pageNow = 1
+        }
+      })
+    },
 
     //获取资产列表
-    get_list_assets_info(){
+   /* get_list_assets_info(){
       this.$axios.get('/api/yiiapi/alert/risk-asset',{
         params: {
           label:'[]',
@@ -556,7 +543,7 @@ export default {
             this.table_assets.pageNow = pageNow;
           }
         });
-    },
+    },*/
 
     //获取资产详情顶部
     get_assets_detail_top() {
@@ -567,6 +554,8 @@ export default {
           }
         })
         .then((resp) => {
+
+          console.log(resp.data)
 
           let {status, data} = resp.data;
 
@@ -609,22 +598,6 @@ export default {
           if (status == 0) {
 
             let {data, count, maxPage, pageNow} = datas;
-
-            data.map(function (v,k) {
-              switch (v.degree) {
-                case '高':
-                  v.color = 'high';
-                  break;
-                case '中':
-                  v.color = 'mid';
-                  break;
-                case '低':
-                  v.color = 'low';
-                  break;
-                default:
-                  break;
-              }
-            });
 
             this.table.tableData = data;
             this.table.count = count;
@@ -745,28 +718,36 @@ export default {
     //打开新建工单
     open_task_new() {
 
-      let pageNow = this.table_assets.pageNow;
+      let status = this.detail.status;
 
-      let handle_data = this.table_assets.tableData.slice((pageNow-1) * 5,pageNow * 5);
+      if(status == '2'|| status == '3' || status == '4'){
+        this.$message({message: '资产状态为已处置,已忽略,误报的不能新建', type: 'error'});
+      }else {
 
-      this.table_assets.tableData_new = handle_data;
+        let pageNow = this.table_assets.pageNow;
 
-      //获取用户列表(经办人使用)
-      this.$axios.get('/api/yiiapi/site/user-list')
-        .then(resp => {
-          let {status, data} = resp.data;
-          if (status == 0) {
-            this.task_new.operator_list = data;
-          }else {
-            this.task_new.operator_list = [];
-          }
-          this.task.new = true;
-          this.task.new_contet = true;
-        })
-        .catch(err => {
-          console.log('用户列表错误');
-          console.log(err);
-        })
+        let handle_data = this.table_assets.tableData.slice((pageNow-1) * 5,pageNow * 5);
+
+        this.table_assets.tableData_new = handle_data;
+
+        //获取用户列表(经办人使用)
+        this.$axios.get('/api/yiiapi/site/user-list')
+          .then(resp => {
+            let {status, data} = resp.data;
+            if (status == 0) {
+              this.task_new.operator_list = data;
+            }else {
+              this.task_new.operator_list = [];
+            }
+            this.task.new = true;
+            this.task.new_contet = true;
+          })
+          .catch(err => {
+            console.log('用户列表错误');
+            console.log(err);
+          })
+      }
+
     },
 
     //关闭新建工单
@@ -869,25 +850,29 @@ export default {
 
             this.$message.success('分配成功');
 
+            //不管成功与否 都需要清除状态，关闭弹窗
+            this.task.new = false;
+            this.task.new_contet = false;
+
+            this.task_params = {
+              name: "",
+              level: "",
+              operator: "",
+              new_operator:[],
+              notice: ['email'],
+              textarea: "",
+              multiple:[]
+            };
+            this.table_operator.tableData_new = [];
+
+            this.get_assets_detail_top();
+
           }else if (status == 1){
 
             this.$message.error(msg);
 
           }
-          //不管成功与否 都需要清除状态，关闭弹窗
-          this.task.new = false;
-          this.task.new_contet = false;
 
-          this.task_params = {
-            name: "",
-            level: "",
-            operator: "",
-            new_operator:[],
-            notice: ['email'],
-            textarea: "",
-            multiple:[]
-          };
-          this.table_operator.tableData = [];
         })
         .catch(err => {
           console.log(err);
@@ -913,24 +898,29 @@ export default {
 
           if (status == 0) {
             this.$message.success('保存成功');
+
+            //不管成功与否 都需要清除状态，关闭弹窗
+            this.task.new = false;
+            this.task.new_contet = false;
+
+            this.task_params = {
+              name: "",
+              level: "",
+              operator: "",
+              new_operator:[],
+              notice: ['email'],
+              textarea: "",
+              multiple:[]
+            };
+            this.table_operator.tableData_new = [];
+
+            this.get_assets_detail_top();
+
           }else if (status == 1){
             this.$message.error(msg);
           }
 
-          //不管成功与否 都需要清除状态，关闭弹窗
-          this.task.new = false;
-          this.task.new_contet = false;
 
-          this.task_params = {
-            name: "",
-            level: "",
-            operator: "",
-            new_operator:[],
-            notice: ['email'],
-            textarea: "",
-            multiple:[]
-          };
-          this.table_operator.tableData = [];
         })
         .catch(err => {
           console.log(err);
@@ -946,8 +936,15 @@ export default {
 
     //新加到工单打开状态
     add_open_state() {
-      this.add_state_change = true;
-      this.get_table_works_list();
+      let status = this.detail.status;
+
+      if(status == '2'|| status == '3' || status == '4'){
+        this.$message({message: '资产状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
+      } else {
+        this.add_state_change = true;
+        this.get_table_works_list();
+      }
+
     },
 
     //获取列表
@@ -1035,21 +1032,25 @@ export default {
 
           if (status == 0) {
             this.$message.success('添加成功');
+
+            //不管成功与否，状态清空
+            this.add_params = {
+              name: "",
+              level: "",
+              operator: "",
+              new_operator:[],
+              notice: ['email'],
+              textarea: "",
+              multiple:[]
+            };
+            this.add_closed_state();
+            this.get_assets_detail_top();
+
           } else if (status == 1){
             this.$message.error(msg);
           }
 
-          //不管成功与否，状态清空
-          this.add_params = {
-            name: "",
-            level: "",
-            operator: "",
-            new_operator:[],
-            notice: ['email'],
-            textarea: "",
-            multiple:[]
-          };
-          this.add_closed_state();
+
         })
         .catch(err => {
           console.log(err);

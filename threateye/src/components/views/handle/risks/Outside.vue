@@ -925,7 +925,7 @@
                 textarea: "",
                 multiple:[]
               };
-              this.table_operator.tableData = [];
+              this.table_operator.tableData_new = [];
               this.get_list_threat();
 
             }else if (status == 1){
@@ -973,7 +973,7 @@
                 textarea: "",
                 multiple:[]
               };
-              this.table_operator.tableData = [];
+              this.table_operator.tableData_new = [];
               this.get_list_threat();
             }else if (status == 1){
               this.$message.error(msg);

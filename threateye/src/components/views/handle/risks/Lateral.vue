@@ -1038,7 +1038,6 @@
             this.table_add_works.loading = false;
 
           }
-
         })
       },
 

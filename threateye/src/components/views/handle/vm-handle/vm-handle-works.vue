@@ -225,8 +225,7 @@
                 <el-table-column label="全选" width="40"></el-table-column>
                 <el-table-column align='left' type="selection" width="30"></el-table-column>
                 <el-table-column prop="asset_ip" label="资产"></el-table-column>
-                <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
                 </el-table-column>
@@ -274,8 +273,6 @@
                 <el-table-column prop="application" label="应用" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label="状态"  width="80">
                   <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
@@ -464,61 +461,39 @@
     methods:{
       //获取资产列表
       get_list_assets_info(){
-        this.$axios.get('/api/yiiapi/alert/risk-asset',{
-            params: {
-                label:'[]',
-                key_word: '',
-                fall_certainty: '',
-                degree: '',
-                status: '',
-                page: 1,
-                rows: 1000
-            }
-          })
+        this.$axios.get('/api/yiiapi/workorder/asset-list')
           .then((resp) => {
+
+
+            console.log(resp.data)
+
             let {status, data} = resp.data;
-            let datas = data;
+
             if (status == 0) {
-              let {data, count, maxPage, pageNow} = datas;
-              data.map(function (v, k) {
-                let assets_group = v.label.join(',');
-                let category_group = v.category.join(',');
-                v.assets_group = assets_group;
-                v.category_group = category_group;
-              })
+
+              if(data.length > 0){
+                data.map(function (v,k) {
+                  v.label = JSON.parse(v.label);
+                  v.label_group = v.label.join(',');
+                })
+              }
+
               this.table_assets.tableData = data;
-              this.table_assets.count = count;
-              this.table_assets.maxPage = maxPage;
-              this.table_assets.pageNow = pageNow;
+              this.table_assets.count = data.length;
+              this.table_assets.pageNow = 1;
             }
           });
       },
       //获取告警列表
       get_list_alerts_info(){
-        this.$axios.get('/api/yiiapi/alert/list',{
-          params: {
-            start_time:'',
-            end_time: '',
-            category: '',
-            degree: '',
-            status: '',
-            key_word:'',
-            page: 1,
-            rows: 1000
-          }
-        })
+        this.$axios.get('/api/yiiapi/workorder/alert-list')
           .then((resp) => {
             let {status, data} = resp.data;
-            let datas = data;
+            console.log(data)
             if (status == 0) {
-             // console.log(datas)
-
-              let {data, count, maxPage, pageNow} = datas;
-
               this.table_alerts.tableData = data;
-              this.table_alerts.count = count;
-              this.table_alerts.maxPage = maxPage;
-              this.table_alerts.pageNow = pageNow;
+              this.table_alerts.count = data.length;
+              this.table_alerts.pageNow = 1;
             }
           });
       },
@@ -529,8 +504,6 @@
             params: {
               stime:this.params.startTime,
               etime:this.params.endTime,
-             /* stime:'123',
-              etime:'123123123123',*/
               status: this.params.status,
               priority:this.params.priority,
               key_word: this.params.key,
@@ -556,7 +529,7 @@
               this.table.pageNow = pageNow;
               this.table.loading = false;
 
-              console.log(data)
+             // console.log(data)
 
             }
           });
@@ -617,8 +590,6 @@
           params:{
             stime:this.params.startTime,
             etime:this.params.endTime,
-            /*stime:'123',
-            etime:'123123123123',*/
             status: this.params.status,
             priority:this.params.priority,
             key_word: this.params.key,
@@ -851,30 +822,32 @@
 
               this.$message.success('分配成功');
 
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+              this.task.status = '';
+              this.task.title = '编辑标签';
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple_assets:[],
+                multiple_alerts:[],
+                type:'asset'
+              };
+              this.table_operator.tableData_new = [];
+              this.get_list_works();
+
             }else if (status == 1){
 
               this.$message.error(msg);
 
             }
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-            this.task.status = '';
-            this.task.title = '编辑标签';
 
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple_assets:[],
-              multiple_alerts:[],
-              type:'asset'
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);
@@ -907,29 +880,32 @@
 
             if (status == 0) {
               this.$message.success('保存成功');
+
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+              this.task.status = '';
+              this.task.title = '新增标签';
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple_assets:[],
+                multiple_alerts:[],
+                type:'asset'
+              };
+              this.table_operator.tableData_new = [];
+              this.get_list_works();
+
             }else if (status == 1){
               this.$message.error(msg);
             }
 
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-            this.task.status = '';
-            this.task.title = '新增标签';
 
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple_assets:[],
-              multiple_alerts:[],
-              type:'asset'
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);

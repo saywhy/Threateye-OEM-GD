@@ -267,20 +267,6 @@
 
       <!-- 处置内容 -->
       <div class="task_handle_content" v-if="!task.new_contet">
-        <!--<div class="handle_content_top">
-          &lt;!&ndash;<el-dropdown placement='bottom-start' @command="handle.add" trigger="click">
-            <el-button type="primary" class="change_btn">
-              <span>新增</span>
-              <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-              <el-dropdown-item command="资产">资产</el-dropdown-item>
-              <el-dropdown-item command="告警">告警</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>&ndash;&gt;
-          <el-button class="ref">刷新</el-button>
-          <el-button class="cel">删除</el-button>
-        </div>-->
         <div class='table_box'>
           <ul class="table_box_title">
             <li v-for="(tab,index) in handle.table_title"
@@ -319,37 +305,6 @@
                              layout="total, sizes, prev, pager, next">
               </el-pagination>
             </div>
-            <!--<div v-show="handle.active==1">
-              <el-table align="center"
-                        :data="tableData3"
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                        @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="30">
-                </el-table-column>
-                <el-table-column label="告警时间" show-overflow-tooltip>
-                  <template slot-scope="scope">{{ scope.row.date }}</template>
-                </el-table-column>
-                <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="application" label="应用" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="degree" label="威胁等级">
-                </el-table-column>
-                <el-table-column prop="fall" label="失陷确定性" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="status" label="状态" show-overflow-tooltip>
-                </el-table-column>
-              </el-table>
-              <el-pagination class="pagination_box" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table_data.pageNow" :page-sizes="[10,50,100]" :page-size="10" layout="total, sizes, prev, pager, next" :total="table_data.count">
-              </el-pagination>
-            </div>-->
           </div>
         </div>
         <div class="btn_box">
@@ -692,7 +647,7 @@
               this.table.loading = false;
 
 
-             // console.log(data)
+              console.log(data)
             }
           })
           .catch(error => {
@@ -773,7 +728,7 @@
       detailClick(row, column, event) {
         console.log(row)
         this.$router.push({path:'/detail/assets',name: 'detail_assets',
-          query: {asset_ip:row.asset_ip}});
+          query: {asset_ip:row.asset_ip,status:row.status}});
       },
 
       /***********************************以下是弹窗部分****************************************/
@@ -896,41 +851,52 @@
 
         let sel_table_data = this.table.multipleSelection;
 
-        /*if(sel_table_data.length == 0){
+        let sel_table_attr = sel_table_data.map(x => {return x.status});
 
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
-
+        if(sel_table_data.length == 0){
+          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
           return false;
 
-        } else {}*/
+        } else {
 
-        this.table_assets.tableData = sel_table_data;
-        this.table_assets.count = sel_table_data.length;
+          if(sel_table_attr.includes('2')
+            || sel_table_attr.includes('3')
+            || sel_table_attr.includes('4'))
+          {
 
-        let pageNow = this.table_assets.pageNow;
+            this.$message({message: '资产状态为已处置,已忽略,误报的不能新建', type: 'error'});
 
-        let handle_data = this.table_assets.tableData.slice((pageNow-1) * 5,pageNow * 5)
-
-        this.table_assets.tableData_new = handle_data;
+          } else {
 
 
-        //获取用户列表(经办人使用)
-        this.$axios.get('/api/yiiapi/site/user-list')
-          .then(resp => {
-            let {status, data} = resp.data;
-            if (status == 0) {
-              this.task_new.operator_list = data;
-            }else {
-              this.task_new.operator_list = [];
-            }
-            this.task.new = true;
-            this.task.new_contet = true;
-          })
-          .catch(err => {
-            console.log('用户列表错误');
-            console.log(err);
-          })
+            this.table_assets.tableData = sel_table_data;
+            this.table_assets.count = sel_table_data.length;
 
+            let pageNow = this.table_assets.pageNow;
+
+            let handle_data = this.table_assets.tableData.slice((pageNow-1) * 5,pageNow * 5);
+
+            this.table_assets.tableData_new = handle_data;
+
+            //获取用户列表(经办人使用)
+            this.$axios.get('/api/yiiapi/site/user-list')
+              .then(resp => {
+                let {status, data} = resp.data;
+                if (status == 0) {
+                  this.task_new.operator_list = data;
+                }else {
+                  this.task_new.operator_list = [];
+                }
+                this.task.new = true;
+                this.task.new_contet = true;
+              })
+              .catch(err => {
+                console.log('用户列表错误');
+                console.log(err);
+              })
+
+          }
+        }
       },
 
       //关闭新建工单
@@ -1034,26 +1000,28 @@
 
               this.$message.success('分配成功');
 
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.table_operator.tableData_new = [];
+              this.get_list_risk();
+
             }else if (status == 1){
 
               this.$message.error(msg);
 
             }
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
 
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);
@@ -1079,25 +1047,26 @@
 
             if (status == 0) {
               this.$message.success('保存成功');
+
+              //不管成功与否 都需要清除状态，关闭弹窗
+              this.task.new = false;
+              this.task.new_contet = false;
+
+              this.task_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.table_operator.tableData_new = [];
+              this.get_list_risk();
+
             }else if (status == 1){
               this.$message.error(msg);
             }
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.table_operator.tableData = [];
-            this.$refs.multipleTable.clearSelection();
           })
           .catch(err => {
             console.log(err);
@@ -1116,14 +1085,24 @@
 
         let sel_table_data = this.table.multipleSelection;
 
+        let sel_table_attr = sel_table_data.map(x => {return x.status});
+
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
           return false;
-        }else {
 
-          this.add_state_change = true;
+        } else {
 
-          this.get_table_works_list();
+          if(sel_table_attr.includes('2')
+            || sel_table_attr.includes('3')
+            || sel_table_attr.includes('4'))
+          {
+            this.$message({message: '资产状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
+          }else {
+            this.add_state_change = true;
+            this.get_table_works_list();
+
+          }
         }
       },
 
@@ -1189,7 +1168,7 @@
       //新加到工单确定
       add_ok_state() {
 
-        let selected_attr = this.table_assets.multipleSelection
+        let selected_attr = this.table.multipleSelection
           .map(x => {return x.asset_ip});
 
         this.add_params.multiple = selected_attr;
@@ -1210,21 +1189,24 @@
 
             if (status == 0) {
               this.$message.success('添加成功');
+
+              //不管成功与否，状态清空
+              this.add_params = {
+                name: "",
+                level: "",
+                operator: "",
+                new_operator:[],
+                notice: ['email'],
+                textarea: "",
+                multiple:[]
+              };
+              this.add_closed_state();
+              this.get_list_risk();
+
             } else if (status == 1){
               this.$message.error(msg);
             }
 
-            //不管成功与否，状态清空
-            this.add_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator:[],
-              notice: ['email'],
-              textarea: "",
-              multiple:[]
-            };
-            this.add_closed_state();
           })
           .catch(err => {
             console.log(err);

@@ -9,7 +9,7 @@ export default {
   props: {
     top_right: {
       type: Array,
-      default:() =>{}
+      default:() => []
     }
   },
   data(){
@@ -33,7 +33,6 @@ export default {
   },
   created(){
     let chartData = this.top_right;
-    //console.log(chartData)
     let that = this;
 
     for (var k in chartData) {

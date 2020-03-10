@@ -71,8 +71,8 @@ export const constantRouterMap = [{
           title: '告警',
           auth: '31',
           icon: 'el-icon-picture-outline',
-          parentAuth: '3',
-          rootAuth: '3'
+          parentAuth: '58',
+          rootAuth: '58'
         },
         component: () => import('@/components/views/emerge/detail/detail-network')
       },
@@ -83,8 +83,8 @@ export const constantRouterMap = [{
           title: '计算机详情',
           auth: '32',
           icon: 'el-icon-picture-outline',
-          parentAuth: '3',
-          rootAuth: '3'
+          parentAuth: '58',
+          rootAuth: '58'
         },
         component: () => import('@/components/views/emerge/detail/detail-computer')
       },

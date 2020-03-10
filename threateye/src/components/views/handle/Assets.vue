@@ -552,9 +552,6 @@
       this.get_list_risk();
 
     },
-    destroyed(){
-      alert('我已经销毁1111')
-    },
     methods: {
       //资产頂部
       get_list_top() {

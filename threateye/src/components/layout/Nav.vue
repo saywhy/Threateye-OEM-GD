@@ -4,7 +4,7 @@
     <el-row :gutter="0"
             class="nav_user">
       <el-col :span="3"
-              style="width: 11.5%;">
+              style="width: 11.2%;">
         <div class="header-logo"
              align="left"
              @click="enter_home">
@@ -42,13 +42,12 @@
           <el-dropdown class="avatar-container right-menu-item"
                        trigger="click">
             <div class="avatar-wrapper">
-              <img class="user-avatar"
+              <img class="user-avatar" style="display: none;"
                    :src="avatarSrc">
               <label class="avatar-name">{{token}}</label>
               <i class="el-icon-caret-bottom"></i>
             </div>
-            <el-dropdown-menu slot="dropdown"
-                              class="nav-dropdown-menu">
+            <el-dropdown-menu slot="dropdown" class="nav-dropdown-menu">
               <!-- <router-link :to="{path: '/'}">-->
               <!--<a target='_blank' @click="enter_home()">
                 <el-dropdown-item>

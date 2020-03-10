@@ -32,10 +32,6 @@
 </script>
 
 <style lang="less">
-  * {
-    padding: 0;
-    margin: 0;
-  }
   #App {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

@@ -203,7 +203,6 @@ export default {
       this.$axios.post('/yiiapi/license/online', {
         SN: this.licence_pop.cdk,
         key: this.licence_pop.key
-
       })
         .then(response => {
           console.log(response);
@@ -235,21 +234,39 @@ export default {
                 break;
             }
           } else if (response.data.status == 'success') {
-            this.$message.error(
-              {
-                message: '序列号校验失败，请确认您输入的序列号！',
-                type: 'error',
-              }
-            );
+            console.log(response.data.bin);
+            this.$axios.post('/yiiapi/license/import', {
+              bin: response.data.bin
+            })
+              .then(response => {
+                console.log(response.data);
+                if (response.data.status == 1) {
+                  this.$message(
+                    {
+                      message: response.data.msg,
+                      type: 'error',
+                    }
+                  );
+                } else {
+                  this.$message(
+                    {
+                      message: '许可证导入成功',
+                      type: 'success',
+                    }
+                  );
+                  this.get_data();
+                }
+
+              })
+              .catch(error => {
+                console.log(error);
+              })
           }
         })
         .catch(error => {
           console.log(error);
         })
-
-
     },
-
     uploadSectionFile (params) {
       this.readData(params.file)
       setTimeout(() => {

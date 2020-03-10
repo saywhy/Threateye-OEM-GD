@@ -72,8 +72,8 @@ export default {
   data () {
     return {
       proxy: {
-        proxy_switch: true,
-        verify_passwd: true,
+        proxy_switch: false,
+        verify_passwd: false,
         type: "",
         ip: "",
         port: "",

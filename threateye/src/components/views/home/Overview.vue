@@ -196,45 +196,46 @@
       <div id="graph">
         <!-- <button @click="show_detail">detail</button> -->
         <!-- <div class="list list1">
-          <el-tooltip class="item"
-                      effect="dark"
-                      :content="tips1"
-                      placement="right">
-            <el-button>
-              <img src="@/assets/images/home/common/img1.png"
-                   class="l_img"
-                   alt="">
-            </el-button>
-          </el-tooltip>
-        </div>
-        <div class="list list2">
-          <el-tooltip class="item"
-                      effect="dark"
-                      :content="tips2"
-                      placement="left">
-            <el-button>
-              <img src="@/assets/images/home/common/img2.png"
-                   class="l_img"
-                   alt="">
-            </el-button>
-          </el-tooltip>
-        </div>
-        <div class="list list3">
-          <el-tooltip class="item"
-                      effect="dark"
-                      :content="tips3"
-                      placement="right">
-            <el-button>
-              <img src="@/assets/images/home/common/img3.png"
-                   class="l_img"
-                   alt="">
-            </el-button>
-          </el-tooltip>
-        </div> -->
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="tips1"
+                        placement="right">
+              <el-button>
+                <img src="@/assets/images/home/common/img1.png"
+                     class="l_img"
+                     alt="">
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div class="list list2">
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="tips2"
+                        placement="left">
+              <el-button>
+                <img src="@/assets/images/home/common/img2.png"
+                     class="l_img"
+                     alt="">
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div class="list list3">
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="tips3"
+                        placement="right">
+              <el-button>
+                <img src="@/assets/images/home/common/img3.png"
+                     class="l_img"
+                     alt="">
+              </el-button>
+            </el-tooltip>
+          </div> -->
       </div>
     </el-dialog>
   </div>
 </template>
+
 <script type="text/ecmascript-6">
 import topLeft from "./vm-home/top-left";
 import topMidFlow from "./vm-home/top-mid-flow";
@@ -288,13 +289,16 @@ export default {
       equipment: {
         probe: [],
         engine: [],
-        sandbox: []
+        sandbox: [],
+        echart_array: [],
+        links_array: [],
       },
       base64: 'data:image/png;base64,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',
       graph_echart_array: [],
       graph_echart_array_item: [],
       probe_array: [],
       engine_array: [],
+      sandbox_array: [],
       links_array: [],
       sysState_data: {},
       only_one: false,
@@ -322,7 +326,10 @@ export default {
       this.$axios.get('/yiiapi/alert/system-state')
         .then((resp) => {
           console.log(resp)
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.top_left = data;
             this.top_left_show = true;
@@ -334,7 +341,10 @@ export default {
       this.$axios.get('/yiiapi/alert/flow-file-statistics')
         .then((resp) => {
           //console.log(resp)
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
 
           if (status == 0) {
             this.top_mid = data;
@@ -346,7 +356,10 @@ export default {
     init_top_right () {
       this.$axios.get('/yiiapi/alert/protocol-flow-statistics')
         .then((resp) => {
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           //console.log(data)
           if (status == 0) {
             this.top_right = data;
@@ -359,7 +372,10 @@ export default {
     init_mid_left () {
       this.$axios.get('/yiiapi/alert/get-last7-days-alarm')
         .then((resp) => {
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.mid_left = data;
             this.mid_left_show = true;
@@ -370,7 +386,10 @@ export default {
     init_mid_mid () {
       this.$axios.get('/yiiapi/alert/untreated-alarm-type')
         .then((resp) => {
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.mid_mid = data;
             this.mid_mid_show = true;
@@ -382,7 +401,10 @@ export default {
       this.$axios.get('/yiiapi/alert/threat-type')
         .then((resp) => {
 
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.mid_right = data;
             this.mid_right_show = true;
@@ -397,7 +419,10 @@ export default {
         .then((resp) => {
           // /console.log(resp)
 
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.bom_left = data;
             this.bom_left_show = true;
@@ -409,7 +434,10 @@ export default {
       this.$axios.get('/yiiapi/alert/risk-asset-top5')
         .then((resp) => {
           // console.log(resp)
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.bom_mid = data;
             this.bom_mid_show = true;
@@ -422,7 +450,10 @@ export default {
       this.$axios.get('/yiiapi/alert/list-top5')
         .then((resp) => {
           // console.log(resp)
-          let { status, data } = resp.data;
+          let {
+            status,
+            data
+          } = resp.data;
           if (status == 0) {
             this.bom_right = data;
             this.bom_right_show = true;
@@ -432,7 +463,7 @@ export default {
 
     sys_state () {
       // this.$store.commit("CHANGE_SYS", true);
-      // this.el_dialog = true;
+      this.el_dialog = true;
       this.get_data()
     },
     get_data () {
@@ -469,172 +500,100 @@ export default {
     },
     // 拓扑图
     graph_echart () {
-      this.graph_echart_array = [];
-      this.graph_echart_array_item = {};
-      // 探针数组
-      this.probe_array = [];
-      // 引擎数组
-      this.engine_array = [];
-      // 引擎和探针的关系
-      this.links_array = [];
-      console.log(this.sysState_data.dev_info);
-
-      this.sysState_data.dev_info.forEach(item => {
-        if (item.status == 'offline') {
-          item.status = '离线'
-        } else if (item.status == 'online') {
-          item.status = '在线'
-        }
-        // 判断类型
-        if (item.type == '1') {
-          this.only_one = true;
-          this.probe_array.push(item);
-        }
-        if (item.type == '2') {
-          this.only_to = true;
-          this.engine_array.push(item);
-        }
-        if (item.type == '3') {
-          this.only_one = false;
-          this.graph_echart_array_item = {
-            name: '节点0',
-            names: '引擎/探针',
-            dev_ip: item.ip,
-            status: item.status,
-            x: 350,
-            y: 200,
-            symbol: this.base64,
-            //节点上面的文字	
-            label: {
-              normal: {
-                position: "bottom",
-                show: true,
-                textStyle: {
-                  fontSize: 12,
-                  color: '#666',
-                  align: 'center',
-                },
-                formatter: '引擎/探针'
-              }
+      // 多个探针 模版
+      this.equipment.probe.forEach((item, index) => {
+        var data_item1 = {
+          name: '节点1',
+          x: 300,
+          y: 100,
+          symbol: this.base64,
+          names: '探针',
+          dev_ip: item.ip,
+          status: item.status,
+          //节点上面的文字	
+          label: {
+            normal: {
+              position: "bottom",
+              show: true,
+              textStyle: {
+                fontSize: 12,
+                color: '#666',
+                align: 'center',
+              },
+              formatter: '探针'
             }
           }
-          this.graph_echart_array.push(this.graph_echart_array_item);
-        }
+        };
+        // var links_item = {
+        //   source: '节点0',
+        //   target: '节点1',
+        //   ip: item.ip,
+        //   status: item.status,
+        //   names: '探针'
+        // };
+        switch (index) {
+          case 0:
+            data_item1.name = '节点1';
+            data_item1.x = 100;
+            data_item1.y = 100;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 1:
+            data_item1.name = '节点2';
+            data_item1.x = 1000;
+            data_item1.y = 100;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 2:
+            data_item1.name = '节点3';
+            data_item1.x = 500;
+            data_item1.y = 100;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 3:
+            data_item1.name = '节点4';
+            data_item1.x = 300;
+            data_item1.y = 100;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 4:
+            data_item1.name = '节点5';
+            data_item1.x = 100;
+            data_item1.y = 700;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 5:
+            data_item1.name = '节点6';
+            data_item1.x = 100;
+            data_item1.y = 200;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 6:
+            data_item1.name = '节点7';
+            data_item1.x = 100;
+            data_item1.y = 800;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 7:
+            data_item1.name = '节点8';
+            data_item1.x = 100;
+            data_item1.y = 400;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          default:
+            break;
+        };
       });
-      if (this.only_one) {
-        // 多个探针 模版
-        this.probe_array.forEach((item, index) => {
-          var data_item1 = {
-            name: '节点1',
-            x: 300,
-            y: 100,
-            symbol: this.base64,
-            names: '探针',
-            dev_ip: item.ip,
-            status: item.status,
-            //节点上面的文字	
-            label: {
-              normal: {
-                position: "bottom",
-                show: true,
-                textStyle: {
-                  fontSize: 12,
-                  color: '#666',
-                  align: 'center',
-                },
-                formatter: '探针'
-              }
-            }
-          };
-          var links_item = {
-            source: '节点0',
-            target: '节点1',
-            ip: item.ip,
-            status: item.status,
-            names: '探针'
-          };
-          switch (index) {
-            case 0:
-              data_item1.name = '节点1';
-              links_item.target = '节点1';
-              data_item1.x = 100;
-              data_item1.y = 200;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 1:
-              this.data_item1.name = '节点2';
-              this.links_item.target = '节点2';
-              this.data_item1.x = 100;
-              this.data_item1.y = 100;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 2:
-              this.data_item1.name = '节点3';
-              this.links_item.target = '节点3';
-              this.data_item1.x = 100;
-              this.data_item1.y = 300;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 3:
-              this.data_item1.name = '节点4';
-              this.links_item.target = '节点4';
-              this.data_item1.x = 600;
-              this.data_item1.y = 200;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 4:
-              this.data_item1.name = '节点5';
-              this.links_item.target = '节点5';
-              this.data_item1.x = 600;
-              this.data_item1.y = 100;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 5:
-              this.data_item1.name = '节点6';
-              this.links_item.target = '节点6';
-              this.data_item1.x = 600;
-              this.data_item1.y = 300;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 6:
-              this.data_item1.name = '节点7';
-              this.links_item.target = '节点7';
-              this.data_item1.x = 300;
-              this.data_item1.y = 100;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            case 7:
-              this.links_item.target = '节点8';
-              this.data_item1.name = '节点8';
-              this.data_item1.x = 300;
-              this.data_item1.y = 300;
-              this.graph_echart_array.push(this.data_item1);
-              this.links_array.push(this.links_item);
-              break;
-            default:
-              break;
-          };
-        });
-      }
-      if (this.only_to) {
-        // 2 一台引擎模版
-        this.data_item0 = {
-          name: "节点0",
+      // 多个引擎
+      this.equipment.engine.forEach((item, index) => {
+        var data_item1 = {
+          name: "引擎0",
           x: 350,
           y: 200,
           symbol: this.base64,
           names: "引擎",
-          dev_ip: this.engine_array[0]
-            .ip,
-          status: this.engine_array[0]
-            .status,
+          dev_ip: item.ip,
+          status: item.status,
           //节点上面的文字
           label: {
             normal: {
@@ -649,68 +608,542 @@ export default {
             },
           },
         };
-        // 一台引擎
-        if (
-          this.engine_array
-            .length == 1
-        ) {
-          this.graph_echart_array.push(
-            this.data_item0
-          );
+        switch (index) {
+          case 0:
+            data_item1.name = '引擎0';
+            data_item1.x = 400;
+            data_item1.y = 200;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 1:
+            data_item1.name = '引擎1';
+            data_item1.x = 800;
+            data_item1.y = 200;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 3:
+            data_item1.name = '引擎2';
+            data_item1.x = 600;
+            data_item1.y = 200;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 4:
+            data_item1.name = '引擎3';
+            data_item1.x = 100;
+            data_item1.y = 200;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          default:
+            break;
         }
-      }
-
-      console.log(this.graph_echart_array);
-      console.log(this.links_array);
-      console.log(this.probe_array);
+      })
+      // 沙箱
+      this.equipment.sandbox.forEach((item, index) => {
+        var data_item1 = {
+          name: "沙箱0",
+          x: 350,
+          y: 200,
+          symbol: this.base64,
+          names: "沙箱",
+          dev_ip: item.ip,
+          status: item.status,
+          //节点上面的文字
+          label: {
+            normal: {
+              position: "bottom",
+              show: true,
+              textStyle: {
+                fontSize: 12,
+                color: "#666",
+                align: "center",
+              },
+              formatter: "沙箱",
+            },
+          },
+        };
+        switch (index) {
+          case 0:
+            data_item1.name = '沙箱0';
+            data_item1.x = 500;
+            data_item1.y = 300;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 1:
+            data_item1.name = '沙箱1';
+            data_item1.x = 800;
+            data_item1.y = 300;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          case 3:
+            data_item1.name = '沙箱2';
+            data_item1.x = 200;
+            data_item1.y = 300;
+            this.equipment.echart_array.push(data_item1);
+            break;
+          default:
+            break;
+        }
+      })
+      console.log(this.equipment.echart_array);
 
 
       var myChart = this.$echarts.init(document.getElementById("graph"));
       console.log(myChart);
+
+      var option = {
+        tooltip: {},
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        color: ['#83e0ff', '#45f5ce', '#b158ff'],
+        series: [
+          {
+            type: 'graph',
+            layout: 'force',
+            force: {
+              repulsion: 1000,
+              edgeLength: 50
+            },
+            roam: true,
+            label: {
+              normal: {
+                show: true
+              }
+            },
+            data: [
+              {
+                name: '校园大数据',
+                symbolSize: 120,
+                symbol: this.base64,
+                draggable: true,
+                category: 0,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#04f2a7',
+                    borderWidth: 6,
+                    shadowBlur: 20,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43',
+                  }
+                }
+              },
+              {
+                name: '舆情大数据',
+                symbolSize: 100,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#04f2a7',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43',
+                  }
+                },
+                category: 1,
+
+              },
+              {
+                name: '用户分析',
+                symbolSize: 80,
+                category: 1,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#04f2a7',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43',
+                  }
+                },
+
+              },
+              {
+                name: '话题分析',
+                symbolSize: 80,
+                category: 1,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#82dffe',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43',
+                  }
+                },
+
+              },
+              {
+                name: '评论分析',
+                symbolSize: 80,
+                category: 1,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#82dffe',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43',
+                  }
+                },
+
+              },
+              {
+                name: '图书馆分析',
+                symbolSize: 100,
+                category: 2,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#82dffe',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43',
+                  }
+                },
+
+              },
+              {
+                name: '借阅分析',
+                symbolSize: 80,
+                category: 2,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#b457ff',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#b457ff',
+                    color: '#001c43'
+                  }
+                },
+
+              },
+              {
+                name: '借阅排行',
+                symbolSize: 80,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#82dffe',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43'
+
+                  }
+                },
+                category: 2,
+
+              },
+              {
+                name: '图书收录',
+                symbolSize: 80,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#82dffe',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43'
+                  }
+                },
+                category: 2,
+
+              },
+              {
+                name: '图书分析',
+                symbolSize: 80,
+                category: 2,
+                itemStyle: {
+                  normal: {
+                    borderColor: '#82dffe',
+                    borderWidth: 4,
+                    shadowBlur: 10,
+                    shadowColor: '#04f2a7',
+                    color: '#001c43'
+                  }
+                },
+
+              }],
+            links: [
+              {
+                source: '校园大数据',
+                target: '舆情大数据'
+
+              },
+              {
+                source: '校园大数据',
+                target: '图书馆分析',
+              },
+              {
+                source: '舆情大数据',
+                target: '用户分析',
+              },
+              {
+                source: '舆情大数据',
+                target: '话题分析',
+              },
+              {
+                source: '舆情大数据',
+                target: '评论分析',
+              },
+              {
+                source: '校园大数据',
+                target: '图书馆分析',
+              },
+              {
+                source: '图书馆分析',
+                target: '图书分析',
+              },
+              {
+                source: '图书馆分析',
+                target: '借阅分析',
+              },
+              {
+                source: '图书馆分析',
+                target: '借阅排行',
+                value: 'DNA',
+              }, {
+                source: '图书馆分析',
+                target: '图书收录'
+
+              }
+            ],
+            lineStyle: {
+              normal: {
+                opacity: 0.9,
+                width: 5,
+                curveness: 0
+              }
+            },
+            categories: [
+              { name: '0' },
+              { name: '1' },
+              { name: '2' }
+            ]
+          }
+        ]
+      }
+      //-------
+      // 调试页面回打印出点击的节点名称
+
+      var person = "/asset/get/s/data-1561621393298-zQTG-TuDS.png";
+      var car = "/asset/get/s/data-1561621386236-0IGCc48l6.png";
+      var phone = "/asset/get/s/data-1561621379686-rZHoryrBV.png";
+      var size = 50; //节点大小
+
+      var listdata = [];
+      var links = [];
+      var legendes = ["手机IMSI", "人脸ID", "车牌号码", "人脸ID"];
+      var texts = [];
+      var phoneNum = {
+        "手机号:13856978256": "13856978256",
+        "手机号:13998745632": "13998745632",
+        "手机号:18812345678": "18812345678",
+        "手机号:16812345678": "16812345678",
+        "手机号:13856971111": "13856978256",
+        "手机号:13998742222": "13998745632",
+        "手机号:18812344444": "18812345678",
+        "手机号:16812343333": "16812345678",
+        "手机号:13878978256": "13856978256",
+        "手机号:137895632": "13998745632",
+      };
+
+      var phoneIMSI = ["次数:1，匹配度:6%", "次数:3，匹配度:30%", "次数:2，匹配度:26%",
+        "次数:2，匹配度:26%", "次数:2，匹配度:26%", "次数:2，匹配度:26%",
+        "匹配手机号码", "匹配手机号码", "匹配手机号码", "匹配手机号码"]
+
+
+      var carNum = {
+        "车牌号码:豫AJ9685": "豫AJ9685",
+        "车牌号码:豫AG5123": "豫AG5123",
+        "车牌号码:豫AG6822": "豫AG6822",
+        "车牌号码:豫CJ9685": "豫AJ9685",
+        "车牌号码:豫AD5123": "豫AG5123",
+        "车牌号码:豫AT6822": "豫AG6822",
+        "车牌号码:豫AG6622": "豫AG6822",
+        "车牌号码:豫CJ9885": "豫AJ9685",
+      }
+      const relationShipCar = ["匹配车牌号码", "匹配车牌号码", "匹配车牌号码", "匹配车牌号码", "匹配车牌号码"
+        , "匹配车牌号码", "匹配车牌号码", "匹配车牌号码", "匹配车牌号码"]
+
+      var mainRelationShip = {
+        人脸ID: "732"
+      }
+
+      function setDataPerson (json, n) {
+        var i = 0;
+        for (var p in json) {
+          listdata.push({
+            x: 50,
+            y: 100,
+            "name": p,
+            "showName": json[p],
+            "symbol": 'image://' + "/asset/get/s/data-1561621393298-zQTG-TuDS.png",
+            "symbolSize": 70,
+            "category": n,
+            "draggable": "false",
+            formatter: function (params) {
+              return params.data.showName
+            },
+            label: {
+              position: 'bottom'
+            }
+          });
+          i++;
+        }
+      }
+      function setDataPhone (json, n) {
+        var i = 0;
+        for (var p in json) {
+          listdata.push({
+            x: i * 50,
+            y: size + i * 10,
+            "name": p,
+            "showName": json[p],
+            "symbol": 'image://' + "/asset/get/s/data-1561621386236-0IGCc48l6.png",
+            "symbolSize": size,
+            "category": n,
+            "draggable": "false",
+            formatter: function (params) {
+              return params.data.showName
+            },
+            label: {
+              position: 'bottom'
+            }
+          });
+          i++;
+        }
+      }
+      function setDataCar (json, n) {
+        var i = 0;
+        for (var p in json) {
+          listdata.push({
+            x: i * 50,
+            y: size + i * 10,
+            "name": p,
+            "showName": json[p],
+            "symbol": 'image://' + "/asset/get/s/data-1561621379686-rZHoryrBV.png",
+            "symbolSize": size,
+            "category": n,
+            "draggable": "false",
+            formatter: function (params) {
+              return params.data.showName
+            },
+            label: {
+              position: 'bottom'
+            }
+          });
+          i++;
+        }
+      }
+
+      function setLinkData (json, relarr, title) {
+        if (relarr !== "") {
+          var i = 0;
+          for (var p in json) {
+            links.push({
+              "source": p,
+              "target": title,
+              "value": relarr[i],
+              lineStyle: {
+                normal: {
+                  // text: relarr[i],
+                  color: 'source'
+                }
+              }
+            });
+            i++;
+          }
+        } else {
+          for (var p2 in json) {
+            links.push({
+              "source": p2,
+              "target": title,
+              "value": "",
+              lineStyle: {
+                normal: {
+                  color: 'source'
+                }
+              }
+            });
+          }
+        }
+      }
+
+      for (var i = 0; i < legendes.length; i++) {
+        texts.push({
+          "name": legendes[i]
+        })
+      }
+
+      setDataPhone(phoneNum, 0);
+      setDataCar(carNum, 2);
+      setDataPerson(mainRelationShip, 3);
+
+      setLinkData(phoneNum, phoneIMSI, legendes[3]);
+      setLinkData(carNum, relationShipCar, legendes[3]);
+
       var option = {
         tooltip: {
-          trigger: 'item',
-          formatter: function (params, trigger) {
-            return '设备：' + params.data.names + '</br>' + 'IP地址：' + params.data.dev_ip + '</br>' + '状态：' + params.data.status
-          }
+          formatter: '{b}'
         },
-        animationDurationUpdate: 1000,
+        animationDuration: 1000,
         animationEasingUpdate: 'quinticInOut',
         series: [{
           type: 'graph',
-          layout: 'none',
-          symbolSize: 50,
-          roam: true,
-          label: {
-            normal: {
-              show: false
-            }
+          layout: 'force',
+          force: {
+            repulsion: 80,
+            gravity: 0,
+            edgeLength: 150,
+            layoutAnimation: true,
           },
-          focusNodeAdjacenc: true, //是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点
-          edgeSymbol: ['arrow', 'arrow'],
-          edgeSymbolSize: [7, 7],
-          edgeLabel: {
-            normal: {
-              show: false
-            },
-            emphasis: {
-              textStyle: {
-                fontSize: 30 //边节点显示的字体大小
-              }
-            }
-          },
-          data: this.graph_echart_array,
-          links: this.links_array,
+          data: listdata,
+          links: links,
+          categories: texts,
+          roam: false,
+          nodeScaleRatio: 0,
+          focusNodeAdjacency: false,
           lineStyle: {
             normal: {
-              opacity: 0.9,
-              width: 2,
+              opacity: 0.5,
+              width: 1.5,
               curveness: 0
             }
+          },
+          label: {
+            normal: {
+              show: true,
+              position: 'inside',
+              textStyle: {
+                color: '#000000',
+                fontWeight: 'normal',
+                fontSize: "12" //字体大小
+              },
+              formatter: function (params) {
+                return params.data.showName
+              },
+              fontSize: 18,
+              fontStyle: '600',
+            }
+          },
+          edgeLabel: {
+            normal: {
+              show: true,
+              textStyle: {
+                fontSize: 12
+              },
+              formatter: "{c}"
+            }
           }
-        }]
+        }],
+        color: ['#F2F2F2']
       };
-      myChart.clear(); //只是清理画布，而不会删除 生成的元素节点
+
+      const clickFun = param => {
+        console.log(param.name)
+      }
+
+      myChart.on("click", clickFun);
+
       myChart.setOption(option);
       //添加点击事件
       myChart.off("click"); //防止累计触发
@@ -749,6 +1182,7 @@ export default {
   },
 };
 </script>
+
 <style scoped lang="less">
 .home_overview {
   padding: 24px;
@@ -780,7 +1214,6 @@ export default {
         background: #e0c840;
       }
       margin-bottom: 10px;
-
       .top_item {
         background: #ffffff;
         height: 380px;
@@ -796,12 +1229,10 @@ export default {
             float: left;
             font-weight: bold;
           }
-
           .title_right {
             float: right;
             font-size: 14px;
             color: #333333;
-
             .title_right_icon {
               margin-left: 12px;
               border-radius: 2px;
@@ -812,7 +1243,6 @@ export default {
             }
           }
         }
-
         .legend {
           clear: both;
           height: 30px;
@@ -831,30 +1261,24 @@ export default {
             text-decoration: underline;
           }
         }
-
         // 第一个
         .top_left_content {
           height: 270px;
         }
-
         // 第二个
         .top_mid_content {
           height: 300px;
-
           .content_top {
             height: 150px;
           }
-
           .content_bom {
             height: 150px;
           }
         }
-
         // 第三个
         .top_right_content {
           height: 270px;
         }
-
         // 第四个
         .bom_left_content {
           height: 300px;
@@ -862,12 +1286,10 @@ export default {
             height: 300px;
           }
         }
-
         // 第五个
         .bom_mid_content {
           height: 270px;
         }
-
         // 第六个
         .bom_right_content {
           height: 300px;
@@ -876,6 +1298,7 @@ export default {
     }
   }
 }
+
 .vm-move-threat {
   margin: 0;
   padding: 0 !important;
@@ -902,9 +1325,9 @@ export default {
         .el-table__header {
           th:nth-child(3) {
             /*.cell{
-                padding: 0!important;
-
-              }*/
+                  padding: 0!important;
+  
+                }*/
           }
         }
       }
@@ -928,13 +1351,13 @@ export default {
                 }
               }
               /*.sc_index{
-                  background: #5389E0;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 40%;
-                  height: 16px;
-                }*/
+                    background: #5389E0;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 40%;
+                    height: 16px;
+                  }*/
             }
           }
         }
@@ -943,22 +1366,19 @@ export default {
   }
 }
 </style>
+
 <style lang="less">
 .sys_box {
   z-index: 3000 !important;
-
   .el-dialog {
     width: 842px;
-
     .el-dialog__header {
       display: none;
     }
-
     .el-dialog__body {
       width: 842px;
       height: 462px;
       padding: 30px;
-
       .closed_img {
         position: absolute;
         top: -18px;
@@ -972,7 +1392,6 @@ export default {
         line-height: 24px;
         text-align: left;
         font-size: 0;
-
         .mask {
           width: 4px;
           height: 16px;
@@ -980,7 +1399,6 @@ export default {
           background: #0070ff;
           vertical-align: baseline;
         }
-
         .title_name {
           font-size: 16px;
           color: #333333;

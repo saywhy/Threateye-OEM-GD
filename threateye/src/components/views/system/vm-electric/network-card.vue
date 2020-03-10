@@ -18,6 +18,7 @@
       <div class="left_item">
         <p>角色</p>
         <el-select class="select_box"
+                   @change='change_role'
                    v-model="network_model.role_name"
                    placeholder="请选择角色">
           <el-option v-for="item in network_model.role"
@@ -32,6 +33,7 @@
         <el-select class="select_box"
                    v-model="network_model.obtain"
                    @change='change_obtain'
+                   :disabled="network_model.role_name =='镜像口'"
                    placeholder="请选择告警类型">
           <el-option v-for="item in network_model.obtain_list"
                      :key="item.name"
@@ -142,6 +144,13 @@ export default {
   },
 
   methods: {
+    change_role (item) {
+      console.log(item);
+      if (item == '镜像口') {
+        this.network_model.obtain = '自动获取'
+        this.network_model.input_show = false
+      }
+    },
     change_name (value) {
       this.network_model.name = value;
       this.network.forEach(item => {

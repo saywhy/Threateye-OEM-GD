@@ -44,7 +44,7 @@
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="next_step"
-                         label="下载地址"
+                         label="下一条地址"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作">

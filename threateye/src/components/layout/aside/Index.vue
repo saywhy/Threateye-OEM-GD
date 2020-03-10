@@ -17,7 +17,8 @@
       </div>
     <transition name="fade">
       <el-menu :default-active="$route.meta.auth" :collapse="isCollapse" v-cloak>
-        <aside-item v-for="item in asideList" :key="item.meta.auth" :item="item" :collapse="isCollapse"></aside-item>
+        <aside-item v-for="item in asideList" :key="item.meta.auth" :item="item"
+                    :collapse="isCollapse"></aside-item>
       </el-menu>
     </transition>
   </div>
@@ -93,7 +94,7 @@
 <style scoped lang="less">
   #aside {
     width: 210px;
-    min-height: 600px;
+    position: relative;
     .aside-breadcrumb {
       height: 60px;
       display: flex;

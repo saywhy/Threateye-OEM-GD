@@ -2,11 +2,11 @@
   <el-container id="dashboard" v-cloak>
     <el-header><Nav></Nav></el-header>
     <el-container class="dashboard-list">
-      <el-aside class="dashboard-list-aside"
-                :class="{'collapse':isCollapse}"><Aside></Aside>
+      <el-aside class="dashboard-list-aside" :class="{'collapse':isCollapse}">
+        <Aside></Aside>
       </el-aside>
-      <div class="dashboard-list-fixed">
-        <el-main class="dashboard-list-main" :class="{'collapse':isCollapse}">
+      <div class="dashboard-main-fixed" :class="{'collapse':isCollapse}">
+        <el-main class="dashboard-list-main">
           <transition name="slider">
             <keep-alive>
               <router-view/>
@@ -42,15 +42,7 @@
       Nav,
       Aside,
       Main
-    },
-    /*created(){
-      console.log(this.$route.meta.asideFlag)
-      let asideFlag = this.$route.meta.asideFlag;
-      console.log(undefined == undefined)
-      asideFlag == (asideFlag == undefined)? true: asideFlag;
-      console.log(asideFlag)
-      this.asideFlag = asideFlag;
-    },*/
+    }
   }
 </script>
 
@@ -73,6 +65,7 @@
         background-color: #fff;
         width: 210px!important;
         height: calc(100% - 120px);
+        z-index: 2500;
         &.collapse {
           width: 56px!important;
           #aside{
@@ -98,7 +91,7 @@
           }
         }
       }
-      .dashboard-list-fixed{
+      .dashboard-main-fixed{
         background-color: #c2e7b0;
         top: 60px;
         left: 210px;
@@ -108,6 +101,10 @@
         overflow-y: scroll;
         padding: 0;
         margin: 0;
+        &.collapse{
+          left: 56px!important;
+          width: calc(100% - 56px);
+        }
         &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
           height: 800px;
@@ -121,13 +118,10 @@
           border-radius: 6px;
           background: #F8F8F8;
         }
-      }
-      .dashboard-list-main{
-        padding: 0;
-        background-color: #f4f4f4;
-        min-height: 900px;
-        &.collapse{
-          margin-left: 56px!important;
+        .dashboard-list-main{
+          padding: 0;
+          background-color: #f4f4f4;
+          min-height: 1000px;
         }
       }
     }

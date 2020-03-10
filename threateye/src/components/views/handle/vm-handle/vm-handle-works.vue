@@ -2,7 +2,7 @@
   <div class="vm-handle-works" v-cloak>
     <div class="invest_form invest_form_network">
       <el-form class="common-pattern">
-        <el-row class="common_box" style="padding-bottom:16px;border-bottom: 1px solid #ECECEC;">
+        <el-row class="common_box">
           <el-col :span="24" class="common_box_list">
 
             <!--搜索关键词-->
@@ -463,10 +463,7 @@
       get_list_assets_info(){
         this.$axios.get('/yiiapi/workorder/asset-list')
           .then((resp) => {
-
-
-            console.log(resp.data)
-
+           // console.log(resp.data)
             let {status, data} = resp.data;
 
             if (status == 0) {
@@ -489,7 +486,6 @@
         this.$axios.get('/yiiapi/workorder/alert-list')
           .then((resp) => {
             let {status, data} = resp.data;
-            console.log(data)
             if (status == 0) {
               this.table_alerts.tableData = data;
               this.table_alerts.count = data.length;
@@ -499,6 +495,8 @@
       },
       //工单中心列表
       get_list_works(){
+
+        this.table.loading = true;
         this.$axios.get('/yiiapi/workorder/list',
           {
             params: {
@@ -529,8 +527,6 @@
               this.table.pageNow = pageNow;
               this.table.loading = false;
 
-             // console.log(data)
-
             }
           });
       },
@@ -546,30 +542,30 @@
       //重置按鈕點擊事件
       resetClick() {
         this.params = {
-          key:"",
-          priority:"",
+          key: "",
+          priority: "",
           status: "",
           startTime: "",
-          endTime: "",
+          endTime: ""
         };
-
         this.get_list_works();
       },
+
       //每頁多少條切換
       handleSizeChange(val) {
         this.table.eachPage = val;
         this.get_list_works();
       },
+
       //頁數點擊切換
       handleCurrentChange(val) {
         this.table.pageNow = val;
         this.get_list_works();
       },
+
       //多选获取选中数据
       handleSelChange(val) {
-
         this.table.multipleSelection = val;
-
         if(val.length == 1){
            this.task_params.name = val[0].name;
            this.task_params.level = val[0].priority;
@@ -584,10 +580,11 @@
       detail_click(row) {
         this.$router.push({ path: "/detail/works", query: { id: row.id} });
       },
+
       /*******************下载**********************/
       worksdownload() {
         this.$axios.get('/yiiapi/workorder/export',{
-          params:{
+          params: {
             stime:this.params.startTime,
             etime:this.params.endTime,
             status: this.params.status,
@@ -604,6 +601,7 @@
              }
           })
       },
+
       /*******************删除**********************/
       worksDelete(){
         let that = this;
@@ -620,21 +618,24 @@
             data: {
               id: selected
             }
-          }).then(resp => {
-            let {status, data} = resp.data;
+          })
+            .then(resp => {
+            let {status,msg, data} = resp.data;
             if(status == 0){
-              that.get_list_works();
-              that.$message.success('删除成功。');
+              that.$message.success(msg);
+            }else {
+              that.$message.error(msg);
             }
-          }).catch(err => {
-            console.log(err)
+            that.get_list_works();
+          })
+            .catch(err => {
+            console.log(err);
           });
         }).catch(() => {
 
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
+          this.$message({type: 'info', message: '已取消删除'});
+
+          this.$refs.multipleTable.clearSelection();
         });
       },
       /*******************新增编辑**********************/
@@ -922,37 +923,41 @@
 
   .common-pattern{
     .common_btn{
-      .common_btn_list {
-        font-size: 0;
-        /deep/
-        .bw_btn {
-          font-size: 14px;
-          height: 42px;
-          width: 116px;
-          outline: none;
-          margin-right: 8px;
-          line-height: 0;
-          margin-left: 0;
-          font-family: PingFangSC-Medium;
-          &.b_btn_add {
-            color: #fff;
-            background: #0070FF;
-            border: 1px solid #0070FF;
-          }
-          &.b_btn_edit {
-            color: #0070FF;
-            border: 1px solid #0070FF;
-            background-color: #fff;
-          }
-          &.bw_btn_download {
-            color: #0070FF;
-            border: 1px solid #0070FF;
-            background-color: #fff;
-          }
-          &.bw_btn_remove {
-            color: #0070FF;
-            border: 1px solid #0070FF;
-            background-color: #fff;
+      .common_box{
+        padding-bottom:16px;
+        border-bottom: 1px solid #ECECEC;
+        .common_btn_list {
+          font-size: 0;
+          /deep/
+          .bw_btn {
+            font-size: 14px;
+            height: 42px;
+            width: 116px;
+            outline: none;
+            margin-right: 8px;
+            line-height: 0;
+            margin-left: 0;
+            font-family: PingFangSC-Medium;
+            &.b_btn_add {
+              color: #fff;
+              background: #0070FF;
+              border: 1px solid #0070FF;
+            }
+            &.b_btn_edit {
+              color: #0070FF;
+              border: 1px solid #0070FF;
+              background-color: #fff;
+            }
+            &.bw_btn_download {
+              color: #0070FF;
+              border: 1px solid #0070FF;
+              background-color: #fff;
+            }
+            &.bw_btn_remove {
+              color: #0070FF;
+              border: 1px solid #0070FF;
+              background-color: #fff;
+            }
           }
         }
       }
@@ -1066,7 +1071,7 @@
     .new_dot {
       width: 8px;
       height: 8px;
-      border-radius: 8px;
+      border-radius: 20px;
       background: #ff5f5c;
       float: right;
     }

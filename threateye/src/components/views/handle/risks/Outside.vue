@@ -556,6 +556,11 @@
       this.get_list_source_top5();
       this.get_list_threat_top5();
       this.get_list_threat();
+
+      alert('3333')
+    },
+    destroyed(){
+      alert('我已经销毁3333')
     },
     methods: {
       //外部威脅源top5

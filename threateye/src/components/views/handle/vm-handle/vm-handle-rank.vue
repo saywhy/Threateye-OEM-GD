@@ -99,19 +99,19 @@
       return {
         rankOptions: [
           {
-            title: '提权',pid:0, count: '99+',showMenu:false, data: [{name: '网络', children: [{name: '168.192.1.456'}, {name: '210.44.133.210'}]}, {name: '端点'}, {name: '站点'}]
+            title: '提权',pid:0, count:0,showMenu:false, data: [/*{name: '网络', children: [{name: '168.192.1.456'}, {name: '210.44.133.210'}]}, {name: '端点'}, {name: '站点'}*/]
           },
           {
-            title: '防御逃逸',pid:1,count: 2,showMenu:false, data:[{name: '端点'}, {name: '站点'}]
+            title: '防御逃逸',pid:1,count: 0,showMenu:false, data:[/*{name: '端点'}, {name: '站点'}*/]
           },
           {
-            title: '凭证访问',pid:2, showMenu:false, data:[{name: '凭证访问1'}, {name: '凭证访问2'}]
+            title: '凭证访问',pid:2, showMenu:false, data:[]
           },
           {
-            title: '信息发现',pid:3,count:0,showMenu:false, data:[{name: '信息发现1'}, {name: '信息发现2'}]
+            title: '信息发现',pid:3,count:0,showMenu:false, data:[]
           },
           {
-            title: '横向移动',pid:4,count:1,showMenu:false, data:[{name: '横向移动1'}, {name: '横向移动2'}]
+            title: '横向移动',pid:4,count:0,showMenu:false, data:[/*{name: '横向移动1'}, {name: '横向移动2'}*/]
           }
         ],
         rectStyle: {}

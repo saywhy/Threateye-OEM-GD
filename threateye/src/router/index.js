@@ -225,7 +225,7 @@ export const asyncRouterMap = [
             path: '/handle/risks/outreath',
             name: 'outreath',
             meta: {
-              title: '外联威胁',
+              title: '外连威胁',
               auth: '40',
               icon: 'e-aside-none',
               parentAuth: '23',

@@ -2,11 +2,14 @@
  <div class="handle-works">
    <div class="handle-works-top common-invest">
      <div class="invest">
+       <sup class="h_count hc1">{{number[0].created}}</sup>
+       <sup class="h_count hc2">{{number[0].distributed}}</sup>
+       <sup class="h_count hc3">{{number[0].all}}</sup>
        <el-tabs v-model="activeName" @tab-click="handleClick">
 
          <!--我创建的-->
          <el-tab-pane label="我创建的" name="first">
-            <vm-handle-works :owned="owned" v-if="childUpdate1"></vm-handle-works>
+           <vm-handle-works :owned="owned" v-if="childUpdate1"></vm-handle-works>
          </el-tab-pane>
 
          <!--分配给我的-->
@@ -31,6 +34,7 @@
     name: "handle-works",
     data() {
       return {
+        number:[{created:0,distributed:0,all:0}],
         activeName: 'first',
         owned:'created',
         childUpdate1:true,
@@ -41,7 +45,22 @@
     components:{
       VmHandleWorks
     },
+    created(){
+      this.get_top_num();
+    },
     methods: {
+      //顶部数字列表
+      get_top_num(){
+        this.$axios.get('/yiiapi/workorder/top')
+          .then(resp => {
+            let {status,msg, data} = resp.data;
+            if(status == 0){
+              if(data && data.length){
+                this.number = data;
+              }
+            }
+          })
+      },
       /*****************************/
       handleClick(tab, event) {
         let name = tab.name;
@@ -70,7 +89,31 @@
   @import "../../../assets/css/less/invest-common-pattern.less";
   @import "../../../assets/css/less/invest-common-table-pattern.less";
   .handle-works{
-   /* padding: 24px;*/
+    .invest{
+      position: relative;
+      .h_count{
+        position: absolute;
+        color: #fff;
+        line-height: 18px;
+        background: #FF5F5C;
+        border-radius: 100%;
+        top: 16px;
+        z-index: 2000;
+        height: 18px;
+        min-width: 18px;
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.2),
+          -1px -1px 5px rgba(0,0,0,0.2);
+        &.hc1{
+          left: 176px;
+        }
+        &.hc2{
+          left: 341px;
+        }
+        &.hc3{
+          left: 505px;
+        }
+      }
+    }
   }
 </style>
 

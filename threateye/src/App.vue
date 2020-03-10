@@ -1,7 +1,7 @@
 <template>
   <div id="App">
     <transition :name="transitionName">
-      <router-view/>
+      <router-view :key="key"/>
     </transition>
   </div>
 </template>
@@ -12,6 +12,11 @@
     data(){
       return {
         transitionName:'slide-right'
+      }
+    },
+    computed:{
+      key(){
+        return this.$route.path + Math.random();
       }
     },
     watch:{

@@ -23,6 +23,24 @@
         <div class="mid item">
           <div class="item_left">
             <img class="img_box"
+                 src="@/assets/images/setting/yt.png"
+                 alt="">
+          </div>
+          <div class="item_right">
+            <p class="item_right_title ">引擎/探针</p>
+            <p class="">
+              <span class="green"></span>
+              <span>在线：
+                <span>{{equipment_top.sensor_engine.online_count}}</span>台</span>
+              <span class="red"></span>
+              <span>离线：
+                <span>{{equipment_top.sensor_engine.offline_count}}</span>台</span>
+            </p>
+          </div>
+        </div>
+        <div class="mid item">
+          <div class="item_left">
+            <img class="img_box"
                  src="@/assets/images/setting/tz.png"
                  alt="">
           </div>
@@ -38,7 +56,8 @@
             </p>
           </div>
         </div>
-        <div class="right item">
+        <div class="right item"
+             v-if="sandbox_show">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/sb.png"
@@ -59,9 +78,10 @@
       </div>
       <div class="bottom">
         <div class="btn_box">
-          <!-- <el-button type="primary"
+          <el-button type="primary"
                      class="btn_i"
-                     @click="add_box">新增</el-button> -->
+                     v-if="sandbox_show"
+                     @click="add_box">新增沙箱</el-button>
           <el-button type="primary"
                      class="btn_o"
                      @click="del_equipment">删除</el-button>
@@ -100,7 +120,7 @@
               <template slot-scope="scope">
                 <span v-if="scope.row.type=='1'">探针</span>
                 <span v-if="scope.row.type=='2'">引擎</span>
-                <span v-if="scope.row.type=='3'">探针+引擎</span>
+                <span v-if="scope.row.type=='3'">引擎/探针</span>
                 <span v-if="scope.row.type=='4'">沙箱</span>
               </template>
             </el-table-column>
@@ -147,12 +167,13 @@
            alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">新增设备</span>
+        <span class="title_name">新增沙箱</span>
       </div>
       <div class="content">
         <div class="content_item">
           <p>
             <span class="title">设备名称</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入设备名称"
@@ -163,20 +184,22 @@
         <div class="content_item">
           <p>
             <span class="title">设备类型</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-select class="select_box"
                      v-model="equipment_pop.type"
                      placeholder="请选择设备类型">
-            <el-option v-for="item in equipment_pop.type_list"
-                       :key="item.type"
-                       :label="item.name"
-                       :value="item.type">
+            <el-option v-for="(item,index) in equipment_pop.type_list"
+                       :key="index"
+                       :label="item.label"
+                       :value="item.value">
             </el-option>
           </el-select>
         </div>
         <div class="content_item">
           <p>
             <span class="title">设备IP</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入设备IP"
@@ -190,6 +213,34 @@
                    class="cancel_btn">取消</el-button>
         <el-button class="ok_btn"
                    @click="add_equipment">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 设备详情 -->
+    <el-dialog class="sys_detail"
+               width="840"
+               :close-on-click-modal="false"
+               :modal-append-to-body="false"
+               :visible.sync="equipment_detail.show">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_detail"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">
+          <span>{{equipment_detail.title.name}}</span>
+          <span>{{equipment_detail.title.ip}}</span>
+          <span>{{equipment_detail.title.type}}</span>
+          <span>的健康情况</span>
+        </span>
+      </div>
+      <div class="sys_detail_content">
+        <div class="detail_item">
+          <div id='cpu'></div>
+        </div>
+        <div class="detail_item">
+          <div id='flow_echarts'></div>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -209,24 +260,38 @@ export default {
         engine: {},
         sandbox: {},
         sensor: {},
+        sensor_engine: {},
       },
       equipment_pop: {
         show: false,
+        type: '4',
         name: '',
-        type: '',
         type_list: [
-          { name: '引擎', type: "2" },
-          { name: '沙箱', type: "4" },
-          { name: '探针', type: "1" },
+          { label: '沙箱', value: '4' },
         ],
         ip: '',
       },
-      select_list: []
+      equipment_detail: {
+        show: false,
+        cpu: [],
+        mem: [],
+        disk: [],
+        statistics_time: [],
+        flow: [],
+        title: {
+          type: '',
+          ip: '',
+          name: '',
+        }
+      },
+      select_list: [],
+      sandbox_show: false
     };
   },
   mounted () {
     this.get_data();
     this.get_top();
+    this.get_version();
   },
   methods: {
     // 获取列表
@@ -250,6 +315,22 @@ export default {
           console.log(error);
         })
     },
+    // 获取license版本
+    get_version () {
+      this.$axios.get('/yiiapi/site/license-version')
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(data.edition);
+          if (data.edition == 2) {
+            this.sandbox_show = true
+          } else {
+            this.sandbox_show = false
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     get_top () {
       this.$axios.get('/yiiapi/dev/top')
         .then(response => {
@@ -264,7 +345,7 @@ export default {
     add_box () {
       this.equipment_pop.show = true
       this.equipment_pop.name = ''
-      this.equipment_pop.type = ''
+      this.equipment_pop.type = '4'
       this.equipment_pop.ip = ''
     },
     add_equipment () {
@@ -316,7 +397,7 @@ export default {
           } else {
             this.$message(
               {
-                message: response,
+                message: response.data.msg,
                 type: 'error',
               }
             );
@@ -397,10 +478,383 @@ export default {
     },
     alert_detail (item) {
       console.log(item);
+      this.equipment_detail.cpu = []
+      this.equipment_detail.mem = []
+      this.equipment_detail.disk = []
+      this.equipment_detail.statistics_time = []
+      this.equipment_detail.flow = []
+      switch (item.type) {
+        case '1':
+          this.equipment_detail.title.type = '探针'
+          break;
+        case '2':
+          this.equipment_detail.title.type = '引擎'
+          break;
+        case '3':
+          this.equipment_detail.title.type = '引擎/探针'
+          break;
+        case '4':
+          this.equipment_detail.title.type = '沙箱'
+          break;
+
+        default:
+          break;
+      }
+      this.equipment_detail.title.ip = item.ip
+      this.equipment_detail.title.name = item.name
+      this.$axios.get('/yiiapi/alert/dev-state', {
+        params: {
+          ip: item.ip
+        }
+      })
+        .then(response => {
+          let {
+            status,
+            data
+          } = response.data;
+          console.log(data);
+          data.forEach(element => {
+            this.equipment_detail.cpu.unshift(element.cpu)
+            this.equipment_detail.mem.unshift(element.mem)
+            this.equipment_detail.disk.unshift(element.disk)
+            this.equipment_detail.statistics_time.unshift(element.statistics_time)
+            this.equipment_detail.flow.unshift(element.flow)
+          });
+          this.equipment_detail.show = true;
+          setTimeout(() => {
+            this.cpu()
+            this.flow()
+          }, 100);
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     closed_add_box () {
       this.equipment_pop.show = false
     },
+    // 设备详情
+    closed_detail () {
+      this.equipment_detail.show = false;
+    },
+    cpu () {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("cpu"));
+      // 绘制图表
+      myChart.setOption({
+        grid: {
+          top: "10%",
+          left: '2%',
+          right: "5%",
+          bottom: "20%",
+          containLabel: true
+        },
+        legend: {
+          bottom: 5,
+          left: 'center',
+          orient: 'horizontal',
+          textStyle: {
+            fontSize: 12
+          },
+          selected: {
+            // 选中'系列1'
+            'CPU': true,
+            '内存': true,
+            '硬盘': true,
+          },
+          data: ['CPU', '内存', '硬盘']
+        },
+        tooltip: {
+          trigger: "axis",
+          borderColor: "rgba(2,136,209,0.3)",
+          borderWidth: 2,
+          backgroundColor: "#fff",
+          textStyle: {
+            color: "#ccc"
+          },
+          axisPointer: {
+            lineStyle: {
+              color: "#ccc"
+            }
+          }
+        },
+        xAxis: {
+          boundaryGap: false,
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: this.equipment_detail.statistics_time,
+        },
+        yAxis: {
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#F4F4F4",
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
+        series: [
+          {
+            name: "CPU",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.cpu,
+            lineStyle: {
+              color: "rgba(2,136,209,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(2,136,209,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(2,136,209,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          },
+          {
+            name: "内存",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.mem,
+            lineStyle: {
+              color: "rgba(205,220,57,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(205,220,57,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(205,220,57,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          },
+          {
+            name: "硬盘",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.disk,
+            lineStyle: {
+              color: "rgba(76,175,80,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(76,175,80,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(76,175,80,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          },
+        ]
+      });
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    },
+    flow () {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("flow_echarts"));
+      // 绘制图表
+      myChart.setOption({
+        grid: {
+          top: "10%",
+          left: '2%',
+          right: "5%",
+          bottom: "20%",
+          containLabel: true
+        },
+        legend: {
+          bottom: 5,
+      left: 'center',
+          orient: 'horizontal',
+          textStyle: {
+            fontSize: 12
+          },
+          selected: {
+            // 选中'系列1'
+            '流量': true,
+          },
+          data: ['流量']
+        },
+        tooltip: {
+          trigger: "axis",
+          borderColor: "rgba(187,120,247,0.3)",
+          borderWidth: 2,
+          backgroundColor: "#fff",
+          textStyle: {
+            color: "#ccc"
+          },
+          axisPointer: {
+            lineStyle: {
+              color: "#ccc"
+            }
+          }
+        },
+        color: ["rgba(187,120,247,0.9)"],
+        xAxis: {
+          boundaryGap: false,
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: this.equipment_detail.statistics_time
+        },
+        yAxis: {
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#F4F4F4",
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [
+          {
+            name: "流量",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.flow,
+            lineStyle: {
+              color: "rgba(187,120,247,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(187,120,247,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(187,120,247,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      });
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    }
   }
 }
 </script>
@@ -530,6 +984,65 @@ export default {
       }
       .btn_box {
         margin-top: 24px;
+      }
+    }
+  }
+  .sys_detail {
+    z-index: 99999 !important;
+    .el-dialog {
+      width: 840px;
+      .el-dialog__header {
+        display: none;
+      }
+      .el-dialog__body {
+        width: 840px;
+        padding: 30px;
+        .closed_img {
+          position: absolute;
+          top: -18px;
+          right: -18px;
+          cursor: pointer;
+          width: 46px;
+          height: 46px;
+        }
+        .title {
+          height: 24px;
+          line-height: 24px;
+          text-align: left;
+          .title_name {
+            font-size: 20px;
+            color: #333333;
+            line-height: 24px;
+            font-weight: 500;
+          }
+          .mask {
+            width: 24px;
+            height: 0px;
+            border-top: 0px;
+            border-right: 2px solid transparent;
+            border-bottom: 5px solid #0070ff;
+            border-left: 2px solid transparent;
+            transform: rotate3d(0, 0, 1, 90deg);
+            display: inline-block;
+            margin-right: -5px;
+            margin-bottom: 4px;
+            margin-left: -10px;
+          }
+        }
+        .sys_detail_content {
+          text-align: left;
+          .detail_item {
+            margin-top: 24px;
+            p {
+              font-size: 14px;
+              color: #999999;
+            }
+            #cpu,
+            #flow_echarts {
+              height: 200px;
+            }
+          }
+        }
       }
     }
   }

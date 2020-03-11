@@ -2,7 +2,9 @@
   <div id="system_control_licence"
        class="container">
     <div class="content_box">
-      <p class="title">系统版本号：V3.0</p>
+      <p class="title">系统版本号：
+        <span>{{license_version}}</span>
+      </p>
       <el-button class="btn_i"
                  @click="online_active_pop">在线激活</el-button>
       <el-upload class="upload-demo"
@@ -62,6 +64,10 @@
           <el-table-column prop="orgName"
                            label='威胁情报'
                            show-overflow-tooltip>
+            <template slot-scope="scope"
+                      show-overflow-tooltip>
+              {{ scope.row.edition=='1'?'基础版':'高级版'}}
+            </template>
           </el-table-column>
           <el-table-column prop="status"
                            label='许可证状态'
@@ -82,7 +88,7 @@
       <!-- 添加licence -->
       <el-dialog class="add_box pop_box"
                  :close-on-click-modal="false"
-                   :modal-append-to-body="false"
+                 :modal-append-to-body="false"
                  :visible.sync="licence_pop.add">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_add_box"
@@ -143,7 +149,8 @@ export default {
       file_data: {
         bin: ''
       },
-      uploadList: []
+      uploadList: [],
+      license_version: '',
     };
   },
   beforeCreate () {
@@ -165,6 +172,8 @@ export default {
   },
   mounted () {
     this.get_data();
+    this.get_license();
+    this.get_version();
   },
   methods: {
     get_data () {
@@ -177,11 +186,32 @@ export default {
         .then(response => {
           this.license_list = response.data.data.license
           this.licence_pop.key = response.data.data.key
-          console.log(this.license_list);
           this.license_list.list.forEach((item, index) => {
             item.index_cn = index + 1
           });
-          console.log(this.license_list);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 获取license版本
+    get_license () {
+      this.$axios.get('/yiiapi/site/version')
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(data);
+          this.license_version = data.version
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 获取license版本
+    get_version () {
+      this.$axios.get('/yiiapi/site/license-version')
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(data);
         })
         .catch(error => {
           console.log(error);

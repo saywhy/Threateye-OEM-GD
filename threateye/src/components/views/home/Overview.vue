@@ -200,27 +200,27 @@
     <el-dialog class="sys_detail"
                width="840"
                :close-on-click-modal="false"
-               :visible.sync="state_detail">
+               :modal-append-to-body="false"
+               :visible.sync="equipment_detail.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_detail"
            class="closed_img"
            alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">系统状态监控</span>
+        <span class="title_name">
+          <span>{{equipment_detail.title.name}}</span>
+          <span>{{equipment_detail.title.ip}}</span>
+          <span>{{equipment_detail.title.type}}</span>
+          <span>的健康情况</span>
+        </span>
       </div>
       <div class="sys_detail_content">
         <div class="detail_item">
-          <p>CPU</p>
           <div id='cpu'></div>
         </div>
         <div class="detail_item">
-          <p>Memery</p>
-          <div id='memery'></div>
-        </div>
-        <div class="detail_item">
-          <p>Disk</p>
-          <div id='disk'></div>
+          <div id='flow_echarts'></div>
         </div>
       </div>
     </el-dialog>
@@ -286,12 +286,19 @@ export default {
         echart_array: [],
         links_array: [],
       },
-      sys_detail: {
+      equipment_detail: {
+        show: false,
         cpu: [],
         mem: [],
         disk: [],
+        statistics_time: [],
         flow: [],
-      }
+        title: {
+          type: '',
+          ip: '',
+          name: '',
+        }
+      },
     };
   },
   created () {
@@ -730,6 +737,16 @@ export default {
     },
     iot_detail_top (params) {
       console.log(params.dev_ip);
+      console.log(params.dev_name);
+      console.log(params.names);
+      this.equipment_detail.cpu = []
+      this.equipment_detail.mem = []
+      this.equipment_detail.disk = []
+      this.equipment_detail.statistics_time = []
+      this.equipment_detail.flow = []
+      this.equipment_detail.title.type = params.names
+      this.equipment_detail.title.ip = params.dev_ip
+      this.equipment_detail.title.name = params.dev_name
       this.$axios.get('/yiiapi/alert/dev-state', {
         params: {
           ip: params.dev_ip
@@ -741,30 +758,348 @@ export default {
             data
           } = response.data;
           console.log(data);
+          data.forEach(element => {
+            this.equipment_detail.cpu.unshift(element.cpu)
+            this.equipment_detail.mem.unshift(element.mem)
+            this.equipment_detail.disk.unshift(element.disk)
+            this.equipment_detail.statistics_time.unshift(element.statistics_time)
+            this.equipment_detail.flow.unshift(element.flow)
+          });
+          this.equipment_detail.show = true;
+          setTimeout(() => {
+            this.cpu()
+            this.flow()
+          }, 100);
 
         })
         .catch(error => {
           console.log(error);
         })
-      // /alert/dev-state
-      //   sys_detail:{
-      //   cpu:[],
-      //   mem:[],
-      //   disk:[],
-      //   flow:[],
-      // }
-
-
-
-
     },
     closed_sys_box () {
       this.el_dialog = false;
     },
     closed_detail () {
-      this.state_detail = false;
+      this.equipment_detail.show = false;
     },
-
+    cpu () {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("cpu"));
+      // 绘制图表
+      myChart.setOption({
+        grid: {
+          top: "10%",
+          left: '2%',
+          right: "5%",
+          bottom: "20%",
+          containLabel: true
+        },
+        legend: {
+          bottom: 5,
+          left: 'center',
+          orient: 'horizontal',
+          textStyle: {
+            fontSize: 12
+          },
+          selected: {
+            // 选中'系列1'
+            'CPU': true,
+            '内存': true,
+            '硬盘': true,
+          },
+          data: ['CPU', '内存', '硬盘']
+        },
+        tooltip: {
+          trigger: "axis",
+          borderColor: "rgba(2,136,209,0.3)",
+          borderWidth: 2,
+          backgroundColor: "#fff",
+          textStyle: {
+            color: "#ccc"
+          },
+          axisPointer: {
+            lineStyle: {
+              color: "#ccc"
+            }
+          }
+        },
+        xAxis: {
+          boundaryGap: false,
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: this.equipment_detail.statistics_time,
+        },
+        yAxis: {
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#F4F4F4",
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
+        series: [
+          {
+            name: "CPU",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.cpu,
+            lineStyle: {
+              color: "rgba(2,136,209,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(2,136,209,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(2,136,209,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          },
+          {
+            name: "内存",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.mem,
+            lineStyle: {
+              color: "rgba(205,220,57,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(205,220,57,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(205,220,57,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          },
+          {
+            name: "硬盘",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.disk,
+            lineStyle: {
+              color: "rgba(76,175,80,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(76,175,80,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(76,175,80,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          },
+        ]
+      });
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    },
+    flow () {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("flow_echarts"));
+      // 绘制图表
+      myChart.setOption({
+        grid: {
+          top: "10%",
+          left: '2%',
+          right: "5%",
+          bottom: "20%",
+          containLabel: true
+        },
+        legend: {
+          bottom: 5,
+          left: 'center',
+          orient: 'horizontal',
+          textStyle: {
+            fontSize: 12
+          },
+          selected: {
+            // 选中'系列1'
+            '流量': true,
+          },
+          data: ['流量']
+        },
+        tooltip: {
+          trigger: "axis",
+          borderColor: "rgba(187,120,247,0.3)",
+          borderWidth: 2,
+          backgroundColor: "#fff",
+          textStyle: {
+            color: "#ccc"
+          },
+          axisPointer: {
+            lineStyle: {
+              color: "#ccc"
+            }
+          }
+        },
+        color: ["rgba(187,120,247,0.9)"],
+        xAxis: {
+          boundaryGap: false,
+          //网格样式
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: this.equipment_detail.statistics_time
+        },
+        yAxis: {
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#F4F4F4",
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [
+          {
+            name: "流量",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: this.equipment_detail.flow,
+            lineStyle: {
+              color: "rgba(187,120,247,0.9)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(187,120,247,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(187,120,247,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      });
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    }
   },
   components: {
     topLeft,
@@ -1071,9 +1406,8 @@ export default {
               color: #999999;
             }
             #cpu,
-            #memery,
-            #disk {
-              height: 150px;
+            #flow_echarts {
+              height: 200px;
             }
           }
         }

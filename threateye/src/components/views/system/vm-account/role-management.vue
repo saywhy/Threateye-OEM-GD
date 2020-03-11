@@ -72,7 +72,7 @@
     <!-- 新增 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="role_state.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -132,7 +132,7 @@
     <!-- 编辑 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="role_state.edit">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -287,10 +287,7 @@ export default {
               id: 109,
               label: 'IOC扫描器',
             },
-            {
-              id: 117,
-              label: '沙箱',
-            },
+
           ]
         },
         // 报表
@@ -393,9 +390,34 @@ export default {
   },
   mounted () {
     this.get_data();
+    this.get_version();
   },
 
   methods: {
+    // 获取license版本
+    get_version () {
+      this.$axios.get('/yiiapi/site/license-version')
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(data.edition);
+          if (data.edition == 2) {
+            this.data.forEach(element => {
+              if (element.label == '追查') {
+                element.children.push({
+                  id: 117,
+                  label: '沙箱',
+                })
+              }
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+
+
+
     get_data () {
       this.$axios.get('/yiiapi/user/role-list', {
         params: {
@@ -420,8 +442,6 @@ export default {
       this.role_add.describe = ''
       this.role_add.permissions_id = []
       this.resetChecked()
-      console.log(this.$refs.tree.getCheckedNodes());
-      console.log(this.$refs.tree.getHalfCheckedNodes());
     },
     edit_box (item) {
       this.role_edit = {}
@@ -613,7 +633,7 @@ export default {
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: response.data.msg,
                   type: 'error',
                 }
               );

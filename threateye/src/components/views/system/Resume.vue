@@ -2,9 +2,9 @@
   <div id="system_control_resume"
        class="container">
     <div class="content_box">
-      <p class="title">恢复出场设置</p>
+      <p class="title">恢复出厂设置</p>
       <el-button class="btn_i"
-                 @click="restore">恢复出场设置</el-button>
+                 @click="restore">恢复出厂设置</el-button>
       <p class="title marin_top">重启平台</p>
       <el-button class="btn_i"
                  @click="reboot">立即重启</el-button>

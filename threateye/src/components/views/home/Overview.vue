@@ -184,6 +184,7 @@
     <el-dialog class="sys_box"
                width="840"
                :close-on-click-modal="false"
+               :modal-append-to-body="false"
                :visible.sync="el_dialog">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_sys_box"
@@ -312,7 +313,7 @@ export default {
     init_top_left () {
       this.$axios.get('/yiiapi/alert/system-state')
         .then((resp) => {
-          //console.log(resp)
+          console.log(resp)
           let {
             status,
             data
@@ -506,6 +507,7 @@ export default {
           var data_item1 = {
             name: '探针' + index,
             names: '探针',
+            dev_name: item.name,
             dev_ip: item.ip,
             status: item.status,
             symbolSize: 50,
@@ -538,6 +540,7 @@ export default {
         var data_item2 = {
           name: '引擎',
           names: '引擎',
+          dev_name: this.equipment.engine[0].name,
           dev_ip: this.equipment.engine[0].ip,
           status: this.equipment.engine[0].status,
           symbolSize: 50,
@@ -567,6 +570,7 @@ export default {
         var data_item3 = {
           name: '引擎+探针',
           names: '引擎+探针',
+          dev_name: this.equipment.engine_probe[0].name,
           dev_ip: this.equipment.engine_probe[0].ip,
           status: this.equipment.engine_probe[0].status,
           symbolSize: 50,
@@ -599,6 +603,7 @@ export default {
           var data_item1 = {
             name: '沙箱' + index,
             names: '沙箱',
+            dev_name: item.name,
             dev_ip: item.ip,
             status: item.status,
             symbolSize: 50,
@@ -679,7 +684,7 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function (params, trigger) {
-            return '设备：' + params.data.names + '</br>' + 'IP地址：' + params.data.dev_ip + '</br>' + '状态：' + params.data.status
+            return '设备：' + params.data.dev_name + '</br>' + 'IP地址：' + params.data.dev_ip + '</br>' + '状态：' + params.data.status
           }
         },
         animationDurationUpdate: 1500,
@@ -923,7 +928,7 @@ export default {
           th:nth-child(3) {
             /*.cell{
                           padding: 0!important;
-
+          
                         }*/
           }
         }

@@ -35,26 +35,12 @@
               </el-button>
             </div>
 
-            <div class="detail-toggle">
-              <label class="tog-types" v-if="$index == 0"
-                     v-show="assets_all.base[0].value.length > 15">
+            <div class="detail-toggle" v-if="$index == item.pid"
+                 @click="toggle_types($index,item.toggle_show)"
+                 v-show="assets_all.base[$index].souce_value.length > 15">
+              <label class="tog-types">
                 <span class="name">更多</span>
-                <i class="icons"></i>
-              </label>
-              <label class="tog-types" v-if="$index == 1"
-                     v-show="assets_all.base[1].value.length > 15">
-                <span class="name">更多</span>
-                <i class="icons"></i>
-              </label>
-              <label class="tog-types" v-if="$index == 2"
-                     v-show="assets_all.base[2].value.length > 15">
-                <span class="name">更多</span>
-                <i class="icons"></i>
-              </label>
-              <label class="tog-types" v-if="$index == 3"
-                     v-show="assets_all.base[3].value.length > 15">
-                <span class="name">更多</span>
-                <i class="icons"></i>
+                <i class="icons" :class="{'checked': item.toggle_show }"></i>
               </label>
             </div>
           </li>
@@ -380,6 +366,7 @@
     components: {
       VmHandleTabs
     },
+
     data() {
       return {
         //頂部數據
@@ -388,18 +375,14 @@
         assets_all: {
           tags: [],
           base: [
-            {name: '基础分类', value: []},
-            {name: '业务', value: []},
-            {name: '分支', value: []},
-            {name: '部门', value: []}
+            {name: '基础分类', souce_value:[], value: [],toggle_show:false,pid:0},
+            {name: '业务', souce_value:[], value: [],toggle_show:false,pid:1},
+            {name: '分支', souce_value:[], value: [],toggle_show:false,pid:2},
+            {name: '部门', souce_value:[], value: [],toggle_show:false,pid:3},
+            {name: '未分类',souce_value:[], value: [],toggle_show:false,pid:4}
           ]
         },
-
         toggle_top_show: true,
-        toggle_1_show: false,
-        toggle_2_show: false,
-        toggle_3_show: false,
-        toggle_4_show: false,
         params: {
           key: "",
           threat: "",
@@ -585,10 +568,17 @@
                 return {name:v,flag:false};
               });
 
-              this.assets_all.base[0].value = data.base_category;
-              this.assets_all.base[1].value = data.business;
-              this.assets_all.base[2].value = data.branch;
-              this.assets_all.base[3].value = data.department;
+              let obj = data.others;
+              let attr = [];
+              Object.keys(obj).forEach(function(k){
+                attr.push({name:obj[k],flag:false});
+              });
+              data.others = attr;
+              this.assets_all.base[0].value = this.assets_all.base[0].souce_value = data.base_category;
+              this.assets_all.base[1].value = this.assets_all.base[1].souce_value = data.business;
+              this.assets_all.base[2].value = this.assets_all.base[2].souce_value = data.branch;
+              this.assets_all.base[3].value = this.assets_all.base[3].souce_value = data.department;
+              this.assets_all.base[4].value = this.assets_all.base[4].souce_value = data.others;
             }
           });
       },
@@ -647,7 +637,7 @@
               this.table.loading = false;
 
 
-              console.log(data)
+             // console.log(data)
             }
           })
           .catch(error => {
@@ -673,12 +663,23 @@
       deleteAllAssets (item){
 
         this.assets_all.base[item.index].value[item.idx].flag = false;
-
         let tags = this.assets_all.tags;
         const index = tags.findIndex(item => item.name === item.name);
         this.assets_all.tags.splice(index, 1);
       },
       //*******************************需要修改
+
+      //全部资产小分类展开折叠事件
+      toggle_types(index,flag){
+        let souse = this.assets_all.base[index].souce_value;
+        let souse_str = souse.slice(0,15);
+        if(!flag){
+          this.assets_all.base[index].value = souse_str;
+        }else {
+          this.assets_all.base[index].value = souse;
+        }
+        this.assets_all.base[index].toggle_show = !this.assets_all.base[index].toggle_show;
+      },
 
       //搜索按鈕點擊事件
       submitClick() {
@@ -696,7 +697,7 @@
         this.assets_all.base[1].value.map(item => item.flag = false);
         this.assets_all.base[2].value.map(item => item.flag = false);
         this.assets_all.base[3].value.map(item => item.flag = false);
-
+        this.assets_all.base[4].value.map(item => item.flag = false);
         this.params = {
           key: "",
           threat: "",
@@ -726,7 +727,6 @@
       /************************************/
       //进入详情页
       detailClick(row, column, event) {
-        console.log(row)
         this.$router.push({path:'/detail/assets',name: 'detail_assets',
           query: {asset_ip:row.asset_ip,status:row.status}});
       },
@@ -809,8 +809,9 @@
               this.$refs.multipleTable.clearSelection();
 
               this.get_list_risk();
+              this.get_list_all();
 
-              data.base_category = data.base_category.map(function (v,k) {
+             /* data.base_category = data.base_category.map(function (v,k) {
                 return {name:v,flag:false};
               });
               data.business = data.business.map(function (v,k) {
@@ -823,10 +824,17 @@
                 return {name:v,flag:false};
               });
 
-              this.assets_all.base[0].value = data.base_category;
-              this.assets_all.base[1].value = data.business;
-              this.assets_all.base[2].value = data.branch;
-              this.assets_all.base[3].value = data.department;
+              let obj = data.others;
+              let attr = [];
+              Object.keys(obj).forEach(function(k){
+                attr.push({name:obj[k],flag:false});
+              });
+              data.others = attr;
+              this.assets_all.base[0].value = this.assets_all.base[0].souce_value = data.base_category;
+              this.assets_all.base[1].value = this.assets_all.base[1].souce_value = data.business;
+              this.assets_all.base[2].value = this.assets_all.base[2].souce_value = data.branch;
+              this.assets_all.base[3].value = this.assets_all.base[3].souce_value = data.department;
+              this.assets_all.base[4].value = this.assets_all.base[4].souce_value = data.others;*/
 
             } else {
 
@@ -1240,7 +1248,7 @@
       .assets_all_list {
         height: 60px;
         line-height: 60px;
-        border-bottom: 1px solid #ececec;
+
         display: flex;
         position: relative;
 
@@ -1303,12 +1311,11 @@
       .assets_all_detail {
         background: #ccc;
         font-family: PingFangSC-Regular;
-
+        border-top: 1px solid #ececec;
         .all_detail {
           .all_detail_item {
             display: flex;
             height: 100%;
-
             .title {
               width: 120px;
               display: inline-block;
@@ -1317,33 +1324,26 @@
               color: #333;
               text-align: left;
               padding-top: 12px;
-              padding-left: 20px;
+              padding-left: 24px;
             }
-
             .detail_list {
               flex: 1;
               text-align: left;
-              padding: 0 3px;
-              /*line-height: 32px;*/
-              /*padding: 8px 10px;*/
-              background: #fff;
-              border-bottom: 1px solid #ececec;
-              height: 40px;
-              overflow-y: hidden;
-              display: inline-block;
+              padding: 5px;
               font-size: 0;
-
+              background: #fff;
+              min-height: 48px;
+              display: inline-block;
+              border-bottom: 1px solid #ececec;
               /deep/
               .d_btn {
-                width: 88px;
+                width: 90px;
                 height: 28px;
-                line-height: 10px;
                 border: 1px solid #ECECEC;
-                margin: 6px 3px 6px 3px;
+                margin: 3px;
                 background-color: #fff;
                 padding: 0 !important;
                 color: #333;
-
                 &.d_btn_active {
                   border: 1px solid #0070FF;
                   color: #0070FF;
@@ -1381,16 +1381,19 @@
                   background-repeat: no-repeat;
                   background-size: 16px;
                   background-position: 0px -2px;
-                  background-image: url("../../../assets/images/handle/others/tog-types-down.png");
+                  background-image: url("../../../assets/images/handle/others/tog-types.png");
+                  &.checked{
+                    background-image: url("../../../assets/images/handle/others/tog-types-down.png");
+                  }
                 }
               }
             }
 
             &:last-child {
               .detail_list {
-                border-width: 0;
+                border-top:1px solid #fff;
+                border-bottom:1px solid #fff;
               }
-
               .detail-toggle {
                 border-width: 0;
               }

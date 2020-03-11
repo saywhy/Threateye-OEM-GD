@@ -72,18 +72,16 @@ export default {
 
           console.log(datas)
 
-          let {
-            status,
-            msg,
-            data
-          } = datas;
+          let {status, msg, data} = datas;
 
           let tips = '输入用户名或密码错误';
           if (msg.username) {
             tips = msg.username[0];
           } else if (msg.password) {
             tips = msg.password[0];
-          } else {
+          } else if(msg.allow_ip) {
+            tips = msg.allow_ip;
+          }else {
             tips = msg;
           }
           //用户名密码正确
@@ -107,31 +105,41 @@ export default {
       commit,
       dispatch
     }) {
-      //测试数据
-      //let resp = await axios('/static/data/auth.json');
-      //真实数据
-      let resp = await axios('/yiiapi/site/menu');
+      try {
+        //测试数据
+        //let resp = await axios('/static/data/auth.json');
+        //真实数据
+        let resp = await axios('/yiiapi/site/menu');
 
-      let roles = forRoleList(resp);
+        let roles = forRoleList(resp);
 
-      // console.log(roles);
-      commit('SET_ROLES', roles);
-      return roles;
+        // console.log(roles);
+        commit('SET_ROLES', roles);
+        return roles;
+
+      }catch (err) {
+        console.log(err);
+      }
+
     },
 
     async LogOut({
       commit,
       dispatch
     }) {
-      let auth = await axios('/static/data/layout.json');
+      try{
+        let resp = await axios('/yiiapi/site/logout');
+        let {status,msg,data} = resp.data;
 
-      let roles = auth.roles;
-      let token = auth.token;
+        if(status == 0){
+          commit('SET_ROLES', []);
+          commit('SET_TOKEN', data);
+          removeToken();
+        }
+      }catch (err) {
+        console.log(err);
+      }
 
-      commit('SET_ROLES', roles);
-      commit('SET_TOKEN', token);
-
-      removeToken();
     },
 
     GenerateRoutes({

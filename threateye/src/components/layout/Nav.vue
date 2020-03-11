@@ -367,18 +367,14 @@ export default {
     },
     //退出
     logout () {
-      this.$axios.get('/yiiapi/site/logout')
-        .then(response => {
-          if (response.data.status == 0) {
-            console.log('退出');
-            this.$store.dispatch('LogOut').then(() => {
-              //In order to re-instantiate the vue-router object to avoid bugs
-              location.reload();
-            })
-          }
-        }).catch(error => {
-          console.log(error);
-        })
+      this.$store.dispatch('LogOut')
+        .then((resp) => {
+        //In order to re-instantiate the vue-router object to avoid bugs
+        this.$message.success('退出登录成功');
+        location.reload();
+      }).catch(error => {
+        this.$message.error('退出登录操作失败'+error);
+      })
     },
     //通知点击事件
     messageClick () {

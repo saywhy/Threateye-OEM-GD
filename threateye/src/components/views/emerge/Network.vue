@@ -1187,9 +1187,6 @@
         left: 24px;
       }
     }
-    /*.el-input__inner {
-      height: 38px;
-    }*/
     .alert_risk {
       border-radius: 4px;
       margin-top: 20px;
@@ -1200,71 +1197,45 @@
 
       /deep/
       .handle_table {
-        .degree_box {
-          button {
-            height: 30px;
-            width: 72px;
-            padding: 0;
-            border: 0;
+        .el-table__header-wrapper{
+          thead.has-gutter{
+            th:nth-child(1) {
+              .cell {
+                padding: 0;
+                text-align: right;
+                font-size: 14px;
+                color: #999999;
+                vertical-align: unset;
+              }
+            }
           }
         }
-        .high {
-          button {
-            background: #dc5f5f;
-          }
-        }
-        .mid {
-          button {
-            background: #e0c840;
-          }
-        }
-        .low {
-          button {
-            background: #47cad9;
-          }
-        }
-        thead {
-          font-family: PingFangMedium;
-          font-size: 14px;
-          color: #333333;
-          th {
-            background: #f8f8f8;
-            border: 0 !important;
-          }
-        }
-        th:nth-child(1) {
-          .cell {
-            padding: 0;
-            text-align: right;
-            font-size: 14px;
-            color: #999999;
-          }
-        }
-        tbody {
-          td {
-            font-family: PingFang;
-            font-size: 14px;
-            color: #333333;
+        .el-table__body-wrapper{
+          tbody {
+            td {
+              font-family: PingFang;
+              font-size: 14px;
+              color: #333333;
+            }
           }
         }
         .el-table-column--selection {
           .cell {
             padding: 0 !important;
             text-align: center;
-          }
-          .select_all {
-            font-family: PingFang;
-            font-size: 14px;
-            color: #999999;
+            .new_dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 20px;
+              background: #ff5f5c;
+              float: right;
+            }
           }
         }
-        .new_dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 8px;
-          background: #ff5f5c;
-          float: right;
-        }
+      }
+      /deep/
+      .handle-pagination{
+        margin: 20px 0;
       }
     }
 

@@ -916,7 +916,7 @@ export default {
         }
         .item_right {
           .item_right_title {
-            font-family: PingFangSC-Medium;
+            font-family: PingFangMedium;
             font-size: 18px;
             color: #333333;
             margin-top: 25px;

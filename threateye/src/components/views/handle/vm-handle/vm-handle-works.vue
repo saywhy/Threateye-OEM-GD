@@ -938,7 +938,7 @@
             margin-right: 8px;
             line-height: 0;
             margin-left: 0;
-            font-family: PingFangSC-Medium;
+            font-family: PingFangMedium;
             &.b_btn_add {
               color: #fff;
               background: #0070FF;
@@ -972,7 +972,7 @@
           .item {
             font-size: 14px;
             color: #666666;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             margin-right: 20px;
             .num {
               color: #0070FF;
@@ -1035,7 +1035,7 @@
       }
     }
     thead {
-      font-family: PingFangSC-Medium;
+      font-family: PingFangMedium;
       font-size: 14px;
       color: #333333;
       th {
@@ -1053,7 +1053,7 @@
     }
     tbody {
       td {
-        font-family: PingFangSC-Regular;
+        font-family: PingFang;
         font-size: 14px;
         color: #333333;
       }
@@ -1064,7 +1064,7 @@
         text-align: center;
       }
       .select_all {
-        font-family: PingFangSC-Regular;
+        font-family: PingFang;
         font-size: 14px;
         color: #999999;
       }
@@ -1252,7 +1252,7 @@
                 height: 92px;
                 font-size: 14px;
                 color: #333;
-                font-family: PingFangSC-Regular;
+                font-family: PingFang;
               }
             }
             .el-textarea__inner:hover {

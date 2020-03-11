@@ -210,7 +210,7 @@ export default {
   .r_top {
     background: #fff;
     min-height: 900px;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangMedium;
     .r_content_top {
       height: 80px;
       line-height: 80px;

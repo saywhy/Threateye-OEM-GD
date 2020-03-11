@@ -1,11 +1,13 @@
 <template>
-    <div class="back-title" v-cloak>
-      <a class="back" onclick="javascript:window.history.go(-1);">
-        <span class="el-icon-arrow-left"></span>
-        <span class="e-title">返回</span>
-      </a>
-      <h4 class="e-name">{{titleName}}</h4>
-    </div>
+  <div class="back-title"
+       v-cloak>
+    <a class="back"
+       onclick="javascript:window.history.go(-1);">
+      <span class="el-icon-arrow-left"></span>
+      <span class="e-title">返回</span>
+    </a>
+    <h4 class="e-name">{{titleName}}</h4>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -18,18 +20,18 @@ export default {
     }
   },
   directives: {
-   /* back: {
-      inserted(el, binding) {
-        let back = document.createElement("a");
-        back.className = "back";
-        back.style = `position: absolute;left:56px;top: 24px;font-size: 14px;display: block;cursor: pointer;color: #999999;`;
-        back.innerHTML = `<span class="el-icon-arrow-left"></span><span class="va-title">返回</span>`;
-        back.onclick = function() {
-          window.history.go(-1);
-        };
-        el.appendChild(back);
-      }
-    }*/
+    /* back: {
+       inserted(el, binding) {
+         let back = document.createElement("a");
+         back.className = "back";
+         back.style = `position: absolute;left:56px;top: 24px;font-size: 14px;display: block;cursor: pointer;color: #999999;`;
+         back.innerHTML = `<span class="el-icon-arrow-left"></span><span class="va-title">返回</span>`;
+         back.onclick = function() {
+           window.history.go(-1);
+         };
+         el.appendChild(back);
+       }
+     }*/
   }
 };
 </script>
@@ -42,14 +44,14 @@ export default {
   position: relative;
   .back {
     position: absolute;
-    left:56px;
+    left: 56px;
     top: 24px;
     font-size: 14px;
     display: block;
     cursor: pointer;
     color: #999999;
     .e-title {
-      font-family: PingFangSC-Regular;
+      font-family: PingFang;
       font-size: 14px;
       color: #999999;
       line-height: 18px;
@@ -61,7 +63,7 @@ export default {
     left: 56px;
     bottom: 12px;
     font-size: 20px;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangMedium;
     color: #333333;
     font-weight: bold;
   }

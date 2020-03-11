@@ -138,3 +138,17 @@ input:-ms-input-placeholder {
 .red_necessary {
   color: #ff5f5c;
 }
+
+@font-face {
+  font-family: "PingFangMedium";
+  src: url("../family/PingFang-Medium.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFang";
+  src: url("../family/PingFang-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}

@@ -416,7 +416,7 @@ export default {
             line-height: 56px;
             font-size: 16px;
             text-align: center;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             -webkit-transition: 0s height, 0s padding-top, 0s padding-bottom;
             transition: 0s height, 0s padding-top, 0s padding-bottom;
             i.e-nav-icon {
@@ -490,7 +490,7 @@ export default {
             font-size: 14px;
             cursor: pointer;
             padding: 0 3px;
-            font-family: 'PingFangSC-Regular';
+            font-family: 'PingFang';
           }
         }
       }
@@ -530,7 +530,7 @@ export default {
 <style lang="less">
 .nav-dropdown-menu {
   top: 60px !important;
-  font-family: 'PingFangSC-Regular';
+  font-family: 'PingFang';
   a {
     text-decoration: none;
   }

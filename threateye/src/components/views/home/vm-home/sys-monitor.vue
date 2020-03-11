@@ -962,7 +962,7 @@ export default {
           margin-left: 6px;
           display: inline-block;
           vertical-align: super;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
         }
       }
       #graph {

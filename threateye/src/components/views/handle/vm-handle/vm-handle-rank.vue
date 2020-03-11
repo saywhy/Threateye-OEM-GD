@@ -227,7 +227,7 @@
         color: #aaa;
         padding: 0;
         border-width: 0;
-        font-family: PingFangSC-Regular;
+        font-family: PingFang;
         &.is-active {
           color: #0070FF;
         }

@@ -61,7 +61,7 @@
         }
         .progress-title{
           display: inline-block;
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           font-size: 14px;
           color: #333333;
           margin: 0 20px 0 0;

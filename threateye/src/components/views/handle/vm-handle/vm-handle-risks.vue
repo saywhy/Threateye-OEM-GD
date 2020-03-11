@@ -1123,7 +1123,7 @@
           color: #333;
           font-weight: bold;
           text-align: left;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
         }
         &.ost-1{
           width: 1221px;
@@ -1158,7 +1158,7 @@
         }
         .osm-title{
           display: inline-block;
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           font-size: 16px;
           font-weight: bold;
           color: #333333;
@@ -1169,14 +1169,14 @@
         height: 220px;
         padding: 16px 24px;
         .osm-dt{
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 14px;
           color: #333333;
           font-weight: bold;
           margin: 5px 0;
         }
         .osm-dd{
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           font-size: 14px;
           color: #666666;
         }
@@ -1214,7 +1214,7 @@
           }
         }
         thead {
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 14px;
           color: #333333;
           th {
@@ -1232,7 +1232,7 @@
         }
         tbody {
           td {
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 14px;
             color: #333333;
           }
@@ -1243,7 +1243,7 @@
             text-align: center;
           }
           .select_all {
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 14px;
             color: #999999;
           }
@@ -1512,7 +1512,7 @@
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFangSC-Regular;
+                  font-family: PingFang;
                 }
               }
               .el-textarea__inner:hover {

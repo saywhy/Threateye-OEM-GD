@@ -105,7 +105,7 @@
         padding: 0 24px;
         color: #333;
         font-size: 16px;
-        font-family: 'PingFangSC-Medium';
+        font-family: 'PingFangMedium';
         .el-breadcrumb__item {
           .el-breadcrumb__inner {
             cursor: pointer;

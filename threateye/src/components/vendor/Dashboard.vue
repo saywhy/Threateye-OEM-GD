@@ -134,7 +134,7 @@
       font-size: 16px;
       width: 100%;
       z-index: -1;
-      font-family: PingFangSC-Regular;
+      font-family: PingFang;
     }
   }
   .slider-enter{

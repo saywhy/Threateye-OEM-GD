@@ -1,9 +1,9 @@
 export default (Vue) => {
-    Vue.directive('more', {
+  Vue.directive('more', {
       inserted: function (el, binding) {
         //console.log(binding);
         let more = document.createElement("a");
-        more.style = "display:inline-table;color:#0070FF;font-size: 12px;font-family: PingFangSC-Regular;";
+        more.style = "display:inline-table;color:#0070FF;font-size: 12px;font-family: PingFang;";
         more.innerHTML = `<span>更多</span><span class="el-icon-d-arrow-right"></span>`;
         /*more.onclick = function(){
         }*/
@@ -45,17 +45,17 @@ export default (Vue) => {
       }
     }),
     Vue.directive("status", {
-        inserted: function (el, binding) {
-          console.log(el);
-          console.log(binding);
+      inserted: function (el, binding) {
+        console.log(el);
+        console.log(binding);
 
-          let badge = document.createElement("sup");
-          badge.className = 'e-badge';
-          badge.innerText = '1111';
-          let status = `<div>超小按钮</div>`
-          el.appendChild(status);
+        let badge = document.createElement("sup");
+        badge.className = 'e-badge';
+        badge.innerText = '1111';
+        let status = `<div>超小按钮</div>`
+        el.appendChild(status);
 
-          /*if (!binding.value ||
+        /*if (!binding.value ||
             binding.value == '' ||
             binding.value == 0) {
             return false;
@@ -79,8 +79,7 @@ export default (Vue) => {
         white-space: nowrap;
         border-width: 0;`;*/
 
-         // el.appendChild(badge);
-        }
-      })
+        // el.appendChild(badge);
+      }
+    })
 }
-

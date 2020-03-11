@@ -101,7 +101,7 @@
         .e-btn{
           width: 148px;
           height: 42px;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 16px;
           cursor: pointer;
           border: 1px solid #0070FF;

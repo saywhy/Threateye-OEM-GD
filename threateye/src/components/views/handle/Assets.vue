@@ -1259,7 +1259,7 @@
           color: #333333;
           font-weight: bold;
           font-size: 16px;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
         }
 
         .all_list {
@@ -1287,7 +1287,7 @@
           text-align: center;
 
           .name {
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 12px;
             color: #666666;
           }
@@ -1312,7 +1312,7 @@
 
       .assets_all_detail {
         background: #ccc;
-        font-family: PingFangSC-Regular;
+        font-family: PingFang;
         border-top: 1px solid #ececec;
         .all_detail {
           .all_detail_item {
@@ -1369,7 +1369,7 @@
                 left: 9px;
 
                 .name {
-                  font-family: PingFangSC-Regular;
+                  font-family: PingFang;
                   font-size: 12px;
                   color: #0070FF;
                   display: inline-block;
@@ -1664,7 +1664,7 @@
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFangSC-Regular;
+                  font-family: PingFang;
                 }
               }
               .el-textarea__inner:hover {

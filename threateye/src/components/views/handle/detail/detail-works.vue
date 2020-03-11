@@ -346,7 +346,7 @@ export default {
           transform: scale(.5);
         }
         .top_left_title {
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           vertical-align: middle;
           font-size: 16px;
           color: #333333;
@@ -368,7 +368,7 @@ export default {
             font-size: 14px;
             background: #0070ff;
             border: 1px solid #0070ff;
-            font-family: PingFangSC-Medium;
+            font-family: PingFangMedium;
           }
         }
 
@@ -388,7 +388,7 @@ export default {
           line-height: 36px;
           .title {
             width: 120px;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 16px;
             color: #333333;
             .b_i{
@@ -468,7 +468,7 @@ export default {
                       color: #333;
                       font-size: 14px;
                       font-weight: bold;
-                      font-family: PingFangSC-Medium;
+                      font-family: PingFangMedium;
                     }
                   }
                 }
@@ -531,7 +531,7 @@ export default {
             transform: scale(.5);
           }
           .top_left_title {
-            font-family: PingFangSC-Medium;
+            font-family: PingFangMedium;
             vertical-align: middle;
             font-size: 16px;
             color: #333333;
@@ -558,7 +558,7 @@ export default {
           }
           .lst_left_title{
             position: absolute;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 12px;
             color: #999999;
             text-align: center;
@@ -573,7 +573,7 @@ export default {
             top: 6px;
             font-size: 12px;
             color: #999999;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             .lst_time{
               margin-right: 5px;
               height: 16px;
@@ -592,7 +592,7 @@ export default {
             top: 34px;
             font-size: 14px;
             color: #333333;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             overflow: hidden;
             display: -webkit-box;
             text-overflow: ellipsis;
@@ -632,7 +632,7 @@ export default {
         outline: none;
         font-size: 14px;
         background: #0070FF;
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
       }
     }
 

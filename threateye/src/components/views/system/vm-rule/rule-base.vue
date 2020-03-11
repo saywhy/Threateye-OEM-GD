@@ -253,7 +253,7 @@ export default {
   text-align: left;
   .title {
     font-size: 16px;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangMedium;
     color: #333333;
     margin-bottom: 24px;
   }

@@ -1159,7 +1159,7 @@ export default {
         .title {
           height: 60px;
           line-height: 60px;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 18px;
           color: #333333;
           .title_left {
@@ -1241,7 +1241,7 @@ export default {
   padding: 0 !important;
   /deep/ .common-table {
     width: 100%;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangMedium;
     /deep/ .el-table__header-wrapper {
       .el-table__header {
         thead.has-gutter {
@@ -1344,7 +1344,7 @@ export default {
             margin-left: 6px;
             display: inline-block;
             vertical-align: super;
-            font-family: PingFangSC-Medium;
+            font-family: PingFangMedium;
           }
         }
         #graph {

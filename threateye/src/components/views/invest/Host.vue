@@ -459,7 +459,7 @@ export default {
       width: 112px;
       height: 34px;
       padding: 0;
-      font-family: PingFangSC-Regular;
+      font-family: PingFang;
       &.active {
         color: #fff;
         background: #0070ff;

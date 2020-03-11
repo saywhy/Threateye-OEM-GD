@@ -1226,7 +1226,7 @@
           }
         }
         thead {
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 14px;
           color: #333333;
           th {
@@ -1244,7 +1244,7 @@
         }
         tbody {
           td {
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 14px;
             color: #333333;
           }
@@ -1255,7 +1255,7 @@
             text-align: center;
           }
           .select_all {
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 14px;
             color: #999999;
           }
@@ -1521,7 +1521,7 @@
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFangSC-Regular;
+                  font-family: PingFang;
                 }
               }
               .el-textarea__inner:hover {

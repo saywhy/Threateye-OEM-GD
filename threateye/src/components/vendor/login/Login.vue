@@ -86,7 +86,7 @@
         margin-top: 48px;
       }
       .l_product_content{
-        font-family: PingFangSC-Regular;
+        font-family: PingFang;
         font-size: 20px;
         color: #FFFFFF;
         margin-top: 12px;

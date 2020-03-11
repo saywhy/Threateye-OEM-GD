@@ -2665,14 +2665,14 @@ export default {
 .emerge_table {
   th {
     .cell {
-      font-family: PingFangSC-Medium;
+      font-family: PingFangMedium;
       font-size: 14px;
       color: #333333;
     }
   }
   td {
     .cell {
-      font-family: PingFangSC-Regular;
+      font-family: PingFang;
       font-size: 14px;
       color: #333333;
     }
@@ -2936,7 +2936,7 @@ export default {
                 height: 92px;
                 font-size: 14px;
                 color: #333;
-                font-family: PingFangSC-Regular;
+                font-family: PingFang;
               }
             }
             .el-textarea__inner:hover {
@@ -3189,13 +3189,13 @@ export default {
               height: 20px;
               font-size: 10px;
               line-height: 20px;
-              font-family: PingFangSC-Regular;
+              font-family: PingFang;
               transform: scale(0.8);
               display: block;
             }
           }
           .src_active {
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 16px;
             color: #0070ff;
             cursor: pointer;
@@ -3210,7 +3210,7 @@ export default {
     padding: 24px 56px 36px 56px;
     .time_title {
       height: 22px;
-      font-family: PingFangSC-Medium;
+      font-family: PingFangMedium;
       font-size: 16px;
       color: #333333;
       margin-bottom: 12px;
@@ -3293,7 +3293,7 @@ export default {
         background: #fff;
         .title {
           height: 42px;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 16px;
           color: #333333;
           border-bottom: 1px solid #ececec;
@@ -3321,13 +3321,13 @@ export default {
               display: flex;
               .info_top_item_title {
                 width: 150px;
-                font-family: PingFangSC-Regular;
+                font-family: PingFang;
                 font-size: 16px;
                 color: #333333;
               }
               .info_top_item_content {
                 flex: 1;
-                font-family: PingFangSC-Regular;
+                font-family: PingFang;
                 font-size: 16px;
                 color: #666666;
               }
@@ -3339,7 +3339,7 @@ export default {
             display: flex;
             .info_bom_title {
               width: 150px;
-              font-family: PingFangSC-Regular;
+              font-family: PingFang;
               font-size: 16px;
               color: #333333;
             }
@@ -3382,7 +3382,7 @@ export default {
               height: 42px;
               text-align: left;
               background: #f8f8f8;
-              font-family: PingFangSC-Medium;
+              font-family: PingFangMedium;
               font-size: 14px;
               color: #333333;
               line-height: 42px;
@@ -3414,7 +3414,7 @@ export default {
       height: 62px;
       border-bottom: 1px solid #ececec;
       .attack_stage_title {
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
         font-size: 16px;
         color: #333333;
         line-height: 62px;
@@ -3480,7 +3480,7 @@ export default {
       height: 62px;
       border-bottom: 1px solid #ececec;
       .suggest_title {
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
         font-size: 16px;
         color: #333333;
         line-height: 62px;
@@ -3498,7 +3498,7 @@ export default {
         vertical-align: middle;
       }
       .suggest_bom_title {
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
         font-size: 14px;
         color: #333333;
       }
@@ -3525,7 +3525,7 @@ export default {
       .el-table {
         th {
           .cell {
-            font-family: PingFangSC-Medium;
+            font-family: PingFangMedium;
             font-size: 14px;
             color: #333333;
           }
@@ -3533,7 +3533,7 @@ export default {
       }
 
       th > .cell {
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
         font-size: 14px;
         color: #333333;
       }

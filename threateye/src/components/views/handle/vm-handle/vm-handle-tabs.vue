@@ -59,7 +59,7 @@
           background-size: 36px;
         }
         .vat-title{
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           width: 120px;
           font-size: 18px;
           color: #333;
@@ -69,7 +69,7 @@
         }
         .vat-count{
           position: absolute;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 48px;
           color: #333;
           text-align: right;

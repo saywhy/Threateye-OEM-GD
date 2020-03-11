@@ -106,7 +106,7 @@ export default {
         margin-right: 10px;
       }
       .top_left_title {
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
         vertical-align: middle;
         font-size: 16px;
         color: #0070ff;
@@ -144,7 +144,7 @@ export default {
         margin-bottom: 16px;
         .title {
           width: 100px;
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           font-size: 16px;
           color: #333333;
         }

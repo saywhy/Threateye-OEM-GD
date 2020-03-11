@@ -1085,7 +1085,7 @@ export default {
         }
         .top_left_title {
           vertical-align: middle;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 16px;
           color: #333333;
           font-weight: bold;
@@ -1108,7 +1108,7 @@ export default {
               outline: none;
               margin-left: 8px;
               line-height: 0;
-              font-family: PingFangSC-Medium;
+              font-family: PingFangMedium;
               &.b_btn_status {
                 color: #fff;
                 background: #0070FF;
@@ -1134,7 +1134,7 @@ export default {
           line-height: 36px;
           .title {
             width: 125px;
-            font-family: PingFangSC-Regular;
+            font-family: PingFang;
             font-size: 16px;
             color: #333333;
             .b_i{
@@ -1180,7 +1180,7 @@ export default {
         }
         .title_name {
           vertical-align: middle;
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 16px;
           color: #333333;
           font-weight: bold;
@@ -1211,7 +1211,7 @@ export default {
         }
         .osm-title{
           display: inline-block;
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           font-size: 16px;
           font-weight: bold;
           color: #333333;
@@ -1222,14 +1222,14 @@ export default {
         height: 220px;
         padding: 16px 56px;
         .osm-dt{
-          font-family: PingFangSC-Medium;
+          font-family: PingFangMedium;
           font-size: 14px;
           color: #333333;
           font-weight: bold;
           margin: 5px 0;
         }
         .osm-dd{
-          font-family: PingFangSC-Regular;
+          font-family: PingFang;
           font-size: 14px;
           color: #666666;
         }
@@ -1256,7 +1256,7 @@ export default {
                   color: #333;
                   font-size: 14px;
                   font-weight: bold;
-                  font-family: PingFangSC-Medium;
+                  font-family: PingFangMedium;
                 }
               }
             }
@@ -1584,7 +1584,7 @@ export default {
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFangSC-Regular;
+                  font-family: PingFang;
                 }
               }
               .el-textarea__inner:hover {

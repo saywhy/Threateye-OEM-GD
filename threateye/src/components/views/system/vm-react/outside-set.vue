@@ -497,7 +497,7 @@ export default {
       display: flex;
       margin-bottom: 36px;
       .item_title {
-        font-family: PingFangSC-Medium;
+        font-family: PingFangMedium;
         font-size: 16px;
         color: #333333;
         height: 42px;

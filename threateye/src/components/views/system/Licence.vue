@@ -399,7 +399,7 @@ export default {
   .content_box {
     padding-right: 24px;
     .title {
-      font-family: PingFangSC-Medium;
+      font-family: PingFangMedium;
       font-size: 16px;
       color: #333333;
       margin-bottom: 24px;

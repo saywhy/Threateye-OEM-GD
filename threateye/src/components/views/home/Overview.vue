@@ -196,6 +196,33 @@
       <div id="graph">
       </div>
     </el-dialog>
+    <el-dialog class="sys_detail"
+               width="840"
+               :close-on-click-modal="false"
+               :visible.sync="state_detail">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_detail"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">系统状态监控</span>
+      </div>
+      <div class="sys_detail_content">
+        <div class="detail_item">
+          <p>CPU</p>
+          <div id='cpu'></div>
+        </div>
+        <div class="detail_item">
+          <p>Memery</p>
+          <div id='memery'></div>
+        </div>
+        <div class="detail_item">
+          <p>Disk</p>
+          <div id='disk'></div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -249,6 +276,7 @@ export default {
       bom_right_show: false,
       //-----
       el_dialog: false,
+      state_detail: false,
       equipment: {
         probe: [],
         engine: [],
@@ -257,6 +285,12 @@ export default {
         echart_array: [],
         links_array: [],
       },
+      sys_detail: {
+        cpu: [],
+        mem: [],
+        disk: [],
+        flow: [],
+      }
     };
   },
   created () {
@@ -492,11 +526,7 @@ export default {
             },
             itemStyle: {
               normal: {
-                // borderColor: '#fff',
-                // borderWidth: 6,
-                // shadowBlur: 20,
-                // shadowColor: '#04f2a7',
-                // color: '#F2F2F2',
+
               }
             }
           };
@@ -528,11 +558,7 @@ export default {
           },
           itemStyle: {
             normal: {
-              // borderColor: '#fff',
-              // borderWidth: 6,
-              // shadowBlur: 20,
-              // shadowColor: '#04f2a7',
-              // color: '#F2F2F2',
+
             }
           }
         };
@@ -561,11 +587,7 @@ export default {
           },
           itemStyle: {
             normal: {
-              // borderColor: '#fff',
-              // borderWidth: 6,
-              // shadowBlur: 20,
-              // shadowColor: '#04f2a7',
-              // color: '#F2F2F2',
+
             }
           }
         };
@@ -597,11 +619,6 @@ export default {
             },
             itemStyle: {
               normal: {
-                // borderColor: '#fff',
-                // borderWidth: 6,
-                // shadowBlur: 20,
-                // shadowColor: '#04f2a7',
-                // color: '#F2F2F2',
               }
             }
           };
@@ -620,12 +637,12 @@ export default {
             var obj = {
               source: '',
               target: '',
-              emphasis:{
-  label: {
-                show:false
+              emphasis: {
+                label: {
+                  show: false
+                }
               }
-              }
-            
+
             }
             if (item.names == '探针' || item.names == '沙箱') {
               obj.source = item.name
@@ -638,10 +655,10 @@ export default {
             var obj = {
               source: '',
               target: '',
-               emphasis:{
-  label: {
-                show:false
-              }
+              emphasis: {
+                label: {
+                  show: false
+                }
               }
             }
             if (item.names == '探针' || item.names == '沙箱') {
@@ -698,21 +715,50 @@ export default {
       myChart.setOption(option);
       //添加点击事件
       myChart.off("click"); //防止累计触发
-      myChart.on('click', function (params) {
-        console.log(params);
-        // 弹窗打印数据的名称
-        // this.iot_detail_title = params;
-        // if (params.dataType == "node") {
-        //   this.iotcontent = true;
-        //   setTimeout(function () {
-        //     this.iot_detail_top(this.iot_detail_title); //iot具体cpu/内存/硬盘/流量
-        //   }, 600);
-        // }
+      myChart.on('click', (params) => {
+        console.log(params.data);
+        console.log(this.state_detail);
+        this.state_detail = true;
+        this.iot_detail_top(params.data)
+      });
+
+    },
+    iot_detail_top (params) {
+      console.log(params.dev_ip);
+      this.$axios.get('/yiiapi/alert/dev-state', {
+        params: {
+          ip: params.dev_ip
+        }
       })
+        .then(response => {
+          let {
+            status,
+            data
+          } = response.data;
+          console.log(data);
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+      // /alert/dev-state
+      //   sys_detail:{
+      //   cpu:[],
+      //   mem:[],
+      //   disk:[],
+      //   flow:[],
+      // }
+
+
+
+
     },
     closed_sys_box () {
       this.el_dialog = false;
-    }
+    },
+    closed_detail () {
+      this.state_detail = false;
+    },
 
   },
   components: {
@@ -919,51 +965,113 @@ export default {
 </style>
 
 <style lang="less">
-.sys_box {
-  z-index: 3000 !important;
-  .el-dialog {
-    width: 842px;
-    .el-dialog__header {
-      display: none;
-    }
-    .el-dialog__body {
+.home_overview {
+  .sys_box {
+    z-index: 9000 !important;
+    .el-dialog {
       width: 842px;
-      height: 462px;
-      padding: 30px;
-      .closed_img {
-        position: absolute;
-        top: -18px;
-        right: -18px;
-        cursor: pointer;
-        width: 46px;
-        height: 46px;
+      .el-dialog__header {
+        display: none;
       }
-      .title {
-        height: 24px;
-        line-height: 24px;
-        text-align: left;
-        font-size: 0;
-        .mask {
-          width: 4px;
-          height: 16px;
-          display: inline-block;
-          background: #0070ff;
-          vertical-align: baseline;
+      .el-dialog__body {
+        width: 842px;
+        height: 462px;
+        padding: 30px;
+        .closed_img {
+          position: absolute;
+          top: -18px;
+          right: -18px;
+          cursor: pointer;
+          width: 46px;
+          height: 46px;
         }
-        .title_name {
-          font-size: 16px;
-          color: #333333;
-          font-weight: 500;
-          margin-left: 6px;
-          display: inline-block;
-          vertical-align: super;
-          font-family: PingFangSC-Medium;
+        .title {
+          height: 24px;
+          line-height: 24px;
+          text-align: left;
+          font-size: 0;
+          .mask {
+            width: 4px;
+            height: 16px;
+            display: inline-block;
+            background: #0070ff;
+            vertical-align: baseline;
+          }
+          .title_name {
+            font-size: 16px;
+            color: #333333;
+            font-weight: 500;
+            margin-left: 6px;
+            display: inline-block;
+            vertical-align: super;
+            font-family: PingFangSC-Medium;
+          }
+        }
+        #graph {
+          width: 100%;
+          height: calc(100% - 24px);
+          position: relative;
         }
       }
-      #graph {
-        width: 100%;
-        height: calc(100% - 24px);
-        position: relative;
+    }
+  }
+  .sys_detail {
+    z-index: 99999 !important;
+    .el-dialog {
+      width: 840px;
+      .el-dialog__header {
+        display: none;
+      }
+      .el-dialog__body {
+        width: 840px;
+        padding: 30px;
+        .closed_img {
+          position: absolute;
+          top: -18px;
+          right: -18px;
+          cursor: pointer;
+          width: 46px;
+          height: 46px;
+        }
+        .title {
+          height: 24px;
+          line-height: 24px;
+          text-align: left;
+          .title_name {
+            font-size: 20px;
+            color: #333333;
+            line-height: 24px;
+            font-weight: 500;
+          }
+          .mask {
+            width: 24px;
+            height: 0px;
+            border-top: 0px;
+            border-right: 2px solid transparent;
+            border-bottom: 5px solid #0070ff;
+            border-left: 2px solid transparent;
+            transform: rotate3d(0, 0, 1, 90deg);
+            display: inline-block;
+            margin-right: -5px;
+            margin-bottom: 4px;
+            margin-left: -10px;
+          }
+        }
+        .sys_detail_content {
+          text-align: left;
+          .detail_item {
+            margin-top: 24px;
+            p {
+              font-size: 14px;
+              color: #999999;
+            }
+            #cpu,
+            #memery,
+            #disk {
+              height: 150px;
+            }
+          }
+        }
       }
     }
   }

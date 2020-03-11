@@ -1003,7 +1003,6 @@ export default {
 
 .sys_detail {
   z-index: 99999 !important;
-
   .el-dialog {
     width: 840px;
 

@@ -741,7 +741,7 @@ export default {
         },
         legend: {
           bottom: 5,
-      left: 'center',
+          left: 'center',
           orient: 'horizontal',
           textStyle: {
             fontSize: 12
@@ -1013,7 +1013,6 @@ export default {
             font-size: 20px;
             color: #333333;
             line-height: 24px;
-            font-weight: 500;
           }
           .mask {
             width: 24px;

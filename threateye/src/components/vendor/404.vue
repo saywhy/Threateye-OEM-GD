@@ -16,7 +16,6 @@
     text-align: center;
     font-family: cursive;
     font-size: 150px;
-    font-weight: bold;
     line-height: 100px;
     letter-spacing: 5px;
     color: #fff;

@@ -1164,7 +1164,6 @@ export default {
           color: #333333;
           .title_left {
             float: left;
-            font-weight: bold;
           }
           .title_right {
             float: right;
@@ -1249,7 +1248,6 @@ export default {
             background: #f8f8f8;
             .cell {
               color: #333;
-              font-weight: bold;
             }
           }
         }
@@ -1340,7 +1338,6 @@ export default {
           .title_name {
             font-size: 16px;
             color: #333333;
-            font-weight: 500;
             margin-left: 6px;
             display: inline-block;
             vertical-align: super;
@@ -1381,7 +1378,6 @@ export default {
             font-size: 20px;
             color: #333333;
             line-height: 24px;
-            font-weight: 500;
           }
           .mask {
             width: 24px;

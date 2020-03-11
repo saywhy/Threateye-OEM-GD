@@ -467,7 +467,6 @@ export default {
                     .cell{
                       color: #333;
                       font-size: 14px;
-                      font-weight: bold;
                       font-family: PingFangMedium;
                     }
                   }

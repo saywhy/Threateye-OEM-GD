@@ -1256,7 +1256,6 @@
         .title {
           width: 120px;
           color: #333333;
-          font-weight: bold;
           font-size: 16px;
           font-family: PingFangMedium;
         }
@@ -1447,7 +1446,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {
@@ -1523,7 +1521,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {
@@ -1693,7 +1690,6 @@
                 height: 36px;
                 background: #f8f8f8;
                 .cell{
-                  font-weight: bold;
                 }
               }
 
@@ -1783,7 +1779,6 @@
                     color: #333333;
                     background: #f8f8f8;
                     .cell {
-                      font-weight: bold;
                     }
                   }
                 }
@@ -1857,7 +1852,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {

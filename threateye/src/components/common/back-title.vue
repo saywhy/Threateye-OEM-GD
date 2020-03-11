@@ -65,7 +65,6 @@ export default {
     font-size: 20px;
     font-family: PingFangMedium;
     color: #333333;
-    font-weight: bold;
   }
 }
 </style>

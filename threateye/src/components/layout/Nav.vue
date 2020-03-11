@@ -567,7 +567,6 @@ export default {
             font-size: 20px;
             color: #333333;
             line-height: 24px;
-            font-weight: 500;
           }
 
           .mask {

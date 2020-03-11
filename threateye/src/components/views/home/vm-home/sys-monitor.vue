@@ -958,7 +958,6 @@ export default {
         .title_name {
           font-size: 16px;
           color: #333333;
-          font-weight: 500;
           margin-left: 6px;
           display: inline-block;
           vertical-align: super;
@@ -1032,7 +1031,6 @@ export default {
           font-size: 20px;
           color: #333333;
           line-height: 24px;
-          font-weight: 500;
         }
 
         .mask {

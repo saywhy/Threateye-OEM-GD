@@ -2667,7 +2667,7 @@ export default {
 .emerge_table {
   th {
     .cell {
-      font-family: PingFang;
+          font-family: PingFangMedium;
       font-size: 14px;
       color: #333333;
     }
@@ -2795,8 +2795,8 @@ export default {
           .title_name {
             font-size: 20px;
             color: #333333;
+                    font-family: PingFangMedium;
             line-height: 24px;
-            font-weight: 500;
           }
 
           .mask {
@@ -2963,7 +2963,6 @@ export default {
               height: 36px;
               background: #f8f8f8;
               .cell {
-                font-weight: bold;
               }
             }
 
@@ -3051,7 +3050,6 @@ export default {
                   color: #333333;
                   background: #f8f8f8;
                   .cell {
-                    font-weight: bold;
                   }
                 }
               }
@@ -3172,6 +3170,7 @@ export default {
             width: 96px;
             font-size: 16px;
             color: #333333;
+            font-family: PingFangMedium;
           }
           .item_li_content {
             flex: 1;

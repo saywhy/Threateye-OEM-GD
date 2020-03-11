@@ -1,11 +1,4 @@
 @font-face {
-  font-family: "PingFang";
-  src:
-    url("../family/PingFang-Medium.ttf") format("truetype"),
-
-}
-
-@font-face {
   font-family: "LcdD";
   src: url("../family/LcdD.ttf");
   font-weight: normal;
@@ -164,4 +157,10 @@ input:-ms-input-placeholder {
   src: url("../family/PingFang-Medium.ttf");
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFang";
+  src: url("../family/PingFang-Medium.ttf") format("truetype"),
+
 }

@@ -66,7 +66,6 @@
 
 .list-filter dt {
   float: left;
-  font-weight: 400;
   height: 40px;
   line-height: 40px;
 }

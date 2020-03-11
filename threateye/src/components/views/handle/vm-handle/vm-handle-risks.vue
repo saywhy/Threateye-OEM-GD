@@ -1122,7 +1122,6 @@
         .ost-title{
           font-size: 16px;
           color: #333;
-          font-weight: bold;
           text-align: left;
           font-family: PingFangMedium;
         }
@@ -1161,7 +1160,6 @@
           display: inline-block;
           font-family: PingFang;
           font-size: 16px;
-          font-weight: bold;
           color: #333333;
           margin-left: 6px;
         }
@@ -1173,7 +1171,6 @@
           font-family: PingFangMedium;
           font-size: 14px;
           color: #333333;
-          font-weight: bold;
           margin: 5px 0;
         }
         .osm-dd{
@@ -1292,7 +1289,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {
@@ -1368,7 +1364,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {
@@ -1538,7 +1533,6 @@
                 height: 36px;
                 background: #f8f8f8;
                 .cell{
-                  font-weight: bold;
                 }
               }
 
@@ -1628,7 +1622,6 @@
                     color: #333333;
                     background: #f8f8f8;
                     .cell {
-                      font-weight: bold;
                     }
                   }
                 }
@@ -1702,7 +1695,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {

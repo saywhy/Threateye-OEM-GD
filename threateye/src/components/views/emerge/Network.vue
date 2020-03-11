@@ -1182,7 +1182,6 @@
         text-align: left;
         font-size: 18px;
         color: #333;
-        font-weight: 600;
         position: absolute;
         top: 12px;
         left: 24px;
@@ -1302,7 +1301,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {
@@ -1378,7 +1376,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {
@@ -1548,7 +1545,6 @@
                 height: 36px;
                 background: #f8f8f8;
                 .cell{
-                  font-weight: bold;
                 }
               }
 
@@ -1638,7 +1634,6 @@
                     color: #333333;
                     background: #f8f8f8;
                     .cell {
-                      font-weight: bold;
                     }
                   }
                 }
@@ -1712,7 +1707,6 @@
               font-size: 20px;
               color: #333333;
               line-height: 24px;
-              font-weight: 500;
             }
 
             .mask {

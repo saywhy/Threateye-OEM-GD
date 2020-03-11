@@ -79,7 +79,7 @@
                 <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
               </template>
             </el-table-column>
-            <el-table-column type="selection" width="30"></el-table-column>
+            <el-table-column type="selection" width="40"></el-table-column>
             <el-table-column label="告警时间" width="180" show-overflow-tooltip>
               <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
             </el-table-column>

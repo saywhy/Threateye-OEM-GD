@@ -114,9 +114,9 @@
                     @row-click="detailClick"
                     @selection-change="handleSelChange">
             <el-table-column label="全选" width="40"></el-table-column>
-            <el-table-column align='left' type="selection" width="30"></el-table-column>
+            <el-table-column  type="selection" width="42"></el-table-column>
             <el-table-column prop="asset_ip" label="资产"></el-table-column>
-            <el-table-column prop="assets_group" label="资产组" min-width="140" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="assets_group" label="资产组"  show-overflow-tooltip></el-table-column>
             <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
@@ -269,7 +269,7 @@
                         style="width: 100%"
                         @selection-change="handle_sel_table_assets">
                 <el-table-column label="全选" width="40"></el-table-column>
-                <el-table-column align='left' type="selection" width="30"></el-table-column>
+                <el-table-column align='left' type="selection" width="40"></el-table-column>
                 <el-table-column prop="asset_ip" label="资产"></el-table-column>
                 <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>

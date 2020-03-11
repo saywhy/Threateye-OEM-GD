@@ -53,8 +53,6 @@ import '@/components/filters/index'
 
 
 import './assets/css/index.css'
-import "./assets/family/font.css";
-import "./assets/family/pingfang.css";
 
 
 Vue.config.productionTip = false;

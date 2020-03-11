@@ -713,7 +713,6 @@ export default {
       .title {
         font-size: 18px;
         color: #333333;
-        font-weight: 600;
         padding: 0 24px;
       }
     }
@@ -727,7 +726,6 @@ export default {
         .title {
           font-size: 14px;
           color: #333;
-          font-weight: 600;
         }
         .r_time {
           line-height: 58px;

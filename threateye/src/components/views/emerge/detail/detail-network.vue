@@ -203,14 +203,14 @@
             <p class="title">详细信息</p>
             <div class="time_right_info">
               <div class="time_right_info_top">
-                <li class="info_top_item">
+                <!-- <li class="info_top_item">
                   <span class="info_top_item_title">检测引擎</span>
                   <span class="info_top_item_content">{{item.detect_engine}}</span>
                 </li>
                 <li class="info_top_item">
                   <span class="info_top_item_title">情报类型</span>
                   <span class="info_top_item_content">{{item.description_type}}</span>
-                </li>
+                </li> -->
                 <li class="info_top_item"
                     v-for="value in item.info_list">
                   <span class="info_top_item_title">{{value.name}}</span>
@@ -398,10 +398,11 @@
           <img src="@/assets/images/emerge/detail_suggest.png"
                class="suggest_icon"
                alt="">
-          <span>处置建议</span>
+          <span class="suggest_bom_title">处置建议</span>
         </p>
         <div>
-          <p v-for="item in suggest_list[network_detail.safety_suggestion].handle">
+          <p class="suggest_bom_des"
+             v-for="item in suggest_list[network_detail.safety_suggestion].handle">
             {{item}}
           </p>
         </div>
@@ -409,10 +410,11 @@
           <img src="@/assets/images/emerge/detail_suggest.png"
                class="suggest_icon"
                alt="">
-          <span>加固建议</span>
+          <span class="suggest_bom_title">加固建议</span>
         </p>
         <div>
-          <p v-for="item in suggest_list[network_detail.safety_suggestion].reinforce">
+          <p class="suggest_bom_des"
+             v-for="item in suggest_list[network_detail.safety_suggestion].reinforce">
             {{item}}
           </p>
         </div>
@@ -566,7 +568,7 @@
     <!-- 添加到工单 -->
     <el-dialog class="pop_state_add pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="worksheets_data.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="add_closed_state"
@@ -640,7 +642,7 @@
     <!-- 新建工单任务 -->
     <el-dialog class="task_new_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="new_worksheets_data.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_task_new"
@@ -2665,7 +2667,7 @@ export default {
 .emerge_table {
   th {
     .cell {
-      font-family: PingFangMedium;
+      font-family: PingFang;
       font-size: 14px;
       color: #333333;
     }
@@ -2674,7 +2676,7 @@ export default {
     .cell {
       font-family: PingFang;
       font-size: 14px;
-      color: #333333;
+      color: #666;
     }
   }
 }
@@ -3356,8 +3358,12 @@ export default {
                 align-items: flex-start;
                 .left_li {
                   width: 200px;
+                  font-size: 16px;
+                  color: #666;
                 }
                 .right_li {
+                  font-size: 16px;
+                  color: #666;
                   flex: 1;
                   flex-wrap: wrap;
                   justify-content: flex-start;
@@ -3394,7 +3400,7 @@ export default {
               word-break: break-all;
               overflow: hidden;
               font-size: 14px;
-              color: #333333;
+              color: #666;
               text-align: left;
               padding: 10px;
             }
@@ -3504,6 +3510,8 @@ export default {
       }
       .suggest_bom_des {
         margin: 8px 0 24px 0;
+        font-size: 14px;
+        color: #666666;
       }
       .suggest_bom_list {
         margin: 12px 0 8px 0;

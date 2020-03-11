@@ -668,7 +668,7 @@ export default {
     changeTime (data) {
       console.log(data);
       this.report.start_time = data[0].valueOf()
-      this.report.end_time = data[0].valueOf()
+      this.report.end_time = data[1].valueOf()
     },
     toggleSelection (rows) {
       if (rows) {

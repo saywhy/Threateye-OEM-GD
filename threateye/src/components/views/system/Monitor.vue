@@ -100,7 +100,7 @@
       <!-- 新增 -->
       <el-dialog class="add_box pop_box"
                  :close-on-click-modal="false"
-                   :modal-append-to-body="false"
+                 :modal-append-to-body="false"
                  :visible.sync="monitor_state.add">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_add_box"
@@ -216,7 +216,7 @@
       <!-- 编辑 -->
       <el-dialog class="add_box pop_box"
                  :close-on-click-modal="false"
-                   :modal-append-to-body="false"
+                 :modal-append-to-body="false"
                  :visible.sync="monitor_state.edit">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_edit_box"
@@ -334,7 +334,7 @@
       <!-- <el-dialog class="import_box pop_box" :visible.sync="monitor_state.import" v-loading="monitor_state.import_"> -->
       <el-dialog class="import_box pop_box"
                  :close-on-click-modal="false"
-                   :modal-append-to-body="false"
+                 :modal-append-to-body="false"
                  :visible.sync="monitor_state.import">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_import_box"
@@ -712,7 +712,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.monitor_page.rows = val;
-        this.monitor_page.page = 1
+      this.monitor_page.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {
@@ -862,8 +862,25 @@ export default {
       .el-dialog__body {
         width: 840px;
         .content {
-          padding: 24px 0;
+          padding: 24px 10px;
           display: flex;
+          height: 400px;
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+            border-radius: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 6px;
+            background: #a8a8a8;
+          }
+          &::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            border-radius: 6px;
+            background: #f4f4f4;
+          }
           .content_item_box {
             flex: 1;
             .content_item {

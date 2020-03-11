@@ -73,7 +73,7 @@
         <div class="item_addrs"
              v-for="(item,index) in mail.alertEmail_list">
           <el-input class="select_box"
-                    placeholder="请输入邮箱地址"
+                    placeholder="请输入邮箱地址，最多可以设置5个收件邮箱账号"
                     v-model="item.name"
                     clearable>
           </el-input>
@@ -315,10 +315,21 @@ export default {
     },
     //  添加邮箱
     add_addr () {
-      this.mail.alertEmail_list.forEach(item => {
-        item.icon = false;
-      });
-      this.mail.alertEmail_list.push({ name: '', icon: true })
+      if (this.mail.alertEmail_list.length < 5) {
+        this.mail.alertEmail_list.forEach(item => {
+          item.icon = false;
+        });
+        this.mail.alertEmail_list.push({ ip: '', icon: true })
+      } else {
+        this.$message.error(
+          {
+            message: '最多可以设置5个收件邮箱账号',
+            offset: 50
+          })
+      }
+
+
+
     },
     del_addr (item, index) {
       this.mail.alertEmail_list.splice(index, 1);

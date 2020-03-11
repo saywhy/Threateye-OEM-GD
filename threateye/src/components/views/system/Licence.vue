@@ -287,6 +287,7 @@ export default {
                       type: 'success',
                     }
                   );
+                  this.licence_pop.add = false;
                   this.get_data();
                 }
 
@@ -320,6 +321,7 @@ export default {
                   type: 'success',
                 }
               );
+              this.licence_pop.add = false;
               this.get_data();
             }
 

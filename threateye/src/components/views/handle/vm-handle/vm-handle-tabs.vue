@@ -60,7 +60,7 @@
         }
         .vat-title{
           font-family: PingFangSC-Regular;
-          width: 90px;
+          width: 120px;
           font-size: 18px;
           color: #333;
           line-height: 24px;

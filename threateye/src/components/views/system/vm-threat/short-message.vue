@@ -2,7 +2,9 @@
   <div id="short_message">
     <div class="left">
       <div class="left_item">
-        <p>短信平台:</p>
+        <p>短信平台
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入短信平台 "
                   v-model="message.type"
@@ -10,7 +12,9 @@
         </el-input>
       </div>
       <div class="left_item">
-        <p>AccessKey ID:</p>
+        <p>AccessKey ID
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入AccessKey ID"
                   v-model="message.id"
@@ -18,7 +22,9 @@
         </el-input>
       </div>
       <div class="left_item">
-        <p>AccessKey Secret:</p>
+        <p>AccessKey Secret
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入AccessKey Secret"
                   v-model="message.key"
@@ -26,7 +32,8 @@
         </el-input>
       </div>
       <div class="left_item">
-        <p>短信签名:</p>
+        <p>短信签名
+        </p>
         <el-input class="select_box"
                   placeholder="请输入短信签名"
                   v-model="message.name"
@@ -34,7 +41,7 @@
         </el-input>
       </div>
       <div class="left_item">
-        <p>短信模板:</p>
+        <p>短信模板</p>
         <el-input class="select_box"
                   type="textarea"
                   :rows="10"
@@ -101,14 +108,7 @@ export default {
         font-size: 12px;
         color: #999999;
       }
-      .select_box {
-        width: 100%;
-        min-height: 38px;
-        margin-top: 6px;
-        input {
-          background: #f8f8f8 !important;
-        }
-      }
+
       .save_btn {
         width: 136px;
         height: 42px;
@@ -135,6 +135,7 @@ export default {
 #short_message {
   .el-input__inner {
     background: #f8f8f8;
+    color: #606266;
     border: 0;
   }
   .el-switch__core {
@@ -142,7 +143,17 @@ export default {
   }
   .el-textarea__inner {
     background: #f8f8f8;
+    color: #606266;
     border: 0;
+  }
+  .select_box {
+    width: 100%;
+    min-height: 38px;
+    margin-top: 6px;
+    color: #606266;
+    input {
+      background: #f8f8f8 !important;
+    }
   }
 }
 </style>

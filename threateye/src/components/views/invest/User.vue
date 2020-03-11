@@ -160,6 +160,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.user_search.rows = val;
+      this.user_search.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

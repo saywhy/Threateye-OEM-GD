@@ -401,6 +401,7 @@ export default {
     // 分页-网络
     handleSizeChange_network (val) {
       this.host_network_page.rows = val;
+      this.host_network_page.page = 1
       this.get_data_network();
     },
     handleCurrentChange_network (val) {
@@ -410,6 +411,7 @@ export default {
     // 分页-文件
     handleSizeChange_file (val) {
       this.host_file_page.rows = val;
+      this.host_file_page.page = 1
       this.get_data_file();
     },
     handleCurrentChange_file (val) {
@@ -419,6 +421,7 @@ export default {
     // 分页-用户
     handleSizeChange_user (val) {
       this.host_user_page.rows = val;
+      this.host_user_page.page = 1
       this.get_data_user();
     },
     handleCurrentChange_user (val) {

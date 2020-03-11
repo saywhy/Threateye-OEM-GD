@@ -203,6 +203,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.fault_data.rows = val;
+         this.fault_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

@@ -59,13 +59,13 @@
         <el-row type="flex"
                 class="r_main_list r_special_list">
           <el-col :span="3">
-            <span class="title">发件人邮箱</span>
+            <span class="title">收件人邮箱</span>
           </el-col>
           <el-col :span="21">
             <div class="item_addrs"
                  v-for="(item,index) in send_config.receiver_list">
               <el-input class="select_box"
-                        placeholder="请输入标签"
+                        placeholder="请输收件人邮箱,最多可以设置5个收件人邮箱"
                         v-model="item.name"
                         clearable>
               </el-input>
@@ -183,12 +183,18 @@ export default {
     },
     // 添加邮箱
     add_email () {
-      console.log(1111);
-      console.log(this.send_config.receiver_list);
-      this.send_config.receiver_list.forEach(item => {
-        item.icon = false;
-      });
-      this.send_config.receiver_list.push({ name: '', icon: true })
+      if (this.send_config.receiver_list.length < 5) {
+        this.send_config.receiver_list.forEach(item => {
+          item.icon = false;
+        });
+        this.send_config.receiver_list.push({ ip: '', icon: true })
+      } else {
+        this.$message.error(
+          {
+            message: '最多可以设置5个收件人邮箱',
+            offset: 50
+          })
+      }
     },
     del_email (item, index) {
       console.log(this.send_config.receiver_list);

@@ -75,6 +75,8 @@
     </div>
     <!-- 添加白名单 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="white_add.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -88,6 +90,7 @@
         <div class="content_item">
           <p>
             <span class="title">指标</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入指标"
@@ -98,6 +101,7 @@
         <div class="content_item">
           <p>
             <span class="title">类型</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-select class="select_box"
                      v-model="white_add.type"
@@ -134,7 +138,7 @@ export default {
       },
       white_add: {
         add: false,
-        type_list: ["MD5", "IP", "URL", 'indicator'],
+        type_list: ["MD5", "IP", "URL", 'Indicator'],
         indicator: '',
         type: 'MD5'
       },
@@ -222,6 +226,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.white_data.rows = val;
+      this.white_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

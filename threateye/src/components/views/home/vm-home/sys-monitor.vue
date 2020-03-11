@@ -3,6 +3,7 @@
     <el-dialog class="sys_box"
                width="840"
                :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="$store.getters.sysMonitor">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_sys_box"
@@ -55,6 +56,7 @@
     <el-dialog class="sys_detail"
                width="840"
                :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="state_detail">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_detail"

@@ -57,7 +57,7 @@
     <div class="r_bottom">
       <el-row class="common-table-pattern">
         <el-col :span="24">
-          <el-table class="common-table"
+          <el-table class="reset_table"
                     ref="multipleTable"
                     :data="report_lsit.data"
                     style="width: 100%;"
@@ -685,6 +685,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.report_data.rows = val;
+      this.report_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {
@@ -697,7 +698,6 @@ export default {
 
 <style scoped lang="less">
 @import '../../../assets/css/less/report_less/rewrite_radio.less';
-@import '../../../assets/css/less/common-table-pattern.less';
 #report_create {
   padding: 24px;
   .r_top {
@@ -827,4 +827,8 @@ export default {
     height: 600px;
   }
 }
+</style>
+
+<style lang="less">
+@import '../../../assets/css/less/reset_css/reset_table.less';
 </style>

@@ -54,6 +54,8 @@
     </div>
     <!-- 添加IP -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="outside_pop.ip.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_ip_box"
@@ -67,6 +69,7 @@
         <div class="content_item">
           <p>
             <span class="title">IP</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入IP"
@@ -84,6 +87,8 @@
     </el-dialog>
     <!-- 添加url -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="outside_pop.url.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_url_box"
@@ -97,6 +102,7 @@
         <div class="content_item">
           <p>
             <span class="title">域名</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入域名"

@@ -53,6 +53,8 @@
     </div>
     <!-- 添加p配置 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="syslog_pop.add.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -65,13 +67,14 @@
       <div class="content">
         <div class="content_item">
           <div class="item_top">
-            <span>是否启用:</span>
+            <span>是否启用</span>
             <el-switch v-model="syslog_pop.add.switch">
             </el-switch>
           </div>
           <div class="item_bottom">
             <p>
               <span class="title">SYSLOG服务器IP</span>
+              <span class="red_necessary">*</span>
             </p>
             <el-input class="select_box"
                       placeholder="请输入SYSLOG服务器IP"
@@ -83,7 +86,7 @@
         <div class="content_space"></div>
         <div class="content_item">
           <div class="item_top">
-            <span>状态:</span>
+            <span>状态</span>
             <el-radio v-model="syslog_pop.add.protocol"
                       label="udp"
                       class="r_radio_item">udp</el-radio>
@@ -94,6 +97,7 @@
           <div class="item_bottom">
             <p>
               <span class="title">端口</span>
+              <span class="red_necessary">*</span>
             </p>
             <el-input class="select_box"
                       placeholder="请输入端口"
@@ -112,6 +116,8 @@
     </el-dialog>
     <!-- 编辑配置 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="syslog_pop.edit.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -124,13 +130,14 @@
       <div class="content">
         <div class="content_item">
           <div class="item_top">
-            <span>是否启用:</span>
+            <span>是否启用</span>
             <el-switch v-model="syslog_pop.edit.switch">
             </el-switch>
           </div>
           <div class="item_bottom">
             <p>
               <span class="title">SYSLOG服务器IP</span>
+              <span class="red_necessary">*</span>
             </p>
             <el-input class="select_box"
                       placeholder="请输入SYSLOG服务器IP"
@@ -142,7 +149,7 @@
         <div class="content_space"></div>
         <div class="content_item">
           <div class="item_top">
-            <span>状态:</span>
+            <span>状态</span>
             <el-radio v-model="syslog_pop.edit.radio"
                       label="udp"
                       class="r_radio_item">udp</el-radio>
@@ -153,6 +160,7 @@
           <div class="item_bottom">
             <p>
               <span class="title">端口</span>
+              <span class="red_necessary">*</span>
             </p>
             <el-input class="select_box"
                       placeholder="请输入端口"
@@ -276,6 +284,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.syslog_data.rows = val;
+      this.syslog_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

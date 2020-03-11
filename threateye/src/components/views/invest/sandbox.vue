@@ -68,6 +68,7 @@
                    @click.stop='del_box(scope.row)'>
             </template>
           </el-table-column>
+
         </el-table>
         <el-pagination class="pagination_box"
                        @size-change="handleSizeChange"
@@ -256,6 +257,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.sandbox_data.rows = val;
+      this.sandbox_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

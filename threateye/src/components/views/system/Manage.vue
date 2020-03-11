@@ -59,9 +59,9 @@
       </div>
       <div class="bottom">
         <div class="btn_box">
-          <el-button type="primary"
+          <!-- <el-button type="primary"
                      class="btn_i"
-                     @click="add_box">新增</el-button>
+                     @click="add_box">新增</el-button> -->
           <el-button type="primary"
                      class="btn_o"
                      @click="del_equipment">删除</el-button>
@@ -138,6 +138,8 @@
     </div>
     <!-- 新增设备 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+               :modal-append-to-body="false"
                :visible.sync="equipment_pop.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -382,6 +384,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.equipment_data.rows = val;
+      this.equipment_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

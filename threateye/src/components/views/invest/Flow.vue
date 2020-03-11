@@ -183,6 +183,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.flow_search.rows = val;
+      this.flow_search.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

@@ -71,6 +71,8 @@
     </div>
     <!-- 新增 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="role_state.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -84,6 +86,7 @@
         <div class="content_item">
           <p>
             <span class="title">角色名称</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入角色名称"
@@ -94,6 +97,7 @@
         <div class="content_item">
           <p>
             <span class="title">角色权限</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-tree :data="data"
                    show-checkbox
@@ -101,7 +105,6 @@
                    ref="tree"
                    node-key="id"
                    :props="defaultProps"
-                   :default-checked-keys="[2,207]"
                    :default-expand-all="true">
           </el-tree>
         </div>
@@ -128,6 +131,8 @@
     </el-dialog>
     <!-- 编辑 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="role_state.edit">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -141,6 +146,7 @@
         <div class="content_item">
           <p>
             <span class="title">角色名称</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入角色名称"
@@ -151,6 +157,7 @@
         <div class="content_item">
           <p>
             <span class="title">角色权限</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-tree :data="data"
                    show-checkbox
@@ -412,6 +419,9 @@ export default {
       this.role_add.name = ''
       this.role_add.describe = ''
       this.role_add.permissions_id = []
+      this.resetChecked()
+      console.log(this.$refs.tree.getCheckedNodes());
+      console.log(this.$refs.tree.getHalfCheckedNodes());
     },
     edit_box (item) {
       this.role_edit = {}
@@ -420,14 +430,23 @@ export default {
       this.old_role_edit = JSON.stringify(item);
       this.role_edit_cn = JSON.stringify(item);
       this.role_edit = JSON.parse(this.role_edit_cn);
+      console.log(this.role_edit);
       this.role_edit.permissions_id_cn = JSON.parse(this.role_edit.permissions_id)
+      console.log(this.role_edit.permissions_id_cn);
+      var setCheckedKeys = []
+      this.role_edit.permissions_id_cn.forEach(element => {
+        if (element != 1 && element != 13 && element != 23 && element != 123 && element != 76 && element != 132 && element != 58) {
+          setCheckedKeys.push(element)
+        }
+      });
       this.$nextTick(() => {
-        this.$refs.tree_edit.setCheckedKeys(this.role_edit.permissions_id_cn);
+        this.$refs.tree_edit.setCheckedKeys(setCheckedKeys);
       });
     },
     // 分页
     handleSizeChange (val) {
       this.role_data.rows = val;
+      this.role_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {
@@ -443,6 +462,9 @@ export default {
     // tree
     // 添加角色
     add_role () {
+
+
+
       if (this.role_add.name == '') {
         this.$message(
           {
@@ -461,9 +483,14 @@ export default {
         );
         return false
       }
+      // .concat
       this.$refs.tree.getCheckedNodes().forEach(item => {
         this.role_add.permissions_id.push(item.id)
       });
+      this.$refs.tree.getHalfCheckedNodes().forEach(item => {
+        this.role_add.permissions_id.push(item.id)
+      });
+
       this.$axios.post('/yiiapi/user/add-role', {
         name: this.role_add.name,
         description: this.role_add.describe,
@@ -510,6 +537,9 @@ export default {
         return false
       }
       this.$refs.tree_edit.getCheckedNodes().forEach(item => {
+        this.role_edit.permissions_id_edit.push(item.id)
+      });
+      this.$refs.tree_edit.getHalfCheckedNodes().forEach(item => {
         this.role_edit.permissions_id_edit.push(item.id)
       });
       this.$axios.post('/yiiapi/user/edit-role', {
@@ -611,16 +641,10 @@ export default {
       console.log(this.$refs.tree.getCheckedKeys());
     },
     setCheckedNodes () {
-      this.$refs.tree.setCheckedNodes([{
-        id: 5,
-        label: '二级 2-1'
-      }, {
-        id: 9,
-        label: '三级 1-1-1'
-      }]);
+
     },
     setCheckedKeys () {
-      this.$refs.tree.setCheckedKeys([3]);
+      // this.$refs.tree.setCheckedKeys([3]);
     },
     resetChecked () {
       this.$refs.tree.setCheckedKeys([]);

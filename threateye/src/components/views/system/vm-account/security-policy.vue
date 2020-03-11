@@ -204,7 +204,7 @@ export default {
         color: #ff5f5c;
       }
       .input_box {
-        width: 480px;
+        width: 200px;
         height: 38px;
       }
     }

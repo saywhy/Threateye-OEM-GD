@@ -12,13 +12,15 @@
       <div class="malice_list">
         <div class="list_left">
           <p class="item_title">恶意IP列表</p>
-          <p v-for="item in outside_list.ip"
-             class="item_list">{{item.addr}}</p>
+          <p class="item_content">
+            <span>{{hostip}}/MaliciousIP?uname=账号&passwd=密码</span>
+          </p>
         </div>
         <div class="list_right">
           <p class="item_title">恶意域名列表</p>
-          <p v-for="item in outside_list.url"
-             class="item_list">{{item.addr}}</p>
+          <p class="item_content">
+            <span>{{hostip}}/MaliciousURL?uname=账号&passwd=密码</span>
+          </p>
         </div>
       </div>
     </div>
@@ -64,6 +66,8 @@
     </div>
     <!-- 创建账号 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="outside_pop.add.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -77,6 +81,7 @@
         <div class="content_item">
           <p>
             <span class="title">用户名</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入用户名"
@@ -87,6 +92,7 @@
         <div class="content_item">
           <p>
             <span class="title">密码</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入密码"
@@ -105,6 +111,8 @@
     </el-dialog>
     <!-- 编辑账号 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="outside_pop.edit.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -118,6 +126,7 @@
         <div class="content_item">
           <p>
             <span class="title">密码</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入密码"
@@ -167,7 +176,8 @@ export default {
         page: 1,
         rows: 10
       },
-      user_list: {}
+      user_list: {},
+      hostip: ''
     };
   },
   props: {
@@ -267,6 +277,8 @@ export default {
       this.$axios.get('/yiiapi/linkage/get-hostip')
         .then(response => {
           console.log(response.data);
+          this.hostip = response.data.data.url
+
         })
         .catch(error => {
           console.log(error);
@@ -451,6 +463,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.user_data.rows = val;
+      this.user_data.page = 1
       this.get_user_list();
     },
     handleCurrentChange (val) {
@@ -490,6 +503,9 @@ export default {
         height: 42px;
         line-height: 42px;
         border-bottom: 1px solid #ececec;
+        padding: 0 24px;
+      }
+      .item_content {
         padding: 0 24px;
       }
       .item_list {

@@ -193,6 +193,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.dns_search.rows = val;
+      this.dns_search.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

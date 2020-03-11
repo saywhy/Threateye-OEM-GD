@@ -58,23 +58,24 @@
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="标签"
-                           show-overflow-tooltip>
+                           width="400">
             <template slot-scope="scope">
-              <li v-for="item in scope.row.label"
-                  class="btn_tag_box">
+              <span class="btn_tag_box"
+                    v-for="item in scope.row.label">
                 <el-button type="primary"
                            class="btn_tag">
                   {{item}}
                 </el-button>
-              </li>
+              </span>
             </template>
           </el-table-column>
           <el-table-column prop="person"
                            label="责任人"
+                           width="100"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="更新时间"
-                           width="150"
+                           width="180"
                            show-overflow-tooltip>
             <template slot-scope="scope">{{ scope.row.updated_at*1000 |formatDate }}</template>
           </el-table-column>
@@ -98,6 +99,8 @@
       </div>
       <!-- 新增 -->
       <el-dialog class="add_box pop_box"
+                 :close-on-click-modal="false"
+                   :modal-append-to-body="false"
                  :visible.sync="monitor_state.add">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_add_box"
@@ -212,6 +215,8 @@
       </el-dialog>
       <!-- 编辑 -->
       <el-dialog class="add_box pop_box"
+                 :close-on-click-modal="false"
+                   :modal-append-to-body="false"
                  :visible.sync="monitor_state.edit">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_edit_box"
@@ -328,6 +333,8 @@
       <!-- 批量导入 -->
       <!-- <el-dialog class="import_box pop_box" :visible.sync="monitor_state.import" v-loading="monitor_state.import_"> -->
       <el-dialog class="import_box pop_box"
+                 :close-on-click-modal="false"
+                   :modal-append-to-body="false"
                  :visible.sync="monitor_state.import">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_import_box"
@@ -460,6 +467,7 @@ export default {
     },
     add_data () {
       var isRepeat_ip_segment = []
+      this.monitor_add.ip_segment = [];
       var isRepeat_tag = []
       this.monitor_add.ip_segment_list.forEach(item => {
         if (item.name != '') {
@@ -471,6 +479,18 @@ export default {
           isRepeat_tag.push(item.name)
         }
       });
+
+      console.log(isRepeat_ip_segment);
+      if (isRepeat_ip_segment.length == 0) {
+        this.$message(
+          {
+            message: 'IP地址段不能为空',
+            type: 'error',
+          }
+        );
+        return false
+      }
+
       if (this.isRepeat(isRepeat_ip_segment)) {
         this.$message(
           {
@@ -692,6 +712,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.monitor_page.rows = val;
+        this.monitor_page.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

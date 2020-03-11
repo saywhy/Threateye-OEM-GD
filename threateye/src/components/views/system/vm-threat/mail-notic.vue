@@ -3,7 +3,9 @@
     <div class="left">
       <p class="title">邮件服务器设置</p>
       <div class="left_item">
-        <p>SMTP服务器:</p>
+        <p>SMTP服务器
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入SMTP服务器"
                   v-model="mail.host"
@@ -11,7 +13,9 @@
         </el-input>
       </div>
       <div class="left_item">
-        <p>SMTP端口:</p>
+        <p>SMTP端口
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入SMTP端口"
                   v-model="mail.port"
@@ -19,7 +23,7 @@
         </el-input>
       </div>
       <p class="title">
-        SMTP启用安全连接SSL启用：
+        SMTP启用安全连接SSL启用
         <el-switch v-model="mail.ssl_switch">
         </el-switch>
       </p>
@@ -32,7 +36,9 @@
         </el-input>
       </div> -->
       <div class="left_item">
-        <p>邮箱地址:</p>
+        <p>邮箱地址
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入邮箱地址"
                   v-model="mail.username"
@@ -40,7 +46,9 @@
         </el-input>
       </div>
       <div class="left_item">
-        <p>邮箱密码:</p>
+        <p>邮箱密码
+          <span class="red_necessary">*</span>
+        </p>
         <el-input class="select_box"
                   placeholder="请输入邮箱密码"
                   v-model="mail.password"
@@ -59,7 +67,9 @@
     <div class="mid">
       <p class="title">收件邮箱账号</p>
       <div class="mid_item">
-        <p>邮箱地址</p>
+        <p>邮箱地址
+          <span class="red_necessary">*</span>
+        </p>
         <div class="item_addrs"
              v-for="(item,index) in mail.alertEmail_list">
           <el-input class="select_box"
@@ -80,7 +90,7 @@
         </div>
       </div>
       <div class="mid_item">
-        <p>发送内容:</p>
+        <p>发送内容</p>
         <el-input class="select_box"
                   type="textarea"
                   :rows="10"
@@ -92,7 +102,7 @@
         </el-input>
       </div>
       <p class="title">
-        发生警告时给此邮箱发送通知邮件:
+        发生警告时给此邮箱发送通知邮件
         <el-switch v-model="mail.send">
         </el-switch>
       </p>

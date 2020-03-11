@@ -42,7 +42,7 @@
             </el-button>
             <el-dropdown-menu slot="dropdown"
                               class="dropdown_ul_box_detail">
-              <el-dropdown-item command="1">新建工单</el-dropdown-item>
+              <el-dropdown-item command="1">编辑工单</el-dropdown-item>
               <el-dropdown-item command="2">添加到工单</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -523,6 +523,7 @@
     </div>
     <!-- 编辑标签 -->
     <el-dialog class="add_tag pop_box"
+               :close-on-click-modal="false"
                :visible.sync="edit_tag.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_tag_box"
@@ -564,6 +565,8 @@
     <!-- 弹窗 -->
     <!-- 添加到工单 -->
     <el-dialog class="pop_state_add pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="worksheets_data.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="add_closed_state"
@@ -636,6 +639,8 @@
     <!-- 弹窗 -->
     <!-- 新建工单任务 -->
     <el-dialog class="task_new_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="new_worksheets_data.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_task_new"
@@ -643,7 +648,7 @@
            alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">新建工单</span>
+        <span class="title_name">编辑工单</span>
       </div>
       <div class="step_box">
         <div class="step_box1">
@@ -1347,7 +1352,7 @@ export default {
           console.log(response.data.data);
           this.network_detail = response.data.data
           this.network_detail.attack_stage_cn = ''
-      
+
           this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
           this.network_detail.dest_label_obj = JSON.parse(this.network_detail.dest_label)
 
@@ -2068,6 +2073,7 @@ export default {
     },
     handleSizeChange_now (val) {
       this.emerge_list.now_data.rows = val;
+      this.emerge_list.now_data.page = 1;
       this.new_list();
     },
     handleCurrentChange_now (val) {
@@ -2094,6 +2100,7 @@ export default {
     },
     handleSizeChange_old (val) {
       this.emerge_list.old_data.rows = val;
+      this.emerge_list.old_data.page = 1;
       this.old_list();
     },
     handleCurrentChange_old (val) {
@@ -2422,6 +2429,7 @@ export default {
     },
     handleSizeChange_add (val) {
       this.worksheets_data.rows = val;
+      this.worksheets_data.page = 1;
       this.worksheets_data.tableRadio = {}
       this.get_worksheets_list();
     },
@@ -3199,7 +3207,7 @@ export default {
   //   检测时间轴
   .detail_time_box {
     // min-height: 716px;
-    padding: 36px 56px;
+    padding: 24px 56px 36px 56px;
     .time_title {
       height: 22px;
       font-family: PingFangSC-Medium;

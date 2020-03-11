@@ -81,6 +81,8 @@
       </div>
       <!-- 添加licence -->
       <el-dialog class="add_box pop_box"
+                 :close-on-click-modal="false"
+                   :modal-append-to-body="false"
                  :visible.sync="licence_pop.add">
         <img src="@/assets/images/emerge/closed.png"
              @click="closed_add_box"
@@ -94,6 +96,7 @@
           <div class="content_item">
             <p>
               <span class="title">序列号</span>
+              <span class="red_necessary">*</span>
             </p>
             <el-input class="select_box"
                       placeholder="请输入序列号"
@@ -300,6 +303,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.license_data.rows = val;
+      this.license_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

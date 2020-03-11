@@ -79,6 +79,8 @@
     </div>
     <!-- 新增 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="user_state.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -92,6 +94,7 @@
         <div class="content_item">
           <p>
             <span class="title">用户名</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入用户名"
@@ -102,6 +105,7 @@
         <div class="content_item">
           <p>
             <span class="title">密码</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     :placeholder="user_data.placeholder"
@@ -112,6 +116,7 @@
         <div class="content_item">
           <p>
             <span class="title">确认密码</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请再次输入密码"
@@ -121,17 +126,8 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">部门</span>
-          </p>
-          <el-input class="select_box"
-                    placeholder="请输入部门"
-                    v-model="user_add.department"
-                    clearable>
-          </el-input>
-        </div>
-        <div class="content_item">
-          <p>
             <span class="title">邮箱</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入邮箱"
@@ -142,10 +138,21 @@
         <div class="content_item">
           <p>
             <span class="title">手机号</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入手机号"
                     v-model="user_add.mobile"
+                    clearable>
+          </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">部门</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请输入部门"
+                    v-model="user_add.department"
                     clearable>
           </el-input>
         </div>
@@ -173,6 +180,8 @@
     </el-dialog>
     <!-- 编辑 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="user_state.edit">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -205,17 +214,8 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">部门</span>
-          </p>
-          <el-input class="select_box"
-                    placeholder="请输入部门"
-                    v-model="user_edit.department"
-                    clearable>
-          </el-input>
-        </div>
-        <div class="content_item">
-          <p>
             <span class="title">邮箱</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入邮箱"
@@ -226,10 +226,21 @@
         <div class="content_item">
           <p>
             <span class="title">手机号</span>
+            <span class="red">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入手机号"
                     v-model="user_edit.mobile"
+                    clearable>
+          </el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">部门</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请输入部门"
+                    v-model="user_edit.department"
                     clearable>
           </el-input>
         </div>
@@ -638,6 +649,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.user_data.rows = val;
+      this.user_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {
@@ -698,6 +710,9 @@ export default {
 <style scoped lang="less">
 #user_management {
   padding-right: 24px;
+  .red {
+    color: #ff5f5c;
+  }
   .user_title {
     margin-bottom: 24px;
     .btn_i {

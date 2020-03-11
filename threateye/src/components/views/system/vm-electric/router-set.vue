@@ -67,6 +67,8 @@
     </div>
     <!-- 新增 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="router_state.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -80,6 +82,7 @@
         <div class="content_item">
           <p>
             <span class="title">目的地址</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入目的地址"
@@ -90,6 +93,7 @@
         <div class="content_item">
           <p>
             <span class="title">子网掩码</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入子网掩码"
@@ -99,10 +103,11 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">下载地址</span>
+            <span class="title">下一条地址</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入下载地址"
+                    placeholder="请输入下一条地址"
                     v-model="router_add.next_step"
                     clearable>
           </el-input>
@@ -117,6 +122,8 @@
     </el-dialog>
     <!-- 编辑 -->
     <el-dialog class="add_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="router_state.edit">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -130,6 +137,7 @@
         <div class="content_item">
           <p>
             <span class="title">目的地址</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入目的地址"
@@ -140,6 +148,7 @@
         <div class="content_item">
           <p>
             <span class="title">子网掩码</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入子网掩码"
@@ -149,10 +158,11 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">下载地址</span>
+            <span class="title">下一条地址</span>
+            <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入下载地址"
+                    placeholder="请输入下一条地址"
                     v-model="router_edit.next_step"
                     clearable>
           </el-input>
@@ -380,6 +390,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.router_data.rows = val;
+      this.router_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

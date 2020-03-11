@@ -194,6 +194,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.ioc_data.rows = val;
+      this.ioc_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {
@@ -302,7 +303,7 @@ export default {
 #invest_ioc {
   .invest_upload {
     overflow: auto;
-    margin-bottom: 10px;
+    margin-bottom: 24px;
     /deep/ .upload-demo {
       // float: left;
       margin-bottom: 10px;

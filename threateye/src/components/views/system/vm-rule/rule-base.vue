@@ -28,6 +28,8 @@
                class="update"
                @click="open_box">上传更新文件</el-button>
     <el-dialog class="import_box pop_box"
+               :close-on-click-modal="false"
+                 :modal-append-to-body="false"
                :visible.sync="rule_data.upload_pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_upload_box"

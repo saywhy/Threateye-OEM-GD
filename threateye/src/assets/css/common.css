@@ -134,3 +134,7 @@ input:-ms-input-placeholder {
   border-width: 0;
   outline: none;
 }
+
+.red_necessary {
+  color: #ff5f5c;
+}

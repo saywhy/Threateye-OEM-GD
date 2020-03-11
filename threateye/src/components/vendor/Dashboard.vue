@@ -52,7 +52,7 @@
       padding: 0 24px;
       position: fixed;
       width: 100%;
-      z-index: 3000;
+      z-index: 1;
       height: 60px!important;
       background-color: #2e3f60;
     }
@@ -65,7 +65,6 @@
         background-color: #fff;
         width: 210px!important;
         height: calc(100% - 120px);
-        z-index: 2500;
         &.collapse {
           width: 56px!important;
           #aside{
@@ -107,16 +106,15 @@
         }
         &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
-          height: 800px;
-          border-radius: 10px;
+          border-radius: 6px;
         }
         &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
           border-radius: 6px;
-          background: #c1c1c1;
+          background: #a8a8a8;
         }
         &::-webkit-scrollbar-track {/*滚动条里面轨道*/
           border-radius: 6px;
-          background: #F8F8F8;
+          background: #f4f4f4;
         }
         .dashboard-list-main{
           padding: 0;
@@ -135,7 +133,7 @@
       color: #999;
       font-size: 16px;
       width: 100%;
-      z-index: 1001;
+      z-index: -1;
       font-family: PingFangSC-Regular;
     }
   }

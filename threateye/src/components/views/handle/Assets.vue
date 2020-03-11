@@ -145,7 +145,7 @@
 
     <!-- 弹窗 -->
     <!-- 状态变更 -->
-    <el-dialog class="pop_state_box" width='480px' :visible.sync="state_change">
+    <el-dialog class="pop_state_box" width='480px' :modal-append-to-body="false" :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png" @click="closed_state" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -168,7 +168,7 @@
 
     <!-- 弹窗 -->
     <!-- 工单任务 -->
-    <el-dialog class="task_new_box" width='840px' :visible.sync="task.new">
+    <el-dialog class="task_new_box" width='840px' :modal-append-to-body="false" :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -304,7 +304,7 @@
 
     <!-- 弹窗 -->
     <!-- 添加到工单 -->
-    <el-dialog class="pop_state_add" width='960px' :visible.sync="add_state_change">
+    <el-dialog class="pop_state_add" width='960px' :modal-append-to-body="false" :visible.sync="add_state_change">
       <img src="@/assets/images/emerge/closed.png" @click="add_closed_state" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -1363,7 +1363,7 @@
 
               .tog-types {
                 position: absolute;
-                top: 9px;
+                top: 11px;
                 left: 9px;
 
                 .name {

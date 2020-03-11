@@ -20,6 +20,9 @@
           .cell{
             color: #333;
             font-weight: bold;
+            .el-checkbox{
+              display: grid;
+            }
           }
         }
       }
@@ -27,7 +30,13 @@
   }
   /deep/
   .el-table__body-wrapper{
-    /*max-height: 480px;*/
+    td{
+      .cell{
+        .el-checkbox{
+          display: grid;
+        }
+      }
+    }
   }
 }
 /deep/

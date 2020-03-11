@@ -91,7 +91,7 @@
         }
       }
       .dashboard-main-fixed{
-        background-color: #c2e7b0;
+        background-color: #F8F8F8;
         top: 60px;
         left: 210px;
         position: fixed;
@@ -119,7 +119,7 @@
         .dashboard-list-main{
           padding: 0;
           background-color: #f4f4f4;
-          min-height: 1000px;
+          min-height: 900px;
         }
       }
     }

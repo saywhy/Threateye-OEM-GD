@@ -18,6 +18,7 @@ import moment from "moment"
 });*/
 
 Vue.filter('time',function(value){
+  value = value.toString();
   if(value.length == 10){
     value = value * 1000;
   }

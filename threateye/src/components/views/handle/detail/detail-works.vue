@@ -1,5 +1,5 @@
 <template>
-    <div class="detail-works" v-cloak>
+    <div class="detail-works" v-cloak v-loading="page_show">
       <back-title :title-name="title_name"></back-title>
       <div class="detail_base_top">
           <div class="top_left">
@@ -13,7 +13,7 @@
           </div>
       </div>
       <div class="detail_base_mid">
-          <div class="bom_item">
+          <div class="bom_item" >
               <li>
                   <span class="title"><i class="b_i b_name"></i>工单名称：</span>
                   <span class="content">{{data.name}}</span>
@@ -52,118 +52,57 @@
       </div>
       <div class="detail_base_bom">
         <!-- tabs列表 -->
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <!-- 资产维度综合告警 -->
-          <el-tab-pane label="资产维度综合告警" class="tabs-item" name="first">
-            <el-table class="handle_table_detail"
-                      ref="multipleTable"
-                      align="center"
-                      :data="table_risks.tableData"
-                      tooltip-effect="dark"
-                      style="width: 100%">
-              <el-table-column prop="asset_ip" label="资产" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
-              <!--<el-table-column label="威胁等级">
-                <template slot-scope="scope">
-                  <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                    <el-button type="primary" @click.stop>
-                      {{ scope.row.degree }}
-                      <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高'">
-                        高危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中'">
-                        中危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低'">
-                        低危
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
-              </el-table-column>-->
-              <el-table-column label="失陷确定性">
-                <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
-              </el-table-column>
-              <el-table-column label="状态" width="80">
-                <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
-              </el-table-column>
-            </el-table>
+        <el-tabs v-model="activeName">
+
+          <el-tab-pane :label="table.tabsFlag == 0?'资产':'告警'" class="tabs-item" name="first">
+            <!-- 资产 -->
+            <div v-show="table.tabsFlag == 0">
+              <el-table ref="multipleTable" class="handle_table_detail"
+                        tooltip-effect="dark"
+                        :data="table.tableData">
+                <el-table-column prop="asset_ip" label="资产" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
+                <el-table-column label="失陷确定性">
+                  <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+                </el-table-column>
+                <el-table-column label="状态" width="80">
+                  <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                </el-table-column>
+              </el-table>
+            </div>
+            <!-- 告警 -->
+            <div v-show="table.tabsFlag == 1">
+              <el-table ref="multipleTable" class="handle_table_detail"
+                        :data="table.tableData"
+                        tooltip-effect="dark">
+                <el-table-column label="告警时间" width="180" show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+                </el-table-column>
+                <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+                </el-table-column>
+                <el-table-column label="状态" width="80">
+                  <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+                </el-table-column>
+              </el-table>
+            </div>
             <el-pagination class="handle_pagination_box"
-                           @size-change="handleSizeChangeRisks"
-                           @current-change="handleCurrentChangeRisks"
-                           :current-page="table_risks.pageNow"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
                            :page-sizes="[5,10,20]"
-                           :total="table_risks.count"
-                           :page-size="table_risks.eachPage"
+                           :current-page="table.pageNow"
+                           :page-size="table.eachPage"
+                           :total="table.count"
                            layout="total, sizes, prev, pager, next">
             </el-pagination>
-          </el-tab-pane>
-
-          <!-- 网络风险视角 -->
-          <el-tab-pane label="网络风险视角" class="tabs-item" name="second">
-            <el-table class="handle_table_detail"
-                      ref="multipleTable"
-                      align="center"
-                      :data="table_alerts.tableData"
-                      tooltip-effect="dark"
-                      style="width: 100%">
-              <el-table-column label="告警时间" width="150">
-                <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-              </el-table-column>
-              <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column prop="application" label="应用" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
-              </el-table-column>
-              <!--<el-table-column label="威胁等级">
-                <template slot-scope="scope">
-                  <el-dropdown @command="change_degree" trigger="click" class="degree_box" :class="scope.row.color">
-                    <el-button type="primary" @click.stop>
-                      {{ scope.row.degree }}
-                      <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item :command="['高危',scope.$index,'high']" v-if="scope.row.degree !='高危'">
-                        高危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['中危',scope.$index,'mid']" v-if="scope.row.degree !='中危'">
-                        中危
-                      </el-dropdown-item>
-                      <el-dropdown-item :command="['低危',scope.$index,'low']" v-if="scope.row.degree !='低危'">
-                        低危
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
-              </el-table-column>-->
-              <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column label="状态" width="80">
-                <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
-              </el-table-column>
-            </el-table>
-            <el-pagination class="handle_pagination_box"
-                           @size-change="handleSizeChangeAlerts"
-                           @current-change="handleCurrentChangeAlerts"
-                           :current-page="table_alerts.pageNow"
-                           :page-sizes="[5,10,20]"
-                           :total="table_alerts.count"
-                           :page-size="table_alerts.eachPage"
-                           layout="total, sizes, prev, pager, next">
-            </el-pagination>
-
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -211,32 +150,27 @@ export default {
   data() {
     return {
       id: 0,
+      page_show:true,
       loadlinks:'/yiiapi/workorder/download?id=',
-      common:{
-        page:1,
-        rows: 10
-      },
       title_name: "工单详情",
       activeName: 'first',
       data:{
-        created_at:'1583668901',
-        updated_at:'1583668910'
+        created_at:'1583753107',
+        updated_at:'1583753107'
       },
-      table_risks: {
+      //资产or告警
+      table: {
         tableData:[],
         count: 0,
         pageNow: 1,
         maxPage: 1,
-        eachPage: 10
+        eachPage: 10,
+        multipleSelection: [],
+        loading: true,
+        tabsFlag: 0
       },
-      table_alerts: {
-        tableData:[],
-        count: 0,
-        pageNow: 1,
-        maxPage: 1,
-        eachPage: 10
-      },
-      ///
+
+      //回复记录table
       table_reply:{
         tableData: [],
         count: 0,
@@ -263,12 +197,13 @@ export default {
   methods: {
     //获取工单详情列表
     get_list_works_detail(){
+      this.page_show = true;
       this.$axios.get('/yiiapi/workorder/details',
         {
           params: {
             id: this.id,
-            page: this.common.page,
-            rows: this.common.rows
+            page: this.table.pageNow,
+            rows: this.table.eachPage
           }
         })
         .then((resp) => {
@@ -279,68 +214,37 @@ export default {
 
           if (status == 0) {
 
-            if(data.perator.length > 0){
+            //对经办人处理
+            let attr = data.perator.map(x => {return x.perator});
+            data.new_perator = attr.join(',');
 
-              let attr = [];
-
-              data.perator.map(x => {
-                attr.push(x.perator)
-              });
-
-              data.new_perator = attr.join(',');
-            }else {
-              data.new_perator = '';
-            }
-
+            //顶部数据参数
             this.data = data;
 
+            this.page_show = false;
+
+            /**
+            * 判断是资产还是告警
+            * */
             if(data.risk_asset != '[]') {
-
-              data.risk_asset.data.map(function (v,k) {
-                switch (v.degree) {
-                  case '高':
-                    v.color = 'high';
-                    break;
-                  case '中':
-                    v.color = 'mid';
-                    break;
-                  case '低':
-                    v.color = 'low';
-                    break;
-                  default:
-                    break;
-                }
-              });
-
-              this.table_risks.tableData = data.risk_asset.data;
-              this.table_risks.count = data.risk_asset.count;
-              this.table_risks.maxPage = data.risk_asset.maxPage;
-              this.table_risks.pageNow = data.risk_asset.pageNow;
+              //是资产
+              this.table.tabsFlag = 0;
+              this.table.tableData = data.risk_asset.data;
+              this.table.count = data.risk_asset.count;
+              this.table.maxPage = data.risk_asset.maxPage;
+              this.table.pageNow = data.risk_asset.pageNow;
             }
 
-            if(data.alerts != '[]') {
+            if(data.alerts != '[]'){
+              //是告警
+              this.table.tabsFlag = 1;
+              this.table.tableData = data.alerts.data;
+              this.table.count = data.alerts.count;
+              this.table.maxPage = data.alerts.maxPage;
+              this.table.pageNow = data.alerts.pageNow;
 
-              data.alerts.data.map(function (v,k) {
-                switch (v.degree) {
-                  case '高':
-                    v.color = 'high';
-                    break;
-                  case '中':
-                    v.color = 'mid';
-                    break;
-                  case '低':
-                    v.color = 'low';
-                    break;
-                  default:
-                    break;
-                }
-              });
-              this.table_alerts.tableData = data.alerts.data;
-              this.table_alerts.count = data.alerts.count;
-              this.table_alerts.maxPage = data.alerts.maxPage;
-              this.table_alerts.pageNow = data.alerts.pageNow;
+              console.log(this.table.tableData)
             }
-
           }
         });
     },
@@ -374,42 +278,22 @@ export default {
     },
 
     /*********************************************/
-    //每頁多少條切換(资产)
-    handleSizeChangeRisks(val){
-      this.table_risks.eachPage = val;
-
-      this.common.page = this.table_risks.pageNow;
-      this.common.rows = this.table_risks.eachPage;
+    //每頁多少條切換
+    handleSizeChange(val){
+      this.table.eachPage = val;
+      this.table.pageNow = 1;
       this.get_list_works_detail();
     },
-    //頁數點擊切換(资产)
-    handleCurrentChangeRisks(val){
-      this.table_risks.pageNow = val;
-      this.common.page = this.table_risks.pageNow;
-      this.common.rows = this.table_risks.eachPage;
+    //頁數點擊切換
+    handleCurrentChange(val){
+      this.table.pageNow = val;
       this.get_list_works_detail();
     },
-    /*********************************************/
-    //每頁多少條切換(网络)
-    handleSizeChangeAlerts(val){
-      this.table_alerts.eachPage = val;
-      this.common.page = this.table_alerts.pageNow;
-      this.common.rows = this.table_alerts.eachPage;
-      this.get_list_works_detail();
-    },
-    //頁數點擊切換(网络)
-    handleCurrentChangeAlerts(val){
-      this.table_alerts.pageNow = val;
-
-      this.common.page = this.table_alerts.pageNow;
-      this.common.rows = this.table_alerts.eachPage;
-      this.get_list_works_detail();
-    },
-
     /*********************************************/
     //每頁多少條切換(回复)
     handleSizeChangeReply(val) {
       this.table_reply.eachPage = val;
+      this.table_reply.pageNow = 1;
       this.get_reply_works_detail();
     },
 
@@ -419,6 +303,7 @@ export default {
       this.get_reply_works_detail();
     },
     /*********************************************/
+
     //回复记录
     submitReplyClick(){
       this.$axios.post('/yiiapi/workorder/reply',
@@ -438,32 +323,6 @@ export default {
         });
     },
 
-    /**********************************************************************************************/
-
-    handleClick(tab, event) {
-      //console.log(tab, event);
-    },
-
-    //改变告警等级
-    change_degree(command) {
-      console.log(command);
-      if(this.table_risks.tableData.length == 0){
-        this.table_alerts.tableData.forEach(function(item, index) {
-          if (command[1] == index) {
-            item.degree = command[0];
-            item.color = command[2];
-          }
-        });
-      }else {
-        this.table_risks.tableData.forEach(function(item, index) {
-          if (command[1] == index) {
-            item.degree = command[0];
-            item.color = command[2];
-          }
-        });
-      }
-
-    }
   }
 };
 </script>

@@ -62,11 +62,10 @@
       </el-form>
     </div>
     <el-table ref="multipleTable" class="handle_table common-table"
-              align="center"
               v-loading="table.loading"
               :data="table.tableData"
+              :row-style="{cursor:'pointer'}"
               tooltip-effect="dark"
-              style="width: 100%"
               @selection-change="handleSelChange"
               @row-click="detail_click">
       <el-table-column label="全选" prop="type" width="50">
@@ -74,21 +73,21 @@
           <div class="new_dot" v-show="scope.row.if_new == '1'"></div>
         </template>
       </el-table-column>
-      <el-table-column type="selection" width="40">
+      <el-table-column type="selection" width="30">
       </el-table-column>
       <el-table-column prop="name" label="工单名称" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="creator" label="创建人" width="100" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="创建时间" width="160" show-overflow-tooltip>
+      <el-table-column label="创建时间" width="180" show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.created_at | time }}</template>
       </el-table-column>
-      <el-table-column label="优先级" width="80">
+      <el-table-column label="优先级">
         <template slot-scope="scope">{{ scope.row.priority | priority }}</template>
       </el-table-column>
       <el-table-column prop="perator" label="经办人" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="更新时间" width="160" show-overflow-tooltip>
+      <el-table-column label="更新时间" width="180" show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
       </el-table-column>
       <el-table-column prop="remarks" label="备注" show-overflow-tooltip>
@@ -103,13 +102,14 @@
           @current-change="handleCurrentChange"
           :page-sizes="[5, 10, 20]"
           :page-size="table.eachPage"
+          :current-page="table.pageNow"
           :total="table.count"
           layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
     <!-- 弹窗 -->
     <!-- 工单任务 -->
-    <el-dialog class="task_new_box" width='840px' :visible.sync="task.new">
+    <el-dialog class="task_new_box" width='840px' :modal-append-to-body="false" :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -554,6 +554,7 @@
       //每頁多少條切換
       handleSizeChange(val) {
         this.table.eachPage = val;
+        this.table.pageNow = 1;
         this.get_list_works();
       },
 
@@ -653,7 +654,7 @@
             this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
           }else {
 
-            this.task.title = '编辑标签';
+            this.task.title = '编辑工单';
             this.open_task();
           }
         }else {
@@ -695,7 +696,7 @@
       closed_task_new (){
         this.task.new = false;
         this.task.status = '';
-        this.task.title = '新增标签';
+        this.task.title = '新增工单';
         this.$refs.multipleTable.clearSelection();
         this.task_params = {
           name: "",
@@ -827,7 +828,7 @@
               this.task.new = false;
               this.task.new_contet = false;
               this.task.status = '';
-              this.task.title = '编辑标签';
+              this.task.title = '编辑工单';
 
               this.task_params = {
                 name: "",
@@ -886,7 +887,7 @@
               this.task.new = false;
               this.task.new_contet = false;
               this.task.status = '';
-              this.task.title = '新增标签';
+              this.task.title = '新增工单';
 
               this.task_params = {
                 name: "",

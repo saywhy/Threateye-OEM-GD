@@ -89,6 +89,7 @@
   @import "../../../assets/css/less/invest-common-pattern.less";
   @import "../../../assets/css/less/invest-common-table-pattern.less";
   .handle-works{
+    margin-bottom: 0;
     .invest{
       position: relative;
       .h_count{

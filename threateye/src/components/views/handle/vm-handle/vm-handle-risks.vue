@@ -1,116 +1,130 @@
 <template>
-  <div id="Network" v-cloak>
-    <div class="e_line"  v-loading="e_line.loading">
-      <p class="title">实时告警监测</p>
-      <vm-emerge-line :data='echarts_data' v-if="e_line.data_show"></vm-emerge-line>
+  <div class="handle-lateral" v-cloak>
+    <div class="outside-top">
+      <div class="ost ost-1">
+        <div class="ost-title"><slot name="name"></slot>威胁资产 Top5</div>
+        <div class="ost-progress">
+          <vm-handle-progress :progress_data="progress_data_source5"
+                              v-if="progress_data_source5_show"></vm-handle-progress>
+        </div>
+      </div>
+      <div class="ost ost-2">
+        <div class="ost-title"><slot name="name"></slot>威胁类型 Top5</div>
+        <div class="ost-emerge">
+          <vm-handle-form :form_data="form_data_threat5"
+                          v-if="form_data_threat5_show"></vm-handle-form>
+        </div>
+      </div>
+    </div>
+    <slot></slot>
+    <div class="outside-bottom common-invest">
+      <div class="invest">
+        <div class="invest_form invest_form_network">
+          <el-form class="common-pattern">
+            <el-row class="common_box" style="padding-bottom:16px;border-bottom: 1px solid #ECECEC;">
+              <el-col :span="24" class="common_box_list">
+
+                <!--搜索关键词-->
+                <el-input class="s_key" placeholder="搜索关键词" v-model="params.key_word" clearable>
+                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                </el-input>
+
+                <!--时间-->
+                <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
+
+                <!--告警类型-->
+                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型"  @change="currentSelChange">
+                  <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+
+                <!--处理状态-->
+                <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态"  @change="currentSelChange">
+                  <el-option v-for="item in options_status" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+
+                <el-button class="s_btn" @click="submitClick();">搜索</el-button>
+                <el-link class="s_link" @click="resetClick();">重置</el-link>
+              </el-col>
+            </el-row>
+
+            <!--按钮组-->
+            <el-row class="common_btn">
+              <el-col :span="24" class="common_btn_list">
+                <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
+                  <el-button type="primary" class="change_btn">
+                    <span>状态变更</span>
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
+                    <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
+                    <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
+                    <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
+                    <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <el-dropdown @command="change_task" placement='bottom-start' trigger="click">
+                  <el-button type="primary" class="change_btn">
+                    <span>工单任务</span>
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
+                    <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
+                    <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <el-table ref="multipleTable" class="handle_table common-table"
+                  align="center"
+                  v-loading="table.loading"
+                  :data="table.tableData"
+                  tooltip-effect="dark"
+                  @selection-change="handleSelChange">
+          <el-table-column label="全选" prop="type" width="40">
+            <template slot-scope="scope">
+              <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
+            </template>
+          </el-table-column>
+          <el-table-column type="selection" align="left" width="30">
+          </el-table-column>
+          <el-table-column label="告警时间" width="180">
+            <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+          </el-table-column>
+          <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="application" label="应用" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+          </el-table-column>
+          <el-table-column label="状态"  width="80">
+            <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          class="handle-pagination"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :page-sizes="[5, 10, 20]"
+          :page-size="table.eachPage"
+          :total="table.count"
+          layout="total, sizes, prev, pager, next, jumper"
+        ></el-pagination>
+      </div>
     </div>
 
-    <!--告警-->
-    <div class="alert_risk">
-      <el-form class="common-pattern">
-        <h3 class="title">告警监测</h3>
-        <el-row class="common_box" style="padding: 15px 0;">
-          <el-col :span="24" class="common_box_list">
-            <!--搜索关键词-->
-            <el-input class="s_key" placeholder="搜索关键词" v-model="params.key" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <!--时间-->
-            <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-
-            <!--告警类型-->
-            <el-select class="s_key s_key_types" v-model="params.type" clearable placeholder="告警类型">
-              <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-
-            <!--处理状态-->
-            <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态">
-              <el-option v-for="item in options_status" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-
-            <el-button class="s_btn" @click="submitClick();">搜索</el-button>
-            <el-link class="s_link" @click="resetClick();">重置</el-link>
-          </el-col>
-        </el-row>
-
-        <!--按钮组-->
-        <el-row class="common_btn">
-          <el-col :span="24" class="common_btn_list">
-            <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
-              <el-button type="primary" class="change_btn">
-                <span>状态变更</span>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
-                <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
-                <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
-                <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-dropdown @command="change_task" placement='bottom-start' trigger="click">
-              <el-button type="primary" class="change_btn">
-                <span>工单任务</span>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
-                <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-button class="edit_btn" @click="export_box">导出</el-button>
-          </el-col>
-        </el-row>
-      </el-form>
-      <el-row class="common-table-pattern">
-        <el-col :span="24">
-          <el-table ref="multipleTable" class="handle_table common-table"
-                    v-loading="table.loading"
-                    :data="table.tableData"
-                    :row-style="{cursor:'pointer'}"
-                    tooltip-effect="dark"
-                    @selection-change="handleSelChange"
-                    @row-click="detail_click">
-            <el-table-column label="全选" prop="type" width="40">
-              <template slot-scope="scope">
-                <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
-              </template>
-            </el-table-column>
-            <el-table-column type="selection" width="30"></el-table-column>
-            <el-table-column label="告警时间" width="180" show-overflow-tooltip>
-              <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-            </el-table-column>
-            <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
-              <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
-            </el-table-column>
-            <el-table-column label="状态" width="80">
-              <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-        <el-col :span="24" class="e-pagination">
-          <el-pagination
-            class="handle-pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :page-sizes="[5, 10, 20]"
-            :page-size="table.eachPage"
-            :current-page="table.pageNow"
-            :total="table.count"
-            layout="total, sizes, prev, pager, next, jumper">
-          </el-pagination>
-        </el-col>
-      </el-row>
-    </div>
 
     <!-- 弹窗 -->
     <!-- 状态变更 -->
@@ -222,20 +236,6 @@
 
       <!-- 处置内容 -->
       <div class="task_handle_content" v-if="!task.new_contet">
-        <!--<div class="handle_content_top">
-          &lt;!&ndash;<el-dropdown placement='bottom-start' @command="handle.add" trigger="click">
-            <el-button type="primary" class="change_btn">
-              <span>新增</span>
-              <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-              <el-dropdown-item command="资产">资产</el-dropdown-item>
-              <el-dropdown-item command="告警">告警</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>&ndash;&gt;
-          <el-button class="ref">刷新</el-button>
-          <el-button class="cel">删除</el-button>
-        </div>-->
         <div class='table_box'>
           <ul class="table_box_title">
             <li v-for="(tab,index) in handle.table_title"
@@ -250,10 +250,12 @@
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_alerts">
-                <el-table-column label="全选" prop="type" width="40">
-                </el-table-column>
+                <el-table-column label="全选" prop="type" width="40"></el-table-column>
                 <el-table-column type="selection" width="40">
                 </el-table-column>
+                <!--<el-table-column label="告警时间" width="120" show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+                </el-table-column>-->
                 <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
@@ -266,7 +268,8 @@
                 </el-table-column>
                 <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
+                <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
                 </el-table-column>
                 <el-table-column label="状态"  width="80">
                   <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
@@ -345,37 +348,28 @@
         <el-button @click="add_ok_state" class="ok_btn">确定</el-button>
       </div>
     </el-dialog>
-
-
   </div>
 </template>
+
 <script type="text/ecmascript-6">
-  import vmEmergeLine from "./vm-emerge/vm-emerge-line";
-  import vmEmergePicker from "@/components/common/vm-emerge-picker";
-  import moment from 'moment'
+  import VmHandleProgress from './vm-handle-progress';
+  import VmHandleForm from './vm-handle-form';
+  import VmEmergePicker from "@/components/common/vm-emerge-picker";
+
   export default {
-    name: "Network",
-    components: {
-      vmEmergeLine,
-      vmEmergePicker
+    name: 'handle_threat_indicator',
+    props:{
+      threats: {
+        type:String,
+        default:'horizontalthreat'
+      },
     },
-    data () {
+    data() {
       return {
-        echarts_data: {},
-        e_line: {
-          loading: true,
-          data_show: false,
-        },
-        picker_data: {
-          time: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)]
-        },
-        params: {
-          key: "",
-          type: "",
-          status: "",
-          startTime:'',
-          endTime:''
-        },
+        progress_data_source5: [],
+        progress_data_source5_show:false,
+        form_data_threat5:[],
+        form_data_threat5_show:false,
         options_types: [
           {
             value: "1",
@@ -420,9 +414,12 @@
             label: "误报"
           }
         ],
-        edit_tag: {
-          tag_list: [],
-          pop: false
+        params: {
+          key_word:"",
+          category:"",
+          status: "",
+          startTime: "",
+          endTime: "",
         },
         table: {
           tableData: [],
@@ -431,8 +428,9 @@
           maxPage: 1,
           eachPage: 10,
           multipleSelection: [],
-          loading: true
+          loading:true
         },
+
         //弹窗部分
         state_change: false,
         process_state: "",
@@ -495,7 +493,6 @@
           eachPage: 5,
           multipleSelection: []
         },
-
         //添加到工单
         add_state_change:false,
         table_add_works: {
@@ -513,109 +510,125 @@
           notice: ['email'],
           remarks: "",
           multiple:[]
-        }
+        },
       };
     },
-    mounted () {
-      this.get_echarts();
-      this.get_list_risk();
+    components:{
+      VmHandleProgress,
+      VmHandleForm,
+      VmEmergePicker
+    },
+    created(){
+      this.get_list_source_top5();
+      this.get_list_threat_top5();
+      this.get_list_threat();
     },
     methods: {
-      // 获取折现图表
-      get_echarts() {
-        this.$axios.get('/yiiapi/alert/alert-trend')
-          .then(response => {
-            this.echarts_data = response.data.data;
-            this.e_line.loading = false;
-            this.e_line.data_show = true;
-          })
-          .catch(error => {
-            console.log(error);
-          })
-      },
-
-      // 获取告警列表
-      get_list_risk() {
-        this.table.loading = true;
-        this.$axios.get('/yiiapi/alert/list', {
-          params: {
-            start_time: this.params.startTime,
-            end_time: this.params.endTime,
-            key_word: this.params.key,
-            category: this.params.type,
-            status: this.params.status,
-            degree: "",
-            page: this.table.pageNow,
-            rows: this.table.eachPage,
-          }
-        }).then(resp => {
-
+      //外部威脅源top5
+      get_list_source_top5() {
+        this.$axios.get('/yiiapi/'+this.threats+'/source-top5')
+          .then((resp) => {
             let {status, data} = resp.data;
-            let datas = data;
             if (status == 0) {
-
-              let {data, count, maxPage, pageNow} = datas;
-
-              this.table.tableData = data;
-              this.table.count = count;
-              this.table.maxPage = maxPage;
-              this.table.pageNow = pageNow;
-              this.table.loading = false;
-
-             // console.log(data)
+              this.progress_data_source5 = data;
+              this.progress_data_source5_show = true;
             }
-
-          })
-          .catch(error => {
-            console.log(error);
           })
       },
-
-      changeTime(data) {
-        this.params.startTime = data[0].valueOf() / 1000;
-        this.params.endTime = data[1].valueOf() / 1000;
+      //外部威脅類型top5
+      get_list_threat_top5() {
+        this.$axios.get('/yiiapi/'+this.threats+'/threat-top5')
+          .then((resp) => {
+            let {status, data} = resp.data;
+            if (status == 0) {
+              this.form_data_threat5 = data;
+              this.form_data_threat5_show = true;
+            }
+          })
       },
+      //横向威脅列表
+      get_list_threat() {
+        this.table.loading = true;
+        this.$axios.get('/yiiapi/'+this.threats+'/list',{
+          params:{
+            start_time:this.params.startTime,
+            end_time:this.params.endTime,
+            degree:'',
+            category:this.params.category,
+            status:this.params.status,
+            key_word:this.params.key_word,
+            page: this.table.pageNow,
+            rows: this.table.eachPage
+          }
+        }).then((resp) => {
 
-      //搜索按鈕點擊事件
-      submitClick() {
-        this.get_list_risk();
-      },
+          let { status,data } = resp.data;
 
-      //重置按鈕點擊事件
-      resetClick() {
-        this.params = {
-            key: "",
-            type: "",
-            status: "",
-            startTime:'',
-            endTime:''
-        };
-        this.get_list_risk();
+          let datas = data;
+
+          if(status == 0){
+
+            let {data, count, maxPage,pageNow } = datas;
+            this.table.tableData = data;
+            this.table.count = count;
+            this.table.maxPage = maxPage;
+            this.table.pageNow = pageNow;
+            this.table.loading = false;
+
+            console.log(data)
+          }
+        })
       },
 
       //每頁多少條切換
       handleSizeChange(val) {
         this.table.eachPage = val;
-        this.table.pageNow = 1;
-        this.get_list_risk();
+        this.get_list_threat();
       },
-
       //頁數點擊切換
       handleCurrentChange(val) {
         this.table.pageNow = val;
-        this.get_list_risk();
+        this.get_list_threat();
       },
-
-      //多选获取选中数据
+      //下拉框change切換
+      currentSelChange(){
+        this.get_list_threat();
+      },
+      //時間切換
+      changeTime(data) {
+        this.params.startTime = data[0].valueOf();
+        this.params.endTime = data[1].valueOf();
+        //this.get_list_threat();
+      },
+      //搜索按鈕點擊事件
+      submitClick(){
+        this.get_list_threat();
+      },
+      //重置按鈕點擊事件
+      resetClick(){
+        this.params = {
+          key_word:"",
+          category:"",
+          status: "",
+          startTime: "",
+          endTime: "",
+        }
+        this.get_list_threat();
+      },
+      /*****************************/
       handleSelChange(val) {
         this.table.multipleSelection = val;
       },
-
-      //进入详情页面
-      detail_click(val) {
-        this.$router.push({path: "/detail/network", query: {detail: val.id}});
+      //改变告警等级
+      change_degree(command) {
+        //console.log(command);
+        this.table.tableData.forEach(function(item, index) {
+          if (command[1] == index) {
+            item.degree = command[0];
+            item.color = command[2];
+          }
+        });
       },
-
       /***********************************以下是弹窗部分****************************************/
       /***********************************以下是弹窗部分****************************************/
 
@@ -661,7 +674,6 @@
       ok_state() {
 
         let selected = this.table.multipleSelection;
-
         //资产ID处理
         let id_group = selected.map(x => {return x.id;});
 
@@ -679,7 +691,7 @@
           change_status = 4;
         }
 
-        this.$axios.put('/yiiapi/alert/do-alarm', {
+        this.$axios.put('/yiiapi/'+this.threats+'/do-alarm', {
           id: id_group,
           status: change_status
         })
@@ -693,7 +705,7 @@
 
               this.$refs.multipleTable.clearSelection();
 
-              this.get_list_risk();
+              this.get_list_threat();
 
             } else {
 
@@ -724,7 +736,7 @@
           this.$message({message:'您未选中列表或列表为空',type: 'warning'});
           return false;
 
-        } else {
+        }  else {
 
           if(sel_table_attr.includes('2')
             || sel_table_attr.includes('3')
@@ -733,15 +745,14 @@
 
             this.$message({message: '告警状态为已处置,已忽略,误报的不能新建', type: 'error'});
 
-          } else {
+          } else{
 
             this.table_alerts.tableData = sel_table_data;
-
             this.table_alerts.count = sel_table_data.length;
 
             let pageNow = this.table_alerts.pageNow;
 
-            let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5)
+            let handle_data = this.table_alerts.tableData.slice((pageNow-1) * 5,pageNow * 5);
 
             this.table_alerts.tableData_new = handle_data;
 
@@ -749,6 +760,7 @@
             this.$axios.get('/yiiapi/site/user-list')
               .then(resp => {
                 let {status, data} = resp.data;
+
                 if (status == 0) {
                   this.task_new.operator_list = data;
                 }else {
@@ -761,9 +773,10 @@
                 console.log('用户列表错误');
                 console.log(err);
               })
-
           }
+
         }
+
       },
 
       //关闭新建工单
@@ -807,7 +820,6 @@
         let level_list = this.table_operator.tableData;
 
         let selected_id_attr = level_list.map(x => {return x.id});
-
         if(selected_id_attr.includes(item.id)){
           this.$message.error('已存在');
         }else {
@@ -829,7 +841,7 @@
         this.table_operator.pageNow = val;
       },
 
-      //tabs下第一个table页数点击(资产)
+      //tabs下第一个table页数点击(告警)
       hcc_table_alerts(val) {
         this.table_alerts.pageNow = val;
         let handle_data = this.table_alerts.tableData.slice((val-1) * 5,val * 5);
@@ -851,7 +863,7 @@
       //新建工单分配
       prev_task_handle_assign() {
 
-        this.$axios.put('/yiiapi/alert/distribution-workorder',
+        this.$axios.put('/yiiapi/'+this.threats+'/distribution-workorder',
           {
             name: this.task_params.name,
             priority:this.task_params.level,
@@ -883,13 +895,14 @@
               };
               this.table_operator.tableData_new = [];
 
-              this.get_list_risk();
+              this.get_list_threat();
 
             }else if (status == 1){
 
               this.$message.error(msg);
 
             }
+
           })
           .catch(err => {
             console.log(err);
@@ -900,11 +913,11 @@
       //新建工单保存
       prev_task_handle_save() {
 
-        this.$axios.post('/yiiapi/alert/add-workorder',
+        this.$axios.post('/yiiapi/'+this.threats+'/add-workorder',
           {
             name: this.task_params.name,
             priority:this.task_params.level,
-            perator: [],
+            perator:[],
             remarks:this.task_params.textarea,
             te_alert: this.task_params.multiple,
             remind:this.task_params.notice
@@ -930,11 +943,12 @@
                 multiple:[]
               };
               this.table_operator.tableData_new = [];
-              this.get_list_risk();
+              this.get_list_threat();
 
             }else if (status == 1){
               this.$message.error(msg);
             }
+
 
           })
           .catch(err => {
@@ -945,7 +959,7 @@
       /***************新加到工单*****************/
 
       //添加到工单打开
-      open_add_new() {
+      open_add_new(){
         this.add_open_state();
       },
 
@@ -954,30 +968,30 @@
 
         let sel_table_data = this.table.multipleSelection;
 
-        let sel_table_attr = sel_table_data.map(x => {return x.status});
+        let sel_table_attr = sel_table_data.map(x => {
+          return x.status
+        });
 
-        if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
+        if (sel_table_data.length == 0) {
+          this.$message({message: '您未选中列表或列表为空', type: 'warning'});
           return false;
 
         } else {
 
-          if(sel_table_attr.includes('2')
+          if (sel_table_attr.includes('2')
             || sel_table_attr.includes('3')
-            || sel_table_attr.includes('4'))
-          {
+            || sel_table_attr.includes('4')) {
             this.$message({message: '告警状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
-          }else {
+          } else {
             this.add_state_change = true;
             this.get_table_works_list();
-
           }
         }
       },
 
       //获取列表
-      get_table_works_list() {
-        this.$axios.get('/yiiapi/alert/workorder-list',{
+      get_table_works_list(){
+        this.$axios.get('/yiiapi/'+this.threats+'/workorder-list',{
           params:{
             page: this.table_add_works.pageNow,
             rows: this.table_add_works.eachPage
@@ -1004,7 +1018,6 @@
             this.table_add_works.loading = false;
 
           }
-
         })
       },
 
@@ -1028,41 +1041,36 @@
           });
           this.add_params.id = row.id;
           this.add_params.name = row.name;
-          this.add_params.level = row.priority;
+          this.add_params.level  = row.priority;
           this.add_params.perator = JSON.parse(row.perator);
           this.add_params.remarks = row.remarks;
-          this.add_params.remind = JSON.parse(row.remind);
         }
       },
 
       //新加到工单确定
       add_ok_state() {
 
-        let selected_attr = this.table.multipleSelection.map(x => {return x.alert_id * 1});
+        let selected_attr = this.table.multipleSelection.map(x => {return x.alert_id});
 
         this.add_params.multiple = selected_attr;
 
-        this.$axios.post('/yiiapi/alert/add-workorder',
+        this.$axios.post('/yiiapi/'+this.threats+'/add-workorder',
           {
             id:this.add_params.id,
-            type: "alert",
             name: this.add_params.name,
             priority: this.add_params.level,
             perator: this.add_params.perator,
-            remind:this.add_params.remind,
+            remind:this.add_params.notice,
             remarks:this.add_params.remarks,
             te_alert: this.add_params.multiple
           })
-
           .then((resp) => {
 
             let {status, msg, data} = resp.data;
 
             if (status == 0) {
-
               this.$message.success('添加成功');
 
-              //不管成功与否，状态清空
               this.add_params = {
                 name: "",
                 level: "",
@@ -1072,15 +1080,15 @@
                 textarea: "",
                 multiple:[]
               };
+
               this.add_closed_state();
 
-              this.get_list_risk();
+              this.get_list_threat();
 
             } else if (status == 1){
-
               this.$message.error(msg);
-
             }
+
           })
           .catch(err => {
             console.log(err);
@@ -1093,113 +1101,93 @@
         this.table_add_works.pageNow = val;
 
         this.get_table_works_list();
-      },
-
-      /***************************导出*****************************/
-      //导出
-      export_box(){
-        let that = this;
-        this.$confirm('是否确定导出告警列表?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          that.$axios.get('/yiiapi/site/check-auth-exist', {
-            params: {
-              pathInfo: "alert/export-alerts-test",
-            }
-          })
-            .then(resp => {
-              let {status,msg, data} = resp.data;
-              /*if(status == 0){
-                that.$message.success(msg);
-              }else {
-                that.$message.error(msg);
-              }*/
-
-              this.test_download = function() {
-                // console.log($scope.params_data);
-
-              };
-              that.get_list_works();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        }).catch(() => {
-
-          this.$message({type: 'info', message: '已取消删除'});
-
-          this.$refs.multipleTable.clearSelection();
-        });
-      },
-      test_download(){
-        /*this.$axios.get("./yiiapi/alert/export-alerts-test",{
-          params: {
-            src_ip: this.params_data.src_ip,
-            dest_ip: this.params_data.dest_ip,
-            status: this.params_data.status,
-            start_time: this.params_data.start_time,
-            end_time: this.params_data.end_time,
-            category: this.params_data.category,
-            indicator: this.params_data.indicator,
-            degree: this.params_data.degree,
-          },
-        })
-          .success(function(data) {
-            if (data.status == 0) {
-              $scope.download_alarm();
-            } else if (rdata.status == 600) {
-              console.log(data.msg);
-            } else {
-              zeroModal.error(data.msg);
-            }
-          })
-          .error(function(error) {
-            console.log(error);
-          });*/
-       }
+      }
     }
-
-
-
-
   };
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/css/less/common-pattern.less";
-  @import "../../../assets/css/less/common-table-pattern.less";
-  #Network {
-    text-align: left;
-    padding:24px;
-    .e_line {
-      height: 322px;
-      background: #ffffff;
-      border-radius: 4px;
-      position: relative;
-      .title {
-        text-align: left;
-        font-size: 18px;
-        color: #333;
-        font-weight: 600;
-        position: absolute;
-        top: 12px;
-        left: 24px;
+  @import "../../../../assets/css/less/invest-common-pattern.less";
+  @import "../../../../assets/css/less/invest-common-table-pattern.less";
+  .handle-lateral{
+    padding: 24px;
+    .outside-top{
+      display: flex;
+      .ost{
+        height: 302px;
+        border-radius: 4px;
+        background-color: #fff;
+        padding: 24px;
+        .ost-title{
+          font-size: 16px;
+          color: #333;
+          font-weight: bold;
+          text-align: left;
+          font-family: PingFangSC-Medium;
+        }
+        &.ost-1{
+          width: 1221px;
+          margin-right: 24px;
+          .ost-progress{
+            margin-top: 16px;
+          }
+        }
+        &.ost-2{
+          flex: 1;
+          .ost-emerge{
+            height: 100%;
+          }
+        }
       }
     }
-    /*.el-input__inner {
-      height: 38px;
-    }*/
-
-    .alert_risk {
-      border-radius: 4px;
-      margin-top: 20px;
-      padding: 20px 24px;
-      height: auto;
-      background: #fff;
+    .outside-middle{
+      margin: 24px 0;
+      height: 283px;
+      background-color: #fff;
       text-align: left;
+      .osm-top{
+        height: 62px;
+        line-height: 62px;
+        border-bottom: 1px solid #ECECEC;
+        margin: 0 24px;
+        .osm-img{
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          margin: 19px 0;
+        }
+        .osm-title{
+          display: inline-block;
+          font-family: PingFangSC-Regular;
+          font-size: 16px;
+          font-weight: bold;
+          color: #333333;
+          margin-left: 6px;
+        }
+      }
+      .osm-middle{
+        height: 220px;
+        padding: 16px 24px;
+        .osm-dt{
+          font-family: PingFangSC-Medium;
+          font-size: 14px;
+          color: #333333;
+          font-weight: bold;
+          margin: 5px 0;
+        }
+        .osm-dd{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          color: #666666;
+        }
 
+      }
+    }
+    .outside-bottom{
+      background-color: #fff;
+      height: 885px;
+      padding: 12px 0;
+      margin-bottom: 24px;
       /deep/
       .handle_table {
         .degree_box {
@@ -1268,8 +1256,11 @@
           float: right;
         }
       }
+     /* /deep/
+      .handle-pagination{
+        margin: 20px 0;
+      }*/
     }
-
 
     /* 弹窗 */
     /* 状态变更 */
@@ -1400,7 +1391,7 @@
             height: 36px;
             margin: 20px 0 24px 0;
             .step_box1 {
-              background-image: url("../../../assets/images/emerge/step1.png");
+              background-image: url("../../../../assets/images/emerge/step1.png");
               background-repeat: no-repeat;
               background-size: 100% 100%;
               width: 120px;
@@ -1424,7 +1415,7 @@
             .step_box2 {
               width: 120px;
               height: 36px;
-              background-image: url("../../../assets/images/emerge/step2.png");
+              background-image: url("../../../../assets/images/emerge/step2.png");
               background-repeat: no-repeat;
               background-size: 100% 100%;
               float: left;
@@ -1758,6 +1749,6 @@
         }
       }
     }
-
   }
 </style>
+

@@ -77,51 +77,52 @@
               </el-col>
             </el-row>
           </el-form>
+          <el-table ref="multipleTable" class="handle_table common-table"
+                    align="center"
+                    v-loading="table.loading"
+                    :data="table.tableData"
+                    tooltip-effect="dark"
+                    @selection-change="handleSelChange">
+            <el-table-column label="全选" prop="type" width="40">
+              <template slot-scope="scope">
+                <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
+              </template>
+            </el-table-column>
+            <el-table-column type="selection" align="left" width="30">
+            </el-table-column>
+            <el-table-column label="告警时间" width="180">
+              <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+            </el-table-column>
+            <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="application" label="应用" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
+              <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+            </el-table-column>
+            <el-table-column label="状态"  width="80">
+              <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="handle-pagination"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :page-sizes="[5, 10, 20]"
+            :page-size="table.eachPage"
+            :total="table.count"
+            layout="total, sizes, prev, pager, next, jumper"
+          ></el-pagination>
         </div>
-        <el-table ref="multipleTable" class="handle_table common-table"
-                  align="center"
-                  v-loading="table.loading"
-                  :data="table.tableData"
-                  tooltip-effect="dark"
-                  @selection-change="handleSelChange">
-          <el-table-column label="全选" prop="type" width="40">
-            <template slot-scope="scope">
-              <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
-            </template>
-          </el-table-column>
-          <el-table-column type="selection" align="left" width="30">
-          </el-table-column>
-          <el-table-column label="告警时间" width="180">
-            <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-          </el-table-column>
-          <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="application" label="应用" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
-          </el-table-column>
-          <el-table-column label="状态"  width="80">
-            <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          class="handle-pagination"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :page-sizes="[5, 10, 20]"
-          :page-size="table.eachPage"
-          :total="table.count"
-          layout="total, sizes, prev, pager, next, jumper"
-        ></el-pagination>
+
       </div>
     </div>
 
@@ -1185,8 +1186,8 @@
     }
     .outside-bottom{
       background-color: #fff;
-      height: 885px;
-      padding: 12px 0;
+      /*min-height: 500px;*/
+      padding: 0;
       margin-bottom: 24px;
       /deep/
       .handle_table {
@@ -1256,10 +1257,10 @@
           float: right;
         }
       }
-     /* /deep/
+      /deep/
       .handle-pagination{
         margin: 20px 0;
-      }*/
+      }
     }
 
     /* 弹窗 */
@@ -1270,11 +1271,9 @@
         .el-dialog__header {
           display: none;
         }
-
         .el-dialog__body {
           height: 260px;
           padding: 30px;
-
           .closed_img {
             position: absolute;
             top: -18px;

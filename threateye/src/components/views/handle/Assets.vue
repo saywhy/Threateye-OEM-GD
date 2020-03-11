@@ -29,7 +29,7 @@
             <h4 class="title">{{item.name}}：</h4>
 
             <div class="detail_list">
-              <el-button class="d_btn" :class="{'d_btn_active':it.flag}" size="small" :key="$idx"
+              <el-button class="d_btn" :class="{'d_btn_active':it.flag}" :title="it.name" size="small" :key="$idx"
                          v-for="(it,$idx) in item.value"
                          @click="clickAllAssets(it.name,it.flag,$index, $idx);">{{it.name}}
               </el-button>
@@ -636,7 +636,6 @@
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
               this.table.loading = false;
-
 
              // console.log(data)
             }
@@ -1346,6 +1345,9 @@
                 background-color: #fff;
                 padding: 0 !important;
                 color: #333;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
                 &.d_btn_active {
                   border: 1px solid #0070FF;
                   color: #0070FF;

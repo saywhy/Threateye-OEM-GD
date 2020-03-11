@@ -226,16 +226,16 @@ export default {
             /**
             * 判断是资产还是告警
             * */
-            if(data.risk_asset != '[]') {
+            if(data.assets) {
               //是资产
               this.table.tabsFlag = 0;
-              this.table.tableData = data.risk_asset.data;
-              this.table.count = data.risk_asset.count;
-              this.table.maxPage = data.risk_asset.maxPage;
-              this.table.pageNow = data.risk_asset.pageNow;
+              this.table.tableData = data.assets.data;
+              this.table.count = data.assets.count;
+              this.table.maxPage = data.assets.maxPage;
+              this.table.pageNow = data.assets.pageNow;
             }
 
-            if(data.alerts != '[]'){
+            if(data.alerts){
               //是告警
               this.table.tabsFlag = 1;
               this.table.tableData = data.alerts.data;

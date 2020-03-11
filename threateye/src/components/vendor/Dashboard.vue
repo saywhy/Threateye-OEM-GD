@@ -62,6 +62,7 @@
         position: fixed;
         left: 0;
         top: 60px;
+        z-index: 0;
         background-color: #fff;
         width: 210px!important;
         height: calc(100% - 120px);

@@ -37,7 +37,7 @@ export default {
       let offline_count = this.data.offline_count;
       let dev_info = this.data.dev_info;
 
-      console.log(dev_info)
+     // console.log(dev_info)
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("status"));

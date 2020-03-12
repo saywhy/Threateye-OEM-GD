@@ -63,6 +63,8 @@ export default {
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
+        //只要登录就删除token
+        removeToken();
         axios.post('/yiiapi/site/login', {
           "LoginForm": userInfo,
           "login-button": ""

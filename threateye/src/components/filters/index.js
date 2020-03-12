@@ -42,7 +42,7 @@ Vue.filter('degree',function(args){
 Vue.filter('certainty',function(args){
   let str = '';
   if(args == 0){
-    str = '未知';
+    str = '';
   }else if(args == 1){
     str = '已失陷';
   }

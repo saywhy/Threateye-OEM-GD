@@ -82,7 +82,9 @@
                     v-loading="table.loading"
                     :data="table.tableData"
                     tooltip-effect="dark"
-                    @selection-change="handleSelChange">
+                    :row-style="{cursor:'pointer'}"
+                    @selection-change="handleSelChange"
+                    @row-click="detail_click">
             <el-table-column label="全选" prop="type" width="40">
               <template slot-scope="scope">
                 <div class="new_dot" v-show="scope.row.new_alert=='1'"></div>
@@ -269,8 +271,10 @@
                 </el-table-column>
                 <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
-                  <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+                <el-table-column label="失陷确定性" show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+                  </template>
                 </el-table-column>
                 <el-table-column label="状态"  width="80">
                   <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
@@ -624,16 +628,13 @@
       handleSelChange(val) {
         this.table.multipleSelection = val;
       },
-      //改变告警等级
-      change_degree(command) {
-        //console.log(command);
-        this.table.tableData.forEach(function(item, index) {
-          if (command[1] == index) {
-            item.degree = command[0];
-            item.color = command[2];
-          }
-        });
+
+
+      //进入告警详情页面
+      detail_click(val) {
+        this.$router.push({path: "/detail/network", query: {detail: val.id}});
       },
+
       /***********************************以下是弹窗部分****************************************/
       /***********************************以下是弹窗部分****************************************/
 
@@ -1146,7 +1147,7 @@
     }
     .outside-middle{
       margin: 24px 0;
-      height: 283px;
+      padding: 12px 0 24px;
       background-color: #fff;
       text-align: left;
       .osm-top{
@@ -1169,20 +1170,20 @@
         }
       }
       .osm-middle{
-        height: 220px;
+        height: auto;
         padding: 16px 24px;
         .osm-dt{
-          font-family: PingFangMedium;
+          font-family: PingFangSC-Medium;
           font-size: 14px;
           color: #333333;
-          margin: 5px 0;
+          margin: 10px 0;
         }
         .osm-dd{
-          font-family: PingFang;
+          font-family: PingFangSC-Regular;
           font-size: 14px;
           color: #666666;
+          line-height: 32px;
         }
-
       }
     }
     .outside-bottom{

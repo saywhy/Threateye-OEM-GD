@@ -4,7 +4,6 @@
        v-loading.fullscreen.lock="flow_search.loading">
     <div class="invest_box">
       <el-tabs v-model="activeName"
-               @tab-click="handleClick"
                class="reset_tab">
         <el-tab-pane label="流量方向追查"
                      class="tabs-item"

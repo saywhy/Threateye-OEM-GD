@@ -4,7 +4,6 @@
        v-loading.fullscreen.lock="url_search.loading">
     <div class="invest_box">
       <el-tabs v-model="activeName"
-               @tab-click="handleClick"
                class="reset_tab">
         <el-tab-pane label="IP/URL追查"
                      class="tabs-item"

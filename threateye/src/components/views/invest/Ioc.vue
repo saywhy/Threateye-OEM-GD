@@ -4,7 +4,6 @@
        v-loading.fullscreen.lock="ioc_data.loading">
     <div class="invest_box">
       <el-tabs v-model="activeName"
-               @tab-click="handleClick"
                class="reset_tab">
         <el-tab-pane label="IOC扫描器"
                      class="tabs-item"

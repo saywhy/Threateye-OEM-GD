@@ -3,7 +3,6 @@
     <div class="container">
       <div class="invest_box">
         <el-tabs v-model="activeName"
-                 @tab-click="handleClick"
                  class="reset_tab">
           <el-tab-pane label="沙箱"
                        class="tabs-item"

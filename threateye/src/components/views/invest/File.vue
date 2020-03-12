@@ -5,7 +5,6 @@
        v-loading.fullscreen.lock="file_search.loading">
     <div class="invest_box">
       <el-tabs v-model="activeName"
-               @tab-click="handleClick"
                class="reset_tab">
         <el-tab-pane label="文件追查"
                      class="tabs-item"

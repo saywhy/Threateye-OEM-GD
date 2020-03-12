@@ -4,7 +4,6 @@
        v-loading.fullscreen.lock="user_search.loading">
     <div class="invest_box">
       <el-tabs v-model="activeName"
-               @tab-click="handleClick"
                class="reset_tab">
         <el-tab-pane label="用户追查"
                      class="tabs-item"

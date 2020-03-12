@@ -4,80 +4,88 @@
        class="common_invest"
        v-loading.fullscreen.lock="data_search.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <el-input placeholder="流量超过(B)"
-                  class="search_box"
-                  v-model="data_search.flow_size"
-                  clearable>
-        </el-input>
-        <el-input placeholder="链接时长超过(S)"
-                  class="search_box"
-                  v-model="data_search.flow_duration"
-                  clearable>
-        </el-input>
-        <el-input placeholder="主机地址"
-                  class="search_box"
-                  v-model="data_search.host_ip"
-                  clearable>
-        </el-input>
-        <vm-emerge-picker @changeTime='changeTime'
-                          :option='time_list'></vm-emerge-picker>
-        <el-button class="btn_i"
-                   @click="get_data"> 搜索</el-button>
-        <span class="reset"
-              @click="reset">重置</span>
-        <el-button class="btn_right"
-                   @click="download">下载</el-button>
-      </div>
-      <div class="invest_bom">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="data_list_data.data"
-                  tooltip-effect="dark"
-                  style="width: 100%">
-          <el-table-column label="序号"
-                           width="60">
-            <template slot-scope="scope">
-              {{(data_search.page-1)*(data_search.rows) + scope.row.index_cn}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="timestamp"
-                           width="280"
-                           label="时间"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="host_ip"
-                           label="主机地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="流量"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.flow_bytes| filterType }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="链接时长"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.flow_duration +' S' }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="application"
-                           label="应用"
-                           show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="data_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="data_list.count">
-        </el-pagination>
-      </div>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="数据传输追查"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <el-input placeholder="流量超过(B)"
+                      class="search_box"
+                      v-model="data_search.flow_size"
+                      clearable>
+            </el-input>
+            <el-input placeholder="链接时长超过(S)"
+                      class="search_box"
+                      v-model="data_search.flow_duration"
+                      clearable>
+            </el-input>
+            <el-input placeholder="主机地址"
+                      class="search_box"
+                      v-model="data_search.host_ip"
+                      clearable>
+            </el-input>
+            <vm-emerge-picker @changeTime='changeTime'
+                              :option='time_list'></vm-emerge-picker>
+            <el-button class="btn_i"
+                       @click="get_data"> 搜索</el-button>
+            <span class="reset"
+                  @click="reset">重置</span>
+            <el-button class="btn_right"
+                       @click="download">下载</el-button>
+          </div>
+          <div class="invest_bom">
+            <el-table ref="multipleTable"
+                      class="reset_table"
+                      align="center"
+                      :data="data_list_data.data"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="序号"
+                               width="60">
+                <template slot-scope="scope">
+                  {{(data_search.page-1)*(data_search.rows) + scope.row.index_cn}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="timestamp"
+                               width="280"
+                               label="时间"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="host_ip"
+                               label="主机地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column label="流量"
+                               show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.flow_bytes| filterType }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="链接时长"
+                               show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.flow_duration +' S' }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="application"
+                               label="应用"
+                               show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination class="pagination_box"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="data_list.pageNow"
+                           :page-sizes="[10,50,100]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next"
+                           :total="data_list.count">
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -90,6 +98,7 @@ export default {
   },
   data () {
     return {
+      activeName: 'first',
       time_list: {
         time: []
       },
@@ -112,6 +121,7 @@ export default {
     };
   },
   methods: {
+    handleClick () { },
     get_data () {
       this.data_search.loading = true
       this.$axios.get('/yiiapi/investigate/flowsize-timelength-investigation', {
@@ -211,9 +221,11 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style lang="less">
 @import '../../../assets/css/less/reset_css/reset_table.less';
 @import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
+
 
 

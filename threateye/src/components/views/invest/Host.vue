@@ -3,168 +3,175 @@
        class="common_invest"
        v-loading.fullscreen.lock="host_search.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <el-input placeholder="主机地址"
-                  class="search_box"
-                  v-model="host_search.host_ip"
-                  clearable>
-        </el-input>
-        <vm-emerge-picker @changeTime='changeTime'
-                          :option='time_list'></vm-emerge-picker>
-        <el-button class="btn_i"
-                   @click="search_data()"> 搜索</el-button>
-        <span class="reset"
-              @click="reset">重置</span>
-        <el-button class="btn_right"
-                   @click="download">下载</el-button>
-      </div>
-      <div class="invest_bom">
-        <el-button-group>
-          <el-button :class="{'active':activeButGroup =='1'}"
-                     @click="activeButGroup = '1'">网络通讯</el-button>
-          <el-button :class="{'active':activeButGroup =='2'}"
-                     @click="activeButGroup = '2'">文件</el-button>
-          <el-button :class="{'active':activeButGroup =='3'}"
-                     @click="activeButGroup = '3'">用户</el-button>
-        </el-button-group>
-        <!-- 网络通信 -->
-        <div v-show="activeButGroup=='1'">
-          <el-table ref="multipleTable"
-                    class="reset_table"
-                    align="center"
-                    :data="host_network_data.data"
-                    tooltip-effect="dark"
-                    style="width: 100%">
-            <el-table-column label="序号"
-                             width="60">
-              <template slot-scope="scope">
-                {{(host_network_page.page-1)*(host_network_page.rows) + scope.row.index_cn}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="timestamp"
-                             width="280"
-                             label="时间"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="src_ip"
-                             label="源地址"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="src_port"
-                             label="源端口"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="dest_ip"
-                             label="目的地址"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="dest_port"
-                             label="目的端口"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="email"
-                             label="Email地址"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="application"
-                             label="应用"
-                             show-overflow-tooltip>
-            </el-table-column>
-          </el-table>
-          <el-pagination class="pagination_box"
-                         @size-change="handleSizeChange_network"
-                         @current-change="handleCurrentChange_network"
-                         :current-page="host_network.pageNow"
-                         :page-sizes="[10,50,100]"
-                         :page-size="10"
-                         layout="total, sizes, prev, pager, next"
-                         :total="host_network.count">
-          </el-pagination>
-        </div>
-        <!-- 文件 -->
-        <div v-show="activeButGroup=='2'">
-          <el-table ref="multipleTable"
-                    class="reset_table"
-                    align="center"
-                    :data="host_file_data.data"
-                    tooltip-effect="dark"
-                    style="width: 100%">
-            <el-table-column label="序号"
-                             width="60">
-              <template slot-scope="scope">
-                {{(host_file_page.page-1)*(host_file_page.rows) + scope.row.index_cn}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="file_name"
-                             label="文件名"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="md5"
-                             label="哈希值"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="source"
-                             label="来源"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="host_ip"
-                             label="主机地址"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="application"
-                             label="应用"
-                             show-overflow-tooltip>
-            </el-table-column>
-          </el-table>
-          <el-pagination class="pagination_box"
-                         @size-change="handleSizeChange_file"
-                         @current-change="handleCurrentChange_file"
-                         :current-page="host_file.pageNow"
-                         :page-sizes="[10,50,100]"
-                         :page-size="10"
-                         layout="total, sizes, prev, pager, next"
-                         :total="host_file.count">
-          </el-pagination>
-        </div>
-        <!-- 用户 -->
-        <div v-show="activeButGroup=='3'">
-          <el-table ref="multipleTable"
-                    class="reset_table"
-                    align="center"
-                    :data="host_user_data.data"
-                    tooltip-effect="dark"
-                    style="width: 100%">
-            <el-table-column label="序号"
-                             width="60">
-              <template slot-scope="scope">
-                {{(host_user_page.page-1)*(host_user_page.rows) + scope.row.index_cn}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="user_name"
-                             label="用户名"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="host_ip"
-                             label="主机地址"
-                             show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="application"
-                             label="应用"
-                             show-overflow-tooltip>
-            </el-table-column>
-          </el-table>
-          <el-pagination class="pagination_box"
-                         @size-change="handleSizeChange_user"
-                         @current-change="handleCurrentChange_user"
-                         :current-page="host_user.pageNow"
-                         :page-sizes="[10,50,100]"
-                         :page-size="10"
-                         layout="total, sizes, prev, pager, next"
-                         :total="host_user.count">
-          </el-pagination>
-        </div>
-
-      </div>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="主机追查"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <el-input placeholder="主机地址"
+                      class="search_box"
+                      v-model="host_search.host_ip"
+                      clearable>
+            </el-input>
+            <vm-emerge-picker @changeTime='changeTime'
+                              :option='time_list'></vm-emerge-picker>
+            <el-button class="btn_i"
+                       @click="search_data()"> 搜索</el-button>
+            <span class="reset"
+                  @click="reset">重置</span>
+            <el-button class="btn_right"
+                       @click="download">下载</el-button>
+          </div>
+          <div class="invest_bom">
+            <el-button-group>
+              <el-button :class="{'active':activeButGroup =='1'}"
+                         @click="activeButGroup = '1'">网络通讯</el-button>
+              <el-button :class="{'active':activeButGroup =='2'}"
+                         @click="activeButGroup = '2'">文件</el-button>
+              <el-button :class="{'active':activeButGroup =='3'}"
+                         @click="activeButGroup = '3'">用户</el-button>
+            </el-button-group>
+            <!-- 网络通信 -->
+            <div v-show="activeButGroup=='1'">
+              <el-table ref="multipleTable"
+                        class="reset_table"
+                        align="center"
+                        :data="host_network_data.data"
+                        tooltip-effect="dark"
+                        style="width: 100%">
+                <el-table-column label="序号"
+                                 width="60">
+                  <template slot-scope="scope">
+                    {{(host_network_page.page-1)*(host_network_page.rows) + scope.row.index_cn}}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="timestamp"
+                                 width="280"
+                                 label="时间"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="src_ip"
+                                 label="源地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="src_port"
+                                 label="源端口"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="dest_ip"
+                                 label="目的地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="dest_port"
+                                 label="目的端口"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="email"
+                                 label="Email地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="application"
+                                 label="应用"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange_network"
+                             @current-change="handleCurrentChange_network"
+                             :current-page="host_network.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="host_network.count">
+              </el-pagination>
+            </div>
+            <!-- 文件 -->
+            <div v-show="activeButGroup=='2'">
+              <el-table ref="multipleTable"
+                        class="reset_table"
+                        align="center"
+                        :data="host_file_data.data"
+                        tooltip-effect="dark"
+                        style="width: 100%">
+                <el-table-column label="序号"
+                                 width="60">
+                  <template slot-scope="scope">
+                    {{(host_file_page.page-1)*(host_file_page.rows) + scope.row.index_cn}}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="file_name"
+                                 label="文件名"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="md5"
+                                 label="哈希值"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="source"
+                                 label="来源"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="host_ip"
+                                 label="主机地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="application"
+                                 label="应用"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange_file"
+                             @current-change="handleCurrentChange_file"
+                             :current-page="host_file.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="host_file.count">
+              </el-pagination>
+            </div>
+            <!-- 用户 -->
+            <div v-show="activeButGroup=='3'">
+              <el-table ref="multipleTable"
+                        class="reset_table"
+                        align="center"
+                        :data="host_user_data.data"
+                        tooltip-effect="dark"
+                        style="width: 100%">
+                <el-table-column label="序号"
+                                 width="60">
+                  <template slot-scope="scope">
+                    {{(host_user_page.page-1)*(host_user_page.rows) + scope.row.index_cn}}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="user_name"
+                                 label="用户名"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="host_ip"
+                                 label="主机地址"
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="application"
+                                 label="应用"
+                                 show-overflow-tooltip>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange_user"
+                             @current-change="handleCurrentChange_user"
+                             :current-page="host_user.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="host_user.count">
+              </el-pagination>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -174,6 +181,7 @@ export default {
   name: "invest_host",
   data () {
     return {
+      activeName: 'first',
       activeButGroup: '1',
       time_list: {
         time: []
@@ -446,8 +454,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../../../assets/css/less/reset_css/reset_table.less';
-@import '../../../assets/css/less/reset_css/reset_invest.less';
 #invest_host {
   /deep/ .el-button-group {
     padding: 15px 0 9px 0;
@@ -470,4 +476,9 @@ export default {
     }
   }
 }
+</style>
+<style lang="less">
+@import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>

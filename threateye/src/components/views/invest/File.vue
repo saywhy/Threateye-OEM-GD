@@ -4,80 +4,88 @@
        class="common_invest"
        v-loading.fullscreen.lock="file_search.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <el-input placeholder="文件名"
-                  class="search_box"
-                  v-model="file_search.file_name"
-                  clearable>
-        </el-input>
-        <el-input placeholder="哈希值"
-                  class="search_box"
-                  v-model="file_search.md5"
-                  clearable>
-        </el-input>
-        <el-input placeholder="主机地址"
-                  class="search_box"
-                  v-model="file_search.host_ip"
-                  clearable>
-        </el-input>
-        <vm-emerge-picker @changeTime='changeTime'
-                          :option='time_list'></vm-emerge-picker>
-        <el-button class="btn_i"
-                   @click="get_data"> 搜索</el-button>
-        <span class="reset"
-              @click="reset">重置</span>
-        <el-button class="btn_right"
-                   @click="download">下载</el-button>
-      </div>
-      <div class="invest_bom">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="file_list_data.data"
-                  tooltip-effect="dark"
-                  style="width: 100%">
-          <el-table-column label="序号"
-                           width="60">
-            <template slot-scope="scope">
-              {{(file_search.page-1)*(file_search.rows) + scope.row.index_cn}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="timestamp"
-                           width="150"
-                           label="时间"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="file_name"
-                           label="文件名"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="md5"
-                           label="哈希值"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="source"
-                           label="来源"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="host_ip"
-                           label="主机地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="application"
-                           label="应用"
-                           show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="file_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="file_list.count">
-        </el-pagination>
-      </div>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="文件追查"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <el-input placeholder="文件名"
+                      class="search_box"
+                      v-model="file_search.file_name"
+                      clearable>
+            </el-input>
+            <el-input placeholder="哈希值"
+                      class="search_box"
+                      v-model="file_search.md5"
+                      clearable>
+            </el-input>
+            <el-input placeholder="主机地址"
+                      class="search_box"
+                      v-model="file_search.host_ip"
+                      clearable>
+            </el-input>
+            <vm-emerge-picker @changeTime='changeTime'
+                              :option='time_list'></vm-emerge-picker>
+            <el-button class="btn_i"
+                       @click="get_data"> 搜索</el-button>
+            <span class="reset"
+                  @click="reset">重置</span>
+            <el-button class="btn_right"
+                       @click="download">下载</el-button>
+          </div>
+          <div class="invest_bom">
+            <el-table ref="multipleTable"
+                      class="reset_table"
+                      align="center"
+                      :data="file_list_data.data"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="序号"
+                               width="60">
+                <template slot-scope="scope">
+                  {{(file_search.page-1)*(file_search.rows) + scope.row.index_cn}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="timestamp"
+                               width="150"
+                               label="时间"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="file_name"
+                               label="文件名"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="md5"
+                               label="哈希值"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="source"
+                               label="来源"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="host_ip"
+                               label="主机地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="application"
+                               label="应用"
+                               show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination class="pagination_box"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="file_list.pageNow"
+                           :page-sizes="[10,50,100]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next"
+                           :total="file_list.count">
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -90,6 +98,7 @@ export default {
   },
   data () {
     return {
+      activeName: 'first',
       time_list: {
         time: []
       },
@@ -199,9 +208,10 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style  lang="less">
 @import '../../../assets/css/less/reset_css/reset_table.less';
 @import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 
 

@@ -3,83 +3,91 @@
        class="common_invest"
        v-loading.fullscreen.lock="flow_search.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <el-select class="select_box"
-                   v-model="flow_search.direction"
-                   placeholder="流量方向">
-          <el-option v-for="item in flow_search.direction_list"
-                     :key="item.type"
-                     :label="item.name"
-                     :value="item.type">
-          </el-option>
-        </el-select>
-        <el-input placeholder="主机地址"
-                  class="search_box"
-                  v-model="flow_search.host_ip"
-                  clearable>
-        </el-input>
-        <vm-emerge-picker @changeTime='changeTime'
-                          :option='time_list'></vm-emerge-picker>
-        <el-button class="btn_i"
-                   @click="get_data"> 搜索</el-button>
-        <span class="reset"
-              @click="reset">重置</span>
-        <el-button class="btn_right"
-                   @click="download">下载</el-button>
-      </div>
-      <div class="invest_bom">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="flow_list_data.data"
-                  tooltip-effect="dark"
-                  style="width: 100%">
-          <el-table-column label="序号"
-                           width="60">
-            <template slot-scope="scope">
-              {{(flow_search.page-1)*(flow_search.rows) + scope.row.index_cn}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="timestamp"
-                           width="280"
-                           label="时间"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="host_ip"
-                           label="主机地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="流量"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.flow_bytes| filterType }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="链接时长"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.flow_duration +' S' }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="dest_ip"
-                           label="目的地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="application"
-                           label="应用"
-                           show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="flow_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="flow_list.count">
-        </el-pagination>
-      </div>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="流量方向追查"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <el-select class="select_box"
+                       v-model="flow_search.direction"
+                       placeholder="流量方向">
+              <el-option v-for="item in flow_search.direction_list"
+                         :key="item.type"
+                         :label="item.name"
+                         :value="item.type">
+              </el-option>
+            </el-select>
+            <el-input placeholder="主机地址"
+                      class="search_box"
+                      v-model="flow_search.host_ip"
+                      clearable>
+            </el-input>
+            <vm-emerge-picker @changeTime='changeTime'
+                              :option='time_list'></vm-emerge-picker>
+            <el-button class="btn_i"
+                       @click="get_data"> 搜索</el-button>
+            <span class="reset"
+                  @click="reset">重置</span>
+            <el-button class="btn_right"
+                       @click="download">下载</el-button>
+          </div>
+          <div class="invest_bom">
+            <el-table ref="multipleTable"
+                      class="reset_table"
+                      align="center"
+                      :data="flow_list_data.data"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="序号"
+                               width="60">
+                <template slot-scope="scope">
+                  {{(flow_search.page-1)*(flow_search.rows) + scope.row.index_cn}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="timestamp"
+                               width="280"
+                               label="时间"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="host_ip"
+                               label="主机地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column label="流量"
+                               show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.flow_bytes| filterType }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="链接时长"
+                               show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.flow_duration +' S' }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="dest_ip"
+                               label="目的地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="application"
+                               label="应用"
+                               show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination class="pagination_box"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="flow_list.pageNow"
+                           :page-sizes="[10,50,100]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next"
+                           :total="flow_list.count">
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -92,6 +100,7 @@ export default {
   },
   data () {
     return {
+      activeName: 'first',
       time_list: {
         time: []
       },
@@ -215,9 +224,10 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style  lang="less">
 @import '../../../assets/css/less/reset_css/reset_table.less';
 @import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 
 

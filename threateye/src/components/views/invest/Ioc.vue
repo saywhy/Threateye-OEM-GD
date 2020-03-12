@@ -3,96 +3,104 @@
        class="common_invest"
        v-loading.fullscreen.lock="ioc_data.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <div class="invest_upload">
-          <el-upload class="upload-demo"
-                     :before-upload="onBeforeUpload"
-                     :on-change="onChange"
-                     :on-success='onsuccess'
-                     :on-error='onerror'
-                     accept=".txt,.ioc"
-                     drag
-                     action="/yiiapi/investigate/upload-file"
-                     multiple>
-            <img class="upload_img"
-                 src="@/assets/images/setting/upload_s.png"
-                 alt="">
-            <div class="el-upload__text">
-              <em>点击上传</em>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="IOC扫描器"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <div class="invest_upload">
+              <el-upload class="upload-demo"
+                         :before-upload="onBeforeUpload"
+                         :on-change="onChange"
+                         :on-success='onsuccess'
+                         :on-error='onerror'
+                         accept=".txt,.ioc"
+                         drag
+                         action="/yiiapi/investigate/upload-file"
+                         multiple>
+                <img class="upload_img"
+                     src="@/assets/images/setting/upload_s.png"
+                     alt="">
+                <div class="el-upload__text">
+                  <em>点击上传</em>
+                </div>
+                <div slot="tip"
+                     class="el-upload__tip">
+                  <span>请选择 .txt
+                    <span @click="download_template"
+                          class="common_color">(下载模板)</span> 或者 .ioc的格式文件搜索
+                  </span>
+                </div>
+              </el-upload>
             </div>
-            <div slot="tip"
-                 class="el-upload__tip">
-              <span>请选择 .txt
-                <span @click="download_template"
-                      class="common_color">(下载模板)</span> 或者 .ioc的格式文件搜索
-              </span>
+            <div>
+              <el-button class="btn_down"
+                         @click="download_list">下载</el-button>
+              <el-button class="btn_del"
+                         @click="del_list">删除</el-button>
             </div>
-          </el-upload>
-        </div>
-        <div>
-          <el-button class="btn_down"
-                     @click="download_list">下载</el-button>
-          <el-button class="btn_del"
-                     @click="del_list">删除</el-button>
-        </div>
 
-      </div>
-      <div class="invest_bom">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="ioc_list.data"
-                  tooltip-effect="dark"
-                  @selection-change="handleSelectionChange"
-                  style="width: 100%">
-          <el-table-column label="全选"
-                           prop="type"
-                           width="50">
-          </el-table-column>
-          <el-table-column type="selection"
-                           :selectable="checkSelectable"
-                           width="50">
-          </el-table-column>
-          <el-table-column label="序号"
-                           width="60">
-            <template slot-scope="scope">
-              {{(ioc_data.page-1)*(ioc_data.rows) + scope.row.index_cn}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="upload_file_name"
-                           label="文件名"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="进度"
-                           width="100"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.create_percent+'%' }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="状态"
-                           width="100"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.create_status ==0?"失败":'成功' }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="create_time"
-                           width="180"
-                           label="创建时间"
-                           show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="ioc_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="ioc_list.count">
-        </el-pagination>
-      </div>
+          </div>
+          <div class="invest_bom">
+            <el-table ref="multipleTable"
+                      class="reset_table"
+                      align="center"
+                      :data="ioc_list.data"
+                      tooltip-effect="dark"
+                      @selection-change="handleSelectionChange"
+                      style="width: 100%">
+              <el-table-column label="全选"
+                               prop="type"
+                               width="50">
+              </el-table-column>
+              <el-table-column type="selection"
+                               :selectable="checkSelectable"
+                               width="50">
+              </el-table-column>
+              <el-table-column label="序号"
+                               width="60">
+                <template slot-scope="scope">
+                  {{(ioc_data.page-1)*(ioc_data.rows) + scope.row.index_cn}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="upload_file_name"
+                               label="文件名"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column label="进度"
+                               width="100"
+                               show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.create_percent+'%' }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态"
+                               width="100"
+                               show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.create_status ==0?"失败":'成功' }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="create_time"
+                               width="180"
+                               label="创建时间"
+                               show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination class="pagination_box"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="ioc_list.pageNow"
+                           :page-sizes="[10,50,100]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next"
+                           :total="ioc_list.count">
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -105,6 +113,7 @@ export default {
   },
   data () {
     return {
+      activeName: 'first',
       select_list: [],
       ioc_list: {
         count: 0,
@@ -298,8 +307,6 @@ export default {
 }
 </script>
 <style scoped lang="less">
-@import '../../../assets/css/less/reset_css/reset_table.less';
-@import '../../../assets/css/less/reset_css/reset_invest.less';
 #invest_ioc {
   .invest_upload {
     overflow: auto;
@@ -359,6 +366,11 @@ export default {
     color: #0070ff;
   }
 }
+</style>
+<style lang="less">
+@import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 
 

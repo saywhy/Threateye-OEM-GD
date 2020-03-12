@@ -722,8 +722,8 @@
                              value="email">邮件通知</el-checkbox>
                 <el-checkbox label="message"
                              value="message">短信通知</el-checkbox>
-                <el-checkbox label="news"
-                             value="news">消息中心通知</el-checkbox>
+                <!-- <el-checkbox label="news"
+                             value="news">消息中心通知</el-checkbox> -->
               </el-checkbox-group>
             </li>
           </div>
@@ -1305,7 +1305,7 @@ export default {
         level_list: [
           {
             value: "highest",
-            label: "极高"
+            label: "最高"
           },
           {
             value: "high",
@@ -2667,7 +2667,7 @@ export default {
 .emerge_table {
   th {
     .cell {
-          font-family: PingFangMedium;
+      font-family: PingFangMedium;
       font-size: 14px;
       color: #333333;
     }
@@ -2795,7 +2795,7 @@ export default {
           .title_name {
             font-size: 20px;
             color: #333333;
-                    font-family: PingFangMedium;
+            font-family: PingFangMedium;
             line-height: 24px;
           }
 

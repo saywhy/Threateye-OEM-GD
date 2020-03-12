@@ -1,88 +1,96 @@
 <template>
   <div id="sandbox">
     <div class="container">
-      <div class="top">
-        <uploader :options="options"
-                  :autoStart='false'
-                  :fileStatusText='fileStatusText'
-                  @file-added="onFileAdded"
-                  @file-success="onFileSuccess"
-                  @file-progress="onFileProgress"
-                  @file-error="onFileError"
-                  class="uploader-example">
-          <uploader-unsupport></uploader-unsupport>
-          <img class="upload_img"
-               src="@/assets/images/setting/upload_s.png"
-               alt="">
-          <uploader-drop>
-            <uploader-btn class="select_btn">点击上传</uploader-btn>
-            <span>请选择需要扫描上传的文件(最大100M)</span>
-          </uploader-drop>
-          <uploader-list></uploader-list>
-        </uploader>
-      </div>
-      <div class="sandbox_table">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="sandbox_list.data"
-                  tooltip-effect="dark"
-                  style="width: 100%">
-          <el-table-column label="结果"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span :class="scope.row.result==0?'color_red':''">{{scope.row.result_cn}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="创建时间"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.created_at*1000 | formatDate}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="扫描状态"
-                           show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span>{{scope.row.status=='1'?'扫描中':"扫描结束"}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="upload_name"
-                           label='文件名'
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label='扫描详情'>
-            <template slot-scope="scope">
-              <img src="@/assets/images/common/download.png"
-                   class="img_icon"
-                   v-if="scope.row.status!=1"
-                   alt=""
-                   @click.stop='download(scope.row)'>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <img src="@/assets/images/common/delete.png"
-                   class="img_icon"
-                   v-if="scope.row.status!=1"
-                   alt=""
-                   @click.stop='del_box(scope.row)'>
-            </template>
-          </el-table-column>
+      <div class="invest_box">
+        <el-tabs v-model="activeName"
+                 @tab-click="handleClick"
+                 class="reset_tab">
+          <el-tab-pane label="沙箱"
+                       class="tabs-item"
+                       name="first">
+            <div class="top">
+              <uploader :options="options"
+                        :autoStart='false'
+                        :fileStatusText='fileStatusText'
+                        @file-added="onFileAdded"
+                        @file-success="onFileSuccess"
+                        @file-progress="onFileProgress"
+                        @file-error="onFileError"
+                        class="uploader-example">
+                <uploader-unsupport></uploader-unsupport>
+                <img class="upload_img"
+                     src="@/assets/images/setting/upload_s.png"
+                     alt="">
+                <uploader-drop>
+                  <uploader-btn class="select_btn">点击上传</uploader-btn>
+                  <span>请选择需要扫描上传的文件(最大100M)</span>
+                </uploader-drop>
+                <uploader-list></uploader-list>
+              </uploader>
+            </div>
+            <div class="sandbox_table">
+              <el-table ref="multipleTable"
+                        class="reset_table"
+                        align="center"
+                        :data="sandbox_list.data"
+                        tooltip-effect="dark"
+                        style="width: 100%">
+                <el-table-column label="结果"
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <span :class="scope.row.result==0?'color_red':''">{{scope.row.result_cn}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="创建时间"
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <span>{{scope.row.created_at*1000 | formatDate}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="扫描状态"
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <span>{{scope.row.status=='1'?'扫描中':"扫描结束"}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="upload_name"
+                                 label='文件名'
+                                 show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column label='扫描详情'>
+                  <template slot-scope="scope">
+                    <img src="@/assets/images/common/download.png"
+                         class="img_icon"
+                         v-if="scope.row.status!=1"
+                         alt=""
+                         @click.stop='download(scope.row)'>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作">
+                  <template slot-scope="scope">
+                    <img src="@/assets/images/common/delete.png"
+                         class="img_icon"
+                         v-if="scope.row.status!=1"
+                         alt=""
+                         @click.stop='del_box(scope.row)'>
+                  </template>
+                </el-table-column>
 
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="sandbox_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="sandbox_list.count">
-        </el-pagination>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="handleSizeChange"
+                             @current-change="handleCurrentChange"
+                             :current-page="sandbox_list.pageNow"
+                             :page-sizes="[10,50,100]"
+                             :page-size="10"
+                             layout="total, sizes, prev, pager, next"
+                             :total="sandbox_list.count">
+              </el-pagination>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
       </div>
-
     </div>
-
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -91,6 +99,7 @@ export default {
   name: "sandbox",
   data () {
     return {
+      activeName: 'first',
       options: {
         target: '/yiiapi/sandbox/upload',
         chunkSize: '10048000',   //分块大小
@@ -341,5 +350,6 @@ export default {
 </style>
 <style lang="less">
 @import '../../../assets/css/less/reset_css/reset_table.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 

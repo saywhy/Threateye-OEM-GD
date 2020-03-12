@@ -3,88 +3,97 @@
        class="common_invest"
        v-loading.fullscreen.lock="dns_search.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <el-input placeholder="主机IP"
-                  class="search_box"
-                  v-model="dns_search.host_ip"
-                  clearable>
-        </el-input>
-        <el-input placeholder="DNS服务器IP"
-                  class="search_box"
-                  v-model="dns_search.dns_ip"
-                  clearable>
-        </el-input>
-        <el-input placeholder="域名"
-                  class="search_box"
-                  v-model="dns_search.domain"
-                  clearable>
-        </el-input>
-        <el-input placeholder="TTL"
-                  class="search_box"
-                  v-model="dns_search.ttl"
-                  clearable>
-        </el-input>
-        <vm-emerge-picker @changeTime='changeTime'
-                          :option='time_list'></vm-emerge-picker>
-        <el-button class="btn_i"
-                   @click="get_data"> 搜索</el-button>
-        <span class="reset"
-              @click="reset">重置</span>
-        <el-button class="btn_right"
-                   @click="download">下载</el-button>
-      </div>
-      <div class="invest_bom">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="dns_list.data"
-                  tooltip-effect="dark"
-                  style="width: 100%">
-          <el-table-column label="序号"
-                           width="60">
-            <template slot-scope="scope">
-              {{(dns_search.page-1)*(dns_search.rows) + scope.row.index_cn}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="timestamp"
-                           label="时间"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="dns_ip"
-                           label="DNS服务器IP"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="host_ip"
-                           label="主机地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="type"
-                           label="类型"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="rrname"
-                           label="域名"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="rdata"
-                           label="解析地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="ttl"
-                           label="TTL"
-                           show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="dns_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="dns_list.count">
-        </el-pagination>
-      </div>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="DNS追查"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <el-input placeholder="主机IP"
+                      class="search_box"
+                      v-model="dns_search.host_ip"
+                      clearable>
+            </el-input>
+            <el-input placeholder="DNS服务器IP"
+                      class="search_box"
+                      v-model="dns_search.dns_ip"
+                      clearable>
+            </el-input>
+            <el-input placeholder="域名"
+                      class="search_box"
+                      v-model="dns_search.domain"
+                      clearable>
+            </el-input>
+            <el-input placeholder="TTL"
+                      class="search_box"
+                      v-model="dns_search.ttl"
+                      clearable>
+            </el-input>
+            <vm-emerge-picker @changeTime='changeTime'
+                              :option='time_list'></vm-emerge-picker>
+            <el-button class="btn_i"
+                       @click="get_data"> 搜索</el-button>
+            <span class="reset"
+                  @click="reset">重置</span>
+            <el-button class="btn_right"
+                       @click="download">下载</el-button>
+          </div>
+          <div class="invest_bom">
+            <el-table ref="multipleTable"
+                      class="reset_table"
+                      align="center"
+                      :data="dns_list.data"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="序号"
+                               width="60">
+                <template slot-scope="scope">
+                  {{(dns_search.page-1)*(dns_search.rows) + scope.row.index_cn}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="timestamp"
+                               label="时间"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="dns_ip"
+                               label="DNS服务器IP"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="host_ip"
+                               label="主机地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="type"
+                               label="类型"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="rrname"
+                               label="域名"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="rdata"
+                               label="解析地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="ttl"
+                               label="TTL"
+                               show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination class="pagination_box"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="dns_list.pageNow"
+                           :page-sizes="[10,50,100]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next"
+                           :total="dns_list.count">
+            </el-pagination>
+          </div>
+
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -97,6 +106,7 @@ export default {
   },
   data () {
     return {
+      activeName: 'first',
       time_list: {
         time: []
       },
@@ -214,7 +224,8 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style  lang="less">
 @import '../../../assets/css/less/reset_css/reset_table.less';
 @import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>

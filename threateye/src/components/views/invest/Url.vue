@@ -3,85 +3,93 @@
        class="common_invest"
        v-loading.fullscreen.lock="url_search.loading">
     <div class="invest_box">
-      <div class="invest_top">
-        <el-input placeholder="源地址"
-                  class="search_box"
-                  v-model="url_search.src_ip"
-                  clearable>
-        </el-input>
-        <el-input placeholder="源端口"
-                  class="search_box"
-                  v-model="url_search.src_port"
-                  clearable>
-        </el-input>
-        <el-input placeholder="目的地址"
-                  class="search_box"
-                  v-model="url_search.dst_ip"
-                  clearable>
-        </el-input>
-        <el-input placeholder="目的端口"
-                  class="search_box"
-                  v-model="url_search.dst_port"
-                  clearable>
-        </el-input>
-        <vm-emerge-picker @changeTime='changeTime'
-                          :option='time_list'></vm-emerge-picker>
-        <el-button class="btn_i"
-                   @click="get_data"> 搜索</el-button>
-        <span class="reset"
-              @click="reset">重置</span>
-        <el-button class="btn_right"
-                   @click="download">下载</el-button>
-      </div>
-      <div class="invest_bom">
-        <el-table ref="multipleTable"
-                  class="reset_table"
-                  align="center"
-                  :data="url_list_data.data"
-                  tooltip-effect="dark"
-                  style="width: 100%">
-          <el-table-column label="序号"
-                           width="60">
-            <template slot-scope="scope">
-              {{(url_search.page-1)*(url_search.rows) + scope.row.index_cn}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="timestamp"
-                           width="280"
-                           label="时间"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="src_ip"
-                           label="源地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="src_port"
-                           label="源端口"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="dest_ip"
-                           label="目的地址"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="dest_port"
-                           label="目的端口"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="application"
-                           label="应用"
-                           show-overflow-tooltip>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="pagination_box"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="url_list.pageNow"
-                       :page-sizes="[10,50,100]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next"
-                       :total="url_list.count">
-        </el-pagination>
-      </div>
+      <el-tabs v-model="activeName"
+               @tab-click="handleClick"
+               class="reset_tab">
+        <el-tab-pane label="IP/URL追查"
+                     class="tabs-item"
+                     name="first">
+          <div class="invest_top">
+            <el-input placeholder="源地址"
+                      class="search_box"
+                      v-model="url_search.src_ip"
+                      clearable>
+            </el-input>
+            <el-input placeholder="源端口"
+                      class="search_box"
+                      v-model="url_search.src_port"
+                      clearable>
+            </el-input>
+            <el-input placeholder="目的地址"
+                      class="search_box"
+                      v-model="url_search.dst_ip"
+                      clearable>
+            </el-input>
+            <el-input placeholder="目的端口"
+                      class="search_box"
+                      v-model="url_search.dst_port"
+                      clearable>
+            </el-input>
+            <vm-emerge-picker @changeTime='changeTime'
+                              :option='time_list'></vm-emerge-picker>
+            <el-button class="btn_i"
+                       @click="get_data"> 搜索</el-button>
+            <span class="reset"
+                  @click="reset">重置</span>
+            <el-button class="btn_right"
+                       @click="download">下载</el-button>
+          </div>
+          <div class="invest_bom">
+            <el-table ref="multipleTable"
+                      class="reset_table"
+                      align="center"
+                      :data="url_list_data.data"
+                      tooltip-effect="dark"
+                      style="width: 100%">
+              <el-table-column label="序号"
+                               width="60">
+                <template slot-scope="scope">
+                  {{(url_search.page-1)*(url_search.rows) + scope.row.index_cn}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="timestamp"
+                               width="280"
+                               label="时间"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="src_ip"
+                               label="源地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="src_port"
+                               label="源端口"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="dest_ip"
+                               label="目的地址"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="dest_port"
+                               label="目的端口"
+                               show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column prop="application"
+                               label="应用"
+                               show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination class="pagination_box"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="url_list.pageNow"
+                           :page-sizes="[10,50,100]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next"
+                           :total="url_list.count">
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -94,6 +102,7 @@ export default {
   },
   data () {
     return {
+      activeName: 'first',
       time_list: {
         time: []
       },
@@ -221,8 +230,9 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style  lang="less">
 @import '../../../assets/css/less/reset_css/reset_table.less';
 @import '../../../assets/css/less/reset_css/reset_invest.less';
+@import '../../../assets/css/less/reset_css/reset_tab.less';
 </style>
 

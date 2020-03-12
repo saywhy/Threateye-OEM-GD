@@ -151,6 +151,9 @@ input:-ms-input-placeholder {
 .red_necessary {
   color: #ff5f5c;
 }
+.v-modal{
+  opacity: .1!important;
+}
 
 @font-face {
   font-family: "PingFangMedium";
@@ -162,5 +165,4 @@ input:-ms-input-placeholder {
 @font-face {
   font-family: "PingFang";
   src: url("../family/PingFang-Medium.ttf") format("truetype"),
-
 }

@@ -201,7 +201,6 @@ export default {
           .then(response => {
             let { status, data } = response.data;
             console.log(data);
-
             // 未处理告警
             if (data.threat_level) {
               this.untreatedAlarm(data.threat_level);
@@ -218,11 +217,10 @@ export default {
             if (data.alert_type) {
               this.alert_type(data.alert_type);
             }
-
             setTimeout(() => {
               this.$axios.post('/yiiapi/report/create-report', {
-                stime: this.report.start_time / 1000,
-                etime: this.report.end_time / 1000,
+                stime: this.report.start_time,
+                etime: this.report.end_time,
                 report_name: this.report.name,
                 report_type: 'doc',
                 threat_level: this.untreatedAlarm_data.base64,
@@ -255,8 +253,8 @@ export default {
       }
       if (this.report.type == 'csv') {
         this.$axios.post('/yiiapi/report/create-report', {
-          stime: this.report.start_time / 1000,
-          etime: this.report.end_time / 1000,
+          stime: this.report.start_time,
+          etime: this.report.end_time,
           report_name: this.report.name,
           report_type: 'csv',
         })
@@ -667,8 +665,8 @@ export default {
     },
     changeTime (data) {
       console.log(data);
-      this.report.start_time = data[0].valueOf()
-      this.report.end_time = data[1].valueOf()
+      this.report.start_time = parseInt(data[0].valueOf() / 1000)
+      this.report.end_time = parseInt(data[1].valueOf() / 1000)
     },
     toggleSelection (rows) {
       if (rows) {

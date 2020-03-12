@@ -221,7 +221,7 @@
               </div>
               <div class="time_right_info_bom"
                    v-if="item.whois_list.length !=0">
-                <span class="info_bom_title">Whois信息:</span>
+                <span class="info_bom_title">Whois信息</span>
                 <div class="info_bom_item">
                   <div class="info_bom_item_li"
                        v-for="demo in item.whois_list">
@@ -401,7 +401,7 @@
           <span class="suggest_bom_title">处置建议</span>
         </p>
         <div>
-          <p class="suggest_bom_des"
+          <p class="suggest_bom_li"
              v-for="item in suggest_list[network_detail.safety_suggestion].handle">
             {{item}}
           </p>
@@ -413,7 +413,7 @@
           <span class="suggest_bom_title">加固建议</span>
         </p>
         <div>
-          <p class="suggest_bom_des"
+          <p class="suggest_bom_li"
              v-for="item in suggest_list[network_detail.safety_suggestion].reinforce">
             {{item}}
           </p>
@@ -526,6 +526,7 @@
     <!-- 编辑标签 -->
     <el-dialog class="add_tag pop_box"
                :close-on-click-modal="false"
+               :modal-append-to-body="false"
                :visible.sync="edit_tag.pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_tag_box"
@@ -540,7 +541,7 @@
           <div class="item_addrs"
                v-for="(item,index) in edit_tag.tag_list">
             <el-input class="select_box"
-                      placeholder="请输入标签"
+                      placeholder="请输入标签，最多可以设置5个标签"
                       v-model="item.name"
                       clearable>
             </el-input>
@@ -2206,10 +2207,18 @@ export default {
     },
     //  添加标签
     add_tag () {
-      this.edit_tag.tag_list.forEach(item => {
-        item.icon = false;
-      });
-      this.edit_tag.tag_list.push({ name: '', icon: true })
+      if (this.edit_tag.tag_list.length < 5) {
+        this.edit_tag.tag_list.forEach(item => {
+          item.icon = false;
+        });
+        this.edit_tag.tag_list.push({ name: '', icon: true })
+      } else {
+        this.$message.error(
+          {
+            message: '最多可以设置5个标签',
+            offset: 50
+          })
+      }
     },
     del_tag (item, index) {
       this.edit_tag.tag_list.splice(index, 1);
@@ -2693,7 +2702,24 @@ export default {
       .el-dialog__body {
         width: 440px;
         .content {
-          padding: 24px 0;
+          padding: 24px 5px;
+          height: 120px;
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+            border-radius: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 6px;
+            background: #a8a8a8;
+          }
+          &::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            border-radius: 6px;
+            background: #f4f4f4;
+          }
           .content_item {
             margin-bottom: 24px;
             .item_addrs {
@@ -3509,6 +3535,10 @@ export default {
       }
       .suggest_bom_des {
         margin: 8px 0 24px 0;
+        font-size: 14px;
+        color: #666666;
+      }
+      .suggest_bom_li {
         font-size: 14px;
         color: #666666;
       }

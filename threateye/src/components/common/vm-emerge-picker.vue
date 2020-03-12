@@ -83,9 +83,9 @@ export default {
     background-color: #f8f8f8;
   }
   /deep/ .el-range-separator {
-    padding: 0 5px;
+    padding: 0 3px;
     line-height: 32px;
-    width: 25px;
+    width: 30px;
     color: #303133;
   }
   .el-date-table td.end-date span {

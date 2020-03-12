@@ -39,7 +39,7 @@
         <!--按钮组-->
         <el-row class="common_btn">
           <el-col :span="24" class="common_btn_list">
-            <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
+            <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148' :popper-append-to-body ="false">
               <el-button type="primary" class="change_btn">
                 <span>状态变更</span>
                 <i class="el-icon-arrow-down el-icon--right"></i>

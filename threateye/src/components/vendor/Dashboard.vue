@@ -1,10 +1,14 @@
 <template>
   <el-container id="dashboard" v-cloak>
     <el-header><Nav></Nav></el-header>
-    <el-container class="dashboard-list">
-      <el-aside class="dashboard-list-aside" :class="{'collapse':isCollapse}">
-        <Aside></Aside>
-      </el-aside>
+    <div class="dashboard-list">
+
+      <div class="dashboard-aside-fixed" :class="{'collapse':isCollapse}">
+        <el-aside class="dashboard-list-aside" >
+          <Aside></Aside>
+        </el-aside>
+      </div>
+
       <div class="dashboard-main-fixed" :class="{'collapse':isCollapse}">
         <el-main class="dashboard-list-main">
           <transition name="slider">
@@ -14,7 +18,7 @@
           </transition>
         </el-main>
       </div>
-    </el-container>
+    </div>
     <el-footer>虎特信息科技（上海）有限公司  版权所有</el-footer>
   </el-container>
 </template>
@@ -42,7 +46,7 @@
       Nav,
       Aside,
       Main
-    }
+    },
   }
 </script>
 
@@ -56,32 +60,33 @@
       height: 60px!important;
       background-color: #2e3f60;
     }
+    position: relative;
     .dashboard-list{
-      .dashboard-list-aside{
-        overflow: inherit;
-        margin-top: 60px;
+      width: 100%;
+      margin-top: 60px;
+      height: calc(100vh - 120px);
+      display: flex;
+      .dashboard-aside-fixed{
+        overflow: initial;
         background-color: #fff;
         width: 210px!important;
-        height: calc(100% - 120px);
+        height: calc(100vh - 120px);
         &.collapse {
           width: 56px!important;
-          #aside{
-            width: 100%;
-            /deep/
-            .el-menu--collapse{
-              width: 100%;
-              .aside-item{
-                .item{
-                  .el-menu-item{
-                    .el-tooltip{
-                      padding: 0 20px!important;
-                    }
+          /deep/
+          .el-menu{
+            width: 56px!important;
+            .aside-item{
+              .item{
+                .el-menu-item{
+                  .el-tooltip{
+                    padding: 0 20px!important;
                   }
                 }
-                .el-submenu{
-                  .el-submenu__title{
-                    padding-left: 20px!important;
-                  }
+              }
+              .el-submenu{
+                .el-submenu__title{
+                  padding-left: 20px!important;
                 }
               }
             }
@@ -89,19 +94,10 @@
         }
       }
       .dashboard-main-fixed{
-        background-color: #F8F8F8;
-        top: 60px;
-        left: 210px;
-        position: fixed;
-        width: calc(100% - 210px);
-        height: calc(100% - 120px);
+        flex: 1;
+        background-color: #f4f4f4;
+        height: calc(100vh - 120px);
         overflow-y: scroll;
-        padding: 0;
-        margin: 0;
-        &.collapse{
-          left: 56px!important;
-          width: calc(100% - 56px);
-        }
         &::-webkit-scrollbar {/*滚动条整体样式*/
           width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
           border-radius: 6px;

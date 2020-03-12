@@ -459,9 +459,10 @@
       this.get_list_alerts_info();
     },
     methods:{
-      //获取资产列表
+      //获取全部资产列表
       get_list_assets_info(){
         this.$axios.get('/yiiapi/workorder/asset-list')
+
           .then((resp) => {
 
             let {status, data} = resp.data;
@@ -475,7 +476,7 @@
                 }else {
                   v.label_group = '';
                 }
-              })
+              });
               this.table_assets.tableData = data;
               this.table_assets.count = data.length;
 
@@ -483,7 +484,7 @@
             }
           });
       },
-      //获取告警列表
+      //获取全部告警列表
       get_list_alerts_info(){
         this.$axios.get('/yiiapi/workorder/alert-list')
           .then((resp) => {

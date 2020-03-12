@@ -412,24 +412,12 @@
         ],
         options_status: [
           {
-            value: "0",
+            value: "1",
             label: "待处置"
           },
           {
-            value: "1",
-            label: "处置中"
-          },
-          {
             value: "2",
-            label: "已处置"
-          },
-          {
-            value: "3",
-            label: "已忽略"
-          },
-          {
-            value: "4",
-            label: "误报"
+            label: "处置中"
           }
         ],
         table: {
@@ -545,7 +533,6 @@
             let data = resp.data.data;
             this.data_top = data;
             this.$set(this.data_top, data);
-
           })
       },
 

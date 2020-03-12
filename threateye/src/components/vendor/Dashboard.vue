@@ -15,7 +15,7 @@
         </el-main>
       </div>
     </el-container>
-    <el-footer>虎特信息科技（上海）有限公司  版权所有</el-footer>
+    <el-footer>©2020&nbsp;虎特信息科技（上海）&nbsp;有限公司&nbsp;&nbsp;版权所有</el-footer>
   </el-container>
 </template>
 

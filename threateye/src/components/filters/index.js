@@ -52,16 +52,10 @@ Vue.filter('certainty',function(args){
 //处理状态(处置-资产维度)
 Vue.filter('risk_status',function(args){
   let str = '';
-  if(args == 0){
+  if(args == 1){
     str = '待处置';
-  }else if(args == 1){
-    str = '处置中';
   }else if(args == 2){
-    str = '已处置';
-  }else if(args == 3){
-    str = '已忽略';
-  }else if(args == 4){
-    str = '误报';
+    str = '处置中';
   }
   return str;
 });

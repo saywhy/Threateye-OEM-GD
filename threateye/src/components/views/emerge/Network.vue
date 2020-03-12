@@ -20,13 +20,13 @@
             <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
             <!--告警类型-->
-            <el-select class="s_key s_key_types" v-model="params.type" clearable placeholder="告警类型">
+            <el-select class="s_key s_key_types" v-model="params.type" clearable placeholder="告警类型" :popper-append-to-body ="false">
               <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
 
             <!--处理状态-->
-            <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态">
+            <el-select class="s_key" v-model="params.status" clearable placeholder="处理状态" :popper-append-to-body ="false">
               <el-option v-for="item in options_status" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>

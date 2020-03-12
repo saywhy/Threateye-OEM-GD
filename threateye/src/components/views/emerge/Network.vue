@@ -57,7 +57,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
+                <el-dropdown-item command="编辑工单">编辑工单</el-dropdown-item>
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -141,7 +141,7 @@
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">新建工单</span>
+        <span class="title_name">编辑工单</span>
       </div>
       <div class="step_box">
         <div class="step_box1">
@@ -401,22 +401,26 @@
         options_status: [
           {
             value: "0",
-            label: "未确认"
+            label: "新告警"
           },
           {
             value: "1",
-            label: "已确认"
+            label: "待处置"
           },
           {
             value: "2",
-            label: "已处置"
+            label: "处置中"
           },
           {
             value: "3",
-            label: "已忽略"
+            label: "已处置"
           },
           {
             value: "4",
+            label: "已忽略"
+          },
+          {
+            value: "5",
             label: "误报"
           }
         ],
@@ -455,7 +459,7 @@
           level_list: [
             {
               value: "highest",
-              label: "极高"
+              label: "最高"
             },
             {
               value: "high",
@@ -525,9 +529,9 @@
       get_echarts() {
         this.$axios.get('/yiiapi/alert/alert-trend')
           .then(response => {
-            this.echarts_data = response.data.data;
             this.e_line.loading = false;
             this.e_line.data_show = true;
+            this.echarts_data = response.data.data;
           })
           .catch(error => {
             console.log(error);
@@ -549,9 +553,12 @@
             rows: this.table.eachPage,
           }
         }).then(resp => {
+
             this.table.loading = false;
+
             let {status, data} = resp.data;
             let datas = data;
+
             if (status == 0) {
 
               let {data, count, maxPage, pageNow} = datas;
@@ -562,7 +569,6 @@
               this.table.pageNow = pageNow;
              // console.log(data)
             }
-
           })
           .catch(error => {
             console.log(error);
@@ -625,7 +631,7 @@
 
       //工单任务选择
       change_task(command) {
-        if (command == "新建工单") {
+        if (command == "编辑工单") {
           this.open_task_new();
         }else if(command == "添加到工单"){
           this.open_add_new();
@@ -711,7 +717,7 @@
 
       /***************工单任务*****************/
 
-      //打开新建工单
+      //打开编辑工单
       open_task_new() {
 
         let sel_table_data = this.table.multipleSelection;
@@ -764,7 +770,7 @@
         }
       },
 
-      //关闭新建工单
+      //关闭编辑工单
       closed_task_new () {
         this.task.new = false;
         this.$refs.multipleTable.clearSelection();
@@ -846,7 +852,7 @@
         this.handle.active = index;
       },
 
-      //新建工单分配
+      //编辑工单分配
       prev_task_handle_assign() {
 
         this.$axios.put('/yiiapi/alert/distribution-workorder',
@@ -895,7 +901,7 @@
 
       },
 
-      //新建工单保存
+      //编辑工单保存
       prev_task_handle_save() {
 
         this.$axios.post('/yiiapi/alert/add-workorder',
@@ -1315,7 +1321,7 @@
       }
     }
 
-    // 新建工单
+    // 编辑工单
     /deep/
     .task_new_box {
       .el-dialog {

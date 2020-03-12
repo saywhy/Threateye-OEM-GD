@@ -3,7 +3,7 @@
     <div class="item" v-for="(item,index) in progress_data_list">
       <span class="vam-progress-title">
          <!--<img class="progress-img" src="../../../../assets/images/handle/risks/enlish.png">-->
-        <span class="progress-title">IP: {{item.ip}}</span>
+        <span class="progress-title" :title="item.ip">IP: {{item.ip}}</span>
       </span>
       <el-progress :color="item.color" :show-text="false" :text-inside="true" :stroke-width="20" :percentage="item.count"></el-progress>
     </div>
@@ -52,19 +52,25 @@
       display: flex;
       line-height: 45px;
       .vam-progress-title{
-
-        .progress-img{
+        width: 180px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: left;
+        cursor: default;
+        /*.progress-img{
           display: inline-block;
           width: 36px;
           height: 24px;
           margin: 10px 0;
-        }
+        }*/
         .progress-title{
           display: inline-block;
           font-family: PingFang;
           font-size: 14px;
           color: #333333;
           margin: 0 20px 0 0;
+
         }
       }
       /deep/

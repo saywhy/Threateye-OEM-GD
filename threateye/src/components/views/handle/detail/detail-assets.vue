@@ -45,7 +45,7 @@
               </el-button>
               <el-dropdown-menu slot="dropdown"
                                 class="dropdown_ul_box">
-                <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
+                <el-dropdown-item command="编辑工单">编辑工单</el-dropdown-item>
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -241,7 +241,7 @@
            alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">新建工单</span>
+        <span class="title_name">编辑工单</span>
       </div>
       <div class="step_box">
         <div class="step_box1">
@@ -539,7 +539,7 @@ export default {
         level_list: [
           {
             value: "highest",
-            label: "极高"
+            label: "最高"
           },
           {
             value: "high",
@@ -765,7 +765,7 @@ export default {
 
     //工单任务选择
     change_task (command) {
-      if (command == "新建工单") {
+      if (command == "编辑工单") {
         this.open_task_new();
       } else if (command == "添加到工单") {
         this.open_add_new();
@@ -837,7 +837,7 @@ export default {
 
     /***************工单任务*****************/
 
-    //打开新建工单
+    //打开编辑工单
     open_task_new () {
 
       let status = this.detail.status;
@@ -872,7 +872,7 @@ export default {
 
     },
 
-    //关闭新建工单
+    //关闭编辑工单
     closed_task_new () {
       this.task.new = false;
       this.task_params = {
@@ -952,7 +952,7 @@ export default {
       this.handle.active = index;
     },
 
-    //新建工单分配
+    //编辑工单分配
     prev_task_handle_assign () {
 
       this.$axios.put('/yiiapi/asset/distribution-workorder',
@@ -1002,7 +1002,7 @@ export default {
 
     },
 
-    //新建工单保存
+    //编辑工单保存
     prev_task_handle_save () {
 
       this.$axios.post('/yiiapi/asset/add-workorder',
@@ -1524,7 +1524,7 @@ export default {
     }
   }
 
-  // 新建工单
+  // 编辑工单
   /deep/ .task_new_box {
     .el-dialog {
       .el-dialog__header {

@@ -25,22 +25,6 @@ Vue.filter('time',function(value){
   return moment(value).format('YYYY-MM-DD HH:mm:ss')
 });
 
-Vue.filter('dispose',function(args){
-  let str = '待处理';
-  if(args == 1){
-    str = '待处理';
-  }else if(args == 2){
-    str = '处置中';
-  }else if(args == 3){
-    str = '已忽略';
-  }else if(args == 4){
-    str = '误报';
-  }else if(args == 5){
-    str = '已处置';
-  }
-  return str;
-});
-
 //威胁等级
 Vue.filter('degree',function(args){
   let str = '';
@@ -86,14 +70,16 @@ Vue.filter('risk_status',function(args){
 Vue.filter('alert_status',function(args){
   let str = '';
   if(args == 0){
-    str = '未确认';
+    str = '新告警';
   }else if(args == 1){
-    str = '已确认';
+    str = '待处置';
   }else if(args == 2){
-    str = '已处置';
+    str = '处置中';
   }else if(args == 3){
-    str = '已忽略';
+    str = '已处置';
   }else if(args == 4){
+    str = '已忽略';
+  }else if(args == 5){
     str = '误报';
   }
   return str;
@@ -124,7 +110,7 @@ Vue.filter('priority',function(args){
   let str = '';
 
   if(args == 'highest'){
-    str = '极高';
+    str = '最高';
   }else if(args == 'high'){
     str = '高';
   }else if(args == 'midium'){

@@ -36,7 +36,7 @@
             <p class="item_list">
               <span class="item">共计 <span class="num">{{count.count}}</span> 条</span>
               <span class="item">其中优先级</span>
-              <el-tag class="e_tag e-tag-1">极高：<span class="nums">{{count.highest}}</span></el-tag>
+              <el-tag class="e_tag e-tag-1">最高：<span class="nums">{{count.highest}}</span></el-tag>
               <el-tag class="e_tag e-tag-2">高：<span class="nums">{{count.high}}</span></el-tag>
               <el-tag class="e_tag e-tag-3">中：<span class="nums">{{count.medium}}</span></el-tag>
               <el-tag class="e_tag e-tag-4">低：<span class="nums">{{count.low}}</span></el-tag>
@@ -315,7 +315,7 @@
         options_priority: [
           {
             value: "highest",
-            label: "极高"
+            label: "最高"
           },
           {
             value: "high",
@@ -399,7 +399,7 @@
           level_list: [
             {
               value: "highest",
-              label: "极高"
+              label: "最高"
             },
             {
               value: "high",
@@ -463,20 +463,22 @@
       get_list_assets_info(){
         this.$axios.get('/yiiapi/workorder/asset-list')
           .then((resp) => {
-           // console.log(resp.data)
+
             let {status, data} = resp.data;
 
             if (status == 0) {
 
-              if(data.length > 0){
-                data.map(function (v,k) {
-                  v.label = JSON.parse(v.label);
+              data.map(function (v,k) {
+                v.label = JSON.parse(v.label);
+                if(v.label && v.label.length){
                   v.label_group = v.label.join(',');
-                })
-              }
-
+                }else {
+                  v.label_group = '';
+                }
+              })
               this.table_assets.tableData = data;
               this.table_assets.count = data.length;
+
               this.table_assets.pageNow = 1;
             }
           });
@@ -493,6 +495,7 @@
             }
           });
       },
+
       //工单中心列表
       get_list_works(){
 
@@ -512,6 +515,8 @@
           })
           .then((resp) => {
 
+            this.table.loading = false;
+
             let {status, data} = resp.data;
 
             let datas = data;
@@ -525,9 +530,8 @@
               this.table.count = Number(count.count);
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
-              this.table.loading = false;
-
             }
+
           });
       },
 
@@ -535,6 +539,7 @@
         this.params.startTime = data[0].valueOf();
         this.params.endTime = data[1].valueOf();
       },
+
       //搜索按鈕點擊事件
       submitClick() {
         this.get_list_works();

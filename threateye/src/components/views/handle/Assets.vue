@@ -98,7 +98,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
+                <el-dropdown-item command="编辑工单">编辑工单</el-dropdown-item>
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -116,7 +116,7 @@
             <el-table-column label="全选" width="40"></el-table-column>
             <el-table-column  type="selection" width="42"></el-table-column>
             <el-table-column prop="asset_ip" label="资产"></el-table-column>
-            <el-table-column prop="assets_group" label="资产组"  show-overflow-tooltip></el-table-column>
+            <el-table-column prop="label_group" label="资产组"  show-overflow-tooltip></el-table-column>
             <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
@@ -134,7 +134,7 @@
             class="handle-pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :page-sizes="[5, 10, 20]"
+            :page-sizes="[10,20,50,100]"
             :page-size="table.eachPage"
             :current-page="table.pageNow"
             :total="table.count"
@@ -173,7 +173,7 @@
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">新建工单</span>
+        <span class="title_name">编辑工单</span>
       </div>
       <div class="step_box">
         <div class="step_box1">
@@ -271,7 +271,7 @@
                 <el-table-column label="全选" width="40"></el-table-column>
                 <el-table-column align='left' type="selection" width="40"></el-table-column>
                 <el-table-column prop="asset_ip" label="资产"></el-table-column>
-                <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
@@ -464,7 +464,7 @@
           level_list: [
             {
               value: "highest",
-              label: "极高"
+              label: "最高"
             },
             {
               value: "high",
@@ -541,10 +541,11 @@
       get_list_top() {
         this.$axios.get('/yiiapi/alert/risk-asset-top')
           .then((resp) => {
+            this.data_top_show = true;
             let data = resp.data.data;
             this.data_top = data;
             this.$set(this.data_top, data);
-            this.data_top_show = true;
+
           })
       },
 
@@ -617,6 +618,7 @@
             }
           })
           .then((resp) => {
+            this.table.loading = false;
 
             let {status, data} = resp.data;
 
@@ -625,17 +627,17 @@
             if (status == 0) {
 
               let {data, count, maxPage, pageNow} = datas;
+
               data.map(function (v, k) {
-                let assets_group = v.label.join(',');
+                let label_group = (Object.values(v.label)).join(',');
                 let category_group = v.category.join(',');
-                v.assets_group = assets_group;
+                v.label_group = label_group;
                 v.category_group = category_group;
-              })
+              });
               this.table.tableData = data;
               this.table.count = count;
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
-              this.table.loading = false;
 
              // console.log(data)
             }
@@ -743,7 +745,7 @@
 
       //工单任务选择
       change_task(command) {
-        if (command == "新建工单") {
+        if (command == "编辑工单") {
           this.open_task_new();
         }else if(command == "添加到工单"){
           this.open_add_new();
@@ -855,7 +857,7 @@
 
       /***************工单任务*****************/
 
-      //打开新建工单
+      //打开编辑工单
       open_task_new() {
 
         let sel_table_data = this.table.multipleSelection;
@@ -908,7 +910,7 @@
         }
       },
 
-      //关闭新建工单
+      //关闭编辑工单
       closed_task_new () {
         this.task.new = false;
         this.$refs.multipleTable.clearSelection();
@@ -989,7 +991,7 @@
         this.handle.active = index;
       },
 
-      //新建工单分配
+      //编辑工单分配
       prev_task_handle_assign() {
 
         this.$axios.put('/yiiapi/asset/distribution-workorder',
@@ -1038,7 +1040,7 @@
 
       },
 
-      //新建工单保存
+      //编辑工单保存
       prev_task_handle_save() {
 
         this.$axios.post('/yiiapi/asset/add-workorder',
@@ -1497,7 +1499,7 @@
       }
     }
 
-    // 新建工单
+    // 编辑工单
     /deep/
     .task_new_box {
       .el-dialog {

@@ -52,17 +52,14 @@
       padding: 0 24px;
       position: fixed;
       width: 100%;
-      z-index: 1;
+      z-index: 3000;
       height: 60px!important;
       background-color: #2e3f60;
     }
     .dashboard-list{
       .dashboard-list-aside{
         overflow: inherit;
-        position: fixed;
-        left: 0;
-        top: 60px;
-        z-index: 0;
+        margin-top: 60px;
         background-color: #fff;
         width: 210px!important;
         height: calc(100% - 120px);

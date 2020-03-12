@@ -549,7 +549,7 @@
             rows: this.table.eachPage,
           }
         }).then(resp => {
-
+            this.table.loading = false;
             let {status, data} = resp.data;
             let datas = data;
             if (status == 0) {
@@ -560,8 +560,6 @@
               this.table.count = count;
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
-              this.table.loading = false;
-
              // console.log(data)
             }
 

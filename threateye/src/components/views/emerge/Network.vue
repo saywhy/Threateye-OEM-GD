@@ -116,7 +116,7 @@
 
     <!-- 弹窗 -->
     <!-- 状态变更 -->
-    <el-dialog class="pop_state_box" width='480px' :modal-append-to-body="false" :visible.sync="state_change">
+    <el-dialog class="pop_state_box" :modal-append-to-body="false" :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png" @click="closed_state" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -139,7 +139,7 @@
 
     <!-- 弹窗 -->
     <!-- 工单任务 -->
-    <el-dialog class="task_new_box" width='840px' :modal-append-to-body="false" :visible.sync="task.new">
+    <el-dialog class="task_new_box" :modal-append-to-body="false" :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -156,66 +156,72 @@
       </div>
       <!-- 基本信息 -->
       <div class="task_new_content" v-if="task.new_contet">
-        <div class="content_top">
-          <div class="content_top_left">
-            <li class="left_item">
-              <div class="title">
-                <span>工单名称</span>
-                <span class="improtant_ico">*</span>
-              </div>
-              <el-input class="task_new_input" placeholder="请输入工单名称" v-model="task_params.name" clearable>
-              </el-input>
-            </li>
-            <li class="left_item">
-              <div class="title">
-                <span>经办人</span>
-                <span class="improtant_ico">*</span>
-              </div>
-              <el-select class="task_new_input" v-model="task_params.operator" clearable placeholder="请选择经办人"  >
-                <el-option v-for="item in task_new.operator_list" @click.native="select_changced(item)" :key="item.id" :label="item.username" :value="item.username">
-                </el-option>
-              </el-select>
-            </li>
+
+        <!--出现滚动条-->
+        <div class="task_content_box">
+          <div class="content_top">
+            <div class="content_top_left">
+              <li class="left_item">
+                <div class="title">
+                  <span>工单名称</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-input class="task_new_input" placeholder="请输入工单名称" v-model="task_params.name" clearable>
+                </el-input>
+              </li>
+              <li class="left_item">
+                <div class="title">
+                  <span>经办人</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-select class="task_new_input" v-model="task_params.operator" clearable placeholder="请选择经办人">
+                  <el-option v-for="item in task_new.operator_list" @click.native="select_changced(item)" :key="item.id"
+                             :label="item.username" :value="item.username">
+                  </el-option>
+                </el-select>
+              </li>
+            </div>
+            <div class="content_top_right">
+              <li class="right_item">
+                <div class="title">
+                  <span>优先级</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-select class="task_new_input" v-model="task_params.level" clearable placeholder="请选择优先级">
+                  <el-option v-for="item in task_new.level_list" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </li>
+              <li class="right_item">
+                <el-checkbox-group v-model="task_params.notice">
+                  <el-checkbox label="email" value="email">邮件通知</el-checkbox>
+                  <el-checkbox label="message" value="message">短信通知</el-checkbox>
+                  <!--<el-checkbox label="news" value="news">消息中心通知</el-checkbox>-->
+                </el-checkbox-group>
+              </li>
+            </div>
           </div>
-          <div class="content_top_right">
-            <li class="right_item">
-              <div class="title">
-                <span>优先级</span>
-                <span class="improtant_ico">*</span>
-              </div>
-              <el-select class="task_new_input" v-model="task_params.level" clearable placeholder="请选择优先级">
-                <el-option v-for="item in task_new.level_list" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </li>
-            <li class="right_item">
-              <el-checkbox-group v-model="task_params.notice">
-                <el-checkbox label="email" value="email">邮件通知</el-checkbox>
-                <el-checkbox label="message" value="message">短信通知</el-checkbox>
-                <el-checkbox label="news" value="news">消息中心通知</el-checkbox>
-              </el-checkbox-group>
-            </li>
+          <div class="content_remarks">
+            <p class="title">备注</p>
+            <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="task_params.textarea">
+            </el-input>
+          </div>
+          <div class="content_table">
+            <el-table :data="table_operator.tableData" style="width: 100%">
+              <el-table-column prop="username" label="经办人"></el-table-column>
+              <el-table-column prop="department" label="部门"></el-table-column>
+              <el-table-column prop="email_addr" label="邮箱"></el-table-column>
+            </el-table>
+            <!--<el-pagination class="pagination_box"
+                           @current-change="hcc_table_operator"
+                           :page-sizes="[5]" :page-size="5"
+                           :current-page="table_operator.pageNow"
+                           :total="table_operator.tableData.length"
+                           layout="total,sizes, prev, pager, next">
+            </el-pagination>-->
           </div>
         </div>
-        <div class="content_remarks">
-          <p class="title">备注</p>
-          <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="task_params.textarea">
-          </el-input>
-        </div>
-        <div class="content_table">
-          <el-table :data="table_operator.tableData_new" style="width: 100%">
-            <el-table-column prop="username" label="经办人"></el-table-column>
-            <el-table-column prop="department" label="部门"></el-table-column>
-            <el-table-column prop="email_addr" label="邮箱"></el-table-column>
-          </el-table>
-          <el-pagination class="pagination_box"
-                         @current-change="hcc_table_operator"
-                         :page-sizes="[5]" :page-size="5"
-                         :current-page="table_operator.pageNow"
-                         :total="table_operator.tableData.length"
-                         layout="total,sizes, prev, pager, next">
-          </el-pagination>
-        </div>
+
         <div class="btn_box">
           <el-button @click="closed_task_new" class="cancel_btn">取消</el-button>
           <el-button @click="next_task_new" class="next_btn">下一步</el-button>
@@ -224,64 +230,52 @@
 
       <!-- 处置内容 -->
       <div class="task_handle_content" v-if="!task.new_contet">
-        <!--<div class="handle_content_top">
-          &lt;!&ndash;<el-dropdown placement='bottom-start' @command="handle.add" trigger="click">
-            <el-button type="primary" class="change_btn">
-              <span>新增</span>
-              <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-              <el-dropdown-item command="资产">资产</el-dropdown-item>
-              <el-dropdown-item command="告警">告警</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>&ndash;&gt;
-          <el-button class="ref">刷新</el-button>
-          <el-button class="cel">删除</el-button>
-        </div>-->
-        <div class='table_box'>
-          <ul class="table_box_title">
-            <li v-for="(tab,index) in handle.table_title"
-                @click="table_btn_toggle(index)" :class="{active:handle.active==index}">
-              {{tab}}
-            </li>
-          </ul>
-          <div>
-            <div v-show="handle.active==0">
-              <el-table align="center"
-                        :data="table_alerts.tableData_new"
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                        @selection-change="handle_sel_table_alerts">
-                <el-table-column label="全选" prop="type" width="40">
-                </el-table-column>
-                <el-table-column type="selection" width="40">
-                </el-table-column>
-                <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="application" label="应用" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
-                </el-table-column>
-                <!--<el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
-                </el-table-column>-->
-                <el-table-column label="状态"  width="80">
-                  <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
-                </el-table-column>
-              </el-table>
-              <el-pagination class="pagination_box"
-                             @current-change="hcc_table_alerts"
-                             :page-sizes="[5]"
-                             :page-size="5"
-                             :current-page="table_alerts.pageNow"
-                             :total="table_alerts.count"
-                             layout="total, sizes, prev, pager, next">
-              </el-pagination>
+        <div class="task_content_box">
+          <div class='table_box'>
+            <ul class="table_box_title">
+              <li v-for="(tab,index) in handle.table_title"
+                  @click="table_btn_toggle(index)" :class="{active:handle.active==index}">
+                {{tab}}
+              </li>
+            </ul>
+            <div>
+              <div v-show="handle.active==0">
+                <el-table align="center"
+                          :data="table_alerts.tableData_new"
+                          tooltip-effect="dark"
+                          style="width: 100%"
+                          @selection-change="handle_sel_table_alerts">
+                  <el-table-column label="全选" prop="type" width="40">
+                  </el-table-column>
+                  <el-table-column type="selection" width="40">
+                  </el-table-column>
+                  <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="application" label="应用" show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
+                  </el-table-column>
+                  <!--<el-table-column prop="detect_engine" label="失陷确定性" show-overflow-tooltip>
+                  </el-table-column>-->
+                  <el-table-column label="状态"  width="80">
+                    <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+                  </el-table-column>
+                </el-table>
+                <el-pagination class="pagination_box"
+                               @current-change="hcc_table_alerts"
+                               :page-sizes="[5]"
+                               :page-size="5"
+                               :current-page="table_alerts.pageNow"
+                               :total="table_alerts.count"
+                               layout="total, sizes, prev, pager, next">
+                </el-pagination>
+              </div>
             </div>
           </div>
         </div>
@@ -296,7 +290,7 @@
 
     <!-- 弹窗 -->
     <!-- 添加到工单 -->
-    <el-dialog class="pop_state_add" width='960px' :modal-append-to-body="false" :visible.sync="add_state_change">
+    <el-dialog class="pop_state_add" :modal-append-to-body="false" :visible.sync="add_state_change">
       <img src="@/assets/images/emerge/closed.png" @click="add_closed_state" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
@@ -485,7 +479,7 @@
           count: 0,
           pageNow: 1,
           maxPage: 1,
-          eachPage: 5
+          eachPage: 10
         },
         handle: {
           add: "",
@@ -498,7 +492,7 @@
           count: 0,
           pageNow: 1,
           maxPage: 1,
-          eachPage: 5,
+          eachPage: 10,
           multipleSelection: []
         },
 
@@ -509,7 +503,7 @@
           count: 0,
           pageNow: 1,
           maxPage: 1,
-          eachPage: 5,
+          eachPage: 10,
           loading: true
         },
         add_params:{
@@ -727,14 +721,15 @@
         let sel_table_attr = sel_table_data.map(x => {return x.status});
 
         if(sel_table_data.length == 0){
+
           this.$message({message:'您未选中列表或列表为空',type: 'warning'});
           return false;
 
         } else {
 
-          if(sel_table_attr.includes('2')
-            || sel_table_attr.includes('3')
-            || sel_table_attr.includes('4'))
+          if(sel_table_attr.includes('3')
+            || sel_table_attr.includes('4')
+            || sel_table_attr.includes('5'))
           {
 
             this.$message({message: '告警状态为已处置,已忽略,误报的不能新建', type: 'error'});
@@ -811,7 +806,6 @@
       select_changced(item) {
 
         let level_list = this.table_operator.tableData;
-
         let selected_id_attr = level_list.map(x => {return x.id});
 
         if(selected_id_attr.includes(item.id)){
@@ -820,13 +814,11 @@
           this.table_operator.tableData.unshift(item);
         }
 
-        let pageNow = this.table_operator.pageNow;
-
+        /*let pageNow = this.table_operator.pageNow;
         let handle_data_operator = this.table_operator.tableData.slice((pageNow-1) * 5,pageNow * 5);
-        this.table_operator.tableData_new = handle_data_operator;
+        this.table_operator.tableData_new = handle_data_operator;*/
 
         let selected_name_attr = this.table_operator.tableData.map(x => {return x.username});
-
         this.task_params.new_operator = selected_name_attr;
       },
 
@@ -887,7 +879,6 @@
                 textarea: "",
                 multiple:[]
               };
-              this.table_operator.tableData_new = [];
 
               this.get_list_risk();
 
@@ -935,7 +926,6 @@
                 textarea: "",
                 multiple:[]
               };
-              this.table_operator.tableData_new = [];
               this.get_list_risk();
 
             }else if (status == 1){
@@ -1166,10 +1156,6 @@
           });*/
        }
     }
-
-
-
-
   };
 </script>
 
@@ -1379,112 +1365,132 @@
 
           .task_new_content {
             /*height: 480px;*/
-            .content_top {
-              overflow: hidden;
 
-              .content_top_left {
-                float: left;
-                width: 45%;
+            .task_content_box {
+              height: 400px;
+              overflow-y: auto;
+              &::-webkit-scrollbar {
+                /*滚动条整体样式*/
+                width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+                border-radius: 6px;
+              }
+              &::-webkit-scrollbar-thumb {
+                /*滚动条里面小方块*/
+                border-radius: 6px;
+                background: #a8a8a8;
+              }
+              &::-webkit-scrollbar-track {
+                /*滚动条里面轨道*/
+                border-radius: 6px;
+                background: #f4f4f4;
+              }
 
-                .left_item {
-                  margin-bottom: 16px;
-                  display: flex;
+              .content_top {
+                overflow: hidden;
+                .content_top_left {
+                  float: left;
+                  width: 45%;
 
-                  .title {
-                    width: 100px;
-                    line-height: 38px;
+                  .left_item {
+                    margin-bottom: 16px;
+                    display: flex;
 
-                    .improtant_ico {
-                      color: #ff3a36;
+                    .title {
+                      width: 100px;
+                      line-height: 38px;
+
+                      .improtant_ico {
+                        color: #ff3a36;
+                      }
+                    }
+
+                    .task_new_input {
+                      flex: 1;
+
+                      .el-input__inner {
+                        height: 38px;
+                      }
                     }
                   }
+                }
 
-                  .task_new_input {
-                    flex: 1;
+                .content_top_right {
+                  float: right;
+                  width: 45%;
 
-                    .el-input__inner {
-                      height: 38px;
+                  .right_item {
+                    margin-bottom: 16px;
+                    display: flex;
+
+                    .title {
+                      width: 100px;
+                      line-height: 38px;
+
+                      .improtant_ico {
+                        color: #ff3a36;
+                      }
+                    }
+
+                    .task_new_input {
+                      flex: 1;
+
+                      .el-input__inner {
+                        height: 38px;
+                      }
                     }
                   }
                 }
               }
 
-              .content_top_right {
-                float: right;
-                width: 45%;
-
-                .right_item {
-                  margin-bottom: 16px;
-                  display: flex;
-
-                  .title {
-                    width: 100px;
-                    line-height: 38px;
-
-                    .improtant_ico {
-                      color: #ff3a36;
-                    }
-                  }
-
-                  .task_new_input {
-                    flex: 1;
-
-                    .el-input__inner {
-                      height: 38px;
-                    }
-                  }
+              .content_remarks {
+                .title {
+                  font-size: 12px;
+                  color: #999999;
                 }
-              }
-            }
 
-            .content_remarks {
-              .title {
-                font-size: 12px;
-                color: #999999;
-              }
-
-              /deep/
-              .el-textarea{
-                height: 92px;
-                textarea {
-                  resize: none;
+                /deep/
+                .el-textarea{
                   height: 92px;
-                  font-size: 14px;
-                  color: #333;
-                  font-family: PingFang;
+                  textarea {
+                    resize: none;
+                    height: 92px;
+                    font-size: 14px;
+                    color: #333;
+                    font-family: PingFang;
+                  }
                 }
-              }
-              .el-textarea__inner:hover {
-                border: none;
-              }
+                .el-textarea__inner:hover {
+                  border: none;
+                }
 
-              .el-textarea__inner {
-                border: none;
-                background: #f8f8f8;
-              }
-            }
-
-            .content_table {
-              margin-top: 16px;
-
-              /deep/
-              .el-table td {
-                padding: 0;
-                height: 32px;
-              }
-              /deep/
-              .el-table th {
-                padding: 0;
-                height: 36px;
-                background: #f8f8f8;
-                .cell{
+                .el-textarea__inner {
+                  border: none;
+                  background: #f8f8f8;
                 }
               }
 
-              /deep/
-              .el-pagination {
-                margin-top: 20px;
-                text-align: center;
+              .content_table {
+                margin-top: 16px;
+
+                /deep/
+                .el-table td {
+                  padding: 0;
+                  height: 32px;
+                }
+                /deep/
+                .el-table th {
+                  padding: 0;
+                  height: 36px;
+                  background: #f8f8f8;
+                  .cell{
+                  }
+                }
+
+                /deep/
+                .el-pagination {
+                  margin-top: 20px;
+                  text-align: center;
+                }
               }
             }
 
@@ -1502,7 +1508,6 @@
                 height: 42px;
                 font-size: 16px;
               }
-
               .next_btn {
                 background-color: #0070ff;
                 color: #fff;

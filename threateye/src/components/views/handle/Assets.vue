@@ -86,7 +86,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
+             <!--   <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>-->
                 <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
                 <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
                 <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
@@ -681,7 +681,6 @@
 
       //重置按鈕點擊事件
       resetClick() {
-
         //清空选中全部资产
         this.assets_all.tags = [];
 
@@ -748,7 +747,7 @@
       open_state() {
         let sel_table_data = this.table.multipleSelection;
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
+          this.$message({message:'请选择需要变更的资产',type: 'warning'});
           return false;
         } else {
           this.state_change = true;
@@ -778,14 +777,12 @@
         let process = this.process_state;
         let change_status = 0;
 
-        if (process == '处置中') {
-          change_status = 1;
-        } else if (process == '已处置') {
-          change_status = 2;
-        } else if (process == '已忽略') {
+        if (process == '已处置') {
           change_status = 3;
-        } else if (process == '误报') {
+        } else if (process == '已忽略') {
           change_status = 4;
+        } else if (process == '误报') {
+          change_status = 5;
         }
 
         this.$axios.put('/yiiapi/alert/change-asset-status', {
@@ -798,41 +795,15 @@
 
             if (status == 0) {
 
-              this.$message.success('状态变更提交成功！');
+              this.$message.success('资产状态变更提交成功！');
 
               this.$refs.multipleTable.clearSelection();
 
               this.get_list_risk();
-              this.get_list_all();
-
-             /* data.base_category = data.base_category.map(function (v,k) {
-                return {name:v,flag:false};
-              });
-              data.business = data.business.map(function (v,k) {
-                return {name:v,flag:false};
-              });
-              data.branch = data.branch.map(function (v,k) {
-                return {name:v,flag:false};
-              });
-              data.department = data.department.map(function (v,k) {
-                return {name:v,flag:false};
-              });
-
-              let obj = data.others;
-              let attr = [];
-              Object.keys(obj).forEach(function(k){
-                attr.push({name:obj[k],flag:false});
-              });
-              data.others = attr;
-              this.assets_all.base[0].value = this.assets_all.base[0].souce_value = data.base_category;
-              this.assets_all.base[1].value = this.assets_all.base[1].souce_value = data.business;
-              this.assets_all.base[2].value = this.assets_all.base[2].souce_value = data.branch;
-              this.assets_all.base[3].value = this.assets_all.base[3].souce_value = data.department;
-              this.assets_all.base[4].value = this.assets_all.base[4].souce_value = data.others;*/
 
             } else {
 
-              this.$message.error('状态变更提交错误。');
+              this.$message.error('资产状态变更提交错误。');
 
             }
 
@@ -856,17 +827,17 @@
         let sel_table_attr = sel_table_data.map(x => {return x.status});
 
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
+          this.$message({message:'请选择需要编辑的资产',type: 'warning'});
           return false;
 
         } else {
 
-          if(sel_table_attr.includes('2')
-            || sel_table_attr.includes('3')
-            || sel_table_attr.includes('4'))
+          if(sel_table_attr.includes('3')
+            || sel_table_attr.includes('4')
+            || sel_table_attr.includes('5'))
           {
 
-            this.$message({message: '资产状态为已处置,已忽略,误报的不能新建', type: 'error'});
+            this.$message({message: '资产状态为已处置,已忽略,误报的不能新建', type: 'warning'});
 
           } else {
 
@@ -1013,7 +984,7 @@
                 textarea: "",
                 multiple:[]
               };
-              //this.table_operator.tableData_new = [];
+              this.table_operator.tableData = [];
               this.get_list_risk();
 
             }else if (status == 1){
@@ -1062,7 +1033,7 @@
                 multiple:[]
               };
 
-              //this.table_operator.tableData_new = [];
+              this.table_operator.tableData = [];
               this.get_list_risk();
 
             }else if (status == 1){
@@ -1089,14 +1060,14 @@
         let sel_table_attr = sel_table_data.map(x => {return x.status});
 
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
+          this.$message({message:'请选择需要加入工单的资产',type: 'warning'});
           return false;
 
         } else {
 
-          if(sel_table_attr.includes('2')
-            || sel_table_attr.includes('3')
-            || sel_table_attr.includes('4'))
+          if(sel_table_attr.includes('3')
+            || sel_table_attr.includes('4')
+            || sel_table_attr.includes('5'))
           {
             this.$message({message: '资产状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
           }else {

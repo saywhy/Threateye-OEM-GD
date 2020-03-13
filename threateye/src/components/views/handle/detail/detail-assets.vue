@@ -25,8 +25,8 @@
               </el-button>
               <el-dropdown-menu slot="dropdown"
                                 class="dropdown_ul_box">
-                <el-dropdown-item command="处置中"
-                                  class="select_item">处置中</el-dropdown-item>
+                <!--<el-dropdown-item command="处置中"
+                                  class="select_item">处置中</el-dropdown-item>-->
                 <el-dropdown-item command="已处置"
                                   class="select_item">已处置</el-dropdown-item>
                 <el-dropdown-item command="已忽略"
@@ -614,19 +614,16 @@ export default {
 
     this.get_list_assets_detail();
     this.get_assets_detail_top();
-    //  this.get_list_assets_info();
     this.get_data();
   },
   methods: {
-    //
+    //获取资产列表
     get_data () {
       this.$axios.get('/yiiapi/asset/asset-details', {
         params: {
           asset_ip: this.detail.asset_ip
         }
       }).then(resp => {
-        console.log("^^^^^^^^^^^")
-        console.log(resp)
 
         let { status, data } = resp.data;
         if (status == 0) {
@@ -639,38 +636,6 @@ export default {
       })
     },
 
-    //获取资产列表
-    /* get_list_assets_info(){
-       this.$axios.get('/yiiapi/alert/risk-asset',{
-         params: {
-           label:'[]',
-           key_word: '',
-           fall_certainty: '',
-           degree: '',
-           status: '',
-           page: 1,
-           rows: 1000
-         }
-       })
-         .then((resp) => {
-           let {status, data} = resp.data;
-           let datas = data;
-           if (status == 0) {
-             let {data, count, maxPage, pageNow} = datas;
-             data.map(function (v, k) {
-               let assets_group = v.label.join(',');
-               let category_group = v.category.join(',');
-               v.assets_group = assets_group;
-               v.category_group = category_group;
-             })
-             this.table_assets.tableData = data;
-             this.table_assets.count = count;
-             this.table_assets.maxPage = maxPage;
-             this.table_assets.pageNow = pageNow;
-           }
-         });
-     },*/
-
     //获取资产详情顶部
     get_assets_detail_top () {
       this.$axios.get('/yiiapi/asset/asset-details',
@@ -680,8 +645,6 @@ export default {
           }
         })
         .then((resp) => {
-
-          console.log(resp.data)
 
           let { status, data } = resp.data;
 
@@ -737,6 +700,7 @@ export default {
     //每頁多少條切換
     handleSizeChange (val) {
       this.table.eachPage = val;
+      this.table.pageNow = 1;
       this.get_list_assets_detail();
     },
 
@@ -749,14 +713,14 @@ export default {
     /*****************************/
 
     //改变告警等级
-    change_degree (command) {
+    /*change_degree (command) {
       this.table.tableData.forEach(function (item, index) {
         if (command[1] == index) {
           item.degree = command[0];
           item.color = command[2];
         }
       });
-    },
+    },*/
 
     /***********************************以下是弹窗部分****************************************/
     /***********************************以下是弹窗部分****************************************/
@@ -801,14 +765,12 @@ export default {
       let process = this.process_state;
       let change_status = 0;
 
-      if (process == '处置中') {
-        change_status = 1;
-      } else if (process == '已处置') {
-        change_status = 2;
-      } else if (process == '已忽略') {
+      if (process == '已处置') {
         change_status = 3;
-      } else if (process == '误报') {
+      } else if (process == '已忽略') {
         change_status = 4;
+      } else if (process == '误报') {
+        change_status = 5;
       }
 
       this.$axios.put('/yiiapi/alert/change-asset-status', {
@@ -846,7 +808,7 @@ export default {
 
       let status = this.detail.status;
 
-      if (status == '2' || status == '3' || status == '4') {
+      if (status == '3' || status == '4' || status == '5') {
         this.$message({ message: '资产状态为已处置,已忽略,误报的不能新建', type: 'error' });
       } else {
 
@@ -989,7 +951,8 @@ export default {
               textarea: "",
               multiple: []
             };
-           // this.table_operator.tableData_new = [];
+
+            this.table_operator.tableData = [];
 
             this.get_assets_detail_top();
 
@@ -1038,7 +1001,7 @@ export default {
               textarea: "",
               multiple: []
             };
-           // this.table_operator.tableData_new = [];
+            this.table_operator.tableData = [];
 
             this.get_assets_detail_top();
 
@@ -1064,7 +1027,7 @@ export default {
     add_open_state () {
       let status = this.detail.status;
 
-      if (status == '2' || status == '3' || status == '4') {
+      if (status == '3' || status == '4' || status == '5') {
         this.$message({ message: '资产状态为已处置,已忽略,误报的不能添加到工单', type: 'error' });
       } else {
         this.add_state_change = true;

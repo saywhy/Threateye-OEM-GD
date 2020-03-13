@@ -43,8 +43,21 @@
             </p>
           </el-col>
         </el-row>
-        <el-row class="common_btn" style="text-align: left;">
+
+        <!--按钮组-->
+        <el-row class="common_btn">
           <el-col :span="24" class="common_btn_list">
+            <el-dropdown @command="change_state" trigger="click" placement='bottom-start'>
+              <el-button type="primary" class="change_btn">
+                <span>状态变更</span>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
+                <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
+                <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
+                <el-dropdown-item command="已取消" class="select_item">已取消</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button type="primary" class="bw_btn bw_btn_add" @click="open_task_new();">
               <span>新增</span>
             </el-button>
@@ -179,13 +192,6 @@
               <el-table-column prop="department" label="部门"></el-table-column>
               <el-table-column prop="email_addr" label="邮箱"></el-table-column>
             </el-table>
-            <!--<el-pagination class="pagination_box"
-                           @current-change="hcc_table_operator"
-                           :page-sizes="[5]" :page-size="5"
-                           :current-page="table_operator.pageNow"
-                           :total="table_operator.tableData.length"
-                           layout="total,sizes, prev, pager, next">
-            </el-pagination>-->
           </div>
         </div>
         <div class="btn_box">
@@ -324,24 +330,24 @@
         ],
         options_status: [
           {
-            value: "1",
+            value: "0",
             label: "待分配"
           },
           {
-            value: "2",
+            value: "1",
             label: "已分配"
           },
           {
-            value: "3",
+            value: "2",
             label: "处理中"
+          },
+          {
+            value: "3",
+            label: "已处置"
           },
           {
             value: "4",
             label: "已取消"
-          },
-          {
-            value: "5",
-            label: "已处置"
           }
         ],
         params: {
@@ -351,6 +357,7 @@
           startTime: "",
           endTime: "",
         },
+
         count: {
           count: 0,
           highest: 0,
@@ -368,6 +375,9 @@
           loading: true,
         },
 
+        //弹窗部分
+        state_change: false,
+        process_state: "",
         //工单任务
         task: {
           new: false,
@@ -469,6 +479,7 @@
                   v.label_group = '';
                 }
               });
+
               this.table_assets.tableData = data;
               this.table_assets.count = data.length;
 
@@ -488,6 +499,7 @@
             }
           });
       },
+
 
       //工单中心列表
       get_list_works(){
@@ -537,6 +549,7 @@
       submitClick() {
         this.get_list_works();
       },
+
       //重置按鈕點擊事件
       resetClick() {
         this.params = {
@@ -580,6 +593,91 @@
         this.$router.push({ path: "/detail/works", query: { id: row.id} });
       },
 
+      /***********************************以下是弹窗部分****************************************/
+      /***********************************以下是弹窗部分****************************************/
+
+
+      // 状态变更选择
+      change_state(command) {
+        this.process_state = command;
+        this.open_state();
+      },
+
+      /***************状态变更*****************/
+      //打开状态变更弹窗
+      open_state() {
+        let sel_table_data = this.table.multipleSelection;
+        if(sel_table_data.length == 0){
+          this.$message({message:'请选择需要变更的工单',type: 'warning'});
+          return false;
+        } else {
+          this.state_change = true;
+        }
+      },
+
+      //关闭状态变更弹窗
+      closed_state() {
+        this.state_change = false;
+        this.$refs.multipleTable.clearSelection();
+      },
+
+      //状态变更取消按钮点击
+      cancel_state() {
+        this.closed_state();
+      },
+
+      //状态变更确定按钮点击
+      ok_state() {
+
+        let selected = this.table.multipleSelection;
+
+        //资产ID处理
+        let worker_id_group = selected.map(x => {return x.id;});
+
+        //状态设置
+        let process = this.process_state;
+        let change_status = 0;
+
+        if (process == '处置中') {
+          change_status = 2;
+        } else if (process == '已处置') {
+          change_status = 3;
+        } else if (process == '已取消') {
+          change_status = 4;
+        }
+
+        this.$axios.put('/yiiapi/workorder/change-status', {
+          asset_ip: worker_id_group,
+          status: change_status
+        })
+          .then(resp => {
+
+            let {status, data} = resp.data;
+
+            if (status == 0) {
+
+              this.$message.success('工单状态变更提交成功！');
+
+              this.$refs.multipleTable.clearSelection();
+
+              this.get_list_works();
+
+            } else {
+
+              this.$message.error('工单状态变更提交错误。');
+
+            }
+
+            this.closed_state();
+
+          })
+          .catch(err => {
+
+            console.log(err);
+
+          })
+      },
+
       /*******************下载**********************/
       worksdownload() {
         this.$axios.get('/yiiapi/workorder/export',{
@@ -602,6 +700,7 @@
       },
 
       /*******************删除**********************/
+
       worksDelete(){
         let that = this;
 
@@ -637,6 +736,7 @@
           this.$refs.multipleTable.clearSelection();
         });
       },
+
       /*******************新增编辑**********************/
 
       //打开新建工单
@@ -647,7 +747,7 @@
           let melsetion = this.table.multipleSelection;
 
           if(melsetion.length == 0){
-            this.$message({message:'您未选中列表或列表为空。',type: 'warning'});
+            this.$message({message:'请选择工单。',type: 'warning'});
           }else if(melsetion.length > 1){
             this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
           }else {
@@ -742,7 +842,6 @@
         }
 
         /*let pageNow = this.table_operator.pageNow;
-
         let handle_data_operator = this.table_operator.tableData.slice((pageNow-1) * 5,pageNow * 5);
         this.table_operator.tableData_new = handle_data_operator;*/
 
@@ -798,7 +897,6 @@
 
       //新建工单分配
       prev_task_handle_assign() {
-
         let all_params = {
           name: this.task_params.name,
           priority:this.task_params.level,
@@ -839,7 +937,7 @@
                 multiple_alerts:[],
                 type:'asset'
               };
-             // this.table_operator.tableData_new = [];
+              this.table_operator.tableData = [];
               this.get_list_works();
 
             }else if (status == 1){
@@ -898,19 +996,17 @@
                 multiple_alerts:[],
                 type:'asset'
               };
-             // this.table_operator.tableData_new = [];
+              this.table_operator.tableData = [];
               this.get_list_works();
 
             }else if (status == 1){
               this.$message.error(msg);
             }
-
-
           })
           .catch(err => {
             console.log(err);
           });
-      },
+      }
 
     }
   }

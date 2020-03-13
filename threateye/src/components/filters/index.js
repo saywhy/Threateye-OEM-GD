@@ -42,7 +42,7 @@ Vue.filter('degree',function(args){
 Vue.filter('certainty',function(args){
   let str = '';
   if(args == 0){
-    str = '';
+    str = '未知';
   }else if(args == 1){
     str = '已失陷';
   }
@@ -83,18 +83,16 @@ Vue.filter('alert_status',function(args){
 //处理状态(处置-工单中心)
 Vue.filter('work_status',function(args){
   let str = '';
-  if(args == 1){
+  if(args == 0){
     str = '待分配';
-  }else if(args == 2){
+  }else if(args == 1){
     str = '已分配';
-  }else if(args == 3){
+  }else if(args == 2){
     str = '处置中';
+  }else if(args == 3){
+    str = '已处置';
   }else if(args == 4){
     str = '已取消';
-  }else if(args == 5){
-    str = '已处置';
-  }else if(args == 'all'){
-    str = '待分配,已分配,处置中';
   }
   return str;
 });
@@ -102,7 +100,6 @@ Vue.filter('work_status',function(args){
 //优先级
 Vue.filter('priority',function(args){
   let str = '';
-
   if(args == 'highest'){
     str = '最高';
   }else if(args == 'high'){

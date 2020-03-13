@@ -45,7 +45,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" class="dropdown_ul_box">
-                <el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>
+                <!--<el-dropdown-item command="处置中" class="select_item">处置中</el-dropdown-item>-->
                 <el-dropdown-item command="已处置" class="select_item">已处置</el-dropdown-item>
                 <el-dropdown-item command="已忽略" class="select_item">已忽略</el-dropdown-item>
                 <el-dropdown-item command="误报" class="select_item">误报</el-dropdown-item>
@@ -669,14 +669,12 @@
         let process = this.process_state;
         let change_status = 0;
 
-        if (process == '处置中') {
-          change_status = 1;
-        } else if (process == '已处置') {
-          change_status = 2;
-        } else if (process == '已忽略') {
+        if (process == '已处置') {
           change_status = 3;
-        } else if (process == '误报') {
+        } else if (process == '已忽略') {
           change_status = 4;
+        } else if (process == '误报') {
+          change_status = 5;
         }
 
         this.$axios.put('/yiiapi/alert/do-alarm', {
@@ -731,9 +729,7 @@
             || sel_table_attr.includes('4')
             || sel_table_attr.includes('5'))
           {
-
             this.$message({message: '告警状态为已处置,已忽略,误报的不能新建', type: 'error'});
-
           } else {
 
             this.table_alerts.tableData = sel_table_data;
@@ -880,6 +876,7 @@
                 multiple:[]
               };
 
+              this.table_operator.tableData = [];
               this.get_list_risk();
 
             }else if (status == 1){
@@ -926,6 +923,8 @@
                 textarea: "",
                 multiple:[]
               };
+              this.table_operator.tableData = [];
+
               this.get_list_risk();
 
             }else if (status == 1){
@@ -953,7 +952,7 @@
         let sel_table_attr = sel_table_data.map(x => {return x.status});
 
         if(sel_table_data.length == 0){
-          this.$message({message:'请选择需要添加的告警！',type: 'warning'});
+          this.$message({message:'请选择需要添加到工单的告警！',type: 'warning'});
           return false;
         } else {
           if(sel_table_attr.includes('3')

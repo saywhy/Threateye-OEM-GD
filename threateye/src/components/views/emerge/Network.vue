@@ -19,7 +19,7 @@
             <!--时间-->
             <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
-            <!--告警类型-->
+            <!--失陷确定性-->
             <el-select class="s_key s_key_types" v-model="params.type" clearable placeholder="告警类型" :popper-append-to-body ="false">
               <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
@@ -91,7 +91,8 @@
             <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
-                <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
               </template>
             </el-table-column>
             <el-table-column label="状态" width="80">
@@ -375,24 +376,101 @@
         options_types: [
           {
             value: "1",
-            label: "恶意程序"
-          },
-          {
-            value: "2",
-            label: "漏洞利用"
-          },
-          {
-            value: "3",
             label: "恶意文件通讯"
           },
           {
+            value: "2",
+            label: "广告软件"
+          },
+          {
+            value: "3",
+            label: "危险工具"
+          },
+          {
             value: "4",
-            label: "僵尸网络C&C"
+            label: "漏洞利用"
           },
           {
             value: "5",
+            label: "其它"
+          },
+          {
+            value: "6",
+            label: "ELCAR"
+          },
+          {
+            value: "7",
+            label: "SQL注入"
+          },
+          {
+            value: "8",
+            label: "暴力破解"
+          },
+          {
+            value: "9",
+            label: "WebShell"
+          },
+          {
+            value: "10",
+            label: "扫描"
+          },
+
+          {
+            value: "11",
+            label: "恶意程序"
+          },
+          {
+            value: "12",
             label: "恶意地址"
-          }
+          },
+          {
+            value: "13",
+            label: "tor出口节点"
+          },
+          {
+            value: "14",
+            label: "tor入口节点"
+          },
+          {
+            value: "15",
+            label: "垃圾邮件"
+          },
+          {
+            value: "16",
+            label: "僵尸网络C&C"
+          },
+          {
+            value: "17",
+            label: "移动恶意软件"
+          },
+          {
+            value: "18",
+            label: "网络诈骗"
+          },
+          {
+            value: "19",
+            label: "恶意重定向"
+          },
+          {
+            value: "20",
+            label: "网络代理"
+          },
+          {
+            value: "21",
+            label: "钓鱼网站"
+          },
+          {
+            value: "22",
+            label: "勒索软件通讯"
+          },
+          {
+            value: "23",
+            label: "已知APT"
+          },
+          {
+            value: "24",
+            label: "恶意证书"
+          },
         ],
         options_status: [
           {
@@ -1097,61 +1175,18 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          that.$axios.get('/yiiapi/site/check-auth-exist', {
-            params: {
-              pathInfo: "alert/export-alerts-test",
-            }
-          })
-            .then(resp => {
-              let {status,msg, data} = resp.data;
-              /*if(status == 0){
-                that.$message.success(msg);
-              }else {
-                that.$message.error(msg);
-              }*/
 
-              this.test_download = function() {
-                // console.log($scope.params_data);
+          var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status +'&start_time='+this.params.startTime;
+          +'&end_time='+this.params.endTime+'&category='+this.params.type+'&key_word='+this.params.key;
+          window.location.href = url1;
 
-              };
-              that.get_list_works();
-            })
-            .catch(err => {
-              console.log(err);
-            });
         }).catch(() => {
 
-          this.$message({type: 'info', message: '已取消删除'});
+          this.$message({type: 'info', message: '已取消导出'});
 
           this.$refs.multipleTable.clearSelection();
         });
-      },
-      test_download(){
-        /*this.$axios.get("./yiiapi/alert/export-alerts-test",{
-          params: {
-            src_ip: this.params_data.src_ip,
-            dest_ip: this.params_data.dest_ip,
-            status: this.params_data.status,
-            start_time: this.params_data.start_time,
-            end_time: this.params_data.end_time,
-            category: this.params_data.category,
-            indicator: this.params_data.indicator,
-            degree: this.params_data.degree,
-          },
-        })
-          .success(function(data) {
-            if (data.status == 0) {
-              $scope.download_alarm();
-            } else if (rdata.status == 600) {
-              console.log(data.msg);
-            } else {
-              zeroModal.error(data.msg);
-            }
-          })
-          .error(function(error) {
-            console.log(error);
-          });*/
-       }
+      }
     }
   };
 </script>

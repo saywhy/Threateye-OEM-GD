@@ -80,7 +80,7 @@
       </div>
       <div class="bom_item">
         <li>
-          <span class="title">业务：</span>
+          <span class="title">部门：</span>
           <span class="content">{{assets_top.new_department}}</span>
         </li>
         <li>
@@ -176,11 +176,11 @@
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
-                <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="状态"
-                             width="80">
+            <el-table-column label="状态" width="80">
               <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
             </el-table-column>
           </el-table>

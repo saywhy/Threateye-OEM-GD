@@ -24,41 +24,56 @@
         <div class="triangle"></div>
       </el-col>
       <el-col class="vm_col_btn">
+        <e-dropdown title="提权"></e-dropdown>
+      </el-col>
+      <!--<el-col class="vm_col_btn">
         <e-dropdown title='提权' :options='rankOptions[0]' v-on:updateOption="updateDropdown"
                     v-on:updateShowMenu="showMenu"></e-dropdown>
-      </el-col>
+      </el-col>-->
       <el-col class="vm_col_arrow_right">
         <div class="rect"></div>
         <div class="triangle"></div>
       </el-col>
       <el-col class="vm_col_btn">
+        <e-dropdown title="防御逃逸"></e-dropdown>
+      </el-col>
+     <!-- <el-col class="vm_col_btn">
         <e-dropdown title='防御逃逸' :options='rankOptions[1]' v-on:updateOption="updateDropdown"
                     v-on:updateShowMenu="showMenu"></e-dropdown>
-      </el-col>
+      </el-col>-->
       <el-col class="vm_col_arrow_right">
         <div class="rect"></div>
         <div class="triangle"></div>
       </el-col>
       <el-col class="vm_col_btn">
+        <e-dropdown title="凭证访问"></e-dropdown>
+      </el-col>
+     <!-- <el-col class="vm_col_btn">
         <e-dropdown title='凭证访问' :options='rankOptions[2]' v-on:updateOption="updateDropdown"
                     v-on:updateShowMenu="showMenu"></e-dropdown>
-      </el-col>
+      </el-col>-->
       <el-col class="vm_col_arrow_right">
         <div class="rect"></div>
         <div class="triangle"></div>
       </el-col>
       <el-col class="vm_col_btn">
+        <e-dropdown title="信息发现"></e-dropdown>
+      </el-col>
+      <!--<el-col class="vm_col_btn">
         <e-dropdown title='信息发现' :options='rankOptions[3]' v-on:updateOption="updateDropdown"
                     v-on:updateShowMenu="showMenu"></e-dropdown>
-      </el-col>
+      </el-col>-->
       <el-col class="vm_col_arrow_right">
         <div class="rect"></div>
         <div class="triangle"></div>
       </el-col>
       <el-col class="vm_col_btn">
+        <e-dropdown title="横向移动"></e-dropdown>
+      </el-col>
+     <!-- <el-col class="vm_col_btn">
         <e-dropdown title='横向移动' :options='rankOptions[4]' v-on:updateOption="updateDropdown"
                     v-on:updateShowMenu="showMenu"></e-dropdown>
-      </el-col>
+      </el-col>-->
       <el-col class="vm_col_arrow_right">
         <div class="rect"></div>
         <div class="triangle"></div>

@@ -109,7 +109,8 @@
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
-                <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
               </template>
             </el-table-column>
             <el-table-column label="状态"  width="80">
@@ -276,9 +277,10 @@
                   </el-table-column>
                   <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
                   </el-table-column>
-                  <el-table-column label="失陷确定性" show-overflow-tooltip>
+                  <el-table-column label="失陷确定性">
                     <template slot-scope="scope">
-                      <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"  width="80">

@@ -718,6 +718,8 @@
             if(status == 0){
               that.$message.success('删除工单成功');
               that.get_list_works();
+
+              that.$emit('updateNum');
             }else {
               that.$message.error('删除工单失败');
             }

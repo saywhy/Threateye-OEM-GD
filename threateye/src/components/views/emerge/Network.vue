@@ -39,7 +39,7 @@
         <!--按钮组-->
         <el-row class="common_btn">
           <el-col :span="24" class="common_btn_list">
-            <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148' :popper-append-to-body ="false">
+            <el-dropdown @command="change_state" trigger="click" placement='bottom-start' size='148'>
               <el-button type="primary" class="change_btn">
                 <span>状态变更</span>
                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -1199,50 +1199,7 @@
       background: #fff;
       text-align: left;
 
-      /deep/
-      .handle_table {
-        .el-table__header-wrapper{
-          thead.has-gutter{
-            th:nth-child(1) {
-              .cell {
-                padding: 0;
-                text-align: right;
-                font-size: 14px;
-                color: #999999;
-                vertical-align: unset;
-              }
-            }
-          }
-        }
-        .el-table__body-wrapper{
-          tbody {
-            td {
-              font-family: PingFang;
-              font-size: 14px;
-              color: #333333;
-            }
-          }
-        }
-        .el-table-column--selection {
-          .cell {
-            padding: 0 !important;
-            text-align: center;
-            .new_dot {
-              width: 8px;
-              height: 8px;
-              border-radius: 20px;
-              background: #ff5f5c;
-              float: right;
-            }
-          }
-        }
-      }
-      /deep/
-      .handle-pagination{
-        margin: 20px 0;
-      }
     }
-
 
     /* 弹窗 */
     /* 状态变更 */

@@ -77,7 +77,7 @@
               </el-col>
             </el-row>
           </el-form>
-          <el-table ref="multipleTable" class="handle_table common-table"
+          <el-table ref="multipleTable" class=" common-table"
                     align="center"
                     v-loading="table.loading"
                     :data="table.tableData"
@@ -1113,8 +1113,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../../assets/css/less/handle_less/invest-common-pattern.less";
-  @import "../../../../assets/css/less/handle_less/invest-common-table-pattern.less";
+  @import "../../../../assets/css/less/common-tabs-pattern.less";
+  @import "../../../../assets/css/less/common-table-pattern.less";
   .handle-lateral{
     padding: 24px;
     .outside-top{
@@ -1191,48 +1191,6 @@
       /*min-height: 500px;*/
       padding: 0;
       margin-bottom: 24px;
-      /deep/
-      .handle_table {
-        .el-table__header-wrapper{
-          thead.has-gutter{
-            th:nth-child(1) {
-              .cell {
-                padding: 0;
-                text-align: right;
-                font-size: 14px;
-                color: #999999;
-                vertical-align: unset;
-              }
-            }
-          }
-        }
-        .el-table__body-wrapper{
-          tbody {
-            td {
-              font-family: PingFang;
-              font-size: 14px;
-              color: #333333;
-            }
-          }
-        }
-        .el-table-column--selection {
-          .cell {
-            padding: 0 !important;
-            text-align: center;
-            .new_dot {
-              width: 8px;
-              height: 8px;
-              border-radius: 20px;
-              background: #ff5f5c;
-              float: right;
-            }
-          }
-        }
-      }
-      /deep/
-      .handle-pagination{
-        margin: 20px 0;
-      }
     }
 
     /* 弹窗 */

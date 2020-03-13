@@ -122,7 +122,9 @@
               <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
             </el-table-column>
             <el-table-column label="失陷确定性">
-              <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+              <template slot-scope="scope">
+                <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="状态" width="80">
               <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
@@ -1213,9 +1215,7 @@
 
       //新加工单列表分页页面切换
       hcc_table_add_works(val){
-
         this.table_add_works.pageNow = val;
-
         this.get_table_works_list();
       }
     }
@@ -1225,10 +1225,8 @@
 <style scoped lang="less">
   @import "../../../assets/css/less/common-pattern.less";
   @import "../../../assets/css/less/common-table-pattern.less";
-
   .handle-assets {
     padding: 24px;
-
     .assets_all {
       height: auto;
       background: #fff;

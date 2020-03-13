@@ -86,8 +86,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/css/less/handle_less/invest-common-pattern.less";
-  @import "../../../assets/css/less/handle_less/invest-common-table-pattern.less";
+  @import "../../../assets/css/less/common-tabs-pattern.less";
+  @import "../../../assets/css/less/common-table-pattern.less";
   .handle-works{
     margin-bottom: 0;
     .invest{

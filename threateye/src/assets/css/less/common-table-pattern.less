@@ -14,18 +14,20 @@
           th{
             background: #F8F8F8;
             .cell{
+              font-family: PingFang;
               color: #333;
+              font-size: 14px;
             }
           }
           th:nth-child(1){
             .cell{
-              padding: 0;
               text-align: right;
               color: #999;
             }
           }
           th:nth-child(2){
             .cell{
+              font-family: PingFang;
               .el-checkbox__input{
                 vertical-align: baseline!important;
               }
@@ -34,12 +36,30 @@
         }
       }
     }
-    .new_dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 8px;
-      background: #ff5f5c;
-      float: right;
+    .el-table__body-wrapper{
+      tbody {
+        td {
+          font-family: PingFang;
+          font-size: 14px;
+          color: #999;
+          .cell{
+            .new_dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 8px;
+              background: #ff5f5c;
+              float: right;
+            }
+            .fall_certainty{
+              color: #ff5f5c;
+            }
+            .el-checkbox{
+              display: grid;
+            }
+          }
+        }
+      }
+
     }
   }
   /deep/

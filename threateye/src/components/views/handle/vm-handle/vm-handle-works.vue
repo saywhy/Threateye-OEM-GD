@@ -61,7 +61,7 @@
         </el-row>
       </el-form>
     </div>
-    <el-table ref="multipleTable" class="handle_table common-table"
+    <el-table ref="multipleTable" class=" common-table"
               v-loading="table.loading"
               :data="table.tableData"
               :row-style="{cursor:'pointer'}"
@@ -925,7 +925,7 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../../assets/css/less/handle_less/invest-common-pattern.less";
+  @import "../../../../assets/css/less/common-tabs-pattern.less";
   @import "../../../../assets/css/less/handle_less/invest-common-table-pattern.less";
   .common-pattern{
     .common_btn{
@@ -1013,48 +1013,6 @@
         }
       }
     }
-  }
-  /deep/
-  .handle_table {
-    .el-table__header-wrapper{
-      thead.has-gutter{
-        th:nth-child(1) {
-          .cell {
-            padding: 0;
-            text-align: right;
-            font-size: 14px;
-            color: #999999;
-            vertical-align: unset;
-          }
-        }
-      }
-    }
-    .el-table__body-wrapper{
-      tbody {
-        td {
-          font-family: PingFang;
-          font-size: 14px;
-          color: #333333;
-        }
-      }
-    }
-    .el-table-column--selection {
-      .cell {
-        padding: 0 !important;
-        text-align: center;
-        .new_dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 20px;
-          background: #ff5f5c;
-          float: right;
-        }
-      }
-    }
-  }
-  /deep/
-  .handle-pagination{
-    margin: 20px 0;
   }
   //新建工单
   /deep/
@@ -1332,21 +1290,6 @@
                 background: #eef6ff;
                 color: #0070ff;
                 border-top: 2px solid #0070ff;
-              }
-            }
-            /deep/
-            .el-table {
-              font-size: 12px;
-              thead.has-gutter{
-                th{
-                  color: #333333;
-                  background: #f8f8f8;
-                  .cell {
-                  }
-                }
-              }
-              .cell {
-                color: #333333;
               }
             }
 

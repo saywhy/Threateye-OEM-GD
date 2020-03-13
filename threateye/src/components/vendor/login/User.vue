@@ -69,8 +69,8 @@
         <div class="code_p3_error">
           <span class="p3_error">
             <i class="el-icon-warning"></i>
-            <span class="p3_error_title">用户名密码输入错误超过三次，</span>
-            <a class="p3_tips">点击联系管理员</a>
+            <span class="p3_error_title">用户名密码输入错误超过三次</span>
+           <!-- <a class="p3_tips">点击联系管理员</a>-->
           </span>
         </div>
       </div>
@@ -84,10 +84,10 @@
     </el-form>
 
     <!--忘记密码-->
-    <div class="forget_pass">
+    <!--<div class="forget_pass">
       <a href="javascript:false;"
          class="pass_a">忘记密码？</a>
-    </div>
+    </div>-->
   </div>
 </template>
 

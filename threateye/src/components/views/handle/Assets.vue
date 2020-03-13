@@ -344,7 +344,7 @@
             <el-pagination
               class="handle-pagination"
               @current-change="hcc_table_add_works"
-              :page-sizes="[5]"
+              :page-sizes="[10,20,50,100]"
               :page-size="table_add_works.eachPage"
               :total="table_add_works.count"
               :current-page="table_add_works.pageNow"

@@ -38,15 +38,7 @@
       Nav,
       Aside,
       Main
-    },
-    /*created(){
-      console.log(this.$route.meta.asideFlag)
-      let asideFlag = this.$route.meta.asideFlag;
-      console.log(undefined == undefined)
-      asideFlag == (asideFlag == undefined)? true: asideFlag;
-      console.log(asideFlag)
-      this.asideFlag = asideFlag;
-    },*/
+    }
   }
 </script>
 
@@ -64,6 +56,7 @@
     .dashboard-list{
       margin-top: 60px;
       min-height: 900px;
+      margin-bottom: 60px;
       .dashboard-list-aside{
         overflow: inherit;
         position: fixed;

@@ -188,7 +188,7 @@
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
                          :total="table.count"
-                         :page-sizes="[5,10,20]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="table.eachPage"
                          :current-page="table.pageNow"
                          layout="total, sizes, prev, pager, next">
@@ -474,11 +474,10 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span="24"
-                  class="e-pagination">
+          <el-col :span="24" class="e-pagination">
             <el-pagination class="handle-pagination"
                            @current-change="hcc_table_add_works"
-                           :page-sizes="[5]"
+                           :page-sizes="[10,20,50,100]"
                            :page-size="table_add_works.eachPage"
                            :total="table_add_works.count"
                            :current-page="table_add_works.pageNow"

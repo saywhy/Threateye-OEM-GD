@@ -100,7 +100,7 @@
           class="handle-pagination"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :page-sizes="[5, 10, 20]"
+          :page-sizes="[10, 20, 50,100]"
           :page-size="table.eachPage"
           :current-page="table.pageNow"
           :total="table.count"

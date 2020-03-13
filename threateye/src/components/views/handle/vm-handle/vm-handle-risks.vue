@@ -1,5 +1,5 @@
 <template>
-  <div class="handle-lateral" v-cloak>
+  <div class="handle-risks_common" v-cloak>
     <div class="outside-top">
       <div class="ost ost-1">
         <div class="ost-title"><slot name="name"></slot>威胁资产 Top5</div>
@@ -120,7 +120,7 @@
             class="handle-pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :page-sizes="[5, 10, 20]"
+            :page-sizes="[10, 20, 50,100]"
             :page-size="table.eachPage"
             :total="table.count"
             layout="total, sizes, prev, pager, next, jumper"
@@ -341,7 +341,7 @@
             <el-pagination
               class="handle-pagination"
               @current-change="hcc_table_add_works"
-              :page-sizes="[5]"
+              :page-sizes="[10, 20, 50,100]"
               :page-size="table_add_works.eachPage"
               :total="table_add_works.count"
               :current-page="table_add_works.pageNow"
@@ -1117,7 +1117,7 @@
 <style scoped lang="less">
   @import "../../../../assets/css/less/common-tabs-pattern.less";
   @import "../../../../assets/css/less/common-table-pattern.less";
-  .handle-lateral{
+  .handle-risks_common{
     padding: 24px;
     .outside-top{
       display: flex;
@@ -1192,7 +1192,6 @@
       background-color: #fff;
       /*min-height: 500px;*/
       padding: 0;
-      margin-bottom: 24px;
     }
 
     /* 弹窗 */

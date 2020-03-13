@@ -98,7 +98,7 @@
         background: #FF5F5C;
         border-radius: 100%;
         top: 16px;
-        z-index: 2000;
+        z-index: 999;
         height: 18px;
         min-width: 18px;
         box-shadow: 1px 1px 5px rgba(0,0,0,0.2),

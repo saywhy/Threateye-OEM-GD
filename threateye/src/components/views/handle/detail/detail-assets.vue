@@ -1219,23 +1219,10 @@ export default {
         margin-top: 10px;
         .common_btn_list {
           font-size: 0;
-          /deep/ .el-dropdown {
+          /deep/
+          .el-dropdown {
             margin-right: 8px;
           }
-          /*.b_btn_124 {
-              font-size: 14px;
-              height: 42px;
-              width: 124px;
-              outline: none;
-              margin-left: 8px;
-              line-height: 0;
-              font-family: PingFangMedium;
-              &.b_btn_status {
-                color: #fff;
-                background: #0070FF;
-                border: 1px solid #0070FF;
-              }
-            }*/
         }
       }
     }
@@ -1360,7 +1347,8 @@ export default {
     background: #fff;
     padding: 24px 56px;
 
-    /deep/ .handle_table_detail {
+    /deep/
+    .handle_table_detail {
       .el-table__header-wrapper {
         .el-table__header {
           thead.has-gutter {
@@ -1371,7 +1359,6 @@ export default {
                 color: #333;
                 font-size: 14px;
 
-                font-family: PingFangMedium;
               }
             }
           }
@@ -1382,6 +1369,7 @@ export default {
           height: 48px;
         }
         td > .cell {
+          font-family: PingFangMedium;
           .degree_box {
             button {
               height: 30px;
@@ -1412,7 +1400,8 @@ export default {
       margin: 24px 0;
       text-align: center;
     }
-    /deep/ .el-tabs {
+    /deep/
+    .el-tabs {
       .el-tabs__header {
         .el-tabs__nav-wrap {
           &:after {

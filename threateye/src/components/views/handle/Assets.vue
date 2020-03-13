@@ -107,7 +107,7 @@
       </el-form>
       <el-row class="common-table-pattern">
         <el-col :span="24">
-          <el-table ref="multipleTable" class="common-table handle-table"
+          <el-table ref="multipleTable" class="common-table"
                     :row-style="{cursor:'pointer'}"
                     v-loading="table.loading"
                     :data="table.tableData"

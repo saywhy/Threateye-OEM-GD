@@ -658,9 +658,7 @@
               this.get_list_works();
 
             } else {
-
               this.$message.error('工单状态变更提交错误。');
-
             }
 
             this.closed_state();
@@ -707,6 +705,9 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          if(selected.length == 0){
+             that.$message({message:'请选择要删除的工单！',type:'warning'});
+          }
           that.$axios.delete('/yiiapi/workorder/del', {
             data: {
               id: selected
@@ -715,14 +716,16 @@
             .then(resp => {
             let {status,msg, data} = resp.data;
             if(status == 0){
-              that.$message.success(msg);
+              that.$message.success('删除工单成功');
+              that.get_list_works();
             }else {
-              that.$message.error(msg);
+              that.$message.error('删除工单失败');
             }
-            that.get_list_works();
           })
             .catch(err => {
-            console.log(err);
+
+              console.log(err);
+
           });
         }).catch(() => {
 
@@ -974,9 +977,10 @@
             if (status == 0) {
               this.$message.success('保存成功');
 
-              //不管成功与否 都需要清除状态，关闭弹窗
+              //关闭弹窗
               this.task.new = false;
               this.task.new_contet = false;
+
               this.task.status = '';
               this.task.title = '新增工单';
 

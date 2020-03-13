@@ -1355,7 +1355,7 @@ export default {
 
   },
   methods: {
-    // ^[0-9]*$ 
+    // ^[0-9]*$
     // _-.@
     get_rex (str) {
       var pattern = (/[\u4e00-\u9fa5]| /)
@@ -1370,7 +1370,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response.data.data);
+
           this.network_detail = response.data.data
           this.network_detail.attack_stage_cn = ''
 

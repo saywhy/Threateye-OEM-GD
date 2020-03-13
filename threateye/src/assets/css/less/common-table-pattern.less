@@ -2,76 +2,73 @@
  *此样式带(全选)的table公共样式
  *创建者ycl 时间2020-01-05
 **/
-.common-table-pattern{
+/deep/
+.common-table{
+  width: 100%;
+  font-family: PingFangMedium;
   /deep/
-  .common-table{
-    width: 100%;
-    font-family: PingFangMedium;
-    /deep/
-    .el-table__header-wrapper{
-      .el-table__header{
-        thead.has-gutter{
-          th{
-            background: #F8F8F8;
-            .cell{
-              font-family: PingFang;
-              color: #333;
-              font-size: 14px;
-            }
-          }
-          th:nth-child(1){
-            .cell{
-              text-align: right;
-              color: #999;
-            }
-          }
-          th:nth-child(2){
-            .cell{
-              font-family: PingFang;
-              .el-checkbox__input{
-                vertical-align: baseline!important;
-              }
-            }
-          }
-        }
-      }
-    }
-    .el-table__body-wrapper{
-      tbody {
-        td {
-          font-family: PingFang;
-          font-size: 14px;
-          color: #999;
+  .el-table__header-wrapper{
+    .el-table__header{
+      thead.has-gutter{
+        th{
+          background: #F8F8F8;
           .cell{
-            .new_dot {
-              width: 8px;
-              height: 8px;
-              border-radius: 8px;
-              background: #ff5f5c;
-              float: right;
-            }
-            .fall_certainty{
-              color: #ff5f5c;
-            }
-            .el-checkbox{
-              display: grid;
+            font-family: PingFangMedium;
+            color: #333;
+            font-size: 14px;
+          }
+        }
+        th:nth-child(1){
+          .cell{
+            text-align: right;
+            color: #999;
+          }
+        }
+        th:nth-child(2){
+          .cell{
+            font-family: PingFangMedium;
+            .el-checkbox__input{
+              vertical-align: baseline!important;
             }
           }
         }
       }
-
     }
   }
-  /deep/
-  .el-pagination{
-    text-align: center;
-    margin: 20px 0;
-  }
-  /deep/
-  .dropdown_ul_box{
-    width: 148px!important;
+  .el-table__body-wrapper{
+    tbody {
+      td {
+        font-family: PingFang;
+        font-size: 14px;
+        color: #999;
+        .cell{
+          .new_dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 8px;
+            background: #ff5f5c;
+            float: right;
+          }
+          .fall_certainty{
+            color: #ff5f5c;
+          }
+          .el-checkbox{
+            display: grid;
+          }
+        }
+      }
+    }
+
   }
 }
-
+/deep/
+.el-pagination{
+  text-align: center;
+  margin: 20px 0;
+}
+/deep/
+.dropdown_ul_box{
+  width: 148px!important;
+}
 
 

@@ -61,7 +61,7 @@
         </el-row>
       </el-form>
     </div>
-    <el-table ref="multipleTable" class=" common-table"
+    <el-table ref="multipleTable" class="common-table"
               v-loading="table.loading"
               :data="table.tableData"
               :row-style="{cursor:'pointer'}"
@@ -926,7 +926,7 @@
 
 <style scoped lang="less">
   @import "../../../../assets/css/less/common-tabs-pattern.less";
-  @import "../../../../assets/css/less/handle_less/invest-common-table-pattern.less";
+  @import "../../../../assets/css/less/common-table-pattern.less";
   .common-pattern{
     .common_btn{
       .common_box{

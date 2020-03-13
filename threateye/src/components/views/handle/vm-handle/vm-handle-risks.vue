@@ -107,8 +107,10 @@
             </el-table-column>
             <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="fall_certainty" label="失陷确定性" show-overflow-tooltip>
-              <template slot-scope="scope">{{ scope.row.fall_certainty | certainty }}</template>
+            <el-table-column label="失陷确定性">
+              <template slot-scope="scope">
+                <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="状态"  width="80">
               <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
@@ -248,7 +250,7 @@
           </ul>
           <div>
             <div v-show="handle.active==0">
-              <el-table align="center"
+              <el-table align="center" class="common-table"
                         :data="table_alerts.tableData_new"
                         tooltip-effect="dark"
                         style="width: 100%"

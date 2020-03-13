@@ -646,12 +646,6 @@ export default {
             var obj = {
               source: '',
               target: '',
-              emphasis: {
-                label: {
-                  show: false
-                }
-              }
-
             }
             if (item.names == '探针' || item.names == '沙箱') {
               obj.source = item.name
@@ -664,11 +658,6 @@ export default {
             var obj = {
               source: '',
               target: '',
-              emphasis: {
-                label: {
-                  show: false
-                }
-              }
             }
             if (item.names == '探针' || item.names == '沙箱') {
               obj.source = item.name
@@ -688,7 +677,13 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function (params, trigger) {
-            return '设备：' + params.data.dev_name + '</br>' + 'IP地址：' + params.data.dev_ip + '</br>' + '状态：' + params.data.status
+            console.log(params);
+            console.log(trigger);
+            if (params.dataType == 'node') {
+              return '设备：' + params.data.dev_name + '</br>' + 'IP地址：' + params.data.dev_ip + '</br>' + '状态：' + params.data.status
+            } else {
+              return ''
+            }
           }
         },
         animationDurationUpdate: 1500,

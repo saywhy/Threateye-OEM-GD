@@ -1,5 +1,6 @@
 <template>
-  <div id="audit_log">
+  <div id="audit_log"
+       v-loading.fullscreen.lock="loading">
     <div class="search_box">
       <el-input class="search_key"
                 placeholder="搜索关键词"
@@ -70,6 +71,7 @@ export default {
   name: "audit_log",
   data () {
     return {
+      loading: false,
       time_list: {
         time: []
       },
@@ -96,6 +98,7 @@ export default {
 
   methods: {
     get_data () {
+      this.loading = true;
       this.$axios.get('/yiiapi/userlog/page', {
         params: {
           username: this.audit_data.key,
@@ -106,6 +109,7 @@ export default {
         }
       })
         .then(response => {
+          this.loading = false;
           console.log(response);
           this.audit_log = response.data.data;
           this.audit_log.data.forEach((item, index) => {
@@ -134,7 +138,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.audit_data.rows = val;
-            this.audit_data.page = 1
+      this.audit_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

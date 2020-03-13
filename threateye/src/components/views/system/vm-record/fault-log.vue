@@ -1,5 +1,6 @@
 <template>
-  <div id="fault_log">
+  <div id="fault_log"
+       v-loading.fullscreen.lock="loading">
     <div class="fault_top">
       <el-button class="btn_i"
                  @click="faultlog_testing">故障检测</el-button>
@@ -25,7 +26,6 @@
                          width="50">
         </el-table-column>
         <el-table-column label="时间"
-                         width="150"
                          show-overflow-tooltip>
           <template slot-scope="scope">{{ scope.row.time*1000 |formatDate }}</template>
         </el-table-column>
@@ -53,6 +53,7 @@ export default {
   name: "fault_log",
   data () {
     return {
+      loading: false,
       fault_list: {},
       fault_data: {
         page: 1,
@@ -74,6 +75,7 @@ export default {
   methods: {
     // 获取列表
     get_data () {
+      this.loading = true
       this.$axios.get('/yiiapi/faultlog/list', {
         params: {
           page: this.fault_data.page,
@@ -82,6 +84,7 @@ export default {
       })
         .then(response => {
           console.log(response);
+          this.loading = false
           this.fault_list = response.data.data
         })
         .catch(error => {
@@ -90,9 +93,11 @@ export default {
     },
     // 故障检测
     faultlog_testing () {
+      this.loading = true
       this.$axios.get('/yiiapi/faultlog/testing')
         .then(response => {
           console.log(response);
+          this.loading = false
           if (response.data.status == 0) {
             this.get_data()
             this.$message({
@@ -116,7 +121,7 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需下载的信息',
+            message: '请选择要下载的故障日志！',
             type: 'error',
           }
         );
@@ -149,7 +154,7 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需删除的信息',
+            message: '请选择要删除的故障日志！',
             type: 'error',
           }
         );
@@ -203,7 +208,7 @@ export default {
     // 分页
     handleSizeChange (val) {
       this.fault_data.rows = val;
-         this.fault_data.page = 1
+      this.fault_data.page = 1
       this.get_data();
     },
     handleCurrentChange (val) {

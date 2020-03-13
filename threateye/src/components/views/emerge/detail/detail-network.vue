@@ -44,7 +44,7 @@
             </el-button>
             <el-dropdown-menu slot="dropdown"
                               class="dropdown_ul_box_detail">
-              <el-dropdown-item command="1">编辑工单</el-dropdown-item>
+              <el-dropdown-item command="1">新建工单</el-dropdown-item>
               <el-dropdown-item command="2">添加到工单</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -684,6 +684,7 @@
                 <el-input class="task_new_input"
                           placeholder="请输入工单名称"
                           v-model="new_worksheets_list.name"
+                          maxlength="32"
                           clearable>
                 </el-input>
               </li>
@@ -739,6 +740,8 @@
             <el-input type="textarea"
                       :rows="4"
                       placeholder="请输入内容"
+                      maxlength="500"
+                      show-word-limit
                       v-model="new_worksheets_list.textarea">
             </el-input>
           </div>
@@ -1352,6 +1355,12 @@ export default {
 
   },
   methods: {
+    // ^[0-9]*$ 
+    // _-.@
+    get_rex (str) {
+      var pattern = (/[\u4e00-\u9fa5]| /)
+      return pattern.test(str)
+    },
     // 获取数据
     get_data () {
       console.log(this.$route.query.detail);
@@ -1386,11 +1395,20 @@ export default {
                 case '':
                   this.network_detail.work_order_status_cn = '未关联工单'
                   break;
+                case '0':
+                  this.network_detail.work_order_status_cn = '待分配'
+                  break;
                 case '1':
-                  this.network_detail.work_order_status_cn = '未分配'
+                  this.network_detail.work_order_status_cn = '已分配'
                   break;
                 case '2':
-                  this.network_detail.work_order_status_cn = '已分配'
+                  this.network_detail.work_order_status_cn = '处置中'
+                  break;
+                case '3':
+                  this.network_detail.work_order_status_cn = '已处置'
+                  break;
+                case '4':
+                  this.network_detail.work_order_status_cn = '已取消'
                   break;
                 default:
                   break;

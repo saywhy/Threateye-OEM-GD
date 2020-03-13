@@ -596,7 +596,7 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需删除的信息',
+            message: '请选择要删除的用户！',
             type: 'error',
           }
         );

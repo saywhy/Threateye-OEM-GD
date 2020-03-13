@@ -163,7 +163,7 @@
             </div>
             <div class="content_item">
               <p>
-                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网段设备”。</span>
+                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网络设备”。</span>
               </p>
             </div>
           </div>
@@ -353,6 +353,7 @@
                      :on-success="handleSuccess"
                      :on-error="handleError"
                      :file-list="fileList"
+                     accept=".xls"
                      drag
                      action="/yiiapi/ipsegment/upload-excel"
                      multiple>
@@ -365,7 +366,7 @@
             </div>
           </el-upload>
           <div class="tip_box">
-            <span>温馨提示：请选择 .xlsx 的文件，且文件大小不得超过100M。没有模板？</span>
+            <span>温馨提示：请选择 .xls 的文件，且文件大小不得超过10M。没有模板？</span>
             <span class="download"
                   @click="download_template">点击这里下载</span>
           </div>
@@ -804,7 +805,12 @@ export default {
     // 上传文件之前的钩子, 参数为上传的文件,若返回 false 或者返回 Promise 且被 reject，则停止上传
     beforeUploadFile (file) {
       let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
-      let size = file.size / 1024 / 1024
+      let size = file.size / 1024 / 1024 < 10
+      if (!size) {
+        this.$message.error('上传文件大小不能超过 10MB!');
+      }
+      return size
+
     },
     // 文件上传成功时的钩子
     handleSuccess (res, file, fileList) {

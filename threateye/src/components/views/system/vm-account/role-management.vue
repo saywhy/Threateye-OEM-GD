@@ -105,7 +105,7 @@
                    ref="tree"
                    node-key="id"
                    :props="defaultProps"
-                   :default-expand-all="true">
+                   :default-expand-all="false">
           </el-tree>
         </div>
         <div class="content_item">
@@ -165,7 +165,7 @@
                    ref="tree_edit"
                    node-key="id"
                    :props="defaultProps"
-                   default-expand-all>
+                   :default-expand-all="false">
           </el-tree>
         </div>
         <div class="content_item">
@@ -686,10 +686,9 @@ export default {
     width: 440px;
     .el-dialog__body {
       width: 440px;
-
       .content {
         padding: 24px 0;
-        height: 600px;
+        height: 440px;
         overflow-y: auto;
         &::-webkit-scrollbar {
           /*滚动条整体样式*/

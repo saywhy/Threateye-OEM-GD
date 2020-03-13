@@ -52,7 +52,7 @@
                         class="r_radio_item">Word</el-radio>
               <el-radio v-model="send_config.report_type"
                         label="excel"
-                        class="r_radio_item">Execl</el-radio>
+                        class="r_radio_item">Excel</el-radio>
             </div>
           </el-col>
         </el-row>

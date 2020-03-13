@@ -81,7 +81,7 @@
           <el-button type="primary"
                      class="btn_i"
                      v-if="sandbox_show"
-                     @click="add_box">新增沙箱</el-button>
+                     @click="add_box">新增</el-button>
           <el-button type="primary"
                      class="btn_o"
                      @click="del_equipment">删除</el-button>
@@ -167,7 +167,7 @@
            alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">新增沙箱</span>
+        <span class="title_name">新增</span>
       </div>
       <div class="content">
         <div class="content_item">
@@ -186,7 +186,12 @@
             <span class="title">设备类型</span>
             <span class="red_necessary">*</span>
           </p>
-          <el-select class="select_box"
+          <el-input class="select_box"
+                    placeholder="请输入设备名称"
+                    v-model="equipment_pop.label"
+                    :disabled="true">
+          </el-input>
+          <!-- <el-select class="select_box"
                      v-model="equipment_pop.type"
                      placeholder="请选择设备类型">
             <el-option v-for="(item,index) in equipment_pop.type_list"
@@ -194,7 +199,7 @@
                        :label="item.label"
                        :value="item.value">
             </el-option>
-          </el-select>
+          </el-select> -->
         </div>
         <div class="content_item">
           <p>
@@ -265,6 +270,7 @@ export default {
       equipment_pop: {
         show: false,
         type: '4',
+        label: '沙箱',
         name: '',
         type_list: [
           { label: '沙箱', value: '4' },

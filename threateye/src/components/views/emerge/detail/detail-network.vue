@@ -24,12 +24,14 @@
             </el-button>
             <el-dropdown-menu slot="dropdown"
                               class="dropdown_ul_box_detail">
-              <el-dropdown-item command='3'
-                                class="select_item">已忽略</el-dropdown-item>
-              <el-dropdown-item command="4"
-                                class="select_item">误报</el-dropdown-item>
-              <el-dropdown-item command="2"
+              <el-dropdown-item command='2'
+                                class="select_item">处置中</el-dropdown-item>
+              <el-dropdown-item command="3"
                                 class="select_item">已处置</el-dropdown-item>
+              <el-dropdown-item command='4'
+                                class="select_item">已忽略</el-dropdown-item>
+              <el-dropdown-item command="5"
+                                class="select_item">误报</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <el-dropdown @command="change_task"
@@ -143,7 +145,9 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">失陷确定性:</span>
-              <span class="item_li_content">{{network_detail.fall_certainty == '0'?'未知':'已失陷'}}</span>
+              <span class="item_li_content"
+                    :class="network_detail.fall_certainty == '0'?'':'red_color'">
+                {{network_detail.fall_certainty == '0'?'未知':'已失陷'}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">标签:</span>
@@ -669,93 +673,96 @@
       <!-- 基本信息 -->
       <div class="task_new_content"
            v-if="new_worksheets_data.new_contet">
-        <div class="content_top">
-          <div class="content_top_left">
-            <li class="left_item">
-              <div class="title">
-                <span>工单名称</span>
-                <span class="improtant_ico">*</span>
-              </div>
-              <el-input class="task_new_input"
-                        placeholder="请输入工单名称"
-                        v-model="new_worksheets_list.name"
-                        clearable>
-              </el-input>
-            </li>
-            <li class="left_item">
-              <div class="title">
-                <span>经办人</span>
-                <span class="improtant_ico">*</span>
-              </div>
-              <el-select class="task_new_input"
-                         v-model="new_worksheets_list.operator"
-                         clearable
-                         placeholder="请选择经办人">
-                <el-option v-for="item in new_worksheets_data.operator_list"
-                           @click.native="select_changced(item)"
-                           :key="item.id"
-                           :label="item.username"
-                           :value="item.username">
-                </el-option>
-              </el-select>
-            </li>
-          </div>
-          <div class="content_top_right">
-            <li class="right_item">
-              <div class="title">
-                <span>优先级</span>
-                <span class="improtant_ico">*</span>
-              </div>
-              <el-select class="task_new_input"
-                         v-model="new_worksheets_list.level"
-                         clearable
-                         placeholder="请选择优先级">
-                <el-option v-for="item in new_worksheets_data.level_list"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-              </el-select>
-            </li>
-            <li class="right_item">
-              <el-checkbox-group v-model="new_worksheets_list.notice">
-                <el-checkbox label="email"
-                             value="email">邮件通知</el-checkbox>
-                <el-checkbox label="message"
-                             value="message">短信通知</el-checkbox>
-                <!-- <el-checkbox label="news"
+        <div class="task_content_box">
+          <div class="content_top">
+            <div class="content_top_left">
+              <li class="left_item">
+                <div class="title">
+                  <span>工单名称</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-input class="task_new_input"
+                          placeholder="请输入工单名称"
+                          v-model="new_worksheets_list.name"
+                          clearable>
+                </el-input>
+              </li>
+              <li class="left_item">
+                <div class="title">
+                  <span>经办人</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-select class="task_new_input"
+                           v-model="new_worksheets_list.operator"
+                           clearable
+                           placeholder="请选择经办人">
+                  <el-option v-for="item in new_worksheets_data.operator_list"
+                             @click.native="select_changced(item)"
+                             :key="item.id"
+                             :label="item.username"
+                             :value="item.username">
+                  </el-option>
+                </el-select>
+              </li>
+            </div>
+            <div class="content_top_right">
+              <li class="right_item">
+                <div class="title">
+                  <span>优先级</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-select class="task_new_input"
+                           v-model="new_worksheets_list.level"
+                           clearable
+                           placeholder="请选择优先级">
+                  <el-option v-for="item in new_worksheets_data.level_list"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value">
+                  </el-option>
+                </el-select>
+              </li>
+              <li class="right_item">
+                <el-checkbox-group v-model="new_worksheets_list.notice">
+                  <el-checkbox label="email"
+                               value="email">邮件通知</el-checkbox>
+                  <el-checkbox label="message"
+                               value="message">短信通知</el-checkbox>
+                  <!-- <el-checkbox label="news"
                              value="news">消息中心通知</el-checkbox> -->
-              </el-checkbox-group>
-            </li>
+                </el-checkbox-group>
+              </li>
+            </div>
+          </div>
+          <div class="content_remarks">
+            <p class="title">备注</p>
+            <el-input type="textarea"
+                      :rows="4"
+                      placeholder="请输入内容"
+                      v-model="new_worksheets_list.textarea">
+            </el-input>
+          </div>
+          <div class="content_table">
+            <el-table :data="new_worksheets_data.table_operator.tableData"
+                      style="width: 100%">
+              <el-table-column prop="username"
+                               label="经办人"></el-table-column>
+              <el-table-column prop="department"
+                               label="部门"></el-table-column>
+              <el-table-column prop="email_addr"
+                               label="邮箱"></el-table-column>
+            </el-table>
+            <!-- <el-pagination class="pagination_box"
+                           @current-change="hcc_table_operator"
+                           :page-sizes="[5]"
+                           :page-size="5"
+                           :current-page="new_worksheets_data.table_operator.pageNow"
+                           :total="new_worksheets_data.table_operator.tableData.length"
+                           layout="total,sizes, prev, pager, next">
+            </el-pagination> -->
           </div>
         </div>
-        <div class="content_remarks">
-          <p class="title">备注</p>
-          <el-input type="textarea"
-                    :rows="4"
-                    placeholder="请输入内容"
-                    v-model="new_worksheets_list.textarea">
-          </el-input>
-        </div>
-        <div class="content_table">
-          <el-table :data="new_worksheets_data.table_operator.tableData"
-                    style="width: 100%">
-            <el-table-column prop="username"
-                             label="经办人"></el-table-column>
-            <el-table-column prop="department"
-                             label="部门"></el-table-column>
-            <el-table-column prop="email_addr"
-                             label="邮箱"></el-table-column>
-          </el-table>
-          <el-pagination class="pagination_box"
-                         @current-change="hcc_table_operator"
-                         :page-sizes="[5]"
-                         :page-size="5"
-                         :current-page="new_worksheets_data.table_operator.pageNow"
-                         :total="new_worksheets_data.table_operator.tableData.length"
-                         layout="total,sizes, prev, pager, next">
-          </el-pagination>
-        </div>
+
         <div class="btn_box">
           <el-button @click="closed_task_new"
                      class="cancel_btn">取消</el-button>
@@ -767,63 +774,65 @@
       <!-- 处置内容 -->
       <div class="task_handle_content"
            v-if="!new_worksheets_data.new_contet">
-        <div class='table_box'>
-          <div>
+        <div class="task_content_box">
+          <div class='table_box'>
             <div>
-              <el-table align="center"
-                        :data="new_worksheets_data.network_detail"
-                        @selection-change="select_alert_new"
-                        tooltip-effect="dark"
-                        style="width: 100%">
-                <!-- <el-table-column type="selection"
+              <div>
+                <el-table align="center"
+                          :data="new_worksheets_data.network_detail"
+                          @selection-change="select_alert_new"
+                          tooltip-effect="dark"
+                          style="width: 100%">
+                  <!-- <el-table-column type="selection"
                                  width="40">
                 </el-table-column> -->
-                <el-table-column prop="category"
-                                 label="告警类型"
-                                 show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="indicator"
-                                 label="威胁指标"
-                                 show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="src_ip"
-                                 label="源地址"
-                                 show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="dest_ip"
-                                 label="目的地址"
-                                 show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="application"
-                                 label="应用"
-                                 show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="degree"
-                                 label="威胁等级"
-                                 show-overflow-tooltip>
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.degree=='high'">高</span>
-                    <span v-if="scope.row.degree=='medium'">中</span>
-                    <span v-if="scope.row.degree=='low'">低</span>
-                  </template>
+                  <el-table-column prop="category"
+                                   label="告警类型"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="indicator"
+                                   label="威胁指标"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="src_ip"
+                                   label="源地址"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="dest_ip"
+                                   label="目的地址"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="application"
+                                   label="应用"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="degree"
+                                   label="威胁等级"
+                                   show-overflow-tooltip>
+                    <template slot-scope="scope">
+                      <span v-if="scope.row.degree=='high'">高</span>
+                      <span v-if="scope.row.degree=='medium'">中</span>
+                      <span v-if="scope.row.degree=='low'">低</span>
+                    </template>
 
-                </el-table-column>
-                <el-table-column label="失陷确定性"
-                                 show-overflow-tooltip>
-                  <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'未知':'已失陷' }}</template>
+                  </el-table-column>
+                  <el-table-column label="失陷确定性"
+                                   show-overflow-tooltip>
+                    <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'未知':'已失陷' }}</template>
 
-                </el-table-column>
-                <el-table-column label="状态"
-                                 width="80">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.status==0">未确认</span>
-                    <span v-if="scope.row.status==1">已确认</span>
-                    <span v-if="scope.row.status==2">已处置</span>
-                    <span v-if="scope.row.status==3">已忽略</span>
-                    <span v-if="scope.row.status==4">误报</span>
-                  </template>
-                </el-table-column>
-              </el-table>
+                  </el-table-column>
+                  <el-table-column label="状态"
+                                   width="80">
+                    <template slot-scope="scope">
+                      <span v-if="scope.row.status==0">未确认</span>
+                      <span v-if="scope.row.status==1">已确认</span>
+                      <span v-if="scope.row.status==2">已处置</span>
+                      <span v-if="scope.row.status==3">已忽略</span>
+                      <span v-if="scope.row.status==4">误报</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
             </div>
           </div>
         </div>
@@ -2763,6 +2772,24 @@ export default {
         .content {
           padding-top: 24px;
           // 修改radio 改成对号
+          height: 400px;
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+            border-radius: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 6px;
+            background: #a8a8a8;
+          }
+          &::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            border-radius: 6px;
+            background: #f4f4f4;
+          }
+
           .el-radio__input.is-checked .el-radio__inner::after {
             transform: rotate(45deg) scaleY(1);
           }
@@ -2890,9 +2917,9 @@ export default {
             color: #999999;
           }
         }
-
         .task_new_content {
           /*height: 480px;*/
+
           .content_top {
             overflow: hidden;
 
@@ -2997,32 +3024,49 @@ export default {
               text-align: center;
             }
           }
-
-          .btn_box {
-            margin-top: 36px;
-            margin-bottom: 24px;
-            height: 42px;
-            text-align: center;
-
-            .cancel_btn {
-              border: 1px solid #0070ff;
-              background: #fff;
-              color: #0070ff;
-              width: 136px;
-              height: 42px;
-              font-size: 16px;
-            }
-
-            .next_btn {
-              background-color: #0070ff;
-              color: #fff;
-              width: 136px;
-              height: 42px;
-              font-size: 16px;
-            }
+        }
+        .task_content_box {
+          height: 400px;
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+            border-radius: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 6px;
+            background: #a8a8a8;
+          }
+          &::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            border-radius: 6px;
+            background: #f4f4f4;
           }
         }
+        .btn_box {
+          margin-top: 36px;
+          margin-bottom: 24px;
+          height: 42px;
+          text-align: center;
 
+          .cancel_btn {
+            border: 1px solid #0070ff;
+            background: #fff;
+            color: #0070ff;
+            width: 136px;
+            height: 42px;
+            font-size: 16px;
+          }
+
+          .next_btn {
+            background-color: #0070ff;
+            color: #fff;
+            width: 136px;
+            height: 42px;
+            font-size: 16px;
+          }
+        }
         .task_handle_content {
           .handle_content_top {
             height: 42px;
@@ -3122,6 +3166,9 @@ export default {
 <style scoped lang="less">
 .detail-network {
   background: #f8f8f8;
+  .red_color {
+    color: #ff5f5c !important;
+  }
   //   基础信息
   .detail_base {
     // height: 323px;
@@ -3139,7 +3186,8 @@ export default {
       }
       .top_right {
         float: right;
-        line-height: 62px;
+        margin-top: 14px;
+        // line-height: 62px;
         .change_btn {
           height: 34px;
           width: 124px;

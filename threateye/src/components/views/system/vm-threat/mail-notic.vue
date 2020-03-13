@@ -256,6 +256,7 @@ export default {
     send_save () {
       var encryption = ''
       var alertEmail = []
+      console.log(this.mail.alertEmail_list);
       this.mail.alertEmail_list.forEach(element => {
         if (element.name != '') {
           alertEmail.push(element.name)
@@ -319,7 +320,7 @@ export default {
         this.mail.alertEmail_list.forEach(item => {
           item.icon = false;
         });
-        this.mail.alertEmail_list.push({ ip: '', icon: true })
+        this.mail.alertEmail_list.push({ name: '', icon: true })
       } else {
         this.$message.error(
           {

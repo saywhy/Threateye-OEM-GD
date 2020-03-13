@@ -639,7 +639,7 @@
       open_state() {
         let sel_table_data = this.table.multipleSelection;
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表，请勾选。',type: 'warning'});
+          this.$message({message:'请选择需要变更的告警！',type: 'warning'});
           return false;
         } else {
           this.state_change = true;
@@ -722,7 +722,7 @@
 
         if(sel_table_data.length == 0){
 
-          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
+          this.$message({message:'请选择需要编辑的告警！',type: 'warning'});
           return false;
 
         } else {
@@ -953,14 +953,12 @@
         let sel_table_attr = sel_table_data.map(x => {return x.status});
 
         if(sel_table_data.length == 0){
-          this.$message({message:'您未选中列表或列表为空',type: 'warning'});
+          this.$message({message:'请选择需要添加的告警！',type: 'warning'});
           return false;
-
         } else {
-
-          if(sel_table_attr.includes('2')
-            || sel_table_attr.includes('3')
-            || sel_table_attr.includes('4'))
+          if(sel_table_attr.includes('3')
+            || sel_table_attr.includes('4')
+            || sel_table_attr.includes('5'))
           {
             this.$message({message: '告警状态为已处置,已忽略,误报的不能添加到工单', type: 'error'});
           }else {

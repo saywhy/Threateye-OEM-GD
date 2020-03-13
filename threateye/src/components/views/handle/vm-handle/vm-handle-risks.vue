@@ -33,8 +33,8 @@
                 <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
                 <!--告警类型-->
-                <el-select class="s_key s_key_types" v-model="params.category" clearable placeholder="告警类型"  @change="currentSelChange">
-                  <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
+                <el-select class="s_key s_key_types" v-model="params.threat" clearable placeholder="失陷确定性"  @change="currentSelChange">
+                  <el-option v-for="item in options_threat" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
 
@@ -383,26 +383,10 @@
         progress_data_source5_show:false,
         form_data_threat5:[],
         form_data_threat5_show:false,
-        options_types: [
+        options_threat: [
           {
             value: "1",
-            label: "恶意程序"
-          },
-          {
-            value: "2",
-            label: "漏洞利用"
-          },
-          {
-            value: "3",
-            label: "恶意文件通讯"
-          },
-          {
-            value: "4",
-            label: "僵尸网络C&C"
-          },
-          {
-            value: "5",
-            label: "恶意地址"
+            label: "已失陷"
           }
         ],
         options_status: [
@@ -541,7 +525,7 @@
       this.get_list_threat();
     },
     methods: {
-      //外部威脅源top5
+      //威脅源top5
       get_list_source_top5() {
         this.$axios.get('/yiiapi/'+this.threats+'/source-top5')
           .then((resp) => {
@@ -552,7 +536,7 @@
             }
           })
       },
-      //外部威脅類型top5
+      //威脅類型top5
       get_list_threat_top5() {
         this.$axios.get('/yiiapi/'+this.threats+'/threat-top5')
           .then((resp) => {
@@ -563,15 +547,24 @@
             }
           })
       },
-      //横向威脅列表
+      //威脅列表
       get_list_threat() {
         this.table.loading = true;
+
+        let params_alert = {
+          threat:''
+        };
+
+        if(this.params.threat == 1){
+          params_alert.threat = 1;
+        }
+
         this.$axios.get('/yiiapi/'+this.threats+'/list',{
           params:{
             start_time:this.params.startTime,
             end_time:this.params.endTime,
             degree:'',
-            category:this.params.category,
+            fall_certainty:params_alert.threat,
             status:this.params.status,
             key_word:this.params.key_word,
             page: this.table.pageNow,
@@ -625,7 +618,7 @@
       resetClick(){
         this.params = {
           key_word:"",
-          category:"",
+          threat: "",
           status: "",
           startTime: "",
           endTime: "",

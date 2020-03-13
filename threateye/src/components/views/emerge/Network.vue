@@ -20,8 +20,8 @@
             <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
 
             <!--失陷确定性-->
-            <el-select class="s_key s_key_types" v-model="params.type" clearable placeholder="告警类型" :popper-append-to-body ="false">
-              <el-option v-for="item in options_types" :key="item.value" :label="item.label" :value="item.value">
+            <el-select class="s_key s_key_types" v-model="params.threat" clearable placeholder="失陷确定性" :popper-append-to-body ="false">
+              <el-option v-for="item in options_threat" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
 
@@ -368,109 +368,16 @@
         },
         params: {
           key: "",
-          type: "",
+          threat: "",
           status: "",
           startTime:'',
           endTime:''
         },
-        options_types: [
+        options_threat: [
           {
             value: "1",
-            label: "恶意文件通讯"
-          },
-          {
-            value: "2",
-            label: "广告软件"
-          },
-          {
-            value: "3",
-            label: "危险工具"
-          },
-          {
-            value: "4",
-            label: "漏洞利用"
-          },
-          {
-            value: "5",
-            label: "其它"
-          },
-          {
-            value: "6",
-            label: "ELCAR"
-          },
-          {
-            value: "7",
-            label: "SQL注入"
-          },
-          {
-            value: "8",
-            label: "暴力破解"
-          },
-          {
-            value: "9",
-            label: "WebShell"
-          },
-          {
-            value: "10",
-            label: "扫描"
-          },
-
-          {
-            value: "11",
-            label: "恶意程序"
-          },
-          {
-            value: "12",
-            label: "恶意地址"
-          },
-          {
-            value: "13",
-            label: "tor出口节点"
-          },
-          {
-            value: "14",
-            label: "tor入口节点"
-          },
-          {
-            value: "15",
-            label: "垃圾邮件"
-          },
-          {
-            value: "16",
-            label: "僵尸网络C&C"
-          },
-          {
-            value: "17",
-            label: "移动恶意软件"
-          },
-          {
-            value: "18",
-            label: "网络诈骗"
-          },
-          {
-            value: "19",
-            label: "恶意重定向"
-          },
-          {
-            value: "20",
-            label: "网络代理"
-          },
-          {
-            value: "21",
-            label: "钓鱼网站"
-          },
-          {
-            value: "22",
-            label: "勒索软件通讯"
-          },
-          {
-            value: "23",
-            label: "已知APT"
-          },
-          {
-            value: "24",
-            label: "恶意证书"
-          },
+            label: "已失陷"
+          }
         ],
         options_status: [
           {
@@ -615,12 +522,20 @@
       // 获取告警列表
       get_list_risk() {
         this.table.loading = true;
+        let params_alert = {
+          threat:''
+        };
+
+        if(this.params.threat == 1){
+          params_alert.threat = 1;
+        }
+
         this.$axios.get('/yiiapi/alert/list', {
           params: {
             start_time: this.params.startTime,
             end_time: this.params.endTime,
             key_word: this.params.key,
-            category: this.params.type,
+            fall_certainty: params_alert.threat,
             status: this.params.status,
             degree: "",
             page: this.table.pageNow,
@@ -663,7 +578,7 @@
       resetClick() {
         this.params = {
             key: "",
-            type: "",
+            threat: "",
             status: "",
             startTime:'',
             endTime:''
@@ -1177,7 +1092,7 @@
         }).then(() => {
 
           var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status +'&start_time='+this.params.startTime;
-          +'&end_time='+this.params.endTime+'&category='+this.params.type+'&key_word='+this.params.key;
+          +'&end_time='+this.params.endTime+'&fall_certainty='+this.params.threat+'&key_word='+this.params.key;
           window.location.href = url1;
 
         }).catch(() => {

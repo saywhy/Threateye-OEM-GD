@@ -76,7 +76,7 @@
     <!-- 添加白名单 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="white_add.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -295,7 +295,7 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需删除的信息',
+            message: '请选择要删除的白名单！',
             type: 'error',
           }
         );

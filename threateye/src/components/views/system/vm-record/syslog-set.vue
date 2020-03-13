@@ -12,6 +12,12 @@
                 :data="syslog_list.data"
                 tooltip-effect="dark"
                 style="width: 100%">
+        <el-table-column label="序号"
+                         width="80">
+          <template slot-scope="scope">
+            {{(syslog_data.page-1)*(syslog_data.rows) + scope.row.index_cn}}
+          </template>
+        </el-table-column>
         <el-table-column prop="server_ip"
                          label="Syslog服务器IP"
                          show-overflow-tooltip>
@@ -54,7 +60,7 @@
     <!-- 添加p配置 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="syslog_pop.add.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -117,7 +123,7 @@
     <!-- 编辑配置 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="syslog_pop.edit.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -239,6 +245,9 @@ export default {
           console.log(response);
           this.syslog_data.loading = false;
           this.syslog_list = response.data.data
+          this.syslog_list.data.forEach((item, index) => {
+            item.index_cn = index + 1
+          });
         })
         .catch(error => {
           console.log(error);

@@ -44,7 +44,7 @@
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="next_step"
-                         label="下一条地址"
+                         label="下跳地址"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作">
@@ -68,7 +68,7 @@
     <!-- 新增 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="router_state.add">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -103,11 +103,11 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">下一条地址</span>
+            <span class="title">下跳地址</span>
             <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入下一条地址"
+                    placeholder="请输入下跳地址"
                     v-model="router_add.next_step"
                     clearable>
           </el-input>
@@ -123,7 +123,7 @@
     <!-- 编辑 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="router_state.edit">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -158,11 +158,11 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">下一条地址</span>
+            <span class="title">下跳地址</span>
             <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请输入下一条地址"
+                    placeholder="请输入下跳地址"
                     v-model="router_edit.next_step"
                     clearable>
           </el-input>
@@ -332,7 +332,7 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需删除的信息',
+            message: '请选择要删除的路由！',
             type: 'error',
           }
         );

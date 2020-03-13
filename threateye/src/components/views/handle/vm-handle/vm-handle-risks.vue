@@ -1113,8 +1113,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../../assets/css/less/invest-common-table-pattern.less";
+  @import "../../../../assets/css/less/handle_less/invest-common-pattern.less";
+  @import "../../../../assets/css/less/handle_less/invest-common-table-pattern.less";
   .handle-lateral{
     padding: 24px;
     .outside-top{

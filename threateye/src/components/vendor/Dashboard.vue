@@ -1,24 +1,17 @@
 <template>
   <el-container id="dashboard" v-cloak>
     <el-header><Nav></Nav></el-header>
-    <div class="dashboard-list">
-
-      <div class="dashboard-aside-fixed" :class="{'collapse':isCollapse}">
-        <el-aside class="dashboard-list-aside" >
-          <Aside></Aside>
-        </el-aside>
-      </div>
-
-      <div class="dashboard-main-fixed" :class="{'collapse':isCollapse}">
-        <el-main class="dashboard-list-main">
-          <transition name="slider">
-            <keep-alive>
-              <router-view/>
-            </keep-alive>
-          </transition>
-        </el-main>
-      </div>
-    </div>
+    <el-container class="dashboard-list">
+      <el-aside class="dashboard-list-aside" :class="{'collapse':isCollapse}"><Aside></Aside>
+      </el-aside>
+      <el-main class="dashboard-list-main" :class="{'collapse':isCollapse}">
+        <transition name="slider">
+          <keep-alive>
+            <router-view/>
+          </keep-alive>
+        </transition>
+      </el-main>
+    </el-container>
     <el-footer>虎特信息科技（上海）有限公司  版权所有</el-footer>
   </el-container>
 </template>
@@ -27,7 +20,6 @@
   import Nav from '@/components/layout/Nav'
   import Aside from '@/components/layout/aside/Index'
   import Main from '@/components/layout/Main'
-
   import {mapState} from 'vuex'
   export default {
     name: 'Dashboard',
@@ -47,88 +39,84 @@
       Aside,
       Main
     },
+    /*created(){
+      console.log(this.$route.meta.asideFlag)
+      let asideFlag = this.$route.meta.asideFlag;
+      console.log(undefined == undefined)
+      asideFlag == (asideFlag == undefined)? true: asideFlag;
+      console.log(asideFlag)
+      this.asideFlag = asideFlag;
+    },*/
   }
 </script>
 
 <style scoped lang="less">
   #dashboard {
     .el-header{
+      background-color: #2e3f60;
       padding: 0 24px;
       position: fixed;
       width: 100%;
-      z-index: 3000;
-      height: 60px!important;
-      background-color: #2e3f60;
+      z-index: 1000;
+      height: auto!important;
     }
-    position: relative;
+
     .dashboard-list{
-      width: 100%;
       margin-top: 60px;
-      height: calc(100vh - 120px);
-      display: flex;
-      .dashboard-aside-fixed{
-        overflow: initial;
-        background-color: #fff;
+      min-height: 900px;
+      .dashboard-list-aside{
+        overflow: inherit;
+        position: fixed;
+        left: 0;
+        top: 60px;
         width: 210px!important;
-        height: calc(100vh - 120px);
         &.collapse {
           width: 56px!important;
-          /deep/
-          .el-menu{
-            width: 56px!important;
-            .aside-item{
-              .item{
-                .el-menu-item{
-                  .el-tooltip{
-                    padding: 0 20px!important;
+          #aside{
+            width: 100%;
+            /deep/
+            .el-menu--collapse{
+              width: 100%;
+              .aside-item{
+                .item{
+                  .el-menu-item{
+                    .el-tooltip{
+                      padding: 0 20px!important;
+                    }
                   }
                 }
-              }
-              .el-submenu{
-                .el-submenu__title{
-                  padding-left: 20px!important;
+                .el-submenu{
+                  .el-submenu__title{
+                    padding-left: 20px!important;
+                  }
                 }
               }
             }
           }
         }
       }
-      .dashboard-main-fixed{
-        flex: 1;
+      .dashboard-list-main{
+        padding: 0;
+        margin-left: 210px;
         background-color: #f4f4f4;
-        height: calc(100vh - 120px);
-        overflow-y: scroll;
-        &::-webkit-scrollbar {/*滚动条整体样式*/
-          width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
-          border-radius: 6px;
-        }
-        &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-          border-radius: 6px;
-          background: #a8a8a8;
-        }
-        &::-webkit-scrollbar-track {/*滚动条里面轨道*/
-          border-radius: 6px;
-          background: #f4f4f4;
-        }
-        .dashboard-list-main{
-          padding: 0;
-          background-color: #f4f4f4;
-          min-height: 900px;
+        min-height: 900px;
+        &.collapse{
+          margin-left: 56px!important;
         }
       }
     }
     .el-footer{
-      position: fixed;
-      left: 0;
-      bottom: 0;
       background-color: #ececec;
       height: 60px!important;
       line-height: 60px;
+      font-family: PingFangSC-Regular;
       color: #999;
-      font-size: 16px;
+      position: fixed;
+      left: 0;
+      bottom: 0;
       width: 100%;
-      z-index: -1;
-      font-family: PingFang;
+      font-size: 16px;
+      z-index: 1001;
     }
   }
   .slider-enter{

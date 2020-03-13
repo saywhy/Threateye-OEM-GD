@@ -188,7 +188,7 @@
             position: absolute;
             top: 20px;
             right: -8px;
-            z-index: 3001;
+            z-index: 999;
           }
         }
       }

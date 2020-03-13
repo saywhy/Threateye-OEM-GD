@@ -80,14 +80,14 @@
           this.childUpdate2 = false;
           this.childUpdate3 = true;
         }
-      },
+      }
     }
   }
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../assets/css/less/invest-common-table-pattern.less";
+  @import "../../../assets/css/less/handle_less/invest-common-pattern.less";
+  @import "../../../assets/css/less/handle_less/invest-common-table-pattern.less";
   .handle-works{
     margin-bottom: 0;
     .invest{

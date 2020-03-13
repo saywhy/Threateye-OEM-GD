@@ -925,9 +925,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../../assets/css/less/invest-common-pattern.less";
-  @import "../../../../assets/css/less/invest-common-table-pattern.less";
-
+  @import "../../../../assets/css/less/handle_less/invest-common-pattern.less";
+  @import "../../../../assets/css/less/handle_less/invest-common-table-pattern.less";
   .common-pattern{
     .common_btn{
       .common_box{
@@ -1057,7 +1056,7 @@
   .handle-pagination{
     margin: 20px 0;
   }
-  // 新建工单
+  //新建工单
   /deep/
   .task_new_box {
     .el-dialog {

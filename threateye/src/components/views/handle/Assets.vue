@@ -115,8 +115,15 @@
                     @selection-change="handleSelChange">
             <el-table-column label="全选" width="40"></el-table-column>
             <el-table-column  type="selection" width="42"></el-table-column>
-            <el-table-column prop="asset_ip" label="资产"></el-table-column>
-            <el-table-column prop="label_group" label="资产组"  show-overflow-tooltip></el-table-column>
+            <el-table-column prop="asset_ip" label="资产" max-width="100"></el-table-column>
+            <!--<el-table-column prop="label_group" label="资产组"  min-width="120" show-overflow-tooltip></el-table-column>-->
+            <el-table-column label="资产组"  min-width="120" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <div>
+                  <span v-for="(it,$idx) in scope.row.label" :key="$idx" class="a_label">{{it}}</span>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
@@ -276,7 +283,14 @@
                 <el-table-column label="全选" width="40"></el-table-column>
                 <el-table-column align='left' type="selection" width="40"></el-table-column>
                 <el-table-column prop="asset_ip" label="资产"></el-table-column>
-                <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
+                <!--<el-table-column prop="label_group" label="资产组"  min-width="120" show-overflow-tooltip></el-table-column>-->
+                <el-table-column label="资产组"  min-width="120" show-overflow-tooltip>
+                  <template slot-scope="scope">
+                    <div>
+                      <span v-for="(it,$idx) in scope.row.label" :key="$idx" class="a_label">{{it}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
                 <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
@@ -388,7 +402,7 @@
             {name: '业务', souce_value:[], value: [],toggle_show:false,pid:1},
             {name: '分支', souce_value:[], value: [],toggle_show:false,pid:2},
             {name: '部门', souce_value:[], value: [],toggle_show:false,pid:3},
-            {name: '未分类',souce_value:[], value: [],toggle_show:false,pid:4}
+            {name: '其他',souce_value:[], value: [],toggle_show:false,pid:4}
           ]
         },
         toggle_top_show: true,
@@ -591,7 +605,6 @@
         if (this.params.threat != '') {
           params.threat = 1;
         }
-
         //标签处置
         let labels = this.assets_all.tags;
         labels.forEach(function (v, k) {
@@ -629,6 +642,10 @@
                 v.label_group = label_group;
                 v.category_group = category_group;
               });
+
+              console.log(data);
+
+
               this.table.tableData = data;
               this.table.count = count;
               this.table.maxPage = maxPage;

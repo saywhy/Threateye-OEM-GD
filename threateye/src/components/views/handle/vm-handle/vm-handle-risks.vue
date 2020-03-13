@@ -105,7 +105,8 @@
             </el-table-column>
             <el-table-column prop="application" label="应用" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
+            <el-table-column label="威胁等级">
+              <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
@@ -275,7 +276,8 @@
                   </el-table-column>
                   <el-table-column prop="application" label="应用" show-overflow-tooltip>
                   </el-table-column>
-                  <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
+                  <el-table-column label="威胁等级">
+                    <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
                   </el-table-column>
                   <el-table-column label="失陷确定性">
                     <template slot-scope="scope">
@@ -586,6 +588,7 @@
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
 
+            console.log(data)
           }
         })
       },
@@ -629,7 +632,6 @@
       handleSelChange(val) {
         this.table.multipleSelection = val;
       },
-
 
       //进入告警详情页面
       detail_click(val) {

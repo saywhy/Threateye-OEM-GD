@@ -117,14 +117,14 @@
             <el-table-column  type="selection" width="42"></el-table-column>
             <el-table-column prop="asset_ip" label="资产" max-width="100"></el-table-column>
             <!--<el-table-column prop="label_group" label="资产组"  min-width="120" show-overflow-tooltip></el-table-column>-->
-            <el-table-column label="资产组"  min-width="120" show-overflow-tooltip>
+            <el-table-column label="资产组"  min-width="140" show-overflow-tooltip>
               <template slot-scope="scope">
                 <div>
                   <span v-for="(it,$idx) in scope.row.label" :key="$idx" class="a_label">{{it}}</span>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="category_group" min-width="140" label="关联威胁" show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
             </el-table-column>

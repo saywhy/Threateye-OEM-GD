@@ -75,13 +75,23 @@
         <li>
           <span class="title">
             <i class="b_i"></i>分支：</span>
-          <span class="content">{{assets_top.new_branch}}</span>
+          <span class="content">
+            <span class="c_it" v-for="(it,$idx) in assets_top.new_branch" :key="$idx">{{it}}</span>
+          </span>
         </li>
       </div>
       <div class="bom_item">
         <li>
           <span class="title">部门：</span>
-          <span class="content">{{assets_top.new_department}}</span>
+          <span class="content">
+            <span class="c_it" v-for="(it,$idx) in assets_top.new_department" :key="$idx">{{it}}</span>
+          </span>
+        </li>
+        <li>
+          <span class="title">业务：</span>
+          <span class="content">
+            <span class="c_it" v-for="(it,$idx) in assets_top.new_business" :key="$idx">{{it}}</span>
+          </span>
         </li>
         <li>
           <span class="title">工单名称：</span>
@@ -170,9 +180,8 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="degree"
-                             label="威胁等级"
-                             show-overflow-tooltip>
+            <el-table-column label="威胁等级">
+              <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
@@ -338,14 +347,6 @@
               <el-table-column prop="email_addr"
                                label="邮箱"></el-table-column>
             </el-table>
-            <!--<el-pagination class="pagination_box"
-                           @current-change="hcc_table_operator"
-                           :page-sizes="[5]"
-                           :page-size="5"
-                           :current-page="table_operator.pageNow"
-                           :total="table_operator.tableData.length"
-                           layout="total,sizes, prev, pager, next">
-            </el-pagination>-->
           </div>
         </div>
         <div class="btn_box">
@@ -934,6 +935,8 @@ export default {
         })
         .then((resp) => {
 
+          console.log(resp.data)
+
           let { status, data } = resp.data;
 
           if (status == 0) {
@@ -955,8 +958,11 @@ export default {
             } else if (base_category.includes('网络设备')) {
               data.new_base_category = '网络设备';
             }
-            data.new_branch = data.label.branch.join(',');
-            data.new_department = data.label.department.join(',');
+
+            data.new_branch = data.label.branch;
+            data.new_department = data.label.department;
+            data.new_business = data.label.business;
+
             this.assets_top = data;
 
           }
@@ -1522,6 +1528,14 @@ export default {
           flex: 1;
           font-size: 16px;
           color: #666666;
+          .c_it{
+            padding: 0 2px;
+            margin: 0 2px;
+            color: #fff;
+            background: #5389e0;
+            border-radius: 2px;
+            font-size: 14px;
+          }
           .status {
             background: #eef6ff;
             border-radius: 2px;

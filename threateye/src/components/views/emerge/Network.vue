@@ -88,7 +88,9 @@
             <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
+            <el-table-column label="威胁等级">
+              <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
+            </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -556,7 +558,7 @@
               this.table.count = count;
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
-             // console.log(data)
+              console.log(data)
             }
           })
           .catch(error => {

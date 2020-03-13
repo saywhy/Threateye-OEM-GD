@@ -38,6 +38,18 @@ Vue.filter('degree',function(args){
   return str;
 });
 
+Vue.filter('degree_sino',function(args){
+  let str = '';
+  if(args == '高'){
+    str = '高危';
+  }else if(args == '中'){
+    str = '中危';
+  }else if(args == '低'){
+    str = '低危';
+  }
+  return str;
+});
+
 //失陷确定性
 Vue.filter('certainty',function(args){
   let str = '';

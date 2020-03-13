@@ -89,7 +89,10 @@
             <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级">
-              <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
+              <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">

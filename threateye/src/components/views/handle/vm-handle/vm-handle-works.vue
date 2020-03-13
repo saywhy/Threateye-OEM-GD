@@ -222,7 +222,10 @@
                    <el-table-column prop="asset_ip" label="资产"></el-table-column>
                    <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
                    <el-table-column label="威胁等级">
-                     <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
+                     <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
+                  {{ scope.row.degree | degree }}</span>
+                     </template>
                    </el-table-column>
                    <el-table-column label="状态" width="80">
                      <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>

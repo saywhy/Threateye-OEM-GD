@@ -126,7 +126,10 @@
             </el-table-column>
             <el-table-column prop="category_group" min-width="140" label="关联威胁" show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级">
-              <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
+              <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
+                  {{ scope.row.degree | degree }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">

@@ -181,7 +181,10 @@
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="威胁等级">
-              <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
+              <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="失陷确定性">
               <template slot-scope="scope">
@@ -1644,33 +1647,37 @@ export default {
         .el-table__row {
           height: 48px;
         }
-        td > .cell {
+        td >
+        .cell {
           font-family: PingFangMedium;
           .fall_certainty{
             color: #ff5f5c;
           }
-          .degree_box {
+          /*.degree_box {
             button {
               height: 30px;
               width: 72px;
               padding: 0;
               border: 0;
             }
-          }
+          }*/
           .high {
-            button {
+            color: #dc5f5f;
+           /* button {
               background: #dc5f5f;
-            }
+            }*/
           }
           .mid {
-            button {
+            color: #e0c840;
+            /*button {
               background: #e0c840;
-            }
+            }*/
           }
           .low {
-            button {
+            color: #47cad9;
+           /* button {
               background: #47cad9;
-            }
+            }*/
           }
         }
       }

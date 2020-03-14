@@ -258,7 +258,7 @@ export default {
           if (data.count > 10000) {
             this.$message({
               type: 'error',
-              message: '数据超过一万条,请缩小搜索条件'
+              message: '数据超过一万条,请缩小搜索条件。'
             });
             return false
           }
@@ -291,7 +291,7 @@ export default {
           if (data.count > 10000) {
             this.$message({
               type: 'error',
-              message: '数据超过一万条,请缩小搜索条件'
+              message: '数据超过一万条,请缩小搜索条件。'
             });
             return false
           }
@@ -323,7 +323,7 @@ export default {
           if (data.count > 10000) {
             this.$message({
               type: 'error',
-              message: '数据超过一万条,请缩小搜索条件'
+              message: '数据超过一万条,请缩小搜索条件。'
             });
             return false
           }

@@ -545,7 +545,7 @@
           <div class="item_addrs"
                v-for="(item,index) in edit_tag.tag_list">
             <el-input class="select_box"
-                      placeholder="请输入标签，最多可以设置5个标签"
+                      placeholder="请输入标签，最多可以设置5个标签。"
                       v-model="item.name"
                       clearable>
             </el-input>
@@ -2151,6 +2151,7 @@ export default {
           let { status, data } = response.data;
           console.log(data);
           if (status == 0) {
+            this.get_data();
             this.$message(
               {
                 message: '修改状态成功',
@@ -2242,7 +2243,7 @@ export default {
       } else {
         this.$message.error(
           {
-            message: '最多可以设置5个标签',
+            message: '最多可以设置5个标签。',
             offset: 50
           })
       }
@@ -2407,12 +2408,12 @@ export default {
         this.get_user_list();
       } else if (command == "2") {
         // 添加到工单，只有告警状态 0 1
-        // 0未确认，1已确认，2已处置，3已忽略，4误报
+        // 告警：0新告警，1待处置，2处置中，3已处置，4已忽略，5误报
         console.log(this.network_detail);
-        if (this.network_detail.status != 1 && this.network_detail.status != 0) {
+        if (this.network_detail.status != 1 && this.network_detail.status != 0 && this.network_detail.status != 2) {
           this.$message(
             {
-              message: '告警状态为已处置,已忽略,误报的不能添加到工单',
+              message: '告警状态为已处置、已忽略、误报的不能添加到工单。',
               type: 'error',
             }
           );
@@ -2649,6 +2650,9 @@ export default {
     prev_task_handle_save () {
       var te_alert = []
       var perator_list = []
+      this.new_worksheets_data.table_operator.tableData.forEach(element => {
+        perator_list.push(element.username)
+      });
       te_alert.push(this.network_detail.id * 1)
       console.log(te_alert);
       console.log(this.new_worksheets_list);
@@ -2656,7 +2660,7 @@ export default {
         {
           type: "alert",
           name: this.new_worksheets_list.name,
-          // perator: [],
+          perator: perator_list,
           priority: this.new_worksheets_list.level,
           remind: this.new_worksheets_list.notice,
           remarks: this.new_worksheets_list.textarea,

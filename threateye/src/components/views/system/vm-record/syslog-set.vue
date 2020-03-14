@@ -19,7 +19,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="server_ip"
-                         label="Syslog服务器IP"
+                         label="SYSLOG服务器IP"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="server_port"

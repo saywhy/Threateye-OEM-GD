@@ -76,7 +76,9 @@
           <span class="title">
             <i class="b_i"></i>分支：</span>
           <span class="content">
-            <span class="c_it" v-for="(it,$idx) in assets_top.new_branch" :key="$idx">{{it}}</span>
+            <span class="c_it"
+                  v-for="(it,$idx) in assets_top.new_branch"
+                  :key="$idx">{{it}}</span>
           </span>
         </li>
       </div>
@@ -84,13 +86,17 @@
         <li>
           <span class="title">部门：</span>
           <span class="content">
-            <span class="c_it" v-for="(it,$idx) in assets_top.new_department" :key="$idx">{{it}}</span>
+            <span class="c_it"
+                  v-for="(it,$idx) in assets_top.new_department"
+                  :key="$idx">{{it}}</span>
           </span>
         </li>
         <li>
           <span class="title">业务：</span>
           <span class="content">
-            <span class="c_it" v-for="(it,$idx) in assets_top.new_business" :key="$idx">{{it}}</span>
+            <span class="c_it"
+                  v-for="(it,$idx) in assets_top.new_business"
+                  :key="$idx">{{it}}</span>
           </span>
         </li>
         <li>
@@ -192,7 +198,8 @@
                   {{ scope.row.fall_certainty | certainty }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="状态" width="80">
+            <el-table-column label="状态"
+                             width="80">
               <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
             </el-table-column>
           </el-table>
@@ -270,7 +277,8 @@
         </div>
       </div>
       <!-- 基本信息 -->
-      <div class="task_new_content" v-if="task.new_contet">
+      <div class="task_new_content"
+           v-if="task.new_contet">
         <div class="task_content_box">
           <div class="content_top">
             <div class="content_top_left">
@@ -326,7 +334,7 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                 <!-- <el-checkbox label="news"
+                  <!-- <el-checkbox label="news"
                                value="news">消息中心通知</el-checkbox>-->
                 </el-checkbox-group>
               </li>
@@ -361,7 +369,8 @@
       </div>
 
       <!-- 处置内容 -->
-      <div class="task_handle_content" v-if="!task.new_contet">
+      <div class="task_handle_content"
+           v-if="!task.new_contet">
         <div class="task_content_box">
           <div class='table_box'>
             <ul class="table_box_title">
@@ -386,10 +395,14 @@
                   <el-table-column prop="asset_ip"
                                    label="资产"></el-table-column>
                   <!--<el-table-column prop="label_group" label="资产组"  min-width="120" show-overflow-tooltip></el-table-column>-->
-                  <el-table-column label="资产组"  min-width="120" show-overflow-tooltip>
+                  <el-table-column label="资产组"
+                                   min-width="120"
+                                   show-overflow-tooltip>
                     <template slot-scope="scope">
                       <div>
-                        <span v-for="(it,$idx) in scope.row.label" :key="$idx" class="a_label">{{it}}</span>
+                        <span v-for="(it,$idx) in scope.row.label"
+                              :key="$idx"
+                              class="a_label">{{it}}</span>
                       </div>
                     </template>
                   </el-table-column>
@@ -485,7 +498,8 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span="24" class="e-pagination">
+          <el-col :span="24"
+                  class="e-pagination">
             <el-pagination class="handle-pagination"
                            @current-change="hcc_table_add_works"
                            :page-sizes="[10,20,50,100]"
@@ -1092,7 +1106,7 @@ export default {
 
           } else {
 
-            this.$message.error('状态变更提交错误。');
+            this.$message.error('状态变更提交错误！');
 
           }
 
@@ -1114,7 +1128,7 @@ export default {
       let status = this.detail.status;
 
       if (status == '3' || status == '4' || status == '5') {
-        this.$message({ message: '资产状态为已处置,已忽略,误报的不能新建', type: 'error' });
+        this.$message({ message: '资产状态为已处置、已忽略、误报的不能新建。', type: 'error' });
       } else {
 
         let pageNow = this.table_assets.pageNow;
@@ -1331,9 +1345,8 @@ export default {
     //新加到工单打开状态
     add_open_state () {
       let status = this.detail.status;
-
       if (status == '3' || status == '4' || status == '5') {
-        this.$message({ message: '资产状态为已处置,已忽略,误报的不能添加到工单', type: 'error' });
+        this.$message({ message: '资产状态为已处置、已忽略、误报的不能添加到工单。', type: 'error' });
       } else {
         this.add_state_change = true;
         this.get_table_works_list();
@@ -1490,8 +1503,7 @@ export default {
         margin-top: 10px;
         .common_btn_list {
           font-size: 0;
-          /deep/
-          .el-dropdown {
+          /deep/ .el-dropdown {
             margin-right: 8px;
           }
         }
@@ -1531,7 +1543,7 @@ export default {
           flex: 1;
           font-size: 16px;
           color: #666666;
-          .c_it{
+          .c_it {
             padding: 0 2px;
             margin: 0 2px;
             color: #fff;
@@ -1626,8 +1638,7 @@ export default {
     background: #fff;
     padding: 24px 56px;
 
-    /deep/
-    .handle_table_detail {
+    /deep/ .handle_table_detail {
       .el-table__header-wrapper {
         .el-table__header {
           thead.has-gutter {
@@ -1637,7 +1648,6 @@ export default {
               .cell {
                 color: #333;
                 font-size: 14px;
-
               }
             }
           }
@@ -1647,10 +1657,9 @@ export default {
         .el-table__row {
           height: 48px;
         }
-        td >
-        .cell {
+        td > .cell {
           font-family: PingFangMedium;
-          .fall_certainty{
+          .fall_certainty {
             color: #ff5f5c;
           }
           /*.degree_box {
@@ -1663,7 +1672,7 @@ export default {
           }*/
           .high {
             color: #dc5f5f;
-           /* button {
+            /* button {
               background: #dc5f5f;
             }*/
           }
@@ -1675,7 +1684,7 @@ export default {
           }
           .low {
             color: #47cad9;
-           /* button {
+            /* button {
               background: #47cad9;
             }*/
           }
@@ -1686,8 +1695,7 @@ export default {
       margin: 24px 0;
       text-align: center;
     }
-    /deep/
-    .el-tabs {
+    /deep/ .el-tabs {
       .el-tabs__header {
         .el-tabs__nav-wrap {
           &:after {
@@ -1981,8 +1989,7 @@ export default {
                 color: #999999;
               }
 
-              /deep/
-              .el-textarea{
+              /deep/ .el-textarea {
                 height: 92px;
                 textarea {
                   resize: none;
@@ -2005,22 +2012,19 @@ export default {
             .content_table {
               margin-top: 16px;
 
-              /deep/
-              .el-table td {
+              /deep/ .el-table td {
                 padding: 0;
                 height: 32px;
               }
-              /deep/
-              .el-table th {
+              /deep/ .el-table th {
                 padding: 0;
                 height: 36px;
                 background: #f8f8f8;
-                .cell{
+                .cell {
                 }
               }
 
-              /deep/
-              .el-pagination {
+              /deep/ .el-pagination {
                 margin-top: 20px;
                 text-align: center;
               }

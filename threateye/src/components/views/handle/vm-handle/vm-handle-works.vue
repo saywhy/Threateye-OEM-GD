@@ -661,7 +661,7 @@
               this.get_list_works();
 
             } else {
-              this.$message.error('工单状态变更提交错误。');
+              this.$message.error('工单状态变更提交错误！');
             }
 
             this.closed_state();

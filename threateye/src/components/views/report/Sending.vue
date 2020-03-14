@@ -65,7 +65,7 @@
             <div class="item_addrs"
                  v-for="(item,index) in send_config.receiver_list">
               <el-input class="select_box"
-                        placeholder="请输收件人邮箱,最多可以设置5个收件人邮箱"
+                        placeholder="请输收件人邮箱,最多可以设置5个收件人邮箱。"
                         v-model="item.name"
                         clearable>
               </el-input>

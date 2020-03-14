@@ -252,7 +252,7 @@ export default {
               case 'Key error':
                 this.$message(
                   {
-                    message: '此序列号已被替他设备使用，请购买新的许可证！',
+                    message: '此序列号已被其他设备使用，请购买新的许可证！',
                     type: 'error',
                   }
                 );
@@ -260,7 +260,7 @@ export default {
               default:
                 this.$message(
                   {
-                    message: '序列号激活成功',
+                    message: '序列号激活成功。',
                     type: 'success',
                   }
                 );
@@ -283,7 +283,7 @@ export default {
                 } else {
                   this.$message(
                     {
-                      message: '许可证导入成功',
+                      message: '许可证导入成功。',
                       type: 'success',
                     }
                   );
@@ -317,7 +317,7 @@ export default {
             } else {
               this.$message(
                 {
-                  message: '许可证导入成功',
+                  message: '许可证导入成功。',
                   type: 'success',
                 }
               );

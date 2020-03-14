@@ -69,8 +69,8 @@
         <div class="code_p3_error">
           <span class="p3_error">
             <i class="el-icon-warning"></i>
-            <span class="p3_error_title">用户名密码输入错误超过三次</span>
-           <!-- <a class="p3_tips">点击联系管理员</a>-->
+            <span class="p3_error_title">用户名密码输入错误超过三次。</span>
+            <!-- <a class="p3_tips">点击联系管理员</a>-->
           </span>
         </div>
       </div>
@@ -178,7 +178,7 @@ export default {
             this.code = '';
             this.identifyCode = '';
             this.makeCode(this.identifyCodes, 4);
-            callback(new Error('验证码不正确，请重新输入'))
+            callback(new Error('验证码不正确，请重新输入。'))
           } else {
             callback()
           }

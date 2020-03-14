@@ -73,7 +73,7 @@
         <div class="item_addrs"
              v-for="(item,index) in mail.alertEmail_list">
           <el-input class="select_box"
-                    placeholder="请输入邮箱地址，最多可以设置5个收件邮箱账号"
+                    placeholder="请输入邮箱地址，最多可以设置5个收件邮箱账号。"
                     v-model="item.name"
                     clearable>
           </el-input>

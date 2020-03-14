@@ -495,7 +495,7 @@ export default {
       if (this.isRepeat(isRepeat_ip_segment)) {
         this.$message(
           {
-            message: 'IP地址或地址段有重复项,请重新输入',
+            message: 'IP地址或地址段有重复项,请重新输入。',
             type: 'error',
           }
         );
@@ -504,12 +504,14 @@ export default {
       if (this.isRepeat(isRepeat_tag)) {
         this.$message(
           {
-            message: '标签有重复项,请重新输入',
+            message: '标签有重复项,请重新输入。',
             type: 'error',
           }
         );
         return false
       }
+
+
       this.monitor_add.tag_list.forEach(item => {
         if (item.name != '') {
           this.monitor_add.tag.push(item.name)
@@ -653,7 +655,7 @@ export default {
       if (this.isRepeat(isRepeat_ip_segment_edit)) {
         this.$message(
           {
-            message: 'IP地址或地址段有重复项,请重新输入',
+            message: 'IP地址或地址段有重复项,请重新输入。',
             type: 'error',
           }
         );
@@ -662,7 +664,7 @@ export default {
       if (this.isRepeat(isRepeat_tag_edit)) {
         this.$message(
           {
-            message: '标签有重复项,请重新输入',
+            message: '标签有重复项,请重新输入。',
             type: 'error',
           }
         );

@@ -780,8 +780,11 @@ export default {
 
     //进入告警详情页面
     detail_click (val) {
-
-      this.$router.push({ path: "/detail/network", query: { detail: val.id } });
+      console.log(this.$router.history.current.name);
+      // lateral
+      // outside
+      // outreath
+      this.$router.push({ path: "/detail/network", query: { detail: val.id, type: this.$router.history.current.name } });
 
     },
 

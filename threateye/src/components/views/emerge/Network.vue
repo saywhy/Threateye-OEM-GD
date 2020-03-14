@@ -751,7 +751,7 @@ export default {
 
     //进入详情页面
     detail_click (val) {
-      this.$router.push({ path: "/detail/network", query: { detail: val.id } });
+      this.$router.push({ path: "/detail/network", query: { detail: val.id, type: 'alert' } });
     },
 
     /***********************************以下是弹窗部分****************************************/

@@ -147,7 +147,7 @@
               <span class="item_li_title">失陷确定性:</span>
               <span class="item_li_content"
                     :class="network_detail.fall_certainty == '0'?'':'red_color'">
-                {{network_detail.fall_certainty == '0'?'未知':'已失陷'}}</span>
+                {{network_detail.fall_certainty == '0'?'':'已失陷'}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">标签:</span>
@@ -821,7 +821,7 @@
                   </el-table-column>
                   <el-table-column label="失陷确定性"
                                    show-overflow-tooltip>
-                    <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'未知':'已失陷' }}</template>
+                    <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'':'已失陷' }}</template>
 
                   </el-table-column>
                   <el-table-column label="状态"
@@ -1352,7 +1352,11 @@ export default {
   },
   mounted () {
     this.get_data();
-
+    console.log(this.$route.query);
+    // detail: val.id, type: 'risks'
+    // horizontalthreat  横向威胁告警  lateral
+    // externalthreat  外部威胁告警  outside
+    // outreachthreat  外联威胁告警  outreath
   },
   methods: {
     // ^[0-9]*$
@@ -1364,7 +1368,28 @@ export default {
     // 获取数据
     get_data () {
       console.log(this.$route.query.detail);
-      this.$axios.get('/yiiapi/alert/alert-details', {
+      var url = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          url = '/yiiapi/alert/alert-details'
+          break;
+        case 'lateral':
+          url = '/yiiapi/horizontalthreat/alert-details'
+          break;
+        case 'outside':
+          url = '/yiiapi/externalthreat/alert-details'
+          break;
+        case 'outreath':
+          url = '/yiiapi/outreachthreat/alert-details'
+          break;
+        default:
+          break;
+      }
+
+      this.$axios.get(url, {
         params: {
           id: this.$route.query.detail
         }
@@ -1382,8 +1407,35 @@ export default {
           } else {
             this.network_detail.label_obj = JSON.parse(this.network_detail.label)
           }
+
+
+          var workorders = ''
+
+          var workorders = ''
+          // horizontalthreat  横向威胁告警  lateral
+          // externalthreat  外部威胁告警  outside
+          // outreachthreat  外联威胁告警  outreath
+          switch (this.$route.query.type) {
+            case 'alert':
+              workorders = '/yiiapi/alert/workorders'
+              break;
+            case 'lateral':
+              workorders = '/yiiapi/horizontalthreat/workorders'
+              break;
+            case 'outside':
+              workorders = '/yiiapi/externalthreat/workorders'
+              break;
+            case 'outreath':
+              workorders = '/yiiapi/outreachthreat/workorders'
+              break;
+            default:
+              break;
+          }
+
+
+
           // 获取当前告警的工单状态
-          this.$axios.get('/yiiapi/alert/workorders', {
+          this.$axios.get(workorders, {
             params: {
               id: this.$route.query.detail
             }
@@ -2080,12 +2132,53 @@ export default {
         funDownload(item.network_event.payload, "payload.dat");
       }
       if (value.value == "点击下载" && value.name == '文件下载') {
-        window.open('/yiiapi/alert/get-file?md5=' + value.md5);
+        var window_open = ''
+        // horizontalthreat  横向威胁告警  lateral
+        // externalthreat  外部威胁告警  outside
+        // outreachthreat  外联威胁告警  outreath
+        switch (this.$route.query.type) {
+          case 'alert':
+            window_open = '/yiiapi/alert/get-file?md5='
+            break;
+          case 'lateral':
+            window_open = '/yiiapi/horizontalthreat/get-file?md5='
+            break;
+          case 'outside':
+            window_open = '/yiiapi/externalthreat/get-file?md5='
+            break;
+          case 'outreath':
+            window_open = '/yiiapi/outreachthreat/get-file?md5='
+            break;
+          default:
+            break;
+        }
+        window.open(window_open + value.md5);
       }
     },
     // 当前受威胁资产
     new_list () {
-      this.$axios.get('/yiiapi/alert/get-same-indicator-alert', {
+      var new_list = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          new_list = '/yiiapi/alert/get-same-indicator-alert'
+          break;
+        case 'lateral':
+          new_list = '/yiiapi/horizontalthreat/get-same-indicator-alert'
+          break;
+        case 'outside':
+          new_list = '/yiiapi/externalthreat/get-same-indicator-alert'
+          break;
+        case 'outreath':
+          new_list = '/yiiapi/outreachthreat/get-same-indicator-alert'
+          break;
+        default:
+          break;
+      }
+
+      this.$axios.get(new_list, {
         params: {
           indicator: this.network_detail.indicator,
           is_deal: 0,
@@ -2112,7 +2205,27 @@ export default {
     },
     // 历史受威胁资产
     old_list () {
-      this.$axios.get('/yiiapi/alert/get-same-indicator-alert', {
+      var new_list = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          new_list = '/yiiapi/alert/get-same-indicator-alert'
+          break;
+        case 'lateral':
+          new_list = '/yiiapi/horizontalthreat/get-same-indicator-alert'
+          break;
+        case 'outside':
+          new_list = '/yiiapi/externalthreat/get-same-indicator-alert'
+          break;
+        case 'outreath':
+          new_list = '/yiiapi/outreachthreat/get-same-indicator-alert'
+          break;
+        default:
+          break;
+      }
+      this.$axios.get(new_list, {
         params: {
           indicator: this.network_detail.indicator,
           is_deal: 2,
@@ -2143,7 +2256,32 @@ export default {
       console.log(item);
       var id_list = []
       id_list.push(this.$route.query.detail)
-      this.$axios.put('/yiiapi/alert/do-alarm', {
+
+      var alarm = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          alarm = '/yiiapi/alert/do-alarm'
+          break;
+        case 'lateral':
+          alarm = '/yiiapi/horizontalthreat/do-alarm'
+          break;
+        case 'outside':
+          alarm = '/yiiapi/externalthreat/do-alarm'
+          break;
+        case 'outreath':
+          alarm = '/yiiapi/outreachthreat/do-alarm'
+          break;
+        default:
+          break;
+      }
+
+
+
+
+      this.$axios.put(alarm, {
         id: id_list,
         status: item
       })
@@ -2198,7 +2336,27 @@ export default {
           label_list.push(element.name)
         }
       });
-      this.$axios.put('/yiiapi/alert/label-edit', {
+      var label = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          label = '/yiiapi/alert/label-edit'
+          break;
+        case 'lateral':
+          label = '/yiiapi/horizontalthreat/label-edit'
+          break;
+        case 'outside':
+          label = '/yiiapi/externalthreat/label-edit'
+          break;
+        case 'outreath':
+          label = '/yiiapi/outreachthreat/label-edit'
+          break;
+        default:
+          break;
+      }
+      this.$axios.put(label, {
         id: this.$route.query.detail,
         label: label_list
       })
@@ -2258,7 +2416,14 @@ export default {
       // 只能是1和2；动态类型，1Ip，2url
       // 选择“威胁追查“后就直接跳到威胁调查页面的IP/URL通讯调查页面，把该IP地址作为搜索条件得出搜索结果。
       if (item == '1') {
+        // var label = ''
+        // if (this.$route.query.type == 'alert') {
+        //   label = '/yiiapi/alert/label-edit'
+        // } else if (this.$route.query.type == 'risks') {
+        //   label = '/yiiapi/outreachthreat/label-edit'
+        // }
         this.$router.push({ path: "/invest/url", query: { src_ip: this.network_detail.src_ip, dest_ip: '' } });
+
       }
       //加入外部链接
       if (item == '2') {
@@ -2267,7 +2432,30 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.post('/yiiapi/alert/join-external-dynamics', {
+          var join = ''
+          // horizontalthreat  横向威胁告警  lateral
+          // externalthreat  外部威胁告警  outside
+          // outreachthreat  外联威胁告警  outreath
+          switch (this.$route.query.type) {
+            case 'alert':
+              join = '/yiiapi/alert/join-external-dynamics'
+              break;
+            case 'lateral':
+              join = '/yiiapi/horizontalthreat/join-external-dynamics'
+              break;
+            case 'outside':
+              join = '/yiiapi/externalthreat/join-external-dynamics'
+              break;
+            case 'outreath':
+              join = '/yiiapi/outreachthreat/join-external-dynamics'
+              break;
+            default:
+              break;
+          }
+
+
+
+          this.$axios.post(join, {
             addr: this.network_detail.src_ip,
             type: 1
           })
@@ -2306,6 +2494,9 @@ export default {
     change_state_dest (item) {
       console.log(item);
       if (item == '1') {
+
+
+
         this.$router.push({ path: "/invest/url", query: { dest_ip: this.network_detail.dest_ip, src_ip: '' } });
       }
       //加入外部链接
@@ -2315,7 +2506,30 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.post('/yiiapi/alert/join-external-dynamics', {
+          var join = ''
+
+          // horizontalthreat  横向威胁告警  lateral
+          // externalthreat  外部威胁告警  outside
+          // outreachthreat  外联威胁告警  outreath
+          switch (this.$route.query.type) {
+            case 'alert':
+              join = '/yiiapi/alert/join-external-dynamics'
+              break;
+            case 'lateral':
+              join = '/yiiapi/horizontalthreat/join-external-dynamics'
+              break;
+            case 'outside':
+              join = '/yiiapi/externalthreat/join-external-dynamics'
+              break;
+            case 'outreath':
+              join = '/yiiapi/outreachthreat/join-external-dynamics'
+              break;
+            default:
+              break;
+          }
+
+
+          this.$axios.post(join, {
             addr: this.network_detail.dest_ip,
             type: 1
           })
@@ -2436,7 +2650,33 @@ export default {
     // 添加到工单
     //获取工单列表
     get_worksheets_list () {
-      this.$axios.get('/yiiapi/alert/workorder-list', {
+
+
+      var workorder_list = ''
+
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          workorder_list = '/yiiapi/alert/workorder-list'
+          break;
+        case 'lateral':
+          workorder_list = '/yiiapi/horizontalthreat/workorder-list'
+          break;
+        case 'outside':
+          workorder_list = '/yiiapi/externalthreat/workorder-list'
+          break;
+        case 'outreath':
+          workorder_list = '/yiiapi/outreachthreat/workorder-list'
+          break;
+        default:
+          break;
+      }
+
+
+
+      this.$axios.get(workorder_list, {
         params: {
           page: this.worksheets_data.page,
           rows: this.worksheets_data.rows
@@ -2505,8 +2745,31 @@ export default {
       });
       te_alert.push(this.$route.query.detail * 1)
       console.log(te_alert);
+      var add_workorder = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          add_workorder = '/yiiapi/alert/add-workorder'
+          break;
+        case 'lateral':
+          add_workorder = '/yiiapi/horizontalthreat/add-workorder'
+          break;
+        case 'outside':
+          add_workorder = '/yiiapi/externalthreat/add-workorder'
+          break;
+        case 'outreath':
+          add_workorder = '/yiiapi/outreachthreat/add-workorder'
+          break;
+        default:
+          break;
+      }
 
-      this.$axios.post('/yiiapi/alert/add-workorder',
+
+
+
+      this.$axios.post(add_workorder,
         {
           id: this.worksheets_data.tableRadio.id,
           type: "alert",
@@ -2623,7 +2886,29 @@ export default {
       console.log(te_alert);
       console.log(perator_list);
       console.log(this.new_worksheets_list);
-      this.$axios.put('/yiiapi/alert/distribution-workorder',
+      var distribution_workorder = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          distribution_workorder = '/yiiapi/alert/distribution-workorder'
+          break;
+        case 'lateral':
+          distribution_workorder = '/yiiapi/horizontalthreat/distribution-workorder'
+          break;
+        case 'outside':
+          distribution_workorder = '/yiiapi/externalthreat/distribution-workorder'
+          break;
+        case 'outreath':
+          distribution_workorder = '/yiiapi/outreachthreat/distribution-workorder'
+          break;
+        default:
+          break;
+      }
+
+
+      this.$axios.put(distribution_workorder,
         {
           name: this.new_worksheets_list.name,
           priority: this.new_worksheets_list.level,
@@ -2656,7 +2941,28 @@ export default {
       te_alert.push(this.network_detail.id * 1)
       console.log(te_alert);
       console.log(this.new_worksheets_list);
-      this.$axios.post('/yiiapi/alert/add-workorder',
+
+      var add_workorder = ''
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          add_workorder = '/yiiapi/alert/add-workorder'
+          break;
+        case 'lateral':
+          add_workorder = '/yiiapi/horizontalthreat/add-workorder'
+          break;
+        case 'outside':
+          add_workorder = '/yiiapi/externalthreat/add-workorder'
+          break;
+        case 'outreath':
+          add_workorder = '/yiiapi/outreachthreat/add-workorder'
+          break;
+        default:
+          break;
+      }
+      this.$axios.post(add_workorder,
         {
           type: "alert",
           name: this.new_worksheets_list.name,

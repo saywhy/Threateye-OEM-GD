@@ -25,6 +25,18 @@ Vue.filter('time',function(value){
   return moment(value).format('YYYY-MM-DD HH:mm:ss')
 });
 
+Vue.filter('degree_sino',function(args){
+  let str = '';
+  if(args == '高'){
+    str = '高危';
+  }else if(args == '中'){
+    str = '中危';
+  }else if(args == '低'){
+    str = '低危';
+  }
+  return str;
+});
+
 //威胁等级
 Vue.filter('degree',function(args){
   let str = '';
@@ -33,18 +45,6 @@ Vue.filter('degree',function(args){
   }else if(args == 'medium'){
     str = '中危';
   }else if(args == 'low'){
-    str = '低危';
-  }
-  return str;
-});
-
-Vue.filter('degree_sino',function(args){
-  let str = '';
-  if(args == '高'){
-    str = '高危';
-  }else if(args == '中'){
-    str = '中危';
-  }else if(args == '低'){
     str = '低危';
   }
   return str;

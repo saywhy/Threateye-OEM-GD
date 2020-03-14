@@ -1,6 +1,6 @@
 <template>
   <div id="Error">
-      我是404页面
+      404
   </div>
 </template>
 
@@ -12,8 +12,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #Error {
-    flex: 1;
-  }
-
+  #Error {}
 </style>

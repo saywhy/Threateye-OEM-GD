@@ -25,8 +25,8 @@
               </el-button>
               <el-dropdown-menu slot="dropdown"
                                 class="dropdown_ul_box">
-                <!--<el-dropdown-item command="处置中"
-                                  class="select_item">处置中</el-dropdown-item>-->
+                <el-dropdown-item command="处置中"
+                                  class="select_item">处置中</el-dropdown-item>
                 <el-dropdown-item command="已处置"
                                   class="select_item">已处置</el-dropdown-item>
                 <el-dropdown-item command="已忽略"

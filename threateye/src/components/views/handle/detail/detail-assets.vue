@@ -45,7 +45,7 @@
               </el-button>
               <el-dropdown-menu slot="dropdown"
                                 class="dropdown_ul_box">
-                <el-dropdown-item command="编辑工单">编辑工单</el-dropdown-item>
+                <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -220,7 +220,6 @@
     <!-- 弹窗 -->
     <!-- 状态变更 -->
     <el-dialog class="pop_state_box"
-               width='480px'
                :modal-append-to-body="false"
                :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -234,8 +233,8 @@
       <div class="content">
         <p class="content_p"
            style="font-size:0">
-          <span style="font-size:14px">是否将</span>
-          <span style="font-size:14px">{{detail.asset_ip}}</span>
+          <span style="font-size:14px">是否将已勾选的</span>
+          <span style="font-size:14px">{{table.multipleSelection.length}}</span>
           <span style="font-size:14px">项状态变更为“</span>
           <span style="font-size:14px">{{process_state}}</span>
           <span style="font-size:14px">”?</span>
@@ -334,8 +333,7 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <!-- <el-checkbox label="news"
-                               value="news">消息中心通知</el-checkbox>-->
+                  <!--<el-checkbox label="news" value="news">消息中心通知</el-checkbox>-->
                 </el-checkbox-group>
               </li>
             </div>
@@ -380,57 +378,51 @@
                 {{tab}}
               </li>
             </ul>
-            <div>
-              <div v-show="handle.active == 0">
-                <el-table align="center"
-                          :data="table_assets.tableData_new"
-                          tooltip-effect="dark"
-                          style="width: 100%"
-                          @selection-change="handle_sel_table_assets">
-                  <el-table-column label="全选"
-                                   width="40"></el-table-column>
-                  <el-table-column align='left'
-                                   type="selection"
-                                   width="30"></el-table-column>
-                  <el-table-column prop="asset_ip"
-                                   label="资产"></el-table-column>
-                  <!--<el-table-column prop="label_group" label="资产组"  min-width="120" show-overflow-tooltip></el-table-column>-->
-                  <el-table-column label="资产组"
-                                   min-width="120"
-                                   show-overflow-tooltip>
-                    <template slot-scope="scope">
-                      <div>
-                        <span v-for="(it,$idx) in scope.row.label"
-                              :key="$idx"
-                              class="a_label">{{it}}</span>
-                      </div>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="category_group"
-                                   label="关联威胁"
-                                   show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级">
-                    <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
-                  </el-table-column>
-                  <!--<el-table-column label="失陷确定性">
-                    <template slot-scope="scope">
-                      <span class="fall_certainty">{{ scope.row.fall_certainty | certainty }}</span>
-                    </template>
-                  </el-table-column>-->
-                  <el-table-column label="状态"
-                                   width="80">
-                    <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
-                  </el-table-column>
-                </el-table>
-                <el-pagination class="pagination_box"
-                               @current-change="hcc_table_assets"
-                               :page-sizes="[5]"
-                               :page-size="5"
-                               :current-page="table_assets.pageNow"
-                               :total="table_assets.count"
-                               layout="total, sizes, prev, pager, next">
-                </el-pagination>
-              </div>
+            <div v-show="handle.active == 0">
+              <el-table class="common-table"
+                        :data="table_assets.tableData_new"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handle_sel_table_assets">
+                <el-table-column label="全选"
+                                 width="40"></el-table-column>
+                <el-table-column type="selection"
+                                 width="42"></el-table-column>
+                <el-table-column prop="asset_ip"
+                                 label="资产"
+                                 max-width="100"></el-table-column>
+                <el-table-column prop="label_group" label="资产组"
+                                 min-width="120" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="category_group"
+                                 min-width="140"
+                                 label="关联威胁"
+                                 show-overflow-tooltip></el-table-column>
+                <el-table-column label="威胁等级">
+                  <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
+                  {{ scope.row.degree | degree }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="失陷确定性">
+                  <template slot-scope="scope">
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="状态"
+                                 width="80">
+                  <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                </el-table-column>
+              </el-table>
+              <el-pagination class="pagination_box"
+                             @size-change="sc_table_assets"
+                             @current-change="hcc_table_assets"
+                             :page-sizes="[10,20,50,100]"
+                             :page-size="table_assets.eachPage"
+                             :current-page="table_assets.pageNow"
+                             :total="table_assets.count"
+                             layout="total, sizes, prev, pager, next">
+              </el-pagination>
             </div>
           </div>
         </div>
@@ -440,9 +432,9 @@
           <el-button @click="prev_task_handle"
                      class="prev_btn">上一步</el-button>
           <el-button @click="prev_task_handle_assign"
-                     class="prev_btn">分配</el-button>
+                     class="prev_btn" :disabled="handle.dist">分配</el-button>
           <el-button @click="prev_task_handle_save"
-                     class="prev_btn">保存</el-button>
+                     class="prev_btn" :disabled="handle.save">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -468,7 +460,7 @@
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
-                      @current-change="handle_sel_table_add_works">
+                      @selection-change="handle_sel_table_add_works">
               <el-table-column label="单选"
                                width="40">
                 <template slot-scope="scope">
@@ -501,6 +493,7 @@
           <el-col :span="24"
                   class="e-pagination">
             <el-pagination class="handle-pagination"
+                           @size-change="sc_table_add_works"
                            @current-change="hcc_table_add_works"
                            :page-sizes="[10,20,50,100]"
                            :page-size="table_add_works.eachPage"
@@ -586,7 +579,6 @@ export default {
       //经办人数组
       table_operator: {
         tableData: [],
-        tableData_new: [],
         count: 0,
         pageNow: 1,
         maxPage: 1,
@@ -595,7 +587,9 @@ export default {
       handle: {
         add: "",
         table_title: ["资产"],
-        active: 0
+        active: 0,
+        dist:false,
+        save:false
       },
       table_assets: {
         tableData: [],
@@ -625,7 +619,7 @@ export default {
         remarks: "",
         multiple: []
       },
-
+      //建议列表
       suggest_list: [
         {
           name: '',
@@ -932,17 +926,15 @@ export default {
   },
 
   created () {
-
     let asset_ip = this.$route.query.asset_ip;
     let status = this.$route.query.status;
     this.detail.asset_ip = asset_ip;
     this.detail.status = status;
-
     this.get_list_assets_detail();
     this.get_assets_detail_top();
   },
   methods: {
-    //获取资产详情
+    //获取资产详情顶部
     get_assets_detail_top () {
       this.$axios.get('/yiiapi/asset/asset-details',
         {
@@ -951,21 +943,16 @@ export default {
           }
         })
         .then((resp) => {
-
-          console.log(resp.data)
-
+          console.log(resp)
           let { status, data } = resp.data;
-
           if (status == 0) {
-
             let attr = [];
-
             attr.push(data);
+
 
             this.table_assets.tableData = attr;
             this.table_assets.count = 1;
             this.table_assets.pageNow = 1;
-
             let base_category = data.label.base_category;
 
             if (base_category.includes('终端')) {
@@ -988,7 +975,6 @@ export default {
 
     //获取资产详情列表
     get_list_assets_detail () {
-
       this.$axios.get('/yiiapi/asset/alert-list',
         {
           params: {
@@ -998,20 +984,14 @@ export default {
           }
         })
         .then((resp) => {
-
           let { status, data } = resp.data;
-
           let datas = data;
-
           if (status == 0) {
-
             let { data, count, maxPage, pageNow } = datas;
-
             this.table.tableData = data;
             this.table.count = count;
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
-
           }
         });
     },
@@ -1030,17 +1010,6 @@ export default {
     },
 
     /*****************************/
-
-    //改变告警等级
-    /*change_degree (command) {
-      this.table.tableData.forEach(function (item, index) {
-        if (command[1] == index) {
-          item.degree = command[0];
-          item.color = command[2];
-        }
-      });
-    },*/
-
     /***********************************以下是弹窗部分****************************************/
     /***********************************以下是弹窗部分****************************************/
 
@@ -1052,7 +1021,7 @@ export default {
 
     //工单任务选择
     change_task (command) {
-      if (command == "编辑工单") {
+      if (command == "新建工单") {
         this.open_task_new();
       } else if (command == "添加到工单") {
         this.open_add_new();
@@ -1079,12 +1048,13 @@ export default {
     ok_state () {
       //资产处理
       let asset_ip_group = this.detail.asset_ip;
-
       //状态设置
       let process = this.process_state;
       let change_status = 0;
 
-      if (process == '已处置') {
+      if(process == '处置中'){
+        change_status = 2;
+      } else if (process == '已处置') {
         change_status = 3;
       } else if (process == '已忽略') {
         change_status = 4;
@@ -1093,30 +1063,19 @@ export default {
       }
 
       this.$axios.put('/yiiapi/alert/change-asset-status', {
-        asset_ip: [asset_ip_group],
+        asset_ip: Array.of(asset_ip_group),
         status: change_status
       })
         .then(resp => {
-
           let { status, data } = resp.data;
-
           if (status == 0) {
-
-            this.$message.success('状态变更提交成功！');
-
+            this.$message.success('状态变更成功！');
+            this.closed_state();
           } else {
-
-            this.$message.error('状态变更提交错误！');
-
+            this.$message.error('状态变更失败！');
           }
-
-          this.closed_state();
-
-        })
-        .catch(err => {
-
+        }).catch(err => {
           console.log(err);
-
         })
     },
 
@@ -1124,19 +1083,14 @@ export default {
 
     //打开编辑工单
     open_task_new () {
-
       let status = this.detail.status;
-
       if (status == '3' || status == '4' || status == '5') {
-        this.$message({ message: '资产状态为已处置、已忽略、误报的不能新建。', type: 'error' });
+        this.$message({ message: '资产状态为已处置、已忽略、误报的不能新建。', type: 'warning' });
       } else {
-
-        let pageNow = this.table_assets.pageNow;
-
-        let handle_data = this.table_assets.tableData.slice((pageNow - 1) * 5, pageNow * 5);
-
+        this.table_assets.count = this.table_assets.tableData.length;
+        let eachPage = this.table_assets.eachPage;
+        let handle_data = this.table_assets.tableData.slice(0, eachPage);
         this.table_assets.tableData_new = handle_data;
-
         //获取用户列表(经办人使用)
         this.$axios.get('/yiiapi/site/user-list')
           .then(resp => {
@@ -1154,12 +1108,12 @@ export default {
             console.log(err);
           })
       }
-
     },
 
     //关闭编辑工单
     closed_task_new () {
       this.task.new = false;
+      this.task.new_contet = false;
       this.task_params = {
         name: "",
         level: "",
@@ -1169,6 +1123,8 @@ export default {
         textarea: "",
         multiple: []
       };
+      this.table_operator.tableData = [];
+      this.table_assets.tableData_new = [];
     },
 
     //下一步时候验证工单名称，优先级、经办人等参数
@@ -1203,12 +1159,8 @@ export default {
         this.table_operator.tableData.unshift(item);
       }
 
-      /*let pageNow = this.table_operator.pageNow;
-
-      let handle_data_operator = this.table_operator.tableData.slice((pageNow - 1) * 5, pageNow * 5);
-      this.table_operator.tableData_new = handle_data_operator;*/
-
-      let selected_name_attr = this.table_operator.tableData.map(x => { return x.username });
+      let selected_name_attr = this.table_operator.tableData
+        .map(x => { return x.username });
 
       this.task_params.new_operator = selected_name_attr;
     },
@@ -1218,10 +1170,20 @@ export default {
       this.table_operator.pageNow = val;
     },
 
+    //tabs下table每页显示多少条
+    sc_table_assets(val){
+      this.table_assets.eachPage = val;
+      this.table_assets.pageNow = 1;
+      let handle_data = this.table.tableData.slice(0, val);
+      this.table_assets.tableData_new = handle_data;
+    },
+
     //tabs下第一个table页数点击(资产)
     hcc_table_assets (val) {
       this.table_assets.pageNow = val;
-      let handle_data = this.table_assets.tableData.slice((val - 1) * 5, val * 5);
+      let eachPage = this.table_assets.eachPage;
+      let handle_data = this.table_assets.tableData
+        .slice((val - 1) * eachPage, val * eachPage);
       this.table_assets.tableData_new = handle_data;
     },
 
@@ -1239,100 +1201,67 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-
-      this.$axios.put('/yiiapi/asset/distribution-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: this.task_params.new_operator,
-          remarks: this.task_params.textarea,
-          risk_asset: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-
-            this.$message.success('分配成功');
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-
-            this.table_operator.tableData = [];
-
-            this.get_assets_detail_top();
-
-          } else if (status == 1) {
-
-            this.$message.error(msg);
-
-          }
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
+      if(this.task_params.multiple.length == 0){
+        this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
+      }else{
+        this.handle.dist = true;
+        this.$axios.put('/yiiapi/asset/distribution-workorder',
+          {
+            name: this.task_params.name,
+            priority: this.task_params.level,
+            perator: this.task_params.new_operator,
+            remarks: this.task_params.textarea,
+            risk_asset: this.task_params.multiple,
+            remind: this.task_params.notice
+          })
+          .then((resp) => {
+            this.handle.dist = false;
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('分配成功');
+              this.closed_task_new();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
 
     //编辑工单保存
     prev_task_handle_save () {
 
-      this.$axios.post('/yiiapi/asset/add-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: this.task_params.new_operator,
-          remarks: this.task_params.textarea,
-          risk_asset: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
+      if(this.task_params.multiple.length == 0){
+        this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
+      }else{
+        this.handle.save = true;
+        this.$axios.post('/yiiapi/asset/add-workorder',
+          {
+            name: this.task_params.name,
+            priority: this.task_params.level,
+            perator: this.task_params.new_operator,
+            remarks: this.task_params.textarea,
+            risk_asset: this.task_params.multiple,
+            remind: this.task_params.notice
+          })
+          .then((resp) => {
+            this.handle.save = false;
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('保存成功');
+              this.closed_task_new();
+              this.get_list_risk();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
 
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-            this.$message.success('保存成功');
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-            this.table_operator.tableData = [];
-
-            this.get_assets_detail_top();
-
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
-
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
     },
 
     /***************新加到工单*****************/
@@ -1346,12 +1275,11 @@ export default {
     add_open_state () {
       let status = this.detail.status;
       if (status == '3' || status == '4' || status == '5') {
-        this.$message({ message: '资产状态为已处置、已忽略、误报的不能添加到工单。', type: 'error' });
+        this.$message({ message: '资产状态为已处置、已忽略、误报的不能添加到工单。', type: 'warning' });
       } else {
         this.add_state_change = true;
         this.get_table_works_list();
       }
-
     },
 
     //获取列表
@@ -1362,26 +1290,19 @@ export default {
           rows: this.table_add_works.eachPage
         }
       }).then((resp) => {
-
+        this.table_add_works.loading = false;
         let { status, data } = resp.data;
-
         let datas = data;
-
         if (status == 0) {
-
           let { data, count, maxPage, pageNow } = datas;
-
           data.map(function (v, k) {
             v.new_perator = (JSON.parse(v.perator)).join(',');
             v.checked = false;
           });
-
           this.table_add_works.tableData = data;
           this.table_add_works.count = count;
           this.table_add_works.maxPage = maxPage;
           this.table_add_works.pageNow = Number(pageNow);
-          this.table_add_works.loading = false;
-
         }
       })
         .catch(err => {
@@ -1393,6 +1314,15 @@ export default {
     add_closed_state () {
       this.add_state_change = false;
       this.table_add_works.tableData = [];
+      this.add_params = {
+        name: "",
+        level: "",
+        operator: "",
+        new_operator: [],
+        notice: ['email'],
+        textarea: "",
+        multiple: []
+      };
     },
 
     //新加工单列表勾选某一条记录
@@ -1423,59 +1353,56 @@ export default {
 
       this.add_params.multiple = selected_attr;
 
-      this.$axios.post('/yiiapi/asset/add-workorder',
-        {
-          id: this.add_params.id,
-          name: this.add_params.name,
-          priority: this.add_params.level,
-          perator: this.add_params.perator,
-          remind: this.add_params.notice,
-          remarks: this.add_params.remarks,
-          risk_asset: this.add_params.multiple
-        })
-        .then((resp) => {
+      if(this.add_params.id == undefined){
+        this.$message({ message: '请选择一条工单！', type: 'warning' });
+      }else{
 
-          let { status, msg, data } = resp.data;
+        this.$axios.post('/yiiapi/asset/add-workorder',
+          {
+            id: this.add_params.id,
+            name: this.add_params.name,
+            priority: this.add_params.level,
+            perator: this.add_params.perator,
+            remind: this.add_params.notice,
+            remarks: this.add_params.remarks,
+            risk_asset: this.add_params.multiple
+          })
+          .then((resp) => {
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('添加成功');
+              //清空状态
+              this.add_closed_state();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
 
-          if (status == 0) {
-            this.$message.success('添加成功');
-
-            //不管成功与否，状态清空
-            this.add_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-            this.add_closed_state();
-            this.get_assets_detail_top();
-
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
-
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    //每页显示多少条
+    sc_table_add_works(val){
+      this.table_add_works.eachPage = val;
+      this.table_add_works.pageNow = 1;
+      this.get_table_works_list();
     },
 
     //新加工单列表分页页面切换
     hcc_table_add_works (val) {
-
       this.table_add_works.pageNow = val;
-
       this.get_table_works_list();
-    }
+    },
+
   }
 };
 </script>
 
 <style scoped lang="less">
+  @import '../../../../assets/css/less/common-pattern.less';
+  @import '../../../../assets/css/less/common-table-pattern.less';
 .detail-assets {
   text-align: left;
   .detail_base_top {

@@ -61,7 +61,6 @@
       bottom: 0;
       width: 100%;
       font-size: 16px;
-      z-index: 1001;
     }
   }
   .slider-enter{

@@ -77,7 +77,7 @@
     </el-row>
 
     <!-- 修改密码弹窗 -->
-    <el-dialog class="pop_box_password"
+    <el-dialog class="pop_box_password"  :modal-append-to-body="false"
                :visible.sync="pass_state">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -85,7 +85,7 @@
            alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">修改密码</span>
+        <span class="title_name">修改个人信息</span>
       </div>
       <div class="content">
         <div class="content_item">

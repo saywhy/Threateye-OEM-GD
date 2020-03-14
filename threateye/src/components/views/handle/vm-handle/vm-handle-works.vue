@@ -98,7 +98,7 @@
       <el-table-column label="优先级">
         <template slot-scope="scope">{{ scope.row.priority | priority }}</template>
       </el-table-column>
-      <el-table-column prop="perator" label="经办人" show-overflow-tooltip>
+      <el-table-column prop="new_perator" label="经办人" show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="更新时间" width="180" show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
@@ -126,7 +126,7 @@
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">{{task.title}}</span>
+        <span class="title_name">编辑标签</span>
       </div>
       <div class="step_box">
         <div class="step_box1">
@@ -232,31 +232,25 @@
                    </el-table-column>
                  </el-table>
                  <el-pagination class="pagination_box"
+                                @size-change="sc_table_assets"
                                 @current-change="hcc_table_assets"
-                                :page-sizes="[5]"
-                                :page-size="5"
+                                :page-sizes="[10,20,50,100]"
+                                :page-size="table_assets.eachPage"
                                 :current-page="table_assets.pageNow"
                                 :total="table_assets.count"
                                 layout="total, sizes, prev, pager, next">
                  </el-pagination>
                </div>
-               <div v-show="handle.active==1">
+               <div v-show="handle.active == 1">
                  <el-table align="center"
                            :data="table_alerts.tableData_new"
                            tooltip-effect="dark"
                            style="width: 100%"
                            @selection-change="handle_sel_table_alerts">
                    <el-table-column label="全选" prop="type" width="40">
-                     <template slot-scope="scope">
-                       <div class="new_dot" v-show="scope.row.new_alert != null">
-                       </div>
-                     </template>
                    </el-table-column>
                    <el-table-column type="selection" width="40">
                    </el-table-column>
-                   <!--<el-table-column label="告警时间" width="120" show-overflow-tooltip>
-                     <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-                   </el-table-column>-->
                    <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
                    </el-table-column>
                    <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
@@ -270,13 +264,14 @@
                    <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
                    </el-table-column>
                    <el-table-column label="状态"  width="80">
-                     <template slot-scope="scope">{{ scope.row.status | dispose }}</template>
+                     <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
                    </el-table-column>
                  </el-table>
                  <el-pagination class="pagination_box"
+                                @size-change="sc_table_alerts"
                                 @current-change="hcc_table_alerts"
-                                :page-sizes="[5]"
-                                :page-size="5"
+                                :page-sizes="[10,20,50,100]"
+                                :page-size="table_alerts.eachPage"
                                 :current-page="table_alerts.pageNow"
                                 :total="table_alerts.count"
                                 layout="total, sizes, prev, pager, next">
@@ -288,8 +283,10 @@
          <div class="btn_box">
             <el-button @click="closed_task_new" class="cancel_btn">取消</el-button>
             <el-button @click="prev_task_handle" class="prev_btn">上一步</el-button>
-            <el-button @click="prev_task_handle_assign" class="prev_btn">分配</el-button>
-            <el-button @click="prev_task_handle_save" class="prev_btn">保存</el-button>
+           <el-button @click="prev_task_handle_assign"
+                      class="prev_btn" :disabled="handle.dist">分配</el-button>
+           <el-button @click="prev_task_handle_save"
+                      class="prev_btn" :disabled="handle.save">保存</el-button>
          </div>
       </div>
     </el-dialog>
@@ -351,11 +348,10 @@
         params: {
           key: "",
           priority: "",
-          status: "0",
+          status: "1",
           startTime: "",
           endTime: "",
         },
-
         count: {
           count: 0,
           highest: 0,
@@ -462,13 +458,9 @@
       //获取全部资产列表
       get_list_assets_info(){
         this.$axios.get('/yiiapi/workorder/asset-list')
-
           .then((resp) => {
-
             let {status, data} = resp.data;
-
             if (status == 0) {
-
               data.map(function (v,k) {
                 v.label = JSON.parse(v.label);
                 if(v.label && v.label.length){
@@ -477,7 +469,6 @@
                   v.label_group = '';
                 }
               });
-
               this.table_assets.tableData = data;
               this.table_assets.count = data.length;
 
@@ -497,11 +488,8 @@
             }
           });
       },
-
-
       //工单中心列表
       get_list_works(){
-
         this.table.loading = true;
         this.$axios.get('/yiiapi/workorder/list',
           {
@@ -517,24 +505,24 @@
             }
           })
           .then((resp) => {
-
             this.table.loading = false;
-
             let {status, data} = resp.data;
-
             let datas = data;
-
             if (status == 0) {
-
               let {data, count, maxPage, pageNow} = datas;
-
               this.count = count;
+
+              data.map(function (v,k) {
+                if(v.perator){
+                  v.new_perator = v.perator.join(',')
+                }
+              });
+
               this.table.tableData = data;
               this.table.count = Number(count.count);
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
             }
-
           });
       },
 
@@ -626,16 +614,12 @@
 
       //状态变更确定按钮点击
       ok_state() {
-
         let selected = this.table.multipleSelection;
-
         //资产ID处理
         let worker_id_group = selected.map(x => {return x.id;});
-
         //状态设置
         let process = this.process_state;
         let change_status = 0;
-
         if (process == '处置中') {
           change_status = 2;
         } else if (process == '已处置') {
@@ -643,34 +627,22 @@
         } else if (process == '已取消') {
           change_status = 4;
         }
-
         this.$axios.put('/yiiapi/workorder/change-status', {
           asset_ip: worker_id_group,
           status: change_status
         })
           .then(resp => {
-
             let {status, data} = resp.data;
-
             if (status == 0) {
-
-              this.$message.success('工单状态变更提交成功！');
-
-              this.$refs.multipleTable.clearSelection();
-
+              this.$message.success('工单状态变更成功！');
               this.get_list_works();
-
+              this.closed_state();
             } else {
-              this.$message.error('工单状态变更提交错误！');
+              this.$message.error('工单状态变更错误！');
             }
-
-            this.closed_state();
-
           })
           .catch(err => {
-
             console.log(err);
-
           })
       },
 
@@ -688,7 +660,6 @@
         })
           .then(resp => {
             let { status,data} = resp;
-
              if(status == 200){
                this.$message.success('下载成功');
              }
@@ -699,7 +670,6 @@
 
       worksDelete(){
         let that = this;
-
         let multiple = this.table.multipleSelection;
         let selected = multiple.map(x => {return x.id;});
 
@@ -721,21 +691,15 @@
             if(status == 0){
               that.$message.success('删除工单成功');
               that.get_list_works();
-
               that.$emit('updateNum');
             }else {
               that.$message.error('删除工单失败');
             }
           })
             .catch(err => {
-
               console.log(err);
-
           });
         }).catch(() => {
-
-          this.$message({type: 'info', message: '已取消删除'});
-
           this.$refs.multipleTable.clearSelection();
         });
       },
@@ -754,8 +718,6 @@
           }else if(melsetion.length > 1){
             this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
           }else {
-
-            this.task.title = '编辑工单';
             this.open_task();
           }
         }else {
@@ -767,12 +729,14 @@
       open_task() {
         let assets = this.table_assets.tableData;
         let now_assets = this.table_assets.pageNow;
-        let assets_data = assets.slice((now_assets-1) * 5,now_assets * 5)
+        let e_page_assets = this.table_alerts.eachPage;
+        let assets_data = assets.slice((now_assets-1) * e_page_assets,now_assets * e_page_assets)
         this.table_assets.tableData_new = assets_data;
 
         let alerts = this.table_alerts.tableData;
         let now_alerts = this.table_alerts.pageNow;
-        let alerts_data = alerts.slice((now_alerts-1) * 5,now_alerts * 5)
+        let e_page_alerts = this.table_alerts.eachPage;
+        let alerts_data = alerts.slice((now_alerts-1) * e_page_alerts,now_alerts * e_page_alerts);
         this.table_alerts.tableData_new = alerts_data;
 
         //获取用户列表(经办人使用)
@@ -796,9 +760,8 @@
       //关闭新建工单
       closed_task_new (){
         this.task.new = false;
+        this.task.new_contet = false;
         this.task.status = '';
-        this.task.title = '新增工单';
-        this.$refs.multipleTable.clearSelection();
         this.task_params = {
           name: "",
           level: "",
@@ -810,6 +773,8 @@
           multiple_alerts:[],
           type:'asset'
         };
+        this.table_operator.tableData = [];
+        this.$refs.multipleTable.clearSelection();
       },
 
       //下一步时候验证工单名称，优先级、经办人等参数
@@ -836,54 +801,63 @@
       select_changced(item) {
 
         let level_list = this.table_operator.tableData;
-
         let selected_id_attr = level_list.map(x => {return x.id});
         if(selected_id_attr.includes(item.id)){
           this.$message.error('已存在');
         }else {
           this.table_operator.tableData.unshift(item);
         }
-
-        /*let pageNow = this.table_operator.pageNow;
-        let handle_data_operator = this.table_operator.tableData.slice((pageNow-1) * 5,pageNow * 5);
-        this.table_operator.tableData_new = handle_data_operator;*/
-
         let selected_name_attr = this.table_operator.tableData.map(x => {return x.username});
-
         this.task_params.new_operator = selected_name_attr;
       },
 
-      //经办人页数点击
-      hcc_table_operator(val) {
-        this.table_operator.pageNow = val;
-      },
-
-      //tabs下第一个table页数点击(资产)
-      hcc_table_assets(val) {
-        this.table_assets.pageNow = val;
-        let handle_data = this.table_assets.tableData.slice((val-1) * 5,val * 5);
+      //tabs下table每页显示多少条
+      sc_table_assets(val){
+        this.table_assets.eachPage = val;
+        this.table_assets.pageNow = 1;
+        let handle_data = this.table.tableData.slice(0, val);
         this.table_assets.tableData_new = handle_data;
       },
 
-      //tabs下第二个table页数点击(告警)
-      hcc_table_alerts(val) {
+      //tabs下第一个table页数点击(资产)
+      hcc_table_assets (val) {
+        this.table_assets.pageNow = val;
+        let eachPage = this.table_assets.eachPage;
+        let handle_data = this.table_assets.tableData
+          .slice((val - 1) * eachPage, val * eachPage);
+        this.table_assets.tableData_new = handle_data;
+      },
+
+
+      //tabs下table每页显示多少条
+      sc_table_alerts(val){
+        this.table_alerts.eachPage = val;
+        this.table_alerts.pageNow = 1;
+        let handle_data = this.table.tableData.slice(0, val);
+        this.table_alerts.tableData_new = handle_data;
+      },
+
+      //tabs下第一个table页数点击
+      hcc_table_alerts (val) {
         this.table_alerts.pageNow = val;
-        let handle_data = this.table_alerts.tableData.slice((val-1) * 5,val * 5);
+        let eachPage = this.table_alerts.eachPage;
+        let handle_data = this.table_alerts.tableData
+          .slice((val - 1) * eachPage, val * eachPage);
         this.table_alerts.tableData_new = handle_data;
       },
 
       //tab下第一个table多选
-      handle_sel_table_assets(val) {
+      handle_sel_table_assets (val) {
         this.table_assets.multipleSelection = val;
-        let selected = val.map(x => {return x.asset_ip});
-        this.task_params.multiple_assets = selected;
+        let selected = val.map(x => { return x.asset_ip });
+        this.task_params.multiple = selected;
       },
 
       //tab下第一个table多选
-      handle_sel_table_alerts(val) {
+      handle_sel_table_alerts (val) {
         this.table_alerts.multipleSelection = val;
-        let selected = val.map(x => {return x.alert_id});
-        this.task_params.multiple_alerts = selected;
+        let selected = val.map(x => { return x.alert_id });
+        this.task_params.multiple = selected;
       },
 
       //新增工单按钮切换
@@ -915,45 +889,59 @@
           Object.assign(all_params, {id:this.task.id});
         }
 
-        this.$axios.put('/yiiapi/workorder/distribution',all_params)
-          .then((resp) => {
-            let {status,msg, data} = resp.data;
+        if(this.task_params.type == 'asset'){
+          if(this.task_params.multiple_assets.length == 0){
+            this.$message({ message: '请选择至少一条列表！', type: 'warning' });
+          }else{
+            this.handle.dist = true;
+            this.$axios.put('/yiiapi/workorder/distribution',all_params)
+              .then((resp) => {
+                this.handle.dist = false;
+                let {status,msg, data} = resp.data;
+                if (status == 0) {
+                  this.$message.success('分配成功');
 
-            if (status == 0) {
+                  this.closed_task_new();
+                  this.get_list_works();
 
-              this.$message.success('分配成功');
+                }else if (status == 1){
 
-              //不管成功与否 都需要清除状态，关闭弹窗
-              this.task.new = false;
-              this.task.new_contet = false;
-              this.task.status = '';
-              this.task.title = '编辑工单';
+                  this.$message.error(msg);
 
-              this.task_params = {
-                name: "",
-                level: "",
-                operator: "",
-                new_operator:[],
-                notice: ['email'],
-                textarea: "",
-                multiple_assets:[],
-                multiple_alerts:[],
-                type:'asset'
-              };
-              this.table_operator.tableData = [];
-              this.get_list_works();
+                }
 
-            }else if (status == 1){
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        }else if(this.task_params.type == 'alert'){
+          if(this.task_params.multiple_alerts.length == 0){
+            this.$message({ message: '请选择至少一条列表！', type: 'warning' });
+          }else{
+            this.handle.dist = true;
+            this.$axios.put('/yiiapi/workorder/distribution',all_params)
+              .then((resp) => {
+                this.handle.dist = false;
+                let {status,msg, data} = resp.data;
+                if (status == 0) {
+                  this.$message.success('分配成功');
 
-              this.$message.error(msg);
+                  this.closed_task_new();
+                  this.get_list_works();
 
-            }
+                }else if (status == 1){
 
-          })
-          .catch(err => {
-            console.log(err);
-          });
+                  this.$message.error(msg);
 
+                }
+
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        }
       },
 
       //新建工单保存
@@ -972,44 +960,53 @@
         if(this.task.status == 'edit'){
           Object.assign(all_params, {id:this.task.id});
         }
+        if(this.task_params.type == 'asset'){
+          if(this.task_params.multiple_assets.length == 0){
+            this.$message({ message: '请选择至少一条列表！', type: 'warning' });
+          }else{
+            this.handle.save = true;
+            this.$axios.post('/yiiapi/workorder/add',all_params)
+              .then((resp) => {
+                this.handle.save = false;
+                let {status,msg, data} = resp.data;
+                if (status == 0) {
+                  this.$message.success('保存成功');
+                  this.closed_task_new();
+                  this.get_list_works();
+                }else if (status == 1){
+                  this.$message.error(msg);
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        }else if(this.task_params.type == 'alert'){
+          if(this.task_params.multiple_alerts.length == 0){
+            this.$message({ message: '请选择至少一条列表！', type: 'warning' });
+          }else{
+            this.handle.save = true;
+            this.$axios.post('/yiiapi/workorder/add',all_params)
+              .then((resp) => {
+                this.handle.save = false;
+                let {status,msg, data} = resp.data;
+                if (status == 0) {
+                  this.$message.success('保存成功');
+                  this.closed_task_new();
+                  this.get_list_works();
+                }else if (status == 1){
+                  this.$message.error(msg);
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        }
 
-        this.$axios.post('/yiiapi/workorder/add',all_params)
 
-          .then((resp) => {
 
-            let {status,msg, data} = resp.data;
 
-            if (status == 0) {
-              this.$message.success('保存成功');
-
-              //关闭弹窗
-              this.task.new = false;
-              this.task.new_contet = false;
-
-              this.task.status = '';
-              this.task.title = '新增工单';
-
-              this.task_params = {
-                name: "",
-                level: "",
-                operator: "",
-                new_operator:[],
-                notice: ['email'],
-                textarea: "",
-                multiple_assets:[],
-                multiple_alerts:[],
-                type:'asset'
-              };
-              this.table_operator.tableData = [];
-              this.get_list_works();
-
-            }else if (status == 1){
-              this.$message.error(msg);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
       }
 
     }

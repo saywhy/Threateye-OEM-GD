@@ -67,7 +67,6 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/'
       });
-
       NProgress.done();
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息

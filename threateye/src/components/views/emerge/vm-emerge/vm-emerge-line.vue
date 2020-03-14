@@ -19,6 +19,7 @@ export default {
 
       let data = this.data;
 
+
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("emergeLine"));
 
@@ -93,7 +94,14 @@ export default {
             startValue: data[0].statistics_time
           },
           {
-            type: "inside"
+            type: "inside",
+          },
+          {
+            type: 'slider',
+            fillerColor:'rgba(0,112,255,.16)',
+            handleStyle:{
+              color: '#0070ff'
+            }
           }
         ],
         series: {

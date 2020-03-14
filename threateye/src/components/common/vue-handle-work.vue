@@ -75,7 +75,6 @@
     <!-- 弹窗 -->
     <!-- 工单任务 -->
     <el-dialog class="task_new_box"
-               width='840px'
                :modal-append-to-body="false"
                :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png"
@@ -180,13 +179,6 @@
               <el-table-column prop="email_addr"
                                label="邮箱"></el-table-column>
             </el-table>
-            <!--<el-pagination class="pagination_box"
-                           @current-change="hcc_table_operator"
-                           :page-sizes="[5]" :page-size="5"
-                           :current-page="table_operator.pageNow"
-                           :total="table_operator.tableData.length"
-                           layout="total,sizes, prev, pager, next">
-            </el-pagination>-->
           </div>
         </div>
         <div class="btn_box">
@@ -203,61 +195,96 @@
         <div class="task_content_box">
           <div class='table_box'>
             <ul class="table_box_title">
-              <li v-for="(tab,index) in handle.table_title"
-                  @click="table_btn_toggle(index)"
-                  :class="{active:handle.active==index}">
-                {{tab}}
-              </li>
+              <li class="active">{{handle.table_title[0]}}</li>
             </ul>
-            <div v-show="handle.active == 0">
-              <el-table align="center"
-                        :data="table_assets.tableData_new"
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                        @selection-change="handle_sel_table_assets">
-                <el-table-column label="全选"
-                                 width="40"></el-table-column>
-                <el-table-column align='left'
-                                 type="selection"
-                                 width="40"></el-table-column>
-                <el-table-column prop="asset_ip"
-                                 label="资产"></el-table-column>
-                <!--<el-table-column prop="label_group" label="资产组"  min-width="120" show-overflow-tooltip></el-table-column>-->
-                <el-table-column label="资产组"
-                                 min-width="120"
-                                 show-overflow-tooltip>
-                  <template slot-scope="scope">
-                    <div>
+            <div>
+              <div v-show="handle.cagetory == 0">
+                <el-table :data="table.tableData"
+                          tooltip-effect="dark"
+                          @selection-change="handle_sel_table_mul">
+                  <el-table-column label="全选"
+                                   width="40"></el-table-column>
+                  <el-table-column align='left'
+                                   type="selection"
+                                   width="40"></el-table-column>
+                  <el-table-column prop="asset_ip"
+                                   label="资产"></el-table-column>
+                  <el-table-column label="资产组"
+                                   min-width="120"
+                                   show-overflow-tooltip>
+                    <template slot-scope="scope">
+                      <div>
                       <span v-for="(it,$idx) in scope.row.label"
                             :key="$idx"
                             class="a_label">{{it}}</span>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="category_group"
-                                 label="关联威胁"
-                                 show-overflow-tooltip></el-table-column>
-                <el-table-column label="威胁等级">
-                  <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
-                </el-table-column>
-                <el-table-column label="失陷确定性">
-                  <template slot-scope="scope">
+                      </div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="category_group"
+                                   label="关联威胁"
+                                   show-overflow-tooltip></el-table-column>
+                  <el-table-column label="威胁等级">
+                    <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
+                  </el-table-column>
+                  <el-table-column label="失陷确定性">
+                    <template slot-scope="scope">
                     <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                       {{ scope.row.fall_certainty | certainty }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="状态"
-                                 width="80">
-                  <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
-                </el-table-column>
-              </el-table>
-              <el-pagination class="pagination_box"
-                             @current-change="hcc_table_assets"
-                             :page-sizes="[5]"
-                             :page-size="5"
-                             :current-page="table_assets.pageNow"
-                             :total="table_assets.count"
-                             layout="total, sizes, prev, pager, next">
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="状态"
+                                   width="80">
+                    <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div v-show="handle.cagetory == 1">
+                <el-table :data="table.tableData" class="common-table"
+                          tooltip-effect="dark"
+                          style="width: 100%"
+                          @selection-change="handle_sel_table_mul">
+                  <el-table-column label="全选"
+                                   prop="type"
+                                   width="40">
+                  </el-table-column>
+                  <el-table-column type="selection"
+                                   width="40"></el-table-column>
+                  <el-table-column prop="category"
+                                   label="告警类型"
+                                   show-overflow-tooltip></el-table-column>
+                  <el-table-column prop="indicator"
+                                   label="威胁指标"
+                                   show-overflow-tooltip></el-table-column>
+                  <el-table-column prop="application"
+                                   label="应用"
+                                   show-overflow-tooltip></el-table-column>
+                  <el-table-column label="威胁等级">
+                    <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="失陷确定性">
+                    <template slot-scope="scope">
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="状态"
+                                   width="80">
+                    <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <el-pagination
+                 class="pagination_box"
+                 @size-change="sc_table_pages"
+                 @current-change="hcc_table_pages"
+                 :page-sizes="[10,20,50,100]"
+                 :page-size="table.eachPage"
+                 :current-page="table.pageNow"
+                 :total="table.count"
+                 layout="total, sizes, prev, pager, next">
               </el-pagination>
             </div>
           </div>
@@ -404,27 +431,24 @@ export default {
       //经办人数组
       table_operator: {
         tableData: [],
-        tableData_new: [],
         count: 0,
         pageNow: 1,
         maxPage: 1,
         eachPage: 10
       },
       handle: {
-        add: "",
         table_title: ["告警"],
-        active: 0
+        active: 0,
+        cagetory: 1
       },
-      table_alerts: {
+      table: {
         tableData: [],
-        tableData_new: [],
         count: 0,
         pageNow: 1,
         maxPage: 1,
         eachPage: 10,
         multipleSelection: []
       },
-
       //添加到工单
       add_state_change: false,
       table_add_works: {
@@ -459,13 +483,15 @@ export default {
 
     //工单任务选择
     change_task (command) {
-      if (command == "编辑工单") {
+      if (command == "新建工单") {
         this.open_task_new();
       } else if (command == "添加到工单") {
         this.open_add_new();
       }
     },
+
     /***************状态变更*****************/
+
     //打开状态变更弹窗
     open_state () {
 
@@ -526,37 +552,31 @@ export default {
           console.log(err);
         })
     },
+
     /***************工单任务*****************/
 
     //打开编辑工单
     open_task_new () {
 
-      let sel_table_data = this.table.multipleSelection;
+      let multiple = this.multipleSelection;
 
-      let sel_table_attr = sel_table_data.map(x => { return x.status });
+      let multiple_attr = multiple.map(x => { return x.status });
 
-      if (sel_table_data.length == 0) {
-
+      if (multiple.length == 0) {
         this.$message({ message: '请选择需要编辑的告警！', type: 'warning' });
         return false;
-
       } else {
-
-        if (sel_table_attr.includes('3')
-          || sel_table_attr.includes('4')
-          || sel_table_attr.includes('5')) {
-          this.$message({ message: '告警状态为已处置、已忽略、误报的不能新建。', type: 'error' });
+        if (multiple_attr.includes('3')
+          || multiple_attr.includes('4')
+          || multiple_attr.includes('5')) {
+          this.$message({ message: '告警状态为已处置、已忽略、误报的不能新建。', type: 'warning' });
         } else {
-
-          this.table_alerts.tableData = sel_table_data;
-
-          this.table_alerts.count = sel_table_data.length;
-
-          let pageNow = this.table_alerts.pageNow;
-
-          let handle_data = this.table_alerts.tableData.slice((pageNow - 1) * 5, pageNow * 5)
-
-          this.table_alerts.tableData_new = handle_data;
+          this.table.tableData = multiple;
+          this.table.count = multiple.length;
+          let pageNow = this.table.pageNow;
+          let eachPage = this.table.eachPage;
+          let handle_data = this.table.tableData.slice((pageNow - 1) * eachPage, pageNow * eachPage);
+          this.table.tableData = handle_data;
 
           //获取用户列表(经办人使用)
           this.$axios.get('/yiiapi/site/user-list')
@@ -582,7 +602,7 @@ export default {
     //关闭编辑工单
     closed_task_new () {
       this.task.new = false;
-      this.$refs.multipleTable.clearSelection();
+      this.task.new_contet = false;
       this.task_params = {
         name: "",
         level: "",
@@ -592,11 +612,13 @@ export default {
         textarea: "",
         multiple: []
       };
+      this.table_operator.tableData = [];
+
+      this.$emit('clearSel');
     },
 
     //下一步时候验证工单名称，优先级、经办人等参数
     next_task_new () {
-
       if (this.task_params.name == '') {
         this.$message.error('工单名称不能为空');
       } else if (this.task_params.level == '') {
@@ -625,132 +647,93 @@ export default {
       } else {
         this.table_operator.tableData.unshift(item);
       }
-
-      /*let pageNow = this.table_operator.pageNow;
-      let handle_data_operator = this.table_operator.tableData.slice((pageNow-1) * 5,pageNow * 5);
-      this.table_operator.tableData_new = handle_data_operator;*/
-
       let selected_name_attr = this.table_operator.tableData.map(x => { return x.username });
       this.task_params.new_operator = selected_name_attr;
     },
 
-    //经办人页数点击
-    hcc_table_operator (val) {
-      this.table_operator.pageNow = val;
+    //tabs下table每页显示多少条
+    sc_table_pages(val){
+      this.table.eachPage = val;
+      this.table.pageNow = 1;
+      let handle_data = this.table.tableData.slice(0, val);
+      this.table.tableData = handle_data;
     },
 
-    //tabs下第一个table页数点击(资产)
-    hcc_table_alerts (val) {
-      this.table_alerts.pageNow = val;
-      let handle_data = this.table_alerts.tableData.slice((val - 1) * 5, val * 5);
-      this.table_alerts.tableData_new = handle_data;
+    //tabs下table页数点击
+    hcc_table_pages (val) {
+      this.table.pageNow = val;
+      let eachPage = this.table.eachPage;
+      let handle_data = this.table.tableData.slice((val - 1) * eachPage, val * eachPage);
+      this.table.tableData = handle_data;
     },
 
-    //tab下第一个table多选
-    handle_sel_table_alerts (val) {
-      this.table_alerts.multipleSelection = val;
+    //tab下table多选
+    handle_sel_table_mul (val) {
+      this.table.multipleSelection = val;
       let selected = val.map(x => { return x.alert_id });
       this.task_params.multiple = selected;
     },
 
-    //新增工单按钮切换
-    table_btn_toggle (index) {
-      this.handle.active = index;
-    },
-
     //编辑工单分配
     prev_task_handle_assign () {
-
-      this.$axios.put('/yiiapi/alert/distribution-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: this.task_params.new_operator,
-          remarks: this.task_params.textarea,
-          te_alert: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-
-            this.$message.success('分配成功');
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-
-            this.table_operator.tableData = [];
-            this.get_list_risk();
-
-          } else if (status == 1) {
-
-            this.$message.error(msg);
-
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
+      if(this.task_params.multiple.length == 0){
+        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
+      }else {
+        this.$axios.put('/yiiapi/alert/distribution-workorder',
+          {
+            name: this.task_params.name,
+            priority: this.task_params.level,
+            perator: this.task_params.new_operator,
+            remarks: this.task_params.textarea,
+            te_alert: this.task_params.multiple,
+            remind: this.task_params.notice
+          })
+          .then((resp) => {
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('分配成功');
+              //关闭弹窗
+              this.closed_task_new();
+              this.$emit('updateData');
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
 
     //编辑工单保存
     prev_task_handle_save () {
-
-      this.$axios.post('/yiiapi/alert/add-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: [],
-          remarks: this.task_params.textarea,
-          te_alert: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-            this.$message.success('保存成功');
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-            this.table_operator.tableData = [];
-
-            this.get_list_risk();
-
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if(this.task_params.multiple.length == 0){
+        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
+      }else {
+        this.$axios.post('/yiiapi/alert/add-workorder',
+          {
+            name: this.task_params.name,
+            priority: this.task_params.level,
+            perator: this.task_params.new_operator,
+            remarks: this.task_params.textarea,
+            te_alert: this.task_params.multiple,
+            remind: this.task_params.notice
+          })
+          .then((resp) => {
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('保存成功');
+              //关闭弹窗
+              this.closed_task_new();
+              this.$emit('updateData');
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
 
     /***************新加到工单*****************/

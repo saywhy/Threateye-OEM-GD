@@ -109,7 +109,7 @@
                   </el-button>
                   <el-dropdown-menu slot="dropdown"
                                     class="dropdown_ul_box">
-                    <el-dropdown-item command="编辑工单">编辑工单</el-dropdown-item>
+                    <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
                     <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -117,7 +117,7 @@
             </el-row>
           </el-form>
           <el-table ref="multipleTable"
-                    class=" common-table"
+                    class="common-table"
                     align="center"
                     v-loading="table.loading"
                     :data="table.tableData"
@@ -179,12 +179,13 @@
             </el-table-column>
           </el-table>
           <el-pagination class="handle-pagination"
-                         @size-change="handleSizeChange"
-                         @current-change="handleCurrentChange"
-                         :page-sizes="[10, 20, 50,100]"
-                         :page-size="table.eachPage"
-                         :total="table.count"
-                         layout="total, sizes, prev, pager, next, jumper"></el-pagination>
+               @size-change="handleSizeChange"
+               @current-change="handleCurrentChange"
+               :page-sizes="[10, 20, 50,100]"
+               :page-size="table.eachPage"
+               :total="table.count"
+               layout="total, sizes, prev, pager, next, jumper">
+          </el-pagination>
         </div>
 
       </div>
@@ -193,7 +194,6 @@
     <!-- 弹窗 -->
     <!-- 状态变更 -->
     <el-dialog class="pop_state_box"
-               width='480px'
                :modal-append-to-body="false"
                :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -225,7 +225,6 @@
     <!-- 弹窗 -->
     <!-- 工单任务 -->
     <el-dialog class="task_new_box"
-               width='840px'
                :modal-append-to-body="false"
                :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png"
@@ -252,6 +251,8 @@
       <!-- 基本信息 -->
       <div class="task_new_content"
            v-if="task.new_contet">
+
+        <!--出现滚动条-->
         <div class="task_content_box">
           <div class="content_top">
             <div class="content_top_left">
@@ -307,7 +308,6 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <!--<el-checkbox label="news" value="news">消息中心通知</el-checkbox>-->
                 </el-checkbox-group>
               </li>
             </div>
@@ -330,15 +330,9 @@
               <el-table-column prop="email_addr"
                                label="邮箱"></el-table-column>
             </el-table>
-            <!--<el-pagination class="pagination_box"
-                           @current-change="hcc_table_operator"
-                           :page-sizes="[5]" :page-size="5"
-                           :current-page="table_operator.pageNow"
-                           :total="table_operator.tableData.length"
-                           layout="total,sizes, prev, pager, next">
-            </el-pagination>-->
           </div>
         </div>
+
         <div class="btn_box">
           <el-button @click="closed_task_new"
                      class="cancel_btn">取消</el-button>
@@ -360,49 +354,36 @@
               </li>
             </ul>
             <div>
-              <div v-show="handle.active==0">
-                <el-table align="center"
-                          class="common-table"
+              <div v-show="handle.active == 0">
+                <el-table class="common-table"
                           :data="table_alerts.tableData_new"
                           tooltip-effect="dark"
-                          style="width: 100%"
                           @selection-change="handle_sel_table_alerts">
                   <el-table-column label="全选"
                                    prop="type"
-                                   width="40"></el-table-column>
-                  <el-table-column type="selection"
                                    width="40">
                   </el-table-column>
-                  <!--<el-table-column label="告警时间" width="120" show-overflow-tooltip>
-                    <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-                  </el-table-column>-->
+                  <el-table-column type="selection"
+                                   width="40"></el-table-column>
                   <el-table-column prop="category"
                                    label="告警类型"
-                                   show-overflow-tooltip>
-                  </el-table-column>
+                                   show-overflow-tooltip></el-table-column>
                   <el-table-column prop="indicator"
                                    label="威胁指标"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="src_ip"
-                                   label="源地址"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="dest_ip"
-                                   label="目的地址"
-                                   show-overflow-tooltip>
-                  </el-table-column>
+                                   show-overflow-tooltip></el-table-column>
                   <el-table-column prop="application"
                                    label="应用"
-                                   show-overflow-tooltip>
-                  </el-table-column>
+                                   show-overflow-tooltip></el-table-column>
                   <el-table-column label="威胁等级">
-                    <template slot-scope="scope">{{ scope.row.degree | degree_sino }}</template>
+                    <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+                    </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性">
                     <template slot-scope="scope">
-                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                        {{ scope.row.fall_certainty | certainty }}</span>
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
@@ -411,9 +392,10 @@
                   </el-table-column>
                 </el-table>
                 <el-pagination class="pagination_box"
+                               @size-change="sc_table_alerts"
                                @current-change="hcc_table_alerts"
-                               :page-sizes="[5]"
-                               :page-size="5"
+                               :page-sizes="[10,20,50,100]"
+                               :page-size="table_alerts.eachPage"
                                :current-page="table_alerts.pageNow"
                                :total="table_alerts.count"
                                layout="total, sizes, prev, pager, next">
@@ -428,17 +410,15 @@
           <el-button @click="prev_task_handle"
                      class="prev_btn">上一步</el-button>
           <el-button @click="prev_task_handle_assign"
-                     class="prev_btn">分配</el-button>
+                     class="prev_btn" :disabled="handle.dist">分配</el-button>
           <el-button @click="prev_task_handle_save"
-                     class="prev_btn">保存</el-button>
+                     class="prev_btn" :disabled="handle.save">保存</el-button>
         </div>
       </div>
     </el-dialog>
-
     <!-- 弹窗 -->
     <!-- 添加到工单 -->
     <el-dialog class="pop_state_add"
-               width='960px'
                :modal-append-to-body="false"
                :visible.sync="add_state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -456,7 +436,7 @@
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
-                      @current-change="handle_sel_table_add_works">
+                      @selection-change="handle_sel_table_add_works">
               <el-table-column label="单选"
                                width="40">
                 <template slot-scope="scope">
@@ -486,11 +466,11 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span="24"
-                  class="e-pagination">
+          <el-col :span="24" class="e-pagination">
             <el-pagination class="handle-pagination"
+                           @size-change="sc_table_add_works"
                            @current-change="hcc_table_add_works"
-                           :page-sizes="[10, 20, 50,100]"
+                           :page-sizes="[10,20,50,100]"
                            :page-size="table_add_works.eachPage"
                            :total="table_add_works.count"
                            :current-page="table_add_works.pageNow"
@@ -580,7 +560,6 @@ export default {
       //弹窗部分
       state_change: false,
       process_state: "",
-
       //工单任务
       task: {
         new: false,
@@ -619,7 +598,6 @@ export default {
       //经办人数组
       table_operator: {
         tableData: [],
-        tableData_new: [],
         count: 0,
         pageNow: 1,
         maxPage: 1,
@@ -628,15 +606,17 @@ export default {
       handle: {
         add: "",
         table_title: ["告警"],
-        active: 0
+        active: 0,
+        dist:false,
+        save:false
       },
       table_alerts: {
         tableData: [],
-        tableData_new: [],
+        tableData_new:[],
         count: 0,
         pageNow: 1,
         maxPage: 1,
-        eachPage: 5,
+        eachPage: 10,
         multipleSelection: []
       },
       //添加到工单
@@ -646,7 +626,7 @@ export default {
         count: 0,
         pageNow: 1,
         maxPage: 1,
-        eachPage: 5,
+        eachPage: 10,
         loading: true
       },
       add_params: {
@@ -656,7 +636,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: []
-      },
+      }
     };
   },
   components: {
@@ -695,15 +675,12 @@ export default {
     //威脅列表
     get_list_threat () {
       this.table.loading = true;
-
       let params_alert = {
         threat: ''
       };
-
       if (this.params.threat == 1) {
         params_alert.threat = 1;
       }
-
       this.$axios.get('/yiiapi/' + this.threats + '/list', {
         params: {
           start_time: this.params.startTime,
@@ -774,8 +751,6 @@ export default {
     /*****************************/
     handleSelChange (val) {
       this.table.multipleSelection = val;
-
-      handleSelChange
     },
 
     //进入告警详情页面
@@ -799,7 +774,7 @@ export default {
 
     //工单任务选择
     change_task (command) {
-      if (command == "编辑工单") {
+      if (command == "新建工单") {
         this.open_task_new();
       } else if (command == "添加到工单") {
         this.open_add_new();
@@ -811,7 +786,7 @@ export default {
     open_state () {
       let sel_table_data = this.table.multipleSelection;
       if (sel_table_data.length == 0) {
-        this.$message({ message: '您未选中列表，请勾选。', type: 'warning' });
+        this.$message({ message: '请选择需要变更的告警！', type: 'warning' });
         return false;
       } else {
         this.state_change = true;
@@ -831,23 +806,21 @@ export default {
 
     //状态变更确定按钮点击
     ok_state () {
-
       let selected = this.table.multipleSelection;
       //资产ID处理
       let id_group = selected.map(x => { return x.id; });
-
       //状态设置
       let process = this.process_state;
       let change_status = 0;
 
-      if (process == '处置中') {
-        change_status = 1;
-      } else if (process == '已处置') {
+      if(process == '处置中'){
         change_status = 2;
-      } else if (process == '已忽略') {
+      } else if (process == '已处置') {
         change_status = 3;
-      } else if (process == '误报') {
+      } else if (process == '已忽略') {
         change_status = 4;
+      } else if (process == '误报') {
+        change_status = 5;
       }
 
       this.$axios.put('/yiiapi/' + this.threats + '/do-alarm', {
@@ -857,22 +830,14 @@ export default {
         .then(resp => {
 
           let { status, data } = resp.data;
-
           if (status == 0) {
-
-            this.$message.success('状态变更提交成功！');
-
-            this.$refs.multipleTable.clearSelection();
-
+            this.$message.success('告警状态变更成功！');
+            //关闭弹窗
+            this.closed_state();
             this.get_list_threat();
-
           } else {
-
-            this.$message.error('状态变更提交错误！');
-
+            this.$message.error('告警状态变更错误！');
           }
-
-          this.closed_state();
 
         })
         .catch(err => {
@@ -888,30 +853,21 @@ export default {
     open_task_new () {
 
       let sel_table_data = this.table.multipleSelection;
-
       let sel_table_attr = sel_table_data.map(x => { return x.status });
-
       if (sel_table_data.length == 0) {
-        this.$message({ message: '您未选中列表或列表为空', type: 'warning' });
+        this.$message({ message: '请选择需要编辑的告警！', type: 'warning' });
         return false;
-
       } else {
-
-        if (sel_table_attr.includes('2')
-          || sel_table_attr.includes('3')
-          || sel_table_attr.includes('4')) {
-
-          this.$message({ message: '告警状态为已处置、已忽略、误报的不能新建。', type: 'error' });
-
+        if (sel_table_attr.includes('3')
+          || sel_table_attr.includes('4')
+          || sel_table_attr.includes('5')) {
+          this.$message({ message: '告警状态为已处置、已忽略、误报的不能新建。', type: 'warning' });
         } else {
-
           this.table_alerts.tableData = sel_table_data;
           this.table_alerts.count = sel_table_data.length;
-
-          let pageNow = this.table_alerts.pageNow;
-
-          let handle_data = this.table_alerts.tableData.slice((pageNow - 1) * 5, pageNow * 5);
-
+          //let pageNow = this.table_alerts.pageNow;
+          let eachPage = this.table_alerts.eachPage;
+          let handle_data = this.table_alerts.tableData.slice(0, eachPage);
           this.table_alerts.tableData_new = handle_data;
 
           //获取用户列表(经办人使用)
@@ -940,7 +896,8 @@ export default {
     //关闭编辑工单
     closed_task_new () {
       this.task.new = false;
-      this.$refs.multipleTable.clearSelection();
+      this.task.new_contet = false;
+
       this.task_params = {
         name: "",
         level: "",
@@ -950,6 +907,9 @@ export default {
         textarea: "",
         multiple: []
       };
+      this.table_operator.tableData = [];
+      this.table_alerts.tableData_new = [];
+      this.$refs.multipleTable.clearSelection();
     },
 
     //下一步时候验证工单名称，优先级、经办人等参数
@@ -976,21 +936,13 @@ export default {
     select_changced (item) {
 
       let level_list = this.table_operator.tableData;
-
       let selected_id_attr = level_list.map(x => { return x.id });
       if (selected_id_attr.includes(item.id)) {
         this.$message.error('已存在');
       } else {
         this.table_operator.tableData.unshift(item);
       }
-
-      let pageNow = this.table_operator.pageNow;
-
-      /*let handle_data_operator = this.table_operator.tableData.slice((pageNow-1) * 5,pageNow * 5);
-      this.table_operator.tableData_new = handle_data_operator;*/
-
       let selected_name_attr = this.table_operator.tableData.map(x => { return x.username });
-
       this.task_params.new_operator = selected_name_attr;
     },
 
@@ -999,10 +951,20 @@ export default {
       this.table_operator.pageNow = val;
     },
 
-    //tabs下第一个table页数点击(告警)
+    //tabs下table每页显示多少条
+    sc_table_alerts(val){
+      this.table_alerts.eachPage = val;
+      this.table_alerts.pageNow = 1;
+      let handle_data = this.table.tableData.slice(0, val);
+      this.table_alerts.tableData_new = handle_data;
+    },
+
+    //tabs下第一个table页数点击
     hcc_table_alerts (val) {
       this.table_alerts.pageNow = val;
-      let handle_data = this.table_alerts.tableData.slice((val - 1) * 5, val * 5);
+      let eachPage = this.table_alerts.eachPage;
+      let handle_data = this.table_alerts.tableData
+        .slice((val - 1) * eachPage, val * eachPage);
       this.table_alerts.tableData_new = handle_data;
     },
 
@@ -1020,98 +982,68 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-
-      this.$axios.put('/yiiapi/' + this.threats + '/distribution-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: this.task_params.new_operator,
-          remarks: this.task_params.textarea,
-          te_alert: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-
-            this.$message.success('分配成功');
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-            // this.table_operator.tableData_new = [];
-
-            this.get_list_threat();
-
-          } else if (status == 1) {
-
-            this.$message.error(msg);
-
-          }
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
+      if(this.task_params.multiple.length == 0){
+        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
+      }else{
+        this.handle.dist = true;
+        this.$axios.put('/yiiapi/' + this.threats + '/distribution-workorder',
+          {
+            name: this.task_params.name,
+            priority: this.task_params.level,
+            perator: this.task_params.new_operator,
+            remarks: this.task_params.textarea,
+            te_alert: this.task_params.multiple,
+            remind: this.task_params.notice
+          })
+          .then((resp) => {
+            this.handle.dist = false;
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('分配成功');
+              this.closed_task_new();
+              this.get_list_threat();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
 
     //编辑工单保存
     prev_task_handle_save () {
-
-      this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
-        {
-          name: this.task_params.name,
-          priority: this.task_params.level,
-          perator: [],
-          remarks: this.task_params.textarea,
-          te_alert: this.task_params.multiple,
-          remind: this.task_params.notice
-        })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-            this.$message.success('保存成功');
-
-            //不管成功与否 都需要清除状态，关闭弹窗
-            this.task.new = false;
-            this.task.new_contet = false;
-
-            this.task_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-            // this.table_operator.tableData_new = [];
-            this.get_list_threat();
-
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
+      if(this.task_params.multiple.length == 0){
+        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
+      }else{
+        this.handle.save = true;
+        this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
+          {
+            name: this.task_params.name,
+            priority: this.task_params.level,
+            perator: this.task_params.new_operator,
+            remarks: this.task_params.textarea,
+            te_alert: this.task_params.multiple,
+            remind: this.task_params.notice
+          })
+          .then((resp) => {
+            this.handle.save = false;
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('保存成功');
+              this.closed_task_new();
+              this.get_list_threat();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
 
 
-        })
-        .catch(err => {
-          console.log(err);
-        });
     },
 
     /***************新加到工单*****************/
@@ -1123,28 +1055,36 @@ export default {
 
     //新加到工单打开状态
     add_open_state () {
-
       let sel_table_data = this.table.multipleSelection;
-
-      let sel_table_attr = sel_table_data.map(x => {
-        return x.status
-      });
-
+      let sel_table_attr = sel_table_data.map(x => { return x.status });
       if (sel_table_data.length == 0) {
-        this.$message({ message: '您未选中列表或列表为空', type: 'warning' });
+        this.$message({ message: '请选择需要添加到工单的告警！', type: 'warning' });
         return false;
-
       } else {
-
-        if (sel_table_attr.includes('2')
-          || sel_table_attr.includes('3')
-          || sel_table_attr.includes('4')) {
-          this.$message({ message: '告警状态为已处置、已忽略、误报的不能添加到工单。', type: 'error' });
+        if (sel_table_attr.includes('3')
+          || sel_table_attr.includes('4')
+          || sel_table_attr.includes('5')) {
+          this.$message({ message: '告警状态为已处置、已忽略、误报的不能添加到工单。', type: 'warning' });
         } else {
           this.add_state_change = true;
           this.get_table_works_list();
         }
       }
+    },
+
+    //新加到工单取消状态
+    add_closed_state () {
+      this.add_state_change = false;
+      this.add_params = {
+        name: "",
+        level: "",
+        operator: "",
+        new_operator: [],
+        notice: ['email'],
+        textarea: "",
+        multiple: []
+      };
+      this.$refs.multipleTable.clearSelection();
     },
 
     //获取列表
@@ -1155,42 +1095,29 @@ export default {
           rows: this.table_add_works.eachPage
         }
       }).then((resp) => {
-
+        this.table_add_works.loading = false;
         let { status, data } = resp.data;
-
         let datas = data;
-
         if (status == 0) {
-
           let { data, count, maxPage, pageNow } = datas;
-
           data.map(function (v, k) {
             v.new_perator = (JSON.parse(v.perator)).join(',');
             v.checked = false;
           });
-
           this.table_add_works.tableData = data;
           this.table_add_works.count = count;
           this.table_add_works.maxPage = maxPage;
           this.table_add_works.pageNow = Number(pageNow);
-          this.table_add_works.loading = false;
-
         }
       })
     },
 
-    //新加到工单取消状态
-    add_closed_state () {
-      this.$refs.multipleTable.clearSelection();
-      this.add_state_change = false;
-    },
+
 
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
-
       // el-radio单选框,不需要这一步
       if (row != undefined) {
-
         this.table_add_works.tableData.forEach(item => {
           // 排他,每次选择时把其他选项都清除
           if (item.id != row.id) {
@@ -1202,64 +1129,59 @@ export default {
         this.add_params.level = row.priority;
         this.add_params.perator = JSON.parse(row.perator);
         this.add_params.remarks = row.remarks;
+        this.add_params.remind = JSON.parse(row.remind);
       }
     },
 
     //新加到工单确定
     add_ok_state () {
 
-      let selected_attr = this.table.multipleSelection.map(x => { return x.alert_id });
+      let selected_attr = this.table.multipleSelection
+        .map(x => { return x.alert_id * 1 });
 
       this.add_params.multiple = selected_attr;
+      if(this.add_params.id == undefined){
+        this.$message({ message: '请选择一条工单！', type: 'warning' });
+      }else{
+        this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
+          {
+            id: this.add_params.id,
+            name: this.add_params.name,
+            priority: this.add_params.level,
+            perator: this.add_params.perator,
+            remind: this.add_params.notice,
+            remarks: this.add_params.remarks,
+            te_alert: this.add_params.multiple
+          })
+          .then((resp) => {
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('添加成功');
+              //清空状态
+              this.add_closed_state();
+              this.get_list_threat();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
 
-      this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
-        {
-          id: this.add_params.id,
-          name: this.add_params.name,
-          priority: this.add_params.level,
-          perator: this.add_params.perator,
-          remind: this.add_params.notice,
-          remarks: this.add_params.remarks,
-          te_alert: this.add_params.multiple
-        })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-            this.$message.success('添加成功');
-
-            this.add_params = {
-              name: "",
-              level: "",
-              operator: "",
-              new_operator: [],
-              notice: ['email'],
-              textarea: "",
-              multiple: []
-            };
-
-            this.add_closed_state();
-
-            this.get_list_threat();
-
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    //每页显示多少条
+    sc_table_add_works(val){
+      this.table_add_works.eachPage = val;
+      this.table_add_works.pageNow = 1;
+      this.get_table_works_list();
     },
 
     //新加工单列表分页页面切换
     hcc_table_add_works (val) {
-
       this.table_add_works.pageNow = val;
-
       this.get_table_works_list();
-    }
+    },
   }
 };
 </script>

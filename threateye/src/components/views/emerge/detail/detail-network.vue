@@ -218,9 +218,14 @@
                 <li class="info_top_item"
                     v-for="value in item.info_list">
                   <span class="info_top_item_title">{{value.name}}</span>
+                  <span v-if="value.name=='文件大小'">
+                    {{value.value | filterType }}
+                  </span>
                   <span class="info_top_item_content"
+                        v-if="value.name!='文件大小'"
                         :class="value.value=='点击下载'?'download_text':''"
                         @click="download(value,item)">{{value.value}}</span>
+
                 </li>
               </div>
               <div class="time_right_info_bom"
@@ -2277,10 +2282,6 @@ export default {
         default:
           break;
       }
-
-
-
-
       this.$axios.put(alarm, {
         id: id_list,
         status: item
@@ -2288,6 +2289,8 @@ export default {
         .then(response => {
           let { status, data } = response.data;
           console.log(data);
+          console.log(response);
+
           if (status == 0) {
             this.get_data();
             this.$message(
@@ -2299,7 +2302,7 @@ export default {
           } else {
             this.$message(
               {
-                message: data.msg,
+                message: response.data.msg,
                 type: 'error',
               }
             );
@@ -2990,8 +2993,17 @@ export default {
 
 
     },
-
-
+  },
+  filters: {
+    filterType: function (val) {
+      if (val == '') return;
+      if (val == undefined) return;
+      if (val == 0) return '0B';
+      var k = 1024;
+      var size = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        i = Math.floor(Math.log(val) / Math.log(k));
+      return (val / Math.pow(k, i)).toPrecision(3) + ' ' + size[i]
+    }
   }
 };
 </script>

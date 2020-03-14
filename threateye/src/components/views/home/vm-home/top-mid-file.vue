@@ -1,5 +1,5 @@
 <template>
-    <div id="file"></div>
+  <div id="file"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -8,16 +8,20 @@ export default {
   props: {
     top_mid: {
       type: Object,
-      default:() => {}
+      default: () => { }
     }
   },
-  mounted() {
+  mounted () {
     this.graph();
   },
   methods: {
-    graph() {
+    graph () {
+      var file_count_diff = []
+      this.top_mid.file_count_diff.forEach(element => {
+        file_count_diff.push(Math.floor(element * 100) / 100)
+      });
       let statistics_time = this.top_mid.statistics_time;
-      let file_count_diff = this.top_mid.file_count_diff;
+
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("file"));

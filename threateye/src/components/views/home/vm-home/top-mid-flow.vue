@@ -1,5 +1,5 @@
 <template>
-    <div id="flow"></div>
+  <div id="flow"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -8,17 +8,22 @@ export default {
   props: {
     top_mid: {
       type: Object,
-      default:() => {}
+      default: () => { }
     }
   },
-  mounted() {
+  mounted () {
     this.graph();
   },
   methods: {
-    graph() {
+    graph () {
 
       let statistics_time = this.top_mid.statistics_time;
-      let flow_diff = this.top_mid.flow_diff;
+      let flow_diff = []
+      this.top_mid.flow_diff.forEach(element => {
+        flow_diff.push(Math.floor(element * 100) / 100)
+      });
+
+
 
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("flow"));
@@ -77,7 +82,7 @@ export default {
           },
           data: statistics_time
         },
-        yAxis:{
+        yAxis: {
           splitLine: {
             show: true,
             lineStyle: {

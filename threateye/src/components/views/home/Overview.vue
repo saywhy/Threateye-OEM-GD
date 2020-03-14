@@ -335,7 +335,7 @@ export default {
     init_top_mid () {
       this.$axios.get('/yiiapi/alert/flow-file-statistics')
         .then((resp) => {
-          //console.log(resp)
+          console.log(resp)
           let {
             status,
             data

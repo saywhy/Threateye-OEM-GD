@@ -2099,6 +2099,8 @@ export default {
           // 攻击阶段
           this.attack_stage_list.forEach(element => {
             element.count = 0;
+            console.log('&&&&&&&&&&&')
+            console.log(this.network_detail.attack_stage)
             if (this.network_detail.attack_stage == element.name) {
               this.network_detail.attack_stage_cn = element.value
             }

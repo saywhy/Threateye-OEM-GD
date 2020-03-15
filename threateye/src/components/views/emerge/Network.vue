@@ -1,5 +1,5 @@
 <template>
-  <div id="Network"
+  <div id="Network" v-loading="handle.save"
        v-cloak>
     <div class="e_line"
          v-loading="e_line.loading">
@@ -178,7 +178,6 @@
         </el-col>
       </el-row>
     </div>
-
     <!-- 弹窗 -->
     <!-- 状态变更 -->
     <el-dialog class="pop_state_box"
@@ -209,7 +208,6 @@
                    class="ok_btn">确定</el-button>
       </div>
     </el-dialog>
-
     <!-- 弹窗 -->
     <!-- 工单任务 -->
     <el-dialog class="task_new_box"
@@ -938,7 +936,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_alerts (val) {
       this.table_alerts.multipleSelection = val;
-      let selected = val.map(x => { return x.alert_id });
+      let selected = val.map(x => { return x.alert_id  * 1});
       this.task_params.multiple = selected;
     },
 
@@ -983,33 +981,36 @@ export default {
     //编辑工单保存
     prev_task_handle_save () {
       if (this.task_params.multiple.length == 0) {
-        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      } else {
-        this.handle.save = true;
-        this.$axios.post('/yiiapi/alert/add-workorder',
-          {
-            name: this.task_params.name,
-            priority: this.task_params.level,
-            perator: this.task_params.new_operator,
-            remarks: this.task_params.textarea,
-            te_alert: this.task_params.multiple,
-            remind: this.task_params.notice
-          })
-          .then((resp) => {
-            this.handle.save = false;
-            let { status, msg, data } = resp.data;
-            if (status == 0) {
-              this.$message.success('保存成功');
-              this.closed_task_new();
-              this.get_list_risk();
-            } else if (status == 1) {
-              this.$message.error(msg);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        let alerts = this.table.multipleSelection;
+        let selected = this.table.multipleSelection
+          .map(x => { return x.alert_id * 1});
+        this.task_params.multiple = selected;
       }
+      console.log(this.task_params.multiple);
+      this.handle.save = true;
+      this.$axios.post('/yiiapi/alert/add-workorder',
+        {
+          name: this.task_params.name,
+          priority: this.task_params.level,
+          perator: this.task_params.new_operator,
+          remarks: this.task_params.textarea,
+          te_alert: this.task_params.multiple,
+          remind: this.task_params.notice
+        })
+        .then((resp) => {
+          this.handle.save = false;
+          let { status, msg, data } = resp.data;
+          if (status == 0) {
+            this.$message.success('保存成功');
+            this.closed_task_new();
+            this.get_list_risk();
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
 
     /***************新加到工单*****************/

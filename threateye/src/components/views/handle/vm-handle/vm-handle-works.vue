@@ -569,6 +569,7 @@
               this.table.count = Number(count.count);
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
+              
             }
           });
       },

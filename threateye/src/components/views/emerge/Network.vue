@@ -1,5 +1,6 @@
 <template>
-  <div id="Network" v-loading="handle.save"
+  <div id="Network"
+       v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <div class="e_line"
          v-loading="e_line.loading">
@@ -145,14 +146,16 @@
             <el-table-column prop="application"
                              label="应用"
                              show-overflow-tooltip></el-table-column>
-            <el-table-column label="威胁等级" width="100">
+            <el-table-column label="威胁等级"
+                             width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="失陷确定性" width="100">
+            <el-table-column label="失陷确定性"
+                             width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
@@ -360,14 +363,16 @@
                   <el-table-column prop="application"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级" width="100">
+                  <el-table-column label="威胁等级"
+                                   width="100">
                     <template slot-scope="scope">
-                <span class="btn_alert_background"
-                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
-                  {{ scope.row.degree | degree_sino }}</span>
+                      <span class="btn_alert_background"
+                            :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                        {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性" width="100">
+                  <el-table-column label="失陷确定性"
+                                   width="100">
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                         {{ scope.row.fall_certainty | certainty }}</span>
@@ -932,7 +937,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_alerts (val) {
       this.table_alerts.multipleSelection = val;
-      let selected = val.map(x => { return x.id  * 1});
+      let selected = val.map(x => { return x.id * 1 });
       this.task_params.multiple = selected;
     },
 
@@ -944,9 +949,9 @@ export default {
     //编辑工单分配
     prev_task_handle_assign () {
 
-      if(this.task_params.multiple.length == 0) {
+      if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.id * 1});
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
 
@@ -983,7 +988,7 @@ export default {
       if (this.task_params.multiple.length == 0) {
         let alerts = this.table.multipleSelection;
         let selected = this.table.multipleSelection
-          .map(x => { return x.id * 1});
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);

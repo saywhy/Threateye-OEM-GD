@@ -185,7 +185,7 @@
                :page-sizes="[10, 20, 50,100]"
                :page-size="table.eachPage"
                :total="table.count"
-               layout="total, sizes, prev, pager, next, jumper">
+               layout="total, sizes, prev, pager, next">
           </el-pagination>
         </div>
 

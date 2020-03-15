@@ -117,7 +117,7 @@
           :page-size="table.eachPage"
           :current-page="table.pageNow"
           :total="table.count"
-          layout="total, sizes, prev, pager, next, jumper">
+          layout="total, sizes, prev, pager, next">
     </el-pagination>
 
     <!-- 弹窗 -->

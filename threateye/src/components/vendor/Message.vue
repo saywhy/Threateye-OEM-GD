@@ -31,7 +31,7 @@
              :page-sizes="[5, 10, 20]"
              :page-size="10"
              :total="20"
-             layout="total, sizes, prev, pager, next, jumper"
+             layout="total, sizes, prev, pager, next"
            ></el-pagination>
          </el-col>
        </el-row>

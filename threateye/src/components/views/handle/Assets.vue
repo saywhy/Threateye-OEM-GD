@@ -200,7 +200,7 @@
               </template>
             </el-table-column>
             <el-table-column label="威胁等级">
-             <!-- <template slot-scope="scope">
+              <!-- <template slot-scope="scope">
                 <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
                   {{ scope.row.degree | degree }}</span>
               </template>-->
@@ -231,7 +231,7 @@
                          :page-size="table.eachPage"
                          :current-page="table.pageNow"
                          :total="table.count"
-                         layout="total, sizes, prev, pager, next, jumper">
+                         layout="total, sizes, prev, pager, next">
           </el-pagination>
         </el-col>
       </el-row>
@@ -439,9 +439,9 @@
                 </el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">
-  <span class="btn_alert_background"
-        :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
-    {{ scope.row.degree | degree }}</span>
+                    <span class="btn_alert_background"
+                          :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+                      {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="失陷确定性">

@@ -210,6 +210,17 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
   background: #47cad9
 }
 
+.fall_certainty {
+  width: 72px;
+  height: 30px;
+  display: inline-block;
+  color: #fff;
+  background-color:#dc5f5f;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 2px;
+}
+
 .el-textarea__inner {
   font-family: PingFang !important;
 

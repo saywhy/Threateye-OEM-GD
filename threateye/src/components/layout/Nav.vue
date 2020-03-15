@@ -344,9 +344,6 @@ export default {
                     }, 500);
                   }
 
-
-
-
                 } else {
                   this.$message(
                     {

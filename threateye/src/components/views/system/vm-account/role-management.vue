@@ -34,6 +34,7 @@
         </el-table-column>
         <el-table-column prop="name"
                          label="角色名称"
+                         width="180"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="description"
@@ -42,15 +43,18 @@
         </el-table-column>
 
         <el-table-column label="创建时间"
-                         width="150"
+                         width="220"
                          show-overflow-tooltip>
           <template slot-scope="scope">{{ scope.row.created_at*1000 |formatDate }}</template>
         </el-table-column>
         <el-table-column prop="creatorname"
                          label="创建人"
+                         width="180"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作"
+                         width="150">
+
           <template slot-scope="scope">
             <el-button type="primary"
                        v-if="scope.row.creatorname!= 'SYSTEM' "

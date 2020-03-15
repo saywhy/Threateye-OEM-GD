@@ -675,8 +675,6 @@ export default {
       }
     },
     edit_data () {
-
-
       var isRepeat_ip_segment_edit = []
       var isRepeat_tag_edit = []
       this.monitor_edit.ip_segment_list.forEach(item => {
@@ -684,8 +682,6 @@ export default {
           isRepeat_ip_segment_edit.push(item.name)
         }
       });
-
-
       var tag_test = []
       var tag_test_str = ''
       this.monitor_edit.label_list.forEach(item => {

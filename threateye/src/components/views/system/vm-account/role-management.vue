@@ -1,5 +1,6 @@
 <template>
-  <div id="role_management">
+  <div id="role_management"
+       v-loading.fullscreen.lock="loading">
     <div class="role_title">
       <el-button type="primary"
                  class="btn_i"
@@ -383,7 +384,8 @@ export default {
       role_edit: {
       },
       old_role_edit: '',
-      select_list: []
+      select_list: [],
+      loading: false
     };
   },
   props: {
@@ -423,6 +425,7 @@ export default {
 
 
     get_data () {
+      // this.loading = true
       this.$axios.get('/yiiapi/user/role-list', {
         params: {
           page: this.role_data.page,
@@ -430,6 +433,7 @@ export default {
         }
       })
         .then(response => {
+          //  this.loading=false
           console.log(response.data);
           this.role_list = response.data.data;
           this.role_list.data.forEach((item, index) => {
@@ -514,13 +518,14 @@ export default {
       this.$refs.tree.getHalfCheckedNodes().forEach(item => {
         this.role_add.permissions_id.push(item.id)
       });
-
+      this.loading = true
       this.$axios.post('/yiiapi/user/add-role', {
         name: this.role_add.name,
         description: this.role_add.describe,
         permissions_id: this.role_add.permissions_id,
       })
         .then(response => {
+          this.loading = false
           console.log(response);
           if (response.data.status == 0) {
             this.role_state.add = false;

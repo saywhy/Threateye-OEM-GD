@@ -164,10 +164,13 @@ input:-ms-input-placeholder {
   font-family: "PingFang";
 }
 
-body::-webkit-scrollbar {/*滚动条整体样式*/
-   width: 0px;     /*高宽分别对应横竖滚动条的尺寸*/
+body::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 0px;
+  /*高宽分别对应横竖滚动条的尺寸*/
   /* border-radius: 6px;*/
- }
+}
+
 /*body::-webkit-scrollbar-thumb {!*滚动条里面小方块*!
    border-radius: 6px;
    background: #a8a8a8;
@@ -177,7 +180,10 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
    background: #f4f4f4;
  }*/
 
-.dropdown_ul_box{
-  width: 136px!important;
+.dropdown_ul_box {
+  width: 136px !important;
 }
 
+.el-date-editor .el-range-separator {
+  width: auto;
+}

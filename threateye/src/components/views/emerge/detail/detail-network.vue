@@ -468,8 +468,11 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="degree"
-                             label="告警等级">
+            <el-table-column label="告警等级">
+              <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+              </template>
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"
@@ -516,8 +519,11 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="degree"
-                             label="告警等级">
+            <el-table-column label="告警等级">
+              <template slot-scope="scope">
+                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+              </template>
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"
@@ -814,15 +820,12 @@
                                    label="应用"
                                    show-overflow-tooltip>
                   </el-table-column>
-                  <el-table-column prop="degree"
-                                   label="威胁等级"
+                  <el-table-column label="威胁等级"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
-                      <span v-if="scope.row.degree=='high'">高</span>
-                      <span v-if="scope.row.degree=='medium'">中</span>
-                      <span v-if="scope.row.degree=='low'">低</span>
+                      <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                        {{ scope.row.degree | degree_sino }}</span>
                     </template>
-
                   </el-table-column>
                   <el-table-column label="失陷确定性"
                                    show-overflow-tooltip>
@@ -1400,9 +1403,9 @@ export default {
         }
       })
         .then(response => {
-            
+
           this.network_detail = response.data.data
-            console.log(this.network_detail);
+
           this.network_detail.attack_stage_cn = ''
 
           this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
@@ -3507,6 +3510,17 @@ export default {
 <style scoped lang="less">
 .detail-network {
   background: #f8f8f8;
+  .high {
+    color: #dc5f5f;
+  }
+
+  .mid {
+    color: #e0c840;
+  }
+
+  .low {
+    color: #47cad9;
+  }
   .red_color {
     color: #ff5f5c !important;
   }

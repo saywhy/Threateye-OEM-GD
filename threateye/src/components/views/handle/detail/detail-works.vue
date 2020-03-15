@@ -61,8 +61,20 @@
                         tooltip-effect="dark"
                         :data="table.tableData">
                 <el-table-column prop="asset_ip" label="资产" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="new_label" label="资产组" show-overflow-tooltip></el-table-column>
+                <el-table-column min-width="140"
+                                 label="关联威胁">
+                  <template slot-scope="scope">
+                <span class="btn_tag_box"
+                      v-if="item!=''"
+                      v-for="item in scope.row.category">
+                  <el-button type="primary"
+                             class="btn_tag">
+                    {{item}}
+                  </el-button>
+                </span>
+                  </template>
+                </el-table-column>
                 <el-table-column  label="威胁等级" width="100">
                 <template slot-scope="scope">
   <span class="btn_alert_background"
@@ -70,14 +82,13 @@
     {{ scope.row.degree | degree }}</span>
                 </template>
                 </el-table-column>
-                <el-table-column label="失陷确定性" width="100">
+                <el-table-column label="失陷确定性" width="150">
                   <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="状态" width="80">
-                  <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                <el-table-column prop="status" label="状态" width="80">
                 </el-table-column>
               </el-table>
             </div>
@@ -241,10 +252,15 @@ export default {
             if(data.assets) {
               //是资产
               this.table.tabsFlag = 0;
+              data.assets.data.forEach(function (v,k) {
+                v.new_label = v.label.join(',');
+              });
               this.table.tableData = data.assets.data;
               this.table.count = data.assets.count;
               this.table.maxPage = data.assets.maxPage;
               this.table.pageNow = data.assets.pageNow;
+
+              console.log(this.table.tableData)
             }
 
             if(data.alerts){
@@ -254,8 +270,6 @@ export default {
               this.table.count = data.alerts.count;
               this.table.maxPage = data.alerts.maxPage;
               this.table.pageNow = data.alerts.pageNow;
-
-              console.log(this.table.tableData)
             }
           }
         });
@@ -342,6 +356,17 @@ export default {
 <style scoped lang="less">
   .detail-works {
     text-align: left;
+    .btn_tag_box {
+      .btn_tag {
+        margin: 2px;
+        background: #5389e0;
+        border-radius: 2px;
+        min-height: 20px;
+        font-size: 10px;
+        color: #ffffff;
+        padding: 2px 5px;
+      }
+    }
     .detail_base_top {
       padding: 0 56px;
       height: 62px;

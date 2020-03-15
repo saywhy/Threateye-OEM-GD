@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-assets" v-loading="handle.save"
+  <div class="detail-assets" v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <back-title :title-name="title_name"></back-title>
 
@@ -1421,7 +1421,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_assets (val) {
       this.table_assets.multipleSelection = val;
-      let selected = val.map(x => { return x.asset_ip * 1 });
+      let selected = val.map(x => { return x.asset_ip});
       this.task_params.multiple = selected;
     },
 
@@ -1432,6 +1432,12 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
+      if(this.task_params.multiple.length == 0){
+        let selected = this.table_assets.tableData
+          .map(x => {return x.asset_ip});
+        this.task_params.multiple = selected;
+      }
+      console.log(this.task_params.multiple);
       this.handle.save = true;
       this.$axios.put('/yiiapi/asset/distribution-workorder',
         {
@@ -1459,6 +1465,12 @@ export default {
 
     //编辑工单保存
     prev_task_handle_save () {
+      if(this.task_params.multiple.length == 0){
+        let selected = this.table_assets.tableData
+          .map(x => {return x.asset_ip});
+        this.task_params.multiple = selected;
+      }
+      console.log(this.task_params.multiple);
       this.handle.save = true;
       this.$axios.post('/yiiapi/asset/add-workorder',
         {
@@ -1571,7 +1583,7 @@ export default {
     add_ok_state () {
 
       let selected_attr = this.table_assets.multipleSelection
-        .map(x => { return x.asset_ip * 1 });
+        .map(x => { return x.asset_ip });
 
       this.add_params.multiple = selected_attr;
 

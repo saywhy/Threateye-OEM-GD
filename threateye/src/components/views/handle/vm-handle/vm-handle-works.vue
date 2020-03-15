@@ -1,5 +1,5 @@
 <template>
-  <div class="vm-handle-works" v-cloak v-loading="handle.save">
+  <div class="vm-handle-works" v-cloak  v-loading.fullscreen.lock="handle.save">
     <div class="invest_form invest_form_network">
       <el-form class="common-pattern">
         <el-row class="common_box">
@@ -390,7 +390,7 @@
         params: {
           key: "",
           priority: "",
-          status: "",
+          status: "all",
           startTime: "",
           endTime: "",
         },
@@ -586,7 +586,7 @@
         this.params = {
           key: "",
           priority: "",
-          status: "",
+          status: "params",
           startTime: "",
           endTime: ""
         };
@@ -841,7 +841,7 @@
           this.$message.error('工单名称不能为空');
         }else if(this.task_params.level == ''){
           this.$message.error('优先级未选择');
-        }else if(this.task_params.operator == ''){
+        }else if(this.table_operator.tableData.length == 0){
           this.$message.error('经办人未选择');
         }else {
           this.task.new_contet = false;
@@ -906,9 +906,8 @@
       //tab下第一个table多选
       handle_sel_table_assets (val) {
         this.table_assets.multipleSelection = val;
-        let selected = val.map(x => { return x.asset_ip  * 1});
+        let selected = val.map(x => { return x.asset_ip});
         this.task_params.multiple_assets = selected;
-        console.log(this.task_params.multiple_assets)
       },
 
       //tab下第一个table多选
@@ -958,7 +957,6 @@
                 let {status,msg, data} = resp.data;
                 if (status == 0) {
                   this.$message.success('分配成功');
-
                   this.closed_task_new();
                   this.get_list_works();
 
@@ -1002,7 +1000,6 @@
 
       //新建工单保存
       prev_task_handle_save() {
-
         let all_params = {
           name: this.task_params.name,
           priority:this.task_params.level,
@@ -1017,7 +1014,6 @@
           Object.assign(all_params, {id:this.task.id});
         }
         if(this.task_params.type == 'asset'){
-          console.log(this.task_params.multiple_assets)
           if(this.task_params.multiple_assets.length == 0){
             this.$message({ message: '请选择至少一条列表！', type: 'warning' });
           }else{
@@ -1060,12 +1056,7 @@
               });
           }
         }
-
-
-
-
       }
-
     }
   }
 </script>

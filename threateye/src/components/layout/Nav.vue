@@ -227,7 +227,9 @@ export default {
 
               if (status == 0) {
 
-              setToken(data.data.token);
+              //setToken(data.data.token);
+
+              console.log(data.data)
 
               localStorage.setItem("token", data.data.token);
 
@@ -237,7 +239,7 @@ export default {
               this.user_edit.mobile = datas.mobile;
               this.user_edit.email_addr= datas.email_addr;
 
-              this.edit_user();
+              //this.edit_user();
 
               } else {
 
@@ -247,14 +249,12 @@ export default {
                     type: 'error',
                   }
                 );
-                
+
               }
             })
             .catch(error => {
               console.log(error);
             })
-
-
         })
         .catch(error => {
           console.log(error);
@@ -364,7 +364,6 @@ export default {
                   console.log(error);
                 })
                 // location.reload();
-
               }, 500);
             }
 

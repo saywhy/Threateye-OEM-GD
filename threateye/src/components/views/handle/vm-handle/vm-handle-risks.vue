@@ -1,5 +1,5 @@
 <template>
-  <div class="handle-risks_common" v-loading="handle.save"
+  <div class="handle-risks_common" v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <div class="outside-top">
       <div class="ost ost-1">
@@ -814,7 +814,7 @@ export default {
     ok_state () {
       let selected = this.table.multipleSelection;
       //资产ID处理
-      let id_group = selected.map(x => { return x.asset_ip * 1; });
+      let id_group = selected.map(x => { return x.id * 1; });
       //状态设置
       let process = this.process_state;
       let change_status = 0;
@@ -977,7 +977,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_alerts (val) {
       this.table_alerts.multipleSelection = val;
-      let selected = val.map(x => { return x.asset_ip * 1 });
+      let selected = val.map(x => { return x.id * 1 });
       this.task_params.multiple = selected;
     },
 
@@ -988,10 +988,10 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-      if (this.task_params.multiple.length == 0) {
+      if(this.task_params.multiple.length == 0) {
         let alerts = this.table.multipleSelection;
         let selected = this.table.multipleSelection
-          .map(x => { return x.asset_ip * 1});
+          .map(x => { return x.id * 1});
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1027,7 +1027,7 @@ export default {
       if (this.task_params.multiple.length == 0) {
         let alerts = this.table.multipleSelection;
         let selected = this.table.multipleSelection
-          .map(x => { return x.asset_ip * 1});
+          .map(x => { return x.id * 1});
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1150,7 +1150,7 @@ export default {
     add_ok_state () {
 
       let selected_attr = this.table.multipleSelection
-        .map(x => { return x.asset_ip * 1 });
+        .map(x => { return x.id * 1 });
 
       this.add_params.multiple = selected_attr;
 

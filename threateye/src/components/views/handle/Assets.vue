@@ -1,5 +1,5 @@
 <template>
-  <div class="handle-assets" v-loading="handle.save"
+  <div class="handle-assets" v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <vm-handle-tabs :data_top="data_top"
                     v-if="data_top_show"></vm-handle-tabs>
@@ -18,7 +18,6 @@
             {{tag.name}}
           </el-tag>
         </div>
-
         <el-button class="assets-toggle"
                    @click="toggle_top_show = !toggle_top_show">
           <span class="name">收起更多</span>
@@ -1027,7 +1026,6 @@ export default {
         } else {
           this.table_assets.tableData = sel_table_data;
           this.table_assets.count = sel_table_data.length;
-          //let pageNow = this.table_alerts.pageNow;
           let eachPage = this.table_assets.eachPage;
           let handle_data = this.table_assets.tableData.slice(0, eachPage);
           this.table_assets.tableData_new = handle_data;
@@ -1057,7 +1055,6 @@ export default {
     closed_task_new () {
       this.task.new = false;
       this.task.new_contet = false;
-
       this.task_params = {
         name: "",
         level: "",
@@ -1093,7 +1090,6 @@ export default {
 
     //经办人change处理
     select_changced (item) {
-
       let level_list = this.table_operator.tableData;
       let selected_id_attr = level_list.map(x => { return x.id });
       if (selected_id_attr.includes(item.id)) {
@@ -1113,7 +1109,7 @@ export default {
       this.table_assets.tableData_new = handle_data;
     },
 
-    //tabs下第一个table页数点击(资产)
+    //tabs下第一个table页数点击(资产);
     hcc_table_assets (val) {
       this.table_assets.pageNow = val;
       let eachPage = this.table_assets.eachPage;
@@ -1138,7 +1134,7 @@ export default {
     prev_task_handle_assign () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.asset_ip * 1});
+          .map(x => { return x.asset_ip});
         this.task_params.multiple = selected;
       }
       this.handle.save = true;
@@ -1171,10 +1167,10 @@ export default {
     prev_task_handle_save () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.asset_ip * 1});
+          .map(x => { return x.asset_ip});
         this.task_params.multiple = selected;
       }
-
+      console.log(this.task_params.multiple);
       this.handle.save = true;
       this.$axios.post('/yiiapi/asset/add-workorder',
         {

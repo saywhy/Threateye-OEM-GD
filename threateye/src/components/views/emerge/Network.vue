@@ -782,7 +782,6 @@ export default {
     ok_state () {
 
       let selected = this.table.multipleSelection;
-
       //资产ID处理
       let id_group = selected.map(x => { return x.id; });
 
@@ -945,12 +944,12 @@ export default {
     //编辑工单分配
     prev_task_handle_assign () {
 
-      if (this.task_params.multiple.length == 0) {
-        let alerts = this.table.multipleSelection;
+      if(this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
           .map(x => { return x.id * 1});
         this.task_params.multiple = selected;
       }
+
       console.log(this.task_params.multiple);
 
       this.handle.save = true;

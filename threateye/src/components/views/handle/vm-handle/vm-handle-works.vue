@@ -1,5 +1,5 @@
 <template>
-  <div class="vm-handle-works" v-cloak>
+  <div class="vm-handle-works" v-cloak v-loading="handle.save">
     <div class="invest_form invest_form_network">
       <el-form class="common-pattern">
         <el-row class="common_box">
@@ -322,9 +322,9 @@
             <el-button @click="closed_task_new" class="cancel_btn">取消</el-button>
             <el-button @click="prev_task_handle" class="prev_btn">上一步</el-button>
            <el-button @click="prev_task_handle_assign"
-                      class="prev_btn" :disabled="handle.dist">分配</el-button>
+                      class="prev_btn">分配</el-button>
            <el-button @click="prev_task_handle_save"
-                      class="prev_btn" :disabled="handle.save">保存</el-button>
+                      class="prev_btn">保存</el-button>
          </div>
       </div>
     </el-dialog>
@@ -569,7 +569,7 @@
               this.table.count = Number(count.count);
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
-              
+
             }
           });
       },
@@ -909,7 +909,7 @@
       //tab下第一个table多选
       handle_sel_table_assets (val) {
         this.table_assets.multipleSelection = val;
-        let selected = val.map(x => { return x.asset_ip });
+        let selected = val.map(x => { return x.asset_ip  * 1});
         this.task_params.multiple_assets = selected;
         console.log(this.task_params.multiple_assets)
       },
@@ -917,7 +917,7 @@
       //tab下第一个table多选
       handle_sel_table_alerts (val) {
         this.table_alerts.multipleSelection = val;
-        let selected = val.map(x => { return x.alert_id });
+        let selected = val.map(x => { return x.id * 1 });
         this.task_params.multiple_alerts = selected;
       },
 
@@ -954,10 +954,10 @@
           if(this.task_params.multiple_assets.length == 0){
             this.$message({ message: '请选择至少一条列表！', type: 'warning' });
           }else{
-            this.handle.dist = true;
+            this.handle.save = true;
             this.$axios.put('/yiiapi/workorder/distribution',all_params)
               .then((resp) => {
-                this.handle.dist = false;
+                this.handle.save = false;
                 let {status,msg, data} = resp.data;
                 if (status == 0) {
                   this.$message.success('分配成功');
@@ -978,10 +978,10 @@
           if(this.task_params.multiple_alerts.length == 0){
             this.$message({ message: '请选择至少一条列表！', type: 'warning' });
           }else{
-            this.handle.dist = true;
+            this.handle.save = true;
             this.$axios.put('/yiiapi/workorder/distribution',all_params)
               .then((resp) => {
-                this.handle.dist = false;
+                this.handle.save = false;
                 let {status,msg, data} = resp.data;
                 if (status == 0) {
                   this.$message.success('分配成功');

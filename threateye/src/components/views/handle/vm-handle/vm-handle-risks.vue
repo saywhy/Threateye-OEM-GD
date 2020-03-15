@@ -1,5 +1,5 @@
 <template>
-  <div class="handle-risks_common"
+  <div class="handle-risks_common" v-loading="handle.save"
        v-cloak>
     <div class="outside-top">
       <div class="ost ost-1">
@@ -416,9 +416,9 @@
           <el-button @click="prev_task_handle"
                      class="prev_btn">上一步</el-button>
           <el-button @click="prev_task_handle_assign"
-                     class="prev_btn" :disabled="handle.dist">分配</el-button>
+                     class="prev_btn">分配</el-button>
           <el-button @click="prev_task_handle_save"
-                     class="prev_btn" :disabled="handle.save">保存</el-button>
+                     class="prev_btn">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -814,7 +814,7 @@ export default {
     ok_state () {
       let selected = this.table.multipleSelection;
       //资产ID处理
-      let id_group = selected.map(x => { return x.id; });
+      let id_group = selected.map(x => { return x.asset_ip * 1; });
       //状态设置
       let process = this.process_state;
       let change_status = 0;
@@ -977,7 +977,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_alerts (val) {
       this.table_alerts.multipleSelection = val;
-      let selected = val.map(x => { return x.alert_id });
+      let selected = val.map(x => { return x.asset_ip * 1 });
       this.task_params.multiple = selected;
     },
 
@@ -988,67 +988,74 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-      if(this.task_params.multiple.length == 0){
-        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      }else{
-        this.handle.dist = true;
-        this.$axios.put('/yiiapi/' + this.threats + '/distribution-workorder',
-          {
-            name: this.task_params.name,
-            priority: this.task_params.level,
-            perator: this.task_params.new_operator,
-            remarks: this.task_params.textarea,
-            te_alert: this.task_params.multiple,
-            remind: this.task_params.notice
-          })
-          .then((resp) => {
-            this.handle.dist = false;
-            let { status, msg, data } = resp.data;
-            if (status == 0) {
-              this.$message.success('分配成功');
-              this.closed_task_new();
-              this.get_list_threat();
-            } else if (status == 1) {
-              this.$message.error(msg);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+      if (this.task_params.multiple.length == 0) {
+        let alerts = this.table.multipleSelection;
+        let selected = this.table.multipleSelection
+          .map(x => { return x.asset_ip * 1});
+        this.task_params.multiple = selected;
       }
+      console.log(this.task_params.multiple);
+
+      this.handle.save = true;
+      this.$axios.put('/yiiapi/' + this.threats + '/distribution-workorder',
+        {
+          name: this.task_params.name,
+          priority: this.task_params.level,
+          perator: this.task_params.new_operator,
+          remarks: this.task_params.textarea,
+          te_alert: this.task_params.multiple,
+          remind: this.task_params.notice
+        })
+        .then((resp) => {
+          this.handle.save = false;
+          let { status, msg, data } = resp.data;
+          if (status == 0) {
+            this.$message.success('分配成功');
+            this.closed_task_new();
+            this.get_list_threat();
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
 
     //编辑工单保存
     prev_task_handle_save () {
-      if(this.task_params.multiple.length == 0){
-        this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      }else{
-        this.handle.save = true;
-        this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
-          {
-            name: this.task_params.name,
-            priority: this.task_params.level,
-            perator: this.task_params.new_operator,
-            remarks: this.task_params.textarea,
-            te_alert: this.task_params.multiple,
-            remind: this.task_params.notice
-          })
-          .then((resp) => {
-            this.handle.save = false;
-            let { status, msg, data } = resp.data;
-            if (status == 0) {
-              this.$message.success('保存成功');
-              this.closed_task_new();
-              this.get_list_threat();
-            } else if (status == 1) {
-              this.$message.error(msg);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+      if (this.task_params.multiple.length == 0) {
+        let alerts = this.table.multipleSelection;
+        let selected = this.table.multipleSelection
+          .map(x => { return x.asset_ip * 1});
+        this.task_params.multiple = selected;
       }
+      console.log(this.task_params.multiple);
 
+      this.handle.save = true;
+      this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
+        {
+          name: this.task_params.name,
+          priority: this.task_params.level,
+          perator: this.task_params.new_operator,
+          remarks: this.task_params.textarea,
+          te_alert: this.task_params.multiple,
+          remind: this.task_params.notice
+        })
+        .then((resp) => {
+          this.handle.save = false;
+          let { status, msg, data } = resp.data;
+          if (status == 0) {
+            this.$message.success('保存成功');
+            this.closed_task_new();
+            this.get_list_threat();
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
 
     },
 
@@ -1143,9 +1150,10 @@ export default {
     add_ok_state () {
 
       let selected_attr = this.table.multipleSelection
-        .map(x => { return x.alert_id * 1 });
+        .map(x => { return x.asset_ip * 1 });
 
       this.add_params.multiple = selected_attr;
+
       if(this.add_params.id == undefined){
         this.$message({ message: '请选择一条工单！', type: 'warning' });
       }else{

@@ -173,23 +173,32 @@
             <el-table-column prop="asset_ip"
                              label="资产"
                              max-width="100"></el-table-column>
-            <el-table-column prop="label_group" label="资产组"
-                             min-width="120" show-overflow-tooltip></el-table-column>
-            <!--<el-table-column label="资产组"
-                             min-width="140"
-                             show-overflow-tooltip>
+            <el-table-column label="资产组"
+                             min-width="120">
               <template slot-scope="scope">
-                <div>
-                  <span v-for="(it,$idx) in scope.row.label"
-                        :key="$idx"
-                        class="a_label">{{it}}</span>
-                </div>
+                <span class="btn_tag_box"
+                      v-if="item!=''"
+                      v-for="item in scope.row.label">
+                  <el-button type="primary"
+                             class="btn_tag">
+                    {{item}}
+                  </el-button>
+                </span>
               </template>
-            </el-table-column>-->
-            <el-table-column prop="category_group"
-                             min-width="140"
-                             label="关联威胁"
-                             show-overflow-tooltip></el-table-column>
+            </el-table-column>
+            <el-table-column min-width="140"
+                             label="关联威胁">
+              <template slot-scope="scope">
+                <span class="btn_tag_box"
+                      v-if="item!=''"
+                      v-for="item in scope.row.category">
+                  <el-button type="primary"
+                             class="btn_tag">
+                    {{item}}
+                  </el-button>
+                </span>
+              </template>
+            </el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">
                 <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
@@ -208,7 +217,8 @@
             </el-table-column>
           </el-table>
         </el-col>
-        <el-col :span="24" class="e-pagination">
+        <el-col :span="24"
+                class="e-pagination">
           <el-pagination class="handle-pagination"
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
@@ -396,22 +406,42 @@
                 <el-table-column prop="asset_ip"
                                  label="资产"
                                  max-width="100"></el-table-column>
-                <el-table-column prop="label_group" label="资产组"
-                                 min-width="120" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="category_group"
-                                 min-width="140"
-                                 label="关联威胁"
-                                 show-overflow-tooltip></el-table-column>
+                <el-table-column label="资产组"
+                                 min-width="120">
+                  <template slot-scope="scope">
+                    <span class="btn_tag_box"
+                          v-if="item!=''"
+                          v-for="item in scope.row.label">
+                      <el-button type="primary"
+                                 class="btn_tag">
+                        {{item}}
+                      </el-button>
+                    </span>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="140"
+                                 label="关联威胁">
+                  <template slot-scope="scope">
+                    <span class="btn_tag_box"
+                          v-if="item!=''"
+                          v-for="item in scope.row.category">
+                      <el-button type="primary"
+                                 class="btn_tag">
+                        {{item}}
+                      </el-button>
+                    </span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
-                  {{ scope.row.degree | degree }}</span>
+                    <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
+                      {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="失陷确定性">
                   <template slot-scope="scope">
-                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                  {{ scope.row.fall_certainty | certainty }}</span>
+                    <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                      {{ scope.row.fall_certainty | certainty }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="状态"
@@ -420,13 +450,13 @@
                 </el-table-column>
               </el-table>
               <el-pagination class="pagination_box"
-                   @size-change="sc_table_assets"
-                   @current-change="hcc_table_assets"
-                   :page-sizes="[10,20,50,100]"
-                   :page-size="table_assets.eachPage"
-                   :current-page="table_assets.pageNow"
-                   :total="table_assets.count"
-                   layout="total, sizes, prev, pager, next">
+                             @size-change="sc_table_assets"
+                             @current-change="hcc_table_assets"
+                             :page-sizes="[10,20,50,100]"
+                             :page-size="table_assets.eachPage"
+                             :current-page="table_assets.pageNow"
+                             :total="table_assets.count"
+                             layout="total, sizes, prev, pager, next">
               </el-pagination>
             </div>
           </div>
@@ -437,9 +467,11 @@
           <el-button @click="prev_task_handle"
                      class="prev_btn">上一步</el-button>
           <el-button @click="prev_task_handle_assign"
-                     class="prev_btn" :disabled="handle.dist">分配</el-button>
+                     class="prev_btn"
+                     :disabled="handle.dist">分配</el-button>
           <el-button @click="prev_task_handle_save"
-                     class="prev_btn" :disabled="handle.save">保存</el-button>
+                     class="prev_btn"
+                     :disabled="handle.save">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -641,8 +673,8 @@ export default {
         add: "",
         table_title: ["资产"],
         active: 0,
-        dist:false,
-        save:false
+        dist: false,
+        save: false
       },
       table_assets: {
         tableData: [],
@@ -774,8 +806,9 @@ export default {
           if (status == 0) {
 
             let { data, count, maxPage, pageNow } = datas;
-
+            console.log(data);
             data.map(function (v, k) {
+
               let label_group = (Object.values(v.label)).join(',');
               let category_group = v.category.join(',');
               v.label_group = label_group;
@@ -876,7 +909,7 @@ export default {
     /************************************/
     //进入详情页
     detailClick (row, column, event) {
-      this.$router.push({path: '/detail/assets', name: 'detail_assets',
+      this.$router.push({        path: '/detail/assets', name: 'detail_assets',
         query: { asset_ip: row.asset_ip, status: row.status }      });
     },
 
@@ -931,7 +964,7 @@ export default {
       let process = this.process_state;
       let change_status = 0;
 
-      if(process == '处置中'){
+      if (process == '处置中') {
         change_status = 2;
       } else if (process == '已处置') {
         change_status = 3;
@@ -1057,7 +1090,7 @@ export default {
     },
 
     //tabs下table每页显示多少条
-    sc_table_assets(val){
+    sc_table_assets (val) {
       this.table_assets.eachPage = val;
       this.table_assets.pageNow = 1;
       let handle_data = this.table_assets.tableData.slice(0, val);
@@ -1088,9 +1121,9 @@ export default {
     //编辑工单分配
     prev_task_handle_assign () {
 
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
-      }else{
+      } else {
         this.handle.dist = true;
         this.$axios.put('/yiiapi/asset/distribution-workorder',
           {
@@ -1121,9 +1154,9 @@ export default {
     //编辑工单保存
     prev_task_handle_save () {
 
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
-      }else{
+      } else {
         this.handle.save = true;
         this.$axios.post('/yiiapi/asset/add-workorder',
           {
@@ -1242,9 +1275,9 @@ export default {
         .map(x => { return x.asset_ip });
       this.add_params.multiple = selected_attr;
 
-      if(this.add_params.id == undefined){
+      if (this.add_params.id == undefined) {
         this.$message({ message: '请选择一条工单！', type: 'warning' });
-      }else{
+      } else {
         this.$axios.post('/yiiapi/asset/add-workorder',
           {
             id: this.add_params.id,
@@ -1273,7 +1306,7 @@ export default {
     },
 
     //每页显示多少条
-    sc_table_add_works(val){
+    sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();
@@ -1294,6 +1327,17 @@ export default {
 @import '../../../assets/css/less/common-table-pattern.less';
 .handle-assets {
   padding: 24px;
+  .btn_tag_box {
+    .btn_tag {
+      margin: 2px;
+      background: #5389e0;
+      border-radius: 2px;
+      min-height: 20px;
+      font-size: 10px;
+      color: #ffffff;
+      padding: 2px 5px;
+    }
+  }
   .assets_all {
     height: auto;
     background: #fff;

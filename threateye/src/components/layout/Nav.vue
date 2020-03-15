@@ -236,15 +236,18 @@ export default {
               this.user_edit.department = datas.department;
               this.user_edit.mobile = datas.mobile;
               this.user_edit.email_addr= datas.email_addr;
+
               this.edit_user();
 
               } else {
+
                 this.$message(
                   {
                     message: msg,
                     type: 'error',
                   }
                 );
+                
               }
             })
             .catch(error => {
@@ -260,10 +263,10 @@ export default {
 
     //修改个人信息
     modifyPassword () {
-
       this.getPwdLength();
       this.pass_state = true;
     },
+
     closed_edit_box () {
       this.pass_state = false;
       this.user_edit = {
@@ -278,8 +281,6 @@ export default {
         allow_ip: ''
       };
     },
-
-
 
     edit_user () {
       if (this.user_edit.password != this.user_edit.Re_password) {

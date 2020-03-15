@@ -1138,7 +1138,7 @@ export default {
     prev_task_handle_assign () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.id * 1});
+          .map(x => { return x.asset_ip * 1});
         this.task_params.multiple = selected;
       }
       this.handle.save = true;
@@ -1169,10 +1169,9 @@ export default {
 
     //编辑工单保存
     prev_task_handle_save () {
-
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.id * 1});
+          .map(x => { return x.asset_ip * 1});
         this.task_params.multiple = selected;
       }
 
@@ -1202,7 +1201,6 @@ export default {
         });
 
     },
-
     /***************新加到工单*****************/
 
     //添加到工单打开

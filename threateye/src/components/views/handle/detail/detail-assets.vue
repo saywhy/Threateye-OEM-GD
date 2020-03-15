@@ -5,7 +5,7 @@
 
     <div class="detail_base_top">
       <div class="top_left">
-        <img src="@/assets/images/handle/others/detail_a_1.png"
+        <img class="t_name" src="@/assets/images/handle/others/top_name.png"
              alt="">
         <span class="top_left_title">{{detail.asset_ip}}</span>
       </div>
@@ -114,8 +114,8 @@
     <div class="detail_base_stg">
       <div class="top_left">
         <img class="b_img"
-             src="@/assets/images/handle/others/detail_a_1.png" />
-        <span class="title_name">告警日志信息</span>
+             src="@/assets/images/emerge/detai_attack.png" />
+        <span class="title_name">攻击阶段分布</span>
       </div>
       <!--<div class="stg-content">
         <vm-hanle-rank></vm-hanle-rank>
@@ -681,7 +681,6 @@ export default {
         multipleSelection: [],
         loading: true
       },
-
       //弹窗部分
       state_change: false,
       process_state: "",
@@ -1175,11 +1174,17 @@ export default {
 
             this.assets_top = data;
 
-            ///
-            console.log(data)
 
-            this.network_detail.work_order_status = data.workorder_status;
-            this.network_detail.work_name = data.workorder_name;
+            //攻击阶段
+            this.attack_stage_list.forEach(function (v,k) {
+
+              data.attack_stage.forEach(function (v1,k1) {
+                if(v.name == v1.attack_stage){
+                  v.count = v1.count;
+                }
+              })
+
+            });
           }
         });
     },
@@ -1206,6 +1211,7 @@ export default {
           }
         });
     },
+
 
     //每頁多少條切換
     handleSizeChange (val) {
@@ -1624,8 +1630,10 @@ export default {
     border-bottom: 1px solid #ececec;
     .top_left {
       float: left;
-      margin-top: 12px;
+      margin-top: 16px;
       img {
+        width: 24px;
+        margin-right: 5px;
         vertical-align: middle;
       }
       .top_left_title {
@@ -1661,16 +1669,17 @@ export default {
         margin-bottom: 16px;
         line-height: 36px;
         .title {
-          width: 125px;
+          width: 130px;
           font-family: PingFang;
           font-size: 16px;
           color: #333333;
           .b_i {
             width: 18px;
             height: 18px;
+            margin-right: 8px;
             display: inline-block;
             &.b_name {
-              vertical-align: middle;
+              vertical-align: unset;
               background-repeat: no-repeat;
               background-size: 18px;
               background-image: url('../../../../assets/images/handle/others/works-name.png');
@@ -1712,7 +1721,9 @@ export default {
       padding: 0 56px;
       border-bottom: 1px solid #ececec;
       .b_img {
-        vertical-align: middle;
+        width: 24px;
+        vertical-align: text-top;
+        margin-right: 5px;
       }
       .title_name {
         vertical-align: middle;

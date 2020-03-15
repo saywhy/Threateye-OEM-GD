@@ -597,7 +597,8 @@
           this.$message({message:'请选择需要变更的工单',type: 'warning'});
           return false;
         } else {
-          this.state_change = true;
+          //this.state_change = true;
+          this.ok_state();
         }
       },
 
@@ -620,6 +621,7 @@
         //状态设置
         let process = this.process_state;
         let change_status = 0;
+
         if (process == '处置中') {
           change_status = 2;
         } else if (process == '已处置') {
@@ -632,13 +634,15 @@
           status: change_status
         })
           .then(resp => {
+
+            console.log(resp)
             let {status, data} = resp.data;
             if (status == 0) {
               this.$message.success('工单状态变更成功！');
               this.get_list_works();
               this.closed_state();
             } else {
-              this.$message.error('工单状态变更错误！');
+              this.$message.error('工单状态变更失败！');
             }
           })
           .catch(err => {

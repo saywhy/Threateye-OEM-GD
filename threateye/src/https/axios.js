@@ -116,20 +116,21 @@ axios.interceptors.request.use(
 );
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-  console.log(response)
+  //console.log(response)
   //status内层
   switch (response.data.status) {
     case 600:
       console.log(response.data.msg)
       Message.warning(response.data.msg);
+      Message.warning('请修改个人信息');
       //删除token
-      removeToken();
-      location.reload();
+      //removeToken();
+      //location.reload();
       //Vue.$router.push({path:'/login'});
-      return false;
+      //return false;
       break;
     default:
-      console.log(`请求状态${response.status}`)
+      //console.log(`请求状态${response.status}`)
   }
   return response
 }, err => {

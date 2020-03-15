@@ -117,8 +117,138 @@
              src="@/assets/images/handle/others/detail_a_1.png" />
         <span class="title_name">告警日志信息</span>
       </div>
-      <div class="stg-content">
+      <!--<div class="stg-content">
         <vm-hanle-rank></vm-hanle-rank>
+      </div>-->
+      <div class="attack_stage_bom">
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[0].count>1">
+            {{attack_stage_list[0].count}}
+          </span>
+          <span :class="attack_stage_list[0].count>0?'count_color':''">初始访问</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[1].count>1">
+            {{attack_stage_list[1].count}}
+          </span>
+          <span :class="attack_stage_list[1].count>0?'count_color':''">执行</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[2].count>1">
+            {{attack_stage_list[2].count}}
+          </span>
+          <span :class="attack_stage_list[2].count>0?'count_color':''">持久化</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[3].count>1">
+            {{attack_stage_list[3].count}}
+          </span>
+          <span :class="attack_stage_list[3].count>0?'count_color':''">提权</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[4].count>1">
+            {{attack_stage_list[4].count}}
+          </span>
+          <span :class="attack_stage_list[4].count>0?'count_color':''">防御逃逸</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[5].count>1">
+            {{attack_stage_list[5].count}}
+          </span>
+          <span :class="attack_stage_list[5].count>0?'count_color':''">凭证访问</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[6].count>1">
+            {{attack_stage_list[6].count}}
+          </span>
+          <span :class="attack_stage_list[6].count>0?'count_color':''">信息发现</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[7].count>1">
+            {{attack_stage_list[7].count}}
+          </span>
+          <span :class="attack_stage_list[7].count>0?'count_color':''">横向移动</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[8].count>1">
+            {{attack_stage_list[8].count}}
+          </span>
+          <span :class="attack_stage_list[8].count>0?'count_color':''">信息收集</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[9].count>1">
+            {{attack_stage_list[9].count}}
+          </span>
+          <span :class="attack_stage_list[9].count>0?'count_color':''">命令控制</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[10].count>1">
+            {{attack_stage_list[10].count}}
+          </span>
+          <span :class="attack_stage_list[10].count>0?'count_color':''">信息泄露</span>
+        </div>
+        <div class="stage_img_box">
+          <img src="@/assets/images/emerge/detail_jiantou.png"
+               alt="">
+        </div>
+        <div class="stage_item_box">
+          <span class="circle_box"
+                v-if="attack_stage_list[11].count>1">
+            {{attack_stage_list[11].count}}
+          </span>
+          <span :class="attack_stage_list[11].count>0?'count_color':''">毁坏</span>
+        </div>
       </div>
     </div>
 
@@ -536,6 +666,8 @@ export default {
   components: { backTitle, VmHanleRank },
   data () {
     return {
+      network_times:[],
+      network_detail:{},
       detail: {},
       title_name: "风险资产详情",
       activeName: 'first',
@@ -632,6 +764,69 @@ export default {
         remarks: "",
         multiple: []
       },
+      //攻击阶段分布
+      attack_stage_list: [
+        {
+          name: "Initial Access",
+          value: "初始访问",
+          count: 0
+        },
+        {
+          name: "Execution",
+          value: "执行",
+          count: 0
+        },
+        {
+          name: "Persistence",
+          value: "持久化",
+          count: 0
+        },
+        {
+          name: "Privilege Escalation",
+          value: "提权",
+          count: 0
+        },
+        {
+          name: "Defense Evasion",
+          value: "防御逃逸",
+          count: 0
+        },
+        {
+          name: "Credential Access",
+          value: "凭证访问",
+          count: 0
+        },
+        {
+          name: "Discovery",
+          value: "信息发现",
+          count: 0
+        },
+        {
+          name: "Lateral Movement",
+          value: "横向移动",
+          count: 0
+        },
+        {
+          name: "Collection",
+          value: "信息收集",
+          count: 0
+        },
+        {
+          name: "Command and Control",
+          value: "命令控制",
+          count: 0
+        },
+        {
+          name: "Exfiltration",
+          value: "信息泄露",
+          count: 0
+        },
+        {
+          name: "Impact",
+          value: "毁坏",
+          count: 0
+        },
+      ],
       //建议列表
       suggest_list: [
         {
@@ -956,7 +1151,7 @@ export default {
           }
         })
         .then((resp) => {
-          console.log(resp)
+          //console.log(resp)
           let { status, data } = resp.data;
           if (status == 0) {
             let attr = [];
@@ -979,6 +1174,35 @@ export default {
             data.new_business = data.label.business;
 
             this.assets_top = data;
+
+            ///
+            console.log(data)
+
+            this.network_detail.work_order_status = data.workorder_status;
+            switch (this.network_detail.work_order_status) {
+              case '':
+                this.network_detail.work_order_status_cn = '未关联工单'
+                break;
+              case '0':
+                this.network_detail.work_order_status_cn = '待分配'
+                break;
+              case '1':
+                this.network_detail.work_order_status_cn = '已分配'
+                break;
+              case '2':
+                this.network_detail.work_order_status_cn = '处置中'
+                break;
+              case '3':
+                this.network_detail.work_order_status_cn = '已处置'
+                break;
+              case '4':
+                this.network_detail.work_order_status_cn = '已取消'
+                break;
+              default:
+                break;
+            }
+            this.network_detail.work_name = data.workorder_name;
+
 
           }
         });
@@ -1521,10 +1745,55 @@ export default {
         color: #333333;
       }
     }
-    .stg-content {
+    /*.stg-content {
       margin: 0 56px;
       height: 110px;
       position: relative;
+    }*/
+    .attack_stage_bom {
+      height: 108px;
+      padding: 30px 56px;
+      display: flex;
+      justify-content: space-between;
+      .stage_item_box {
+        width: 104px;
+        height: 48px;
+        line-height: 48px;
+        background: #eef6ff;
+        border-radius: 2px;
+        font-size: 16px;
+        color: #aaaaaa;
+        text-align: center;
+        position: relative;
+        .circle_box {
+          display: block;
+          font-size: 12px;
+          box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.24);
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          color: #fff;
+          border-radius: 18px;
+          background: #ff5f5c;
+          position: absolute;
+          top: -9px;
+          right: -9px;
+        }
+      }
+      .count_color {
+        color: #0070ff;
+      }
+      .stage_img_box {
+        flex: 1;
+        margin: 0 5px;
+        height: 48px;
+        line-height: 48px;
+        img {
+          margin-top: 12px;
+          width: 100%;
+          height: 24px;
+        }
+      }
     }
   }
 

@@ -1179,31 +1179,7 @@ export default {
             console.log(data)
 
             this.network_detail.work_order_status = data.workorder_status;
-            switch (this.network_detail.work_order_status) {
-              case '':
-                this.network_detail.work_order_status_cn = '未关联工单'
-                break;
-              case '0':
-                this.network_detail.work_order_status_cn = '待分配'
-                break;
-              case '1':
-                this.network_detail.work_order_status_cn = '已分配'
-                break;
-              case '2':
-                this.network_detail.work_order_status_cn = '处置中'
-                break;
-              case '3':
-                this.network_detail.work_order_status_cn = '已处置'
-                break;
-              case '4':
-                this.network_detail.work_order_status_cn = '已取消'
-                break;
-              default:
-                break;
-            }
             this.network_detail.work_name = data.workorder_name;
-
-
           }
         });
     },

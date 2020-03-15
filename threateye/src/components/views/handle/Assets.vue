@@ -173,9 +173,9 @@
             <el-table-column prop="asset_ip"
                              label="资产"
                              max-width="100"></el-table-column>
-            <el-table-column label="资产组"
+            <el-table-column prop="label_group" label="资产组" show-overflow-tooltip
                              min-width="120">
-              <template slot-scope="scope">
+              <!--<template slot-scope="scope">
                 <span class="btn_tag_box"
                       v-if="item!=''"
                       v-for="item in scope.row.label">
@@ -184,7 +184,7 @@
                     {{item}}
                   </el-button>
                 </span>
-              </template>
+              </template>-->
             </el-table-column>
             <el-table-column min-width="140"
                              label="关联威胁">
@@ -415,9 +415,9 @@
                 <el-table-column prop="asset_ip"
                                  label="资产"
                                  max-width="100"></el-table-column>
-                <el-table-column label="资产组"
+                <el-table-column prop="label_group" label="资产组" show-overflow-tooltip
                                  min-width="120">
-                  <template slot-scope="scope">
+                  <!--<template slot-scope="scope">
                     <span class="btn_tag_box"
                           v-if="item!=''"
                           v-for="item in scope.row.label">
@@ -426,7 +426,7 @@
                         {{item}}
                       </el-button>
                     </span>
-                  </template>
+                  </template>-->
                 </el-table-column>
                 <el-table-column min-width="140"
                                  label="关联威胁">

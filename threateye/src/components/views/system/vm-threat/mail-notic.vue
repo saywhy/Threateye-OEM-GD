@@ -392,7 +392,7 @@ export default {
       }
       .item_addrs {
         display: flex;
-        margin-top: 12px;
+        margin-bottom: 12px;
         .select_box {
           flex: 1;
           height: 38px;

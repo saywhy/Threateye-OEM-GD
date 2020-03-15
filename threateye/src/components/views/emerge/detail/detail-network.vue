@@ -2931,6 +2931,7 @@ export default {
           console.log(data);
           if (status == 0) {
             this.get_data();
+            this.new_worksheets_data.pop = false
             this.$message.success('分配成功');
           } else if (status == 1) {
             this.$message.error(msg);
@@ -2985,6 +2986,7 @@ export default {
           let { status, msg, data } = resp.data;
           console.log(data);
           if (status == 0) {
+            this.new_worksheets_data.pop = false
             this.$message.success('添加成功');
             this.get_data()
           } else if (status == 1) {

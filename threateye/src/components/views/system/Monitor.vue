@@ -475,12 +475,49 @@ export default {
           isRepeat_ip_segment.push(item.name)
         }
       });
+      var tag_test = []
+      var tag_test_str = ''
+
+      this.monitor_add.tag_list.forEach(item => {
+        if (item.name != '') {
+          tag_test.push(item.name)
+        }
+      });
+      tag_test_str = JSON.stringify(tag_test)
+      console.log(tag_test_str.indexOf("终端") != -1);
+      if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
+        this.$message(
+          {
+            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (tag_test_str.indexOf("服务器") != -1 && (tag_test_str.indexOf("终端") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
+        this.$message(
+          {
+            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (tag_test_str.indexOf("网络设备") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("终端") != -1)) {
+        this.$message(
+          {
+            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            type: 'error',
+          }
+        );
+        return false
+      }
       this.monitor_add.tag_list.forEach(item => {
         if (item.name != '') {
           isRepeat_tag.push(item.name)
         }
       });
-
+      console.log(isRepeat_tag);
       console.log(isRepeat_ip_segment);
       if (isRepeat_ip_segment.length == 0) {
         this.$message(

@@ -122,29 +122,42 @@
       </div>
     </div>
 
-    <!--威胁及安全建议-->
-    <div class="detail_base_mag">
-      <div class="osm-top">
-        <img class="osm-img"
-             src="@/assets/images/handle/risks/edit.png">
-        <span class="osm-title">威胁及安全建议</span>
+    <!-- 威胁及安全建议 -->
+    <div class="suggest_box">
+      <div class="suggest_top">
+        <img src="@/assets/images/emerge/detal_jianyi.png"
+             alt=""
+             class="icon_img">
+        <span class="suggest_title">威胁及安全建议</span>
       </div>
-      <div class="osm-middle">
-        <dl>
-          <dt class="osm-dt">威胁描述</dt>
-          <dd class="osm-dd">横向威胁是指攻击者为了了解所处的网络环境或者找到网络内的目标而实施的内网的扫描、暴力破解、漏洞利用、远程账号登录、远程程序以及命令执行等动作。</dd>
-        </dl>
-        <dl>
-          <dt class="osm-dt">安全建议</dt>
-          <dd class="osm-dd">
-            <ul>
-              <li>1、及时更新补丁，特别是高危漏洞刚发布的几天是高级攻击的高发期；</li>
-              <li>2、部署带有静态分析、动态分析、漏洞防御、主机防火墙、主机IPS等多重防御功能的端点安全解决方案；</li>
-              <li>3、采用端点检测和响应解决方案（EDR）大力提升在端点上的威胁检测和响应的能力，包括合法账号的异常登录、系统自带或者管理员使用的工具的非法使用等；</li>
-              <li>4、部署东西向流量的网络威胁检测和响应解决方案。</li>
-            </ul>
-          </dd>
-        </dl>
+      <div class="suggest_bom">
+        <p class="suggest_bom_title">威胁描述</p>
+        <p class="suggest_bom_des">{{suggest_list[assets_top.safety_suggestion].des}}</p>
+        <p class="suggest_bom_title">安全建议</p>
+        <p class="suggest_bom_list">
+          <img src="@/assets/images/emerge/detail_suggest.png"
+               class="suggest_icon"
+               alt="">
+          <span class="suggest_bom_title">处置建议</span>
+        </p>
+        <div>
+          <p class="suggest_bom_li"
+             v-for="item in suggest_list[assets_top.safety_suggestion].handle">
+            {{item}}
+          </p>
+        </div>
+        <p class="suggest_bom_list">
+          <img src="@/assets/images/emerge/detail_suggest.png"
+               class="suggest_icon"
+               alt="">
+          <span class="suggest_bom_title">加固建议</span>
+        </p>
+        <div>
+          <p class="suggest_bom_li"
+             v-for="item in suggest_list[assets_top.safety_suggestion].reinforce">
+            {{item}}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -1552,6 +1565,52 @@ export default {
         font-family: PingFang;
         font-size: 14px;
         color: #666666;
+      }
+    }
+  }
+  // 威胁安全建议
+  .suggest_box {
+    text-align: left;
+    background: #fff;
+    margin-bottom: 24px;
+    .suggest_top {
+      padding: 0 56px;
+      height: 62px;
+      border-bottom: 1px solid #ececec;
+      .suggest_title {
+        font-family: PingFangMedium;
+        font-size: 16px;
+        color: #333333;
+        line-height: 62px;
+      }
+      .icon_img {
+        width: 24px;
+        vertical-align: middle;
+      }
+    }
+    .suggest_bom {
+      padding: 16px 56px;
+      .suggest_icon {
+        width: 13px;
+        height: 6px;
+        vertical-align: middle;
+      }
+      .suggest_bom_title {
+        font-family: PingFangMedium;
+        font-size: 14px;
+        color: #333333;
+      }
+      .suggest_bom_des {
+        margin: 8px 0 24px 0;
+        font-size: 14px;
+        color: #666666;
+      }
+      .suggest_bom_li {
+        font-size: 14px;
+        color: #666666;
+      }
+      .suggest_bom_list {
+        margin: 12px 0 8px 0;
       }
     }
   }

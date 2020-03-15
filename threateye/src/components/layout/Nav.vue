@@ -210,8 +210,8 @@ export default {
       this.$axios.get('/yiiapi/site/get-passwd-length')
         .then(response => {
 
-          console.log('&&&&&&&')
-          console.log(response);
+          //console.log('&&&&&&&')
+          //console.log(response);
 
           this.user_data.password = response.data.data
           this.user_data.placeholder = '请输入包含大写、小写、数字和特殊字符其中三项,' + response.data.data.min_passwd_len + '-' + response.data.data.max_passwd_len + '位密码'
@@ -220,37 +220,23 @@ export default {
           this.$axios.get('/yiiapi/site/get-self-password-reset-token')
 
             .then(response => {
-              console.log('************************');
-              console.log(response);
+              //console.log('************************');
+              //console.log(response);
 
               let { status, msg, data } = response.data;
 
               if (status == 0) {
 
-                setToken(data.data.token);
+              setToken(data.data.token);
 
-                localStorage.setItem("token", data.data.token);
+              localStorage.setItem("token", data.data.token);
 
+              let datas = data.data;
 
-               /* this.user_edit.password = ;
-                this.user_edit.Re_password =
-                this.user_edit.old_password =
-                this.user_edit.password
-                this.user_edit.password
-                this.user_edit.password
-                this.user_edit.password
-                this.user_edit.password
-                  password: "",
-                  Re_password: "",
-                  old_password: "",
-                  department: "",
-                  mobile: "",
-                  email_addr: "",
-                  role: "",
-                  id: "",
-                  allow_ip: ''*/
-
-                this.edit_user();
+              this.user_edit.department = datas.department;
+              this.user_edit.mobile = datas.mobile;
+              this.user_edit.email_addr= datas.email_addr;
+              this.edit_user();
 
               } else {
                 this.$message(

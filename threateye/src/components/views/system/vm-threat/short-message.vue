@@ -142,9 +142,11 @@ export default {
     width: 40px !important;
   }
   .el-textarea__inner {
+    margin-top: 8px;
     background: #f8f8f8;
-    color: #606266;
     border: 0;
+    min-height: 30px !important;
+    line-height: 30px;
   }
   .select_box {
     width: 100%;

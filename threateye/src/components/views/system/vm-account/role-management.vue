@@ -421,11 +421,8 @@ export default {
           console.log(error);
         })
     },
-
-
-
     get_data () {
-      // this.loading = true
+      this.loading = true
       this.$axios.get('/yiiapi/user/role-list', {
         params: {
           page: this.role_data.page,
@@ -433,7 +430,7 @@ export default {
         }
       })
         .then(response => {
-          //  this.loading=false
+          this.loading = false
           console.log(response.data);
           this.role_list = response.data.data;
           this.role_list.data.forEach((item, index) => {

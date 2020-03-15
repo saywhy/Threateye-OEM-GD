@@ -229,7 +229,3 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
 textarea {
   font-family: PingFang !important;
 }
-
-.el-loading-mask {
-  z-index: 2020;
-}

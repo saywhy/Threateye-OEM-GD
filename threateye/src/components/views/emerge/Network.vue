@@ -991,7 +991,7 @@ export default {
           .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
-      console.log(this.task_params.multiple);
+      console.log(this.task_params);
       this.handle.save = true;
       this.$axios.post('/yiiapi/alert/add-workorder',
         {

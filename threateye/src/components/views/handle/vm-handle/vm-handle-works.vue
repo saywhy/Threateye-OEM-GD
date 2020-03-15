@@ -728,7 +728,7 @@
       worksDelete(){
         let that = this;
         let multiple = this.table.multipleSelection;
-        let selected = multiple.map(x => {return x.id;});
+        let selected = multiple.map(x => {return x.id * 1;});
 
         this.$confirm('是否确定删除?', '提示', {
           confirmButtonText: '确定',
@@ -738,6 +738,7 @@
           if(selected.length == 0){
              that.$message({message:'请选择要删除的工单！',type:'warning'});
           }
+          console.log(selected)
           that.$axios.delete('/yiiapi/workorder/del', {
             data: {
               id: selected
@@ -750,7 +751,12 @@
               that.get_list_works();
               that.$emit('updateNum');
             }else {
-              that.$message.error('删除工单失败');
+              if(msg == '' || msg ==undefined){
+                that.$message.error('删除工单失败');
+              }else {
+                that.$message.error(msg);
+              }
+              that.$refs.multipleTable.clearSelection();
             }
           })
             .catch(err => {

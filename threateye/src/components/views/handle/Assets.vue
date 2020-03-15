@@ -169,7 +169,7 @@
             <el-table-column label="全选"
                              width="40"></el-table-column>
             <el-table-column type="selection"
-                             width="42"></el-table-column>
+                             width="50"></el-table-column>
             <el-table-column prop="asset_ip"
                              label="资产"
                              max-width="100"></el-table-column>
@@ -411,7 +411,7 @@
                 <el-table-column label="全选"
                                  width="40"></el-table-column>
                 <el-table-column type="selection"
-                                 width="42"></el-table-column>
+                                 width="50"></el-table-column>
                 <el-table-column prop="asset_ip"
                                  label="资产"
                                  max-width="100"></el-table-column>

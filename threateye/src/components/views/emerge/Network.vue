@@ -124,7 +124,7 @@
               </template>
             </el-table-column>
             <el-table-column type="selection"
-                             width="40"></el-table-column>
+                             width="50"></el-table-column>
             <el-table-column label="告警时间"
                              width="180"
                              show-overflow-tooltip>
@@ -352,7 +352,7 @@
                                    width="40">
                   </el-table-column>
                   <el-table-column type="selection"
-                                   width="40"></el-table-column>
+                                   width="50"></el-table-column>
                   <el-table-column prop="category"
                                    label="告警类型"
                                    show-overflow-tooltip></el-table-column>

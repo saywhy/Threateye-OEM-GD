@@ -187,3 +187,25 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
 .el-date-editor .el-range-separator {
   width: auto;
 }
+
+.btn_alert_background {
+  width: 72px;
+  height: 30px;
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 2px;
+}
+
+.high_background {
+  background: #dc5f5f
+}
+
+.mid_background {
+  background: #e0c840
+}
+
+.low_background {
+  background: #47cad9
+}

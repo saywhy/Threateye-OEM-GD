@@ -470,7 +470,8 @@
             </el-table-column>
             <el-table-column label="告警等级">
               <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
@@ -521,7 +522,8 @@
             </el-table-column>
             <el-table-column label="告警等级">
               <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
@@ -695,6 +697,7 @@
                 <el-input class="task_new_input"
                           placeholder="请输入工单名称"
                           v-model="new_worksheets_list.name"
+                          show-word-limit
                           maxlength="32"
                           clearable>
                 </el-input>
@@ -3514,17 +3517,7 @@ export default {
 <style scoped lang="less">
 .detail-network {
   background: #f8f8f8;
-  .high {
-    color: #dc5f5f;
-  }
 
-  .mid {
-    color: #e0c840;
-  }
-
-  .low {
-    color: #47cad9;
-  }
   .red_color {
     color: #ff5f5c !important;
   }

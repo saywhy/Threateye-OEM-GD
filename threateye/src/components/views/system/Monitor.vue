@@ -684,6 +684,44 @@ export default {
           isRepeat_ip_segment_edit.push(item.name)
         }
       });
+
+
+      var tag_test = []
+      var tag_test_str = ''
+      this.monitor_edit.label_list.forEach(item => {
+        if (item.name != '') {
+          tag_test.push(item.name)
+        }
+      });
+      tag_test_str = JSON.stringify(tag_test)
+      console.log(tag_test_str.indexOf("终端") != -1);
+      if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
+        this.$message(
+          {
+            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (tag_test_str.indexOf("服务器") != -1 && (tag_test_str.indexOf("终端") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
+        this.$message(
+          {
+            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (tag_test_str.indexOf("网络设备") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("终端") != -1)) {
+        this.$message(
+          {
+            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            type: 'error',
+          }
+        );
+        return false
+      }
       this.monitor_edit.label_list.forEach(item => {
         if (item.name != '') {
           isRepeat_tag_edit.push(item.name)

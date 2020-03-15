@@ -163,7 +163,8 @@
             </el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
@@ -376,7 +377,8 @@
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column label="威胁等级">
                     <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>

@@ -445,7 +445,6 @@
         //经办人数组
         table_operator:{
           tableData: [],
-          tableData_new:[],
           count: 0,
           pageNow: 1,
           maxPage: 1,
@@ -605,11 +604,21 @@
       handleSelChange(val) {
         this.table.multipleSelection = val;
         if(val.length == 1){
+          console.log(val)
+
            this.task_params.name = val[0].name;
            this.task_params.level = val[0].priority;
            this.task_params.type = val[0].type;
            this.task_params.textarea = val[0].remarks;
            this.task_params.new_operator = val[0].perator;
+
+           let table_operator = [];
+           if(val[0].perator.length > 0){
+             this.task_params.new_operator.forEach(function (v,k) {
+               table_operator.push({username:v})
+             })
+           }
+           this.table_operator.tableData = table_operator;
            this.task.id = val[0].id;
          }
       },
@@ -674,8 +683,6 @@
           status: change_status
         })
           .then(resp => {
-
-            console.log(resp)
             let {status, data} = resp.data;
             if (status == 0) {
               this.$message.success('工单状态变更成功！');

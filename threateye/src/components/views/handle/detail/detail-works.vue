@@ -57,13 +57,19 @@
           <el-tab-pane :label="table.tabsFlag == 0?'资产':'告警'" class="tabs-item" name="first">
             <!-- 资产 -->
             <div v-show="table.tabsFlag == 0">
-              <el-table ref="multipleTable" class="handle_table_detail"
+              <el-table ref="multipleTable" class="common-table handle_table_detail"
                         tooltip-effect="dark"
                         :data="table.tableData">
                 <el-table-column prop="asset_ip" label="资产" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="assets_group" label="资产组" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="category_group" label="关联威胁" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
+                <el-table-column  label="威胁等级">
+                <template slot-scope="scope">
+  <span class="btn_alert_background"
+        :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+    {{ scope.row.degree | degree }}</span>
+                </template>
+                </el-table-column>
                 <el-table-column label="失陷确定性">
                   <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -88,7 +94,13 @@
                 <el-table-column prop="src_ip" label="源地址" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="application" label="应用" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip></el-table-column>
+                <el-table-column label="威胁等级" show-overflow-tooltip>
+                  <template slot-scope="scope">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="状态" width="80">
                   <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                 </el-table-column>
@@ -97,7 +109,7 @@
             <el-pagination class="handle_pagination_box"
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
-                           :page-sizes="[5,10,20]"
+                           :page-sizes="[10,20,50,100]"
                            :current-page="table.pageNow"
                            :page-size="table.eachPage"
                            :total="table.count"

@@ -211,9 +211,63 @@ export default {
         .then(response => {
 
           console.log('&&&&&&&')
-           console.log(response);
+          console.log(response);
+
           this.user_data.password = response.data.data
           this.user_data.placeholder = '请输入包含大写、小写、数字和特殊字符其中三项,' + response.data.data.min_passwd_len + '-' + response.data.data.max_passwd_len + '位密码'
+          //!@#QWEasd123 Lele#easy123 Lele@19930901
+
+          this.$axios.get('/yiiapi/site/get-self-password-reset-token')
+
+            .then(response => {
+              console.log('************************');
+              console.log(response);
+
+              let { status, msg, data } = response.data;
+
+              if (status == 0) {
+
+                setToken(data.data.token);
+
+                localStorage.setItem("token", data.data.token);
+
+
+               /* this.user_edit.password = ;
+                this.user_edit.Re_password =
+                this.user_edit.old_password =
+                this.user_edit.password
+                this.user_edit.password
+                this.user_edit.password
+                this.user_edit.password
+                this.user_edit.password
+                  password: "",
+                  Re_password: "",
+                  old_password: "",
+                  department: "",
+                  mobile: "",
+                  email_addr: "",
+                  role: "",
+                  id: "",
+                  allow_ip: ''*/
+
+                this.edit_user();
+
+              } else {
+                this.$message(
+                  {
+                    message: msg,
+                    type: 'error',
+                  }
+                );
+              }
+
+
+            })
+            .catch(error => {
+              console.log(error);
+            })
+
+
         })
         .catch(error => {
           console.log(error);
@@ -240,6 +294,8 @@ export default {
         allow_ip: ''
       };
     },
+
+
 
     edit_user () {
       if (this.user_edit.password != this.user_edit.Re_password) {
@@ -287,101 +343,71 @@ export default {
         );
         return false
       }
-
-
-      //!@#QWEasd123 Lele#easy123 Lele@19930901
-      this.$axios.get('/yiiapi/site/get-self-password-reset-token')
-
+      this.$axios.put('/yiiapi/site/reset-self-password?token=' + localStorage.getItem("token"), {
+        ResetPasswordForm: {
+          password: this.user_edit.password,
+          email_addr: this.user_edit.email_addr,
+          mobile: this.user_edit.mobile,
+          department: this.user_edit.department,
+        },
+        old_password: this.user_edit.old_password
+      })
         .then(response => {
 
-          console.log(response.data);
+          this.pass_state = false;
 
-          let { status, msg, data } = response.data;
+          localStorage.removeItem("token");
 
-          if (status == 0) {
+          if (response.data.status == 0) {
 
-            setToken(data.data.token);
-
-            localStorage.setItem("token", data.data.token);
-
-            this.$axios.put('/yiiapi/site/reset-self-password?token=' + localStorage.getItem("token"), {
-              ResetPasswordForm: {
-                password: this.user_edit.password,
-                email_addr: this.user_edit.email_addr,
-                mobile: this.user_edit.mobile,
-                department: this.user_edit.department,
-              },
-              old_password: this.user_edit.old_password
-            })
-              .then(response => {
-
-                this.pass_state = false;
-
-                localStorage.removeItem("token");
-
-                if (response.data.status == 0) {
-
-                  this.$message({
-                    message: '修改用户成功',
-                    type: 'success'
-                  });
-                  if (this.user_edit.password != '') {
-                    setTimeout(() => {
-                      removeToken();
-                      this.$axios.get('/yiiapi/site/logout')
-                        .then(response => {
-                          if (response.data.status == 0) {
-                            console.log('退出');
-                            location.reload();
-                            //In order to re-instantiate the vue-router object to avoid bugs
-                            this.$router.push('/login');
-                          }
-                        }).catch(error => {
-                          console.log(error);
-                        })
-                      // location.reload();
-
-                    }, 500);
-                  }
-
-                } else {
-                  this.$message(
-                    {
-                      message: response.data.msg,
-                      type: 'error',
+            this.$message({
+              message: '修改用户成功',
+              type: 'success'
+            });
+            if (this.user_edit.password != '') {
+              setTimeout(() => {
+                removeToken();
+                this.$axios.get('/yiiapi/site/logout')
+                  .then(response => {
+                    if (response.data.status == 0) {
+                      console.log('退出');
+                      location.reload();
+                      //In order to re-instantiate the vue-router object to avoid bugs
+                      this.$router.push('/login');
                     }
-                  );
-                }
+                  }).catch(error => {
+                  console.log(error);
+                })
+                // location.reload();
 
-                this.user_edit = {
-                  password: "",
-                  Re_password: "",
-                  old_password: "",
-                  department: "",
-                  mobile: "",
-                  email_addr: "",
-                  role: "",
-                  id: "",
-                  allow_ip: ''
-                };
-              })
-              .catch(error => {
-                console.log(error);
-              })
+              }, 500);
+            }
+
           } else {
             this.$message(
               {
-                message: msg,
+                message: response.data.msg,
                 type: 'error',
               }
             );
           }
 
-
+          this.user_edit = {
+            password: "",
+            Re_password: "",
+            old_password: "",
+            department: "",
+            mobile: "",
+            email_addr: "",
+            role: "",
+            id: "",
+            allow_ip: ''
+          };
         })
         .catch(error => {
           console.log(error);
         })
+
     },
     //退出
     logout () {

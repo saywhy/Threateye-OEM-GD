@@ -2,9 +2,9 @@
  <div class="handle-works">
    <div class="handle-works-top common-invest">
      <div class="invest">
-       <sup class="h_count hc1">{{number[0].created}}</sup>
-       <sup class="h_count hc2">{{number[0].distributed}}</sup>
-       <sup class="h_count hc3">{{number[0].all}}</sup>
+       <sup class="h_count hc1">{{number.created}}</sup>
+       <sup class="h_count hc2">{{number.distributed}}</sup>
+       <sup class="h_count hc3">{{number.all}}</sup>
        <el-tabs v-model="activeName" @tab-click="handleClick">
 
          <!--我创建的-->
@@ -34,7 +34,11 @@
     name: "handle-works",
     data() {
       return {
-        number:[{created:0,distributed:0,all:0}],
+        number:{
+          created:0,
+          distributed:0,
+          all:0
+        },
         activeName: 'first',
         owned:'created',
         childUpdate1:true,
@@ -55,8 +59,25 @@
           .then(resp => {
             let {status,msg, data} = resp.data;
             if(status == 0){
+              console.log(data)
               if(data && data.length){
-                this.number = data;
+
+                if(data[0].created == null){
+                  this.number.created = 0;
+                }else {
+                  this.number.created = data[0].created;
+                }
+                console.log(this.number.created)
+                if(data[0].distributed == null){
+                  this.number.distributed = 0;
+                }else {
+                  this.number.distributed = data[0].distributed;
+                }
+                if(data[0].all == null){
+                  this.number.all = 0;
+                }else {
+                  this.number.all = data[0].all;
+                }
               }
             }
           })

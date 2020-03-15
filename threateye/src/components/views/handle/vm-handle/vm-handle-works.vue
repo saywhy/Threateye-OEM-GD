@@ -363,6 +363,10 @@
         ],
         options_status: [
           {
+            value: "all",
+            label: "所有"
+          },
+          {
             value: "0",
             label: "待分配"
           },
@@ -531,19 +535,12 @@
       get_list_works(){
         this.table.loading = true;
 
-        let parmas_status = 'all';
-
-        if(this.params.status == ''){
-          parmas_status = 'all';
-        }else {
-          parmas_status = this.params.status;
-        }
         this.$axios.get('/yiiapi/workorder/list',
           {
             params: {
               stime:this.params.startTime,
               etime:this.params.endTime,
-              status: parmas_status,
+              status: this.params.status,
               priority:this.params.priority,
               key_word: this.params.key,
               owned: this.owned,

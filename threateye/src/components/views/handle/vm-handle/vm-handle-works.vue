@@ -121,6 +121,36 @@
     </el-pagination>
 
     <!-- 弹窗 -->
+    <!-- 状态变更 -->
+    <el-dialog class="pop_state_box"
+               :modal-append-to-body="false"
+               :visible.sync="state_change">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_state"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">状态变更</span>
+      </div>
+      <div class="content">
+        <p class="content_p"
+           style="font-size:0">
+          <span style="font-size:14px">是否将已勾选的</span>
+          <span style="font-size:14px">{{table.multipleSelection.length}}</span>
+          <span style="font-size:14px">项工单状态变更为“</span>
+          <span style="font-size:14px">{{process_state}}</span>
+          <span style="font-size:14px">”?</span>
+        </p>
+      </div>
+      <div class="btn_box">
+        <el-button @click="cancel_state"
+                   class="cancel_btn">取消</el-button>
+        <el-button @click="ok_state"
+                   class="ok_btn">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 弹窗 -->
     <!-- 工单任务 -->
     <el-dialog class="task_new_box" width='840px' :modal-append-to-body="false" :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
@@ -424,7 +454,9 @@
         handle: {
           add: "",
           table_title: ["资产","告警"],
-          active: 0
+          active: 0,
+          dist:false,
+          save:false
         },
         table_assets: {
           tableData: [],
@@ -597,8 +629,8 @@
           this.$message({message:'请选择需要变更的工单',type: 'warning'});
           return false;
         } else {
-          //this.state_change = true;
-          this.ok_state();
+          this.state_change = true;
+          //this.ok_state();
         }
       },
 
@@ -630,7 +662,7 @@
           change_status = 4;
         }
         this.$axios.put('/yiiapi/workorder/change-status', {
-          asset_ip: worker_id_group,
+          id: worker_id_group,
           status: change_status
         })
           .then(resp => {
@@ -640,7 +672,7 @@
             if (status == 0) {
               this.$message.success('工单状态变更成功！');
               this.get_list_works();
-              this.closed_state();
+              /*this.closed_state();*/
             } else {
               this.$message.error('工单状态变更失败！');
             }
@@ -718,7 +750,7 @@
           let melsetion = this.table.multipleSelection;
 
           if(melsetion.length == 0){
-            this.$message({message:'请选择工单。',type: 'warning'});
+            this.$message({message:'请选择需要编辑的工单。',type: 'warning'});
           }else if(melsetion.length > 1){
             this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
           }else {
@@ -819,7 +851,7 @@
       sc_table_assets(val){
         this.table_assets.eachPage = val;
         this.table_assets.pageNow = 1;
-        let handle_data = this.table.tableData.slice(0, val);
+        let handle_data = this.table_assets.tableData.slice(0, val);
         this.table_assets.tableData_new = handle_data;
       },
 
@@ -837,7 +869,7 @@
       sc_table_alerts(val){
         this.table_alerts.eachPage = val;
         this.table_alerts.pageNow = 1;
-        let handle_data = this.table.tableData.slice(0, val);
+        let handle_data = this.table_alerts.tableData.slice(0, val);
         this.table_alerts.tableData_new = handle_data;
       },
 
@@ -854,14 +886,15 @@
       handle_sel_table_assets (val) {
         this.table_assets.multipleSelection = val;
         let selected = val.map(x => { return x.asset_ip });
-        this.task_params.multiple = selected;
+        this.task_params.multiple_assets = selected;
+        console.log(this.task_params.multiple_assets)
       },
 
       //tab下第一个table多选
       handle_sel_table_alerts (val) {
         this.table_alerts.multipleSelection = val;
         let selected = val.map(x => { return x.alert_id });
-        this.task_params.multiple = selected;
+        this.task_params.multiple_alerts = selected;
       },
 
       //新增工单按钮切换
@@ -909,9 +942,7 @@
                   this.get_list_works();
 
                 }else if (status == 1){
-
                   this.$message.error(msg);
-
                 }
 
               })
@@ -965,6 +996,7 @@
           Object.assign(all_params, {id:this.task.id});
         }
         if(this.task_params.type == 'asset'){
+          console.log(this.task_params.multiple_assets)
           if(this.task_params.multiple_assets.length == 0){
             this.$message({ message: '请选择至少一条列表！', type: 'warning' });
           }else{
@@ -1102,6 +1134,81 @@
             &.e-tag-4{
               background: #47CAD9;
             }
+          }
+        }
+      }
+    }
+  }
+  /* 弹窗 */
+  /* 状态变更 */
+  /deep/ .pop_state_box {
+    .el-dialog {
+      .el-dialog__header {
+        display: none;
+      }
+
+      .el-dialog__body {
+        height: 260px;
+        padding: 30px;
+
+        .closed_img {
+          position: absolute;
+          top: -18px;
+          right: -18px;
+          cursor: pointer;
+          width: 46px;
+          height: 46px;
+        }
+
+        .title {
+          height: 24px;
+          line-height: 24px;
+          text-align: left;
+
+          .title_name {
+            font-size: 20px;
+            color: #333333;
+            line-height: 24px;
+          }
+
+          .mask {
+            width: 24px;
+            height: 0px;
+            border-top: 0px;
+            border-right: 2px solid transparent;
+            border-bottom: 5px solid #0070ff;
+            border-left: 2px solid transparent;
+            transform: rotate3d(0, 0, 1, 90deg);
+            display: inline-block;
+            margin-right: -5px;
+            margin-bottom: 4px;
+            margin-left: -10px;
+          }
+        }
+
+        .content {
+          height: 128px;
+          padding-top: 48px;
+        }
+
+        .btn_box {
+          height: 42px;
+          text-align: center;
+          margin-bottom: 24px;
+
+          .ok_btn {
+            width: 136px;
+            height: 42px;
+            background: #0070ff;
+            color: #fff;
+          }
+
+          .cancel_btn {
+            width: 136px;
+            height: 42px;
+            border-color: #0070ff;
+            background: #fff;
+            color: #0070ff;
           }
         }
       }

@@ -1177,13 +1177,14 @@ export default {
 
             //攻击阶段
             this.attack_stage_list.forEach(function (v,k) {
+              if(data.attack_stage && data.attack_stage.length){
 
-              data.attack_stage.forEach(function (v1,k1) {
-                if(v.name == v1.attack_stage){
-                  v.count = v1.count;
-                }
-              })
-
+                data.attack_stage.forEach(function (v1,k1) {
+                  if(v.name == v1.attack_stage){
+                    v.count = v1.count;
+                  }
+                })
+              }
             });
           }
         });
@@ -1391,7 +1392,7 @@ export default {
     sc_table_assets(val){
       this.table_assets.eachPage = val;
       this.table_assets.pageNow = 1;
-      let handle_data = this.table.tableData.slice(0, val);
+      let handle_data = this.table_assets.tableData.slice(0, val);
       this.table_assets.tableData_new = handle_data;
     },
 

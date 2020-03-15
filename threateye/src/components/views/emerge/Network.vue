@@ -193,7 +193,7 @@
       </div>
       <div class="content">
         <p class="content_p"
-           style="font-size:0">
+           style="font-size:0;text-align: center">
           <span style="font-size:14px">是否将已勾选的</span>
           <span style="font-size:14px">{{table.multipleSelection.length}}</span>
           <span style="font-size:14px">项状态变更为“</span>
@@ -920,7 +920,7 @@ export default {
     sc_table_alerts (val) {
       this.table_alerts.eachPage = val;
       this.table_alerts.pageNow = 1;
-      let handle_data = this.table.tableData.slice(0, val);
+      let handle_data = this.table_alerts.tableData.slice(0, val);
       this.table_alerts.tableData_new = handle_data;
     },
 

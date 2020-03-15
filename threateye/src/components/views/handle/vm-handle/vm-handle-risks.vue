@@ -955,7 +955,7 @@ export default {
     sc_table_alerts(val){
       this.table_alerts.eachPage = val;
       this.table_alerts.pageNow = 1;
-      let handle_data = this.table.tableData.slice(0, val);
+      let handle_data = this.table_alerts.tableData.slice(0, val);
       this.table_alerts.tableData_new = handle_data;
     },
 

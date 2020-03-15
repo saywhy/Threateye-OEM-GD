@@ -330,14 +330,16 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="威胁等级">
+            <el-table-column label="威胁等级"
+                            width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="失陷确定性">
+            <el-table-column label="失陷确定性"
+                           width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
@@ -548,14 +550,16 @@
                                  min-width="140"
                                  label="关联威胁"
                                  show-overflow-tooltip></el-table-column>
-                <el-table-column label="威胁等级">
+                <el-table-column label="威胁等级"
+                                width="100">
                   <template slot-scope="scope">
-  <span class="btn_alert_background"
-        :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
-    {{ scope.row.degree | degree }}</span>
+                    <span class="btn_alert_background"
+                          :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+                      {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="失陷确定性">
+                <el-table-column label="失陷确定性"
+                                 width="100">
                   <template slot-scope="scope">
                     <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                       {{ scope.row.fall_certainty | certainty }}</span>

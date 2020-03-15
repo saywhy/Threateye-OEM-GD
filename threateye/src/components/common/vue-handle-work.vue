@@ -1,5 +1,6 @@
 <template>
-  <div class="handle-work" v-cloak>
+  <div class="handle-work"
+       v-cloak>
     <!--按钮组-->
     <el-row class="common_btn">
       <el-col :span="24"
@@ -56,7 +57,8 @@
         <span class="title_name">状态变更</span>
       </div>
       <div class="content">
-        <p class="content_p" style="font-size:0">
+        <p class="content_p"
+           style="font-size:0">
           <span style="font-size:14px">是否将已勾选的</span>
           <span style="font-size:14px">{{multipleSelection.length}}</span>
           <span style="font-size:14px">项状态变更为“</span>
@@ -214,22 +216,22 @@
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
                       <div>
-                      <span v-for="(it,$idx) in scope.row.label"
-                            :key="$idx"
-                            class="a_label">{{it}}</span>
+                        <span v-for="(it,$idx) in scope.row.label"
+                              :key="$idx"
+                              class="a_label">{{it}}</span>
                       </div>
                     </template>
                   </el-table-column>
                   <el-table-column prop="category_group"
                                    label="关联威胁"
                                    show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级">
+                  <el-table-column width="100">
                     <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
                   </el-table-column>
                   <el-table-column label="失陷确定性">
                     <template slot-scope="scope">
-                    <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                      {{ scope.row.fall_certainty | certainty }}</span>
+                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                        {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
@@ -239,7 +241,8 @@
                 </el-table>
               </div>
               <div v-show="handle.cagetory == 1">
-                <el-table :data="table.tableData" class="common-table"
+                <el-table :data="table.tableData"
+                          class="common-table"
                           tooltip-effect="dark"
                           style="width: 100%"
                           @selection-change="handle_sel_table_mul">
@@ -258,16 +261,16 @@
                   <el-table-column prop="application"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级">
+                  <el-table-column label="威胁等级" width="100">
                     <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
-                  {{ scope.row.degree | degree_sino }}</span>
+                      <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                        {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性">
+                  <el-table-column label="失陷确定性" width="100">
                     <template slot-scope="scope">
-                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                  {{ scope.row.fall_certainty | certainty }}</span>
+                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                        {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
@@ -276,15 +279,14 @@
                   </el-table-column>
                 </el-table>
               </div>
-              <el-pagination
-                 class="pagination_box"
-                 @size-change="sc_table_pages"
-                 @current-change="hcc_table_pages"
-                 :page-sizes="[10,20,50,100]"
-                 :page-size="table.eachPage"
-                 :current-page="table.pageNow"
-                 :total="table.count"
-                 layout="total, sizes, prev, pager, next">
+              <el-pagination class="pagination_box"
+                             @size-change="sc_table_pages"
+                             @current-change="hcc_table_pages"
+                             :page-sizes="[10,20,50,100]"
+                             :page-size="table.eachPage"
+                             :current-page="table.pageNow"
+                             :total="table.count"
+                             layout="total, sizes, prev, pager, next">
               </el-pagination>
             </div>
           </div>
@@ -388,7 +390,7 @@ export default {
       default: () => []
     }
   },
-  data() {
+  data () {
     return {
       //弹窗部分
       state_change: false,
@@ -469,11 +471,11 @@ export default {
       }
     }
   },
-  created(){
+  created () {
     /*console.log('********')
     console.log(this.multipleSelection);*/
   },
-  methods:{
+  methods: {
     /***************以下是弹窗部分************/
     // 状态变更选择
     change_state (command) {
@@ -525,7 +527,7 @@ export default {
       let process = this.process_state;
       let change_status = 1;
 
-      if(process == '处置中'){
+      if (process == '处置中') {
         change_status = 2;
       } else if (process == '已处置') {
         change_status = 3;
@@ -652,7 +654,7 @@ export default {
     },
 
     //tabs下table每页显示多少条
-    sc_table_pages(val){
+    sc_table_pages (val) {
       this.table.eachPage = val;
       this.table.pageNow = 1;
       let handle_data = this.table.tableData.slice(0, val);
@@ -676,9 +678,9 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      }else {
+      } else {
         this.$axios.put('/yiiapi/alert/distribution-workorder',
           {
             name: this.task_params.name,
@@ -707,9 +709,9 @@ export default {
 
     //编辑工单保存
     prev_task_handle_save () {
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      }else {
+      } else {
         this.$axios.post('/yiiapi/alert/add-workorder',
           {
             name: this.task_params.name,
@@ -862,7 +864,7 @@ export default {
     },
 
     //每页显示多少条
-    sc_table_add_works(val){
+    sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();
@@ -877,13 +879,12 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.handle-work{
+.handle-work {
   margin: 19px 0;
   display: inline-block;
   /* 弹窗 */
   /* 状态变更 */
-  /deep/
-  .pop_state_box {
+  /deep/ .pop_state_box {
     .el-dialog {
       .el-dialog__header {
         display: none;
@@ -931,7 +932,7 @@ export default {
         .content {
           height: 128px;
           padding-top: 48px;
-          .content_p{
+          .content_p {
             text-align: center;
           }
         }
@@ -961,8 +962,7 @@ export default {
   }
 
   // 编辑工单
-  /deep/
-  .task_new_box {
+  /deep/ .task_new_box {
     .el-dialog {
       .el-dialog__header {
         display: none;
@@ -1304,8 +1304,7 @@ export default {
   }
 
   //添加到工单
-  /deep/
-  .pop_state_add {
+  /deep/ .pop_state_add {
     .el-dialog {
       .el-dialog__header {
         display: none;

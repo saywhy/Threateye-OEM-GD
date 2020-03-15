@@ -259,7 +259,7 @@
                    <el-table-column align='left' type="selection" width="50"></el-table-column>
                    <el-table-column prop="asset_ip" label="资产"></el-table-column>
                    <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
-                   <el-table-column label="威胁等级">
+                   <el-table-column label="威胁等级" width="100">
                      <template slot-scope="scope">
                 <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
                   {{ scope.row.degree | degree }}</span>
@@ -299,7 +299,7 @@
                    </el-table-column>
                    <el-table-column prop="application" label="应用" show-overflow-tooltip>
                    </el-table-column>
-                   <el-table-column prop="degree" label="威胁等级" show-overflow-tooltip>
+                   <el-table-column prop="degree" label="威胁等级" width="100" show-overflow-tooltip>
                    </el-table-column>
                    <el-table-column label="状态"  width="80">
                      <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>

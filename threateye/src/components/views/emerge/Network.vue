@@ -145,14 +145,14 @@
             <el-table-column prop="application"
                              label="应用"
                              show-overflow-tooltip></el-table-column>
-            <el-table-column label="威胁等级" width="90">
+            <el-table-column label="威胁等级" width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="失陷确定性" width="90">
+            <el-table-column label="失陷确定性" width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
@@ -362,14 +362,14 @@
                   <el-table-column prop="application"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级">
+                  <el-table-column label="威胁等级" width="100">
                     <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性">
+                  <el-table-column label="失陷确定性" width="100">
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                         {{ scope.row.fall_certainty | certainty }}</span>

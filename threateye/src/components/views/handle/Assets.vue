@@ -90,7 +90,8 @@
             <el-select class="s_key"
                        v-model="params.degree"
                        clearable
-                       placeholder="威胁等级">
+                       placeholder="威胁等级"
+                       width="100">
               <el-option v-for="item in options_degree"
                          :key="item.value"
                          :label="item.label"
@@ -173,7 +174,9 @@
             <el-table-column prop="asset_ip"
                              label="资产"
                              max-width="100"></el-table-column>
-            <el-table-column prop="label_group" label="资产组" show-overflow-tooltip
+            <el-table-column prop="label_group"
+                             label="资产组"
+                             show-overflow-tooltip
                              min-width="120">
               <!--<template slot-scope="scope">
                 <span class="btn_tag_box"
@@ -199,7 +202,8 @@
                 </span>
               </template>
             </el-table-column>
-            <el-table-column label="威胁等级">
+            <el-table-column label="威胁等级"
+                             width="100">
               <!-- <template slot-scope="scope">
                 <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
                   {{ scope.row.degree | degree }}</span>
@@ -210,7 +214,8 @@
                   {{ scope.row.degree | degree }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="失陷确定性">
+            <el-table-column label="失陷确定性"
+                             width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
@@ -415,7 +420,9 @@
                 <el-table-column prop="asset_ip"
                                  label="资产"
                                  max-width="100"></el-table-column>
-                <el-table-column prop="label_group" label="资产组" show-overflow-tooltip
+                <el-table-column prop="label_group"
+                                 label="资产组"
+                                 show-overflow-tooltip
                                  min-width="120">
                   <!--<template slot-scope="scope">
                     <span class="btn_tag_box"
@@ -441,14 +448,15 @@
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column label="威胁等级">
+                <el-table-column label="威胁等级"
+                                 width="100">
                   <template slot-scope="scope">
                     <span class="btn_alert_background"
                           :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
                       {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="失陷确定性">
+                <el-table-column label="失陷确定性" width="100">
                   <template slot-scope="scope">
                     <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                       {{ scope.row.fall_certainty | certainty }}</span>

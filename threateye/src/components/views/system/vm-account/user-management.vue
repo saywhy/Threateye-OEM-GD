@@ -1,5 +1,6 @@
 <template>
-  <div id="user_management">
+  <div id="user_management"
+       v-loading.fullscreen.lock="loading">
     <div class="user_title">
       <el-button type="primary"
                  class="btn_i"
@@ -279,6 +280,7 @@ export default {
   name: "user_management",
   data () {
     return {
+      loading: false,
       user_list: {},
       user_data: {
         page: 1,
@@ -381,6 +383,7 @@ export default {
     },
     // 获取用户列表
     get_data () {
+      this.loading = true
       this.$axios.get('/yiiapi/user/page', {
         params: {
           page: this.user_data.page,
@@ -388,6 +391,7 @@ export default {
         }
       })
         .then(response => {
+          this.loading = false
           console.log(response);
           this.user_list = response.data.data
           this.user_list.data.forEach((item, index) => {

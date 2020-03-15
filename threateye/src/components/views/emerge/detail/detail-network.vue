@@ -1,5 +1,6 @@
 <template>
   <div class="detail-network"
+       v-loading.fullscreen.lock="loading"
        v-cloak>
     <back-title :title-name="title_name"></back-title>
     <div class="detail_base">
@@ -823,14 +824,16 @@
                                    label="应用"
                                    show-overflow-tooltip>
                   </el-table-column>
-                  <el-table-column label="威胁等级" width="100"
+                  <el-table-column label="威胁等级"
+                                   width="100"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
                       <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
                         {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性" width="100"
+                  <el-table-column label="失陷确定性"
+                                   width="100"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'':'已失陷' }}</template>
 
@@ -871,6 +874,7 @@ export default {
   name: "detail-network",
   data () {
     return {
+      loading: false,
       attack_stage_list: [
         {
           name: "Initial Access",
@@ -1378,6 +1382,7 @@ export default {
     },
     // 获取数据
     get_data () {
+      this.loading = true
       console.log(this.$route.query.detail);
       var url = ''
       // horizontalthreat  横向威胁告警  lateral
@@ -1406,7 +1411,7 @@ export default {
         }
       })
         .then(response => {
-
+          this.loading = false
           this.network_detail = response.data.data
 
           this.network_detail.attack_stage_cn = ''

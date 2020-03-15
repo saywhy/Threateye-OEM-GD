@@ -91,15 +91,18 @@
       </div>
       <div class="mid_item">
         <p>发送内容</p>
-        <el-input class="select_box"
-                  type="textarea"
-                  :rows="10"
-                  autosize
-                  resize='none'
-                  placeholder="请输入发送内容"
-                  v-model="mail.content"
-                  clearable>
-        </el-input>
+        <div style="display:flex">
+          <el-input class="select_box"
+                    type="textarea"
+                    :rows="10"
+                    autosize
+                    resize='none'
+                    placeholder="请输入发送内容"
+                    v-model="mail.content"
+                    clearable>
+          </el-input>
+          <span style="width: 16px;"></span>
+        </div>
       </div>
       <p class="title">
         发生警告时给此邮箱发送通知邮件
@@ -426,8 +429,17 @@ export default {
     width: 40px !important;
   }
   .el-textarea__inner {
+    margin-top: 8px;
     background: #f8f8f8;
     border: 0;
+    min-height: 30px !important;
+    line-height: 30px;
+  }
+  .el-textarea {
+    min-height: 30px !important;
+  }
+  textarea {
+    min-height: 30px !important;
   }
 }
 </style>

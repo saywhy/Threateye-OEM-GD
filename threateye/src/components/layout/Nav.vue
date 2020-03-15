@@ -109,7 +109,7 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">旧密码</span>
+            <span class="title"><span class="it_m">*</span>旧密码</span>
           </p>
           <el-input class="select_box"
                     placeholder="请再次输入密码"
@@ -127,7 +127,7 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">邮箱</span>
+            <span class="title"><span class="it_m">*</span>邮箱</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入邮箱"
@@ -136,7 +136,7 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">手机号</span>
+            <span class="title"><span class="it_m">*</span>手机号</span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入手机号"
@@ -209,7 +209,9 @@ export default {
     getPwdLength () {
       this.$axios.get('/yiiapi/site/get-passwd-length')
         .then(response => {
-          // console.log(response);
+
+          console.log('&&&&&&&')
+           console.log(response);
           this.user_data.password = response.data.data
           this.user_data.placeholder = '请输入包含大写、小写、数字和特殊字符其中三项,' + response.data.data.min_passwd_len + '-' + response.data.data.max_passwd_len + '位密码'
         })
@@ -267,6 +269,25 @@ export default {
         );
         return false
       }
+      if (this.user_edit.mobile == '') {
+        this.$message(
+          {
+            message: '手机号不能为空',
+            type: 'error',
+          }
+        );
+        return false
+      }
+      if (this.user_edit.email_addr == '') {
+        this.$message(
+          {
+            message: '邮箱不能为空',
+            type: 'error',
+          }
+        );
+        return false
+      }
+
 
       //!@#QWEasd123 Lele#easy123 Lele@19930901
       this.$axios.get('/yiiapi/site/get-self-password-reset-token')
@@ -511,6 +532,9 @@ export default {
           .title {
             font-size: 12px;
             color: #999999;
+            .it_m{
+              color: red;
+            }
           }
           .select_box {
             width: 100%;

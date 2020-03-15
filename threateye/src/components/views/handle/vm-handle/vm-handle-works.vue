@@ -177,7 +177,12 @@
                   <span>工单名称</span>
                   <span class="improtant_ico">*</span>
                 </div>
-                <el-input class="task_new_input" placeholder="请输入工单名称" v-model="task_params.name" clearable>
+                <el-input class="task_new_input"
+                          placeholder="请输入工单名称"
+                          v-model="task_params.name"
+                          show-word-limit
+                          maxlength="32"
+                          clearable>
                 </el-input>
               </li>
               <li class="left_item">
@@ -213,7 +218,10 @@
           </div>
           <div class="content_remarks">
             <p class="title">备注</p>
-            <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="task_params.textarea">
+            <el-input type="textarea" :rows="4" placeholder="请输入内容"
+                      maxlength="500"
+                      show-word-limit
+                      v-model="task_params.textarea">
             </el-input>
           </div>
           <div class="content_table">

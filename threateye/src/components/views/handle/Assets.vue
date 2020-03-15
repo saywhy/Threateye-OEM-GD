@@ -309,6 +309,8 @@
                 <el-input class="task_new_input"
                           placeholder="请输入工单名称"
                           v-model="task_params.name"
+                          show-word-limit
+                          maxlength="32"
                           clearable>
                 </el-input>
               </li>
@@ -363,6 +365,8 @@
             <el-input type="textarea"
                       :rows="4"
                       placeholder="请输入内容"
+                      maxlength="500"
+                      show-word-limit
                       v-model="task_params.textarea">
             </el-input>
           </div>

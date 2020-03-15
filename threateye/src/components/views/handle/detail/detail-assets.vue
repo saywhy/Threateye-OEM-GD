@@ -71,7 +71,7 @@
         <li>
           <span class="title">
             <i class="b_i"></i>资产类型：</span>
-          <span class="content">{{assets_top.new_base_category}}</span>
+          <span class="content"><span class="c_it">{{assets_top.new_base_category}}</span></span>
         </li>
         <li>
           <span class="title">

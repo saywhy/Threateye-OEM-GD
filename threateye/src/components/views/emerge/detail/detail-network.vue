@@ -1400,8 +1400,9 @@ export default {
         }
       })
         .then(response => {
-
+            
           this.network_detail = response.data.data
+            console.log(this.network_detail);
           this.network_detail.attack_stage_cn = ''
 
           this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)

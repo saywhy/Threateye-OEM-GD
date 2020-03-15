@@ -1,5 +1,6 @@
 <template>
-  <div id="Network" v-cloak>
+  <div id="Network"
+       v-cloak>
     <div class="e_line"
          v-loading="e_line.loading">
       <p class="title">实时告警监测</p>
@@ -162,7 +163,8 @@
             </el-table-column>
           </el-table>
         </el-col>
-        <el-col :span="24" class="e-pagination">
+        <el-col :span="24"
+                class="e-pagination">
           <el-pagination class="handle-pagination"
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
@@ -361,14 +363,14 @@
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column label="威胁等级">
                     <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
-                  {{ scope.row.degree | degree_sino }}</span>
+                      <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                        {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性">
                     <template slot-scope="scope">
-                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                  {{ scope.row.fall_certainty | certainty }}</span>
+                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                        {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
@@ -395,9 +397,11 @@
           <el-button @click="prev_task_handle"
                      class="prev_btn">上一步</el-button>
           <el-button @click="prev_task_handle_assign"
-                     class="prev_btn" :disabled="handle.dist">分配</el-button>
+                     class="prev_btn"
+                     :disabled="handle.dist">分配</el-button>
           <el-button @click="prev_task_handle_save"
-                     class="prev_btn" :disabled="handle.save">保存</el-button>
+                     class="prev_btn"
+                     :disabled="handle.save">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -451,7 +455,8 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span="24" class="e-pagination">
+          <el-col :span="24"
+                  class="e-pagination">
             <el-pagination class="handle-pagination"
                            @size-change="sc_table_add_works"
                            @current-change="hcc_table_add_works"
@@ -597,12 +602,12 @@ export default {
         add: "",
         table_title: ["告警"],
         active: 0,
-        dist:false,
-        save:false
+        dist: false,
+        save: false
       },
       table_alerts: {
         tableData: [],
-        tableData_new:[],
+        tableData_new: [],
         count: 0,
         pageNow: 1,
         maxPage: 1,
@@ -732,7 +737,7 @@ export default {
 
     //进入详情页面
     detail_click (val) {
-      this.$router.push({ path: "/detail/network", query: { detail: val.id } });
+      this.$router.push({ path: "/detail/network", query: { detail: val.id, type: 'alert' } });
     },
 
     /***********************************以下是弹窗部分****************************************/
@@ -788,7 +793,7 @@ export default {
       let process = this.process_state;
       let change_status = 0;
 
-      if(process == '处置中'){
+      if (process == '处置中') {
         change_status = 2;
       } else if (process == '已处置') {
         change_status = 3;
@@ -912,7 +917,7 @@ export default {
     },
 
     //tabs下table每页显示多少条
-    sc_table_alerts(val){
+    sc_table_alerts (val) {
       this.table_alerts.eachPage = val;
       this.table_alerts.pageNow = 1;
       let handle_data = this.table.tableData.slice(0, val);
@@ -943,9 +948,9 @@ export default {
     //编辑工单分配
     prev_task_handle_assign () {
 
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      }else{
+      } else {
         this.handle.dist = true;
         this.$axios.put('/yiiapi/alert/distribution-workorder',
           {
@@ -975,9 +980,9 @@ export default {
 
     //编辑工单保存
     prev_task_handle_save () {
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
-      }else{
+      } else {
         this.handle.save = true;
         this.$axios.post('/yiiapi/alert/add-workorder',
           {
@@ -1095,9 +1100,9 @@ export default {
         .map(x => { return x.alert_id * 1 });
 
       this.add_params.multiple = selected_attr;
-      if(this.add_params.id == undefined){
+      if (this.add_params.id == undefined) {
         this.$message({ message: '请选择一条工单！', type: 'warning' });
-      }else {
+      } else {
 
         this.$axios.post('/yiiapi/alert/add-workorder',
           {
@@ -1127,7 +1132,7 @@ export default {
     },
 
     //每页显示多少条
-    sc_table_add_works(val){
+    sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();

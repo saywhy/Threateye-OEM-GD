@@ -1905,9 +1905,9 @@ export default {
         }
         td > .cell {
           font-family: PingFangMedium;
-          .fall_certainty {
+          /*.fall_certainty {
             color: #ff5f5c;
-          }
+          }*/
           /*.degree_box {
             button {
               height: 30px;

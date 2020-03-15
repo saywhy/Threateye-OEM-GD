@@ -378,7 +378,7 @@
         params: {
           key: "",
           priority: "",
-          status: "1",
+          status: "",
           startTime: "",
           endTime: "",
         },
@@ -523,12 +523,20 @@
       //工单中心列表
       get_list_works(){
         this.table.loading = true;
+
+        let parmas_status = 'all';
+
+        if(this.params.status == ''){
+          parmas_status = 'all';
+        }else {
+          parmas_status = this.params.status;
+        }
         this.$axios.get('/yiiapi/workorder/list',
           {
             params: {
               stime:this.params.startTime,
               etime:this.params.endTime,
-              status: this.params.status,
+              status: parmas_status,
               priority:this.params.priority,
               key_word: this.params.key,
               owned: this.owned,
@@ -573,7 +581,7 @@
         this.params = {
           key: "",
           priority: "",
-          status: "0",
+          status: "",
           startTime: "",
           endTime: ""
         };

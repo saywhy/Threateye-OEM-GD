@@ -90,7 +90,7 @@
             <el-select class="s_key"
                        v-model="params.degree"
                        clearable
-                       placeholder="风险等级">
+                       placeholder="威胁等级">
               <el-option v-for="item in options_degree"
                          :key="item.value"
                          :label="item.label"
@@ -591,15 +591,15 @@ export default {
       options_degree: [
         {
           value: "high",
-          label: "高"
+          label: "高危"
         },
         {
           value: "medium",
-          label: "中"
+          label: "中危"
         },
         {
           value: "low",
-          label: "低"
+          label: "低危"
         }
       ],
       options_status: [

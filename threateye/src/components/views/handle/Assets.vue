@@ -829,6 +829,7 @@ export default {
               v.label_group = label_group;
               v.category_group = category_group;
             });
+
             this.table.tableData = data;
             this.table.count = count;
             this.table.maxPage = maxPage;

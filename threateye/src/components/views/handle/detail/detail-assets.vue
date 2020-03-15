@@ -5,7 +5,8 @@
 
     <div class="detail_base_top">
       <div class="top_left">
-        <img class="t_name" src="@/assets/images/handle/others/top_name.png"
+        <img class="t_name"
+             src="@/assets/images/handle/others/top_name.png"
              alt="">
         <span class="top_left_title">{{detail.asset_ip}}</span>
       </div>
@@ -534,22 +535,24 @@
                 <el-table-column prop="asset_ip"
                                  label="资产"
                                  max-width="100"></el-table-column>
-                <el-table-column prop="label_group" label="资产组"
-                                 min-width="120" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="label_group"
+                                 label="资产组"
+                                 min-width="120"
+                                 show-overflow-tooltip></el-table-column>
                 <el-table-column prop="category_group"
                                  min-width="140"
                                  label="关联威胁"
                                  show-overflow-tooltip></el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
-                  {{ scope.row.degree | degree }}</span>
+                    <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
+                      {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="失陷确定性">
                   <template slot-scope="scope">
-                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                  {{ scope.row.fall_certainty | certainty }}</span>
+                    <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                      {{ scope.row.fall_certainty | certainty }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="状态"
@@ -575,9 +578,11 @@
           <el-button @click="prev_task_handle"
                      class="prev_btn">上一步</el-button>
           <el-button @click="prev_task_handle_assign"
-                     class="prev_btn" :disabled="handle.dist">分配</el-button>
+                     class="prev_btn"
+                     :disabled="handle.dist">分配</el-button>
           <el-button @click="prev_task_handle_save"
-                     class="prev_btn" :disabled="handle.save">保存</el-button>
+                     class="prev_btn"
+                     :disabled="handle.save">保存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -666,8 +671,8 @@ export default {
   components: { backTitle, VmHanleRank },
   data () {
     return {
-      network_times:[],
-      network_detail:{},
+      network_times: [],
+      network_detail: {},
       detail: {},
       title_name: "风险资产详情",
       activeName: 'first',
@@ -732,8 +737,8 @@ export default {
         add: "",
         table_title: ["资产"],
         active: 0,
-        dist:false,
-        save:false
+        dist: false,
+        save: false
       },
       table_assets: {
         tableData: [],
@@ -932,7 +937,7 @@ export default {
           name: 'WebShell	WebShell',
           des: 'Web Shell是利用失窃账号或者漏洞而放置在Web服务器上用来和攻击者交互的入口。',
           handle: [
-            '1、确认是否成功，如果成功，隔离机器并作清除、扫描和安全分析；',
+            '1、确认是否成功，如果成功，隔离机器并做清除、扫描和安全分析；',
             '2、重点关注是否有横向移动的痕迹。',
           ],
           reinforce: [
@@ -1176,11 +1181,11 @@ export default {
 
 
             //攻击阶段
-            this.attack_stage_list.forEach(function (v,k) {
-              if(data.attack_stage && data.attack_stage.length){
+            this.attack_stage_list.forEach(function (v, k) {
+              if (data.attack_stage && data.attack_stage.length) {
 
-                data.attack_stage.forEach(function (v1,k1) {
-                  if(v.name == v1.attack_stage){
+                data.attack_stage.forEach(function (v1, k1) {
+                  if (v.name == v1.attack_stage) {
                     v.count = v1.count;
                   }
                 })
@@ -1270,7 +1275,7 @@ export default {
       let process = this.process_state;
       let change_status = 0;
 
-      if(process == '处置中'){
+      if (process == '处置中') {
         change_status = 2;
       } else if (process == '已处置') {
         change_status = 3;
@@ -1389,7 +1394,7 @@ export default {
     },
 
     //tabs下table每页显示多少条
-    sc_table_assets(val){
+    sc_table_assets (val) {
       this.table_assets.eachPage = val;
       this.table_assets.pageNow = 1;
       let handle_data = this.table_assets.tableData.slice(0, val);
@@ -1419,9 +1424,9 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
-      }else{
+      } else {
         this.handle.dist = true;
         this.$axios.put('/yiiapi/asset/distribution-workorder',
           {
@@ -1451,9 +1456,9 @@ export default {
     //编辑工单保存
     prev_task_handle_save () {
 
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
-      }else{
+      } else {
         this.handle.save = true;
         this.$axios.post('/yiiapi/asset/add-workorder',
           {
@@ -1571,9 +1576,9 @@ export default {
 
       this.add_params.multiple = selected_attr;
 
-      if(this.add_params.id == undefined){
+      if (this.add_params.id == undefined) {
         this.$message({ message: '请选择一条工单！', type: 'warning' });
-      }else{
+      } else {
 
         this.$axios.post('/yiiapi/asset/add-workorder',
           {
@@ -1602,7 +1607,7 @@ export default {
     },
 
     //每页显示多少条
-    sc_table_add_works(val){
+    sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();
@@ -1619,8 +1624,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import '../../../../assets/css/less/common-pattern.less';
-  @import '../../../../assets/css/less/common-table-pattern.less';
+@import '../../../../assets/css/less/common-pattern.less';
+@import '../../../../assets/css/less/common-table-pattern.less';
 .detail-assets {
   text-align: left;
   .detail_base_top {

@@ -209,3 +209,12 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
 .low_background {
   background: #47cad9
 }
+
+.el-textarea__inner {
+  font-family: PingFang !important;
+
+}
+
+textarea {
+  font-family: PingFang !important;
+}

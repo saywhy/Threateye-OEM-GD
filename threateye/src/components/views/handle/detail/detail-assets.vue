@@ -948,8 +948,6 @@ export default {
           if (status == 0) {
             let attr = [];
             attr.push(data);
-
-
             this.table_assets.tableData = attr;
             this.table_assets.count = 1;
             this.table_assets.pageNow = 1;
@@ -1016,7 +1014,7 @@ export default {
     // 状态变更选择
     change_state (command) {
       this.process_state = command;
-      this.open_state();
+      this.ok_state();
     },
 
     //工单任务选择

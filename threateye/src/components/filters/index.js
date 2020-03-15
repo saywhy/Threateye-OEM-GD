@@ -68,6 +68,8 @@ Vue.filter('risk_status',function(args){
     str = '待处置';
   }else if(args == 2){
     str = '处置中';
+  }else if(args == ''){
+    str = '未关联工单';
   }
   return str;
 });

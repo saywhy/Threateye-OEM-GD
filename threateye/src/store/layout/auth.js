@@ -6,7 +6,7 @@ export function forRoleList(auth) {
 
   auth = auth.data.data;
   let roles = [];
-  if(auth == ''){
+  if(auth == '' || auth == undefined){
     console.log('无权限');
 
     roles = null;

@@ -332,7 +332,8 @@
             </el-table-column>
             <el-table-column label="威胁等级">
               <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
@@ -545,8 +546,9 @@
                                  show-overflow-tooltip></el-table-column>
                 <el-table-column label="威胁等级">
                   <template slot-scope="scope">
-                    <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
-                      {{ scope.row.degree | degree }}</span>
+  <span class="btn_alert_background"
+        :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+    {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="失陷确定性">

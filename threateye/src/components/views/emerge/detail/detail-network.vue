@@ -146,8 +146,8 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">失陷确定性:</span>
-              <span class="item_li_content"
-                    :class="network_detail.fall_certainty == '0'?'':'red_color'">
+              <span 
+                    :class="network_detail.fall_certainty == '0'?'':'fall_certainty'">
                 {{network_detail.fall_certainty == '0'?'':'已失陷'}}</span>
             </li>
             <li class="item_li">
@@ -3625,6 +3625,13 @@ export default {
               transform: scale(0.8);
               display: block;
             }
+          }
+          .btn_fall {
+            display: inline-block;
+            width: 76px;
+            height: 30px;
+            background: #ff5f5c;
+            color: #fff;
           }
           .src_active {
             font-family: PingFang;

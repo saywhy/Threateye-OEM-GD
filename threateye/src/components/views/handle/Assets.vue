@@ -512,7 +512,7 @@
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
-                      @selection-change="handle_sel_table_add_works">
+                      @current-change="handle_sel_table_add_works">
               <el-table-column label="单选"
                                width="40">
                 <template slot-scope="scope">
@@ -716,7 +716,8 @@ export default {
         operator: [],
         notice: ['email'],
         remarks: "",
-        multiple: []
+        multiple: [],
+        old_as:[]
       }
     };
   },
@@ -1259,7 +1260,8 @@ export default {
         new_operator: [],
         notice: ['email'],
         textarea: "",
-        multiple: []
+        multiple: [],
+        old_as:[]
       };
       this.$refs.multipleTable.clearSelection();
     },
@@ -1274,11 +1276,16 @@ export default {
             item.checked = false
           }
         });
+
+        console.log(row);
         this.add_params.id = row.id;
         this.add_params.name = row.name;
         this.add_params.level = row.priority;
         this.add_params.perator = JSON.parse(row.perator);
         this.add_params.remarks = row.remarks;
+
+        this.add_params.old_as = JSON.parse(row.risk_asset);
+        console.log(this.add_params.old_as);
       }
     },
 
@@ -1291,6 +1298,10 @@ export default {
       if (this.add_params.id == undefined) {
         this.$message({ message: '请选择一条工单！', type: 'warning' });
       } else {
+
+        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+        console.log(this.add_params);
+
         this.$axios.post('/yiiapi/asset/add-workorder',
           {
             id: this.add_params.id,

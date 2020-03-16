@@ -1139,6 +1139,8 @@ export default {
             item.checked = false
           }
         });
+
+        console.log(row);
         this.add_params.id = row.id;
         this.add_params.name = row.name;
         this.add_params.level = row.priority;
@@ -1162,8 +1164,10 @@ export default {
       if(this.add_params.id == undefined){
         this.$message({ message: '请选择一条工单！', type: 'warning' });
       }else{
+
         this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
         console.log(this.add_params);
+
         this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
           {
             id: this.add_params.id,

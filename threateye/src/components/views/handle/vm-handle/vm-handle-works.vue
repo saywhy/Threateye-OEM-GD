@@ -1099,16 +1099,16 @@
                 let { status,msg,data} = resp.data;
 
                 console.log(resp)
-                /*if(status == 0){
+                if(status == 0){
                   var url2 = "/workorder/download?id=" + (selected[0].id * 1);
                   window.location.href = url2;
                 } else {
                   this.$message({ type: 'warning', message: msg});
-                }*/
-                this.$axios.get('/workorder/download?id='+(selected[0].id * 1))
+                }
+                /*this.$axios.get('/workorder/download?id='+(selected[0].id * 1))
                   .then(resp => {
                   console.log(resp)
-                })
+                })*/
             })
           }else {
             this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});

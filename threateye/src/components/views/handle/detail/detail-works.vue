@@ -331,21 +331,20 @@ export default {
     },
     /*******************下载**************************/
     worksdownload() {
+      let stu = this.data.status;
+      if(stu == 1 || stu == 2){
+        var url1 = "/yiiapi/workorder/download-test?id=1" + this.id * 1;
+        this.$axios.get(url1)
+          .then(resp => {
+            let { status,msg,data} = resp.data;
+            if(status == 0){
+              var url2 = "/workorder/download?id=" + this.id * 1;
+              window.location.href = url2;
+            } else {
+              this.$message({ type: 'warning', message: msg});
+            }
+          })
 
-      /*this.$confirm('是否确定下载工单?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-
-      }).catch(() => {
-
-      });*/
-
-      let status = this.data.status;
-      if(status == 1 || status == 2){
-        var url1 = "/yiiapi/workorder/download-test?id=" + this.id * 1;
-        window.location.href = url1;
       }else {
         this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});
       }

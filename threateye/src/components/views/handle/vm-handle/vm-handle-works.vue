@@ -781,9 +781,6 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
-
-
           /!*this.$axios.get('/yiiapi/workorder/download-test',{
             params: {
               id:
@@ -794,12 +791,8 @@
                 this.$message.success('下载成功');
               }
             })*!/
-
-
         }).catch(() => {
-
           //this.$message({ type: 'info', message: '已取消下载' });
-
           this.$refs.multipleTable.clearSelection();
         });*/
 
@@ -810,12 +803,22 @@
         }else if(selected.length > 1){
           this.$message({ type: 'warning', message: '每次只能选择一个工单下载！' });
         }else {
-          let status = selected[0].status;
 
-          console.log('status='+status)
-          if(status == 1 || status == 2){
-            var url1 = "/yiiapi/workorder/download-test?id=" + (selected[0].id * 1);
-            window.location.href = url1;
+          let stu = selected[0].status;
+          if(stu == 1 || stu == 2){
+            var url1 = "/yiiapi/workorder/download-test?id=1" + (selected[0].id * 1);
+            this.$axios.get(url1)
+              .then(resp => {
+                let { status,msg,data} = resp.data;
+
+                console.log(resp)
+                if(status == 0){
+                  var url2 = "/workorder/download?id=" + (selected[0].id * 1);
+                  window.location.href = url2;
+                } else {
+                  this.$message({ type: 'warning', message: msg});
+                }
+            })
           }else {
             this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});
           }

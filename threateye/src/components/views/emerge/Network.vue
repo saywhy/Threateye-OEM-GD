@@ -428,7 +428,7 @@
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
-                      @current-change="handle_sel_table_add_works">
+                      @selection-change="handle_sel_table_add_works">
               <el-table-column label="单选"
                                width="40">
                 <template slot-scope="scope">
@@ -625,7 +625,8 @@ export default {
         pageNow: 1,
         maxPage: 1,
         eachPage: 10,
-        loading: true
+        loading: true,
+        multipleSelection: []
       },
       add_params: {
         name: "",
@@ -634,7 +635,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
       }
     };
   },
@@ -1090,41 +1091,40 @@ export default {
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
       // el-radio单选框,不需要这一步
-      if (row != undefined) {
-        this.table_add_works.tableData.forEach(item => {
-          // 排他,每次选择时把其他选项都清除
-          if (item.id != row.id) {
-            item.checked = false
-          }
-        });
-
-        console.log('&&&&&&')
-        console.log(row)
-        this.add_params.id = row.id;
-        this.add_params.name = row.name;
-        this.add_params.level = row.priority;
-        this.add_params.perator = JSON.parse(row.perator);
-        this.add_params.remarks = row.remarks;
-        this.add_params.remind = JSON.parse(row.remind);
-
-        this.add_params.old_as = JSON.parse(row.te_alert);
-
-        console.log(this.add_params.old_as);
-      }
+      this.table_add_works.multipleSelection = row;
     },
 
     //新加到工单确定
     add_ok_state () {
       let selected_attr = this.table.multipleSelection
-        .map(x => { return x.id * 1 });
-
+        .map(x => { return x.asset_ip });
       this.add_params.multiple = selected_attr;
 
-      if (this.add_params.id == undefined) {
-        this.$message({ message: '请选择一条工单！', type: 'warning' });
-      } else {
+      //判断工单列表长度
+      let multipe = this.table_add_works.multipleSelection;
+
+      if (multipe.length == 0) {
+        this.$message({ message: '请选择要添加的工单！', type: 'warning' });
+      } else if(multipe.length > 1){
+        this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
+      }else{
+        console.log('******************')
+        this.add_params.id = multipe[0].id;
+        this.add_params.name = multipe[0].name;
+        this.add_params.level = multipe[0].priority;
+        this.add_params.perator = JSON.parse(multipe[0].perator);
+        this.add_params.remarks = multipe[0].remarks;
+        //this.add_params.remind = JSON.parse(multipe[0].remind);
+
+        this.add_params.old_as = JSON.parse(multipe[0].te_alert);
+        //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
-        console.log(this.add_params);
+
+        console.log(this.add_params.multiple);
+        this.add_params.multiple = [...new Set(this.add_params.multiple)]
+
+        console.log(this.add_params.perator);
+        this.handle.save = true;
         this.$axios.post('/yiiapi/alert/add-workorder',
           {
             id: this.add_params.id,
@@ -1136,7 +1136,7 @@ export default {
             remarks: this.add_params.remarks,
             te_alert: this.add_params.multiple
           }).then((resp) => {
-
+          this.handle.save = false;
             let { status, msg, data } = resp.data;
             if (status == 0) {
               this.$message.success('添加成功');

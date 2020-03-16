@@ -347,7 +347,7 @@
             </el-table-column>
             <el-table-column label="状态"
                              width="80">
-              <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+              <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
             </el-table-column>
           </el-table>
           <el-pagination class="handle_pagination_box"
@@ -1187,6 +1187,7 @@ export default {
 
             this.assets_top = data;
 
+            console.log(data)
 
             //攻击阶段
             this.attack_stage_list.forEach(function (v, k) {
@@ -1222,6 +1223,8 @@ export default {
             this.table.count = count;
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
+
+            console.log(data)
           }
         });
     },

@@ -26,9 +26,14 @@
                        label="应用"
                        width="60"
                        show-overflow-tooltip></el-table-column>
-      <el-table-column prop="degree"
-                       label="告警等级"
-                       show-overflow-tooltip></el-table-column>
+      <el-table-column label="威胁等级"
+                       show-overflow-tooltip>
+        <template slot-scope="scope">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+        </template>
+      </el-table-column>
     </el-table>
   </el-col>
 </template>

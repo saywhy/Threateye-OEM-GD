@@ -716,7 +716,7 @@ export default {
           this.table.maxPage = maxPage;
           this.table.pageNow = pageNow;
 
-          console.log(data)
+         // console.log(data)
         }
       })
     },
@@ -733,7 +733,7 @@ export default {
     },
     //下拉框change切換
     currentSelChange () {
-      this.get_list_threat();
+      //this.get_list_threat();
     },
     //時間切換
     changeTime (data) {

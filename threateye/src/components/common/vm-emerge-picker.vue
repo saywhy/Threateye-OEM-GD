@@ -1,7 +1,7 @@
 
 <template>
   <el-date-picker class="vm_emerge_picker"
-                  v-model="option"
+                  v-model="pickerOptions.time"
                   type="datetimerange"
                   format="yyyy-MM-dd HH:mm"
                   :picker-options="pickerOptions"
@@ -48,7 +48,7 @@ export default {
             }
           }
         ],
-        // time: []
+        time: []
       }
     };
   },
@@ -69,7 +69,7 @@ export default {
     chooseTime () {
       console.log(this.option);
       // console.log(this.pickerOptions.time);
-      this.$emit("changeTime", this.option);
+      this.$emit("changeTime", this.pickerOptions.time);
     }
   }
 };

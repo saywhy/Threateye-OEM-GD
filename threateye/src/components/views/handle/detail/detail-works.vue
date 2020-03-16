@@ -333,7 +333,7 @@ export default {
     worksdownload() {
       let stu = this.data.status;
       if(stu == 1 || stu == 2){
-        var url1 = "/yiiapi/workorder/download-test?id=1" + this.id * 1;
+        var url1 = "/yiiapi/workorder/download-test?id=" + this.id * 1;
         this.$axios.get(url1)
           .then(resp => {
             let { status,msg,data} = resp.data;
@@ -344,7 +344,6 @@ export default {
               this.$message({ type: 'warning', message: msg});
             }
           })
-
       }else {
         this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});
       }

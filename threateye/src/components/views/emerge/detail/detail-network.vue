@@ -583,13 +583,13 @@
       </div>
     </el-dialog>
     <!-- 弹窗 -->
-    <!-- 添加到工单 -->
+    <!-- 添加到工单 --><!--:visible.sync="worksheets_data.pop" class="pop_state_add pop_box"-->
     <el-dialog class="pop_state_add pop_box"
                :close-on-click-modal="false"
                :modal-append-to-body="false"
-               :visible.sync="worksheets_data.pop">
+               :visible.sync="add_state_change">
       <img src="@/assets/images/emerge/closed.png"
-           @click="add_closed_state"
+           @click="add_closed_state1"
            class="closed_img"
            alt="">
       <div class="title">
@@ -601,11 +601,11 @@
           <el-table ref="multipleTable"
                     class="reset_table"
                     align="center"
-                    :data="worksheets_list.data"
+                    :data="table_add_works.tableData"
                     tooltip-effect="dark"
-                    @selection-change="handleSelectionChange"
+                    @selection-change="handle_sel_table_add_works"
                     style="width: 100%">
-            <el-table-column label="选择"
+            <!--<el-table-column label="选择"
                              width="55">
               <template slot-scope="scope">
                 <el-radio v-model="worksheets_data.tableRadio"
@@ -614,7 +614,11 @@
                 </el-radio>
               </template>
 
-            </el-table-column>
+            </el-table-column>-->
+            <el-table-column label="选择"
+                             width="50"></el-table-column>
+            <el-table-column type="selection"
+                             width="50"></el-table-column>
             <el-table-column prop="name"
                              label="工单名称"
                              show-overflow-tooltip>
@@ -625,11 +629,13 @@
             </el-table-column>
             <el-table-column label="优先级"
                              width="120">
-              <template slot-scope="scope">{{ scope.row.priority_cn}}</template>
+              <template slot-scope="scope">{{ scope.row.priority | priority}}</template>
             </el-table-column>
-            <el-table-column prop="perator_cn"
+            <!--<el-table-column prop="perator_cn"
                              label="经办人"
                              show-overflow-tooltip>
+            </el-table-column>-->
+            <el-table-column prop="new_perator" label="经办人" show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="状态"
                              width="80"
@@ -638,20 +644,20 @@
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"
-                         @size-change="handleSizeChange_add"
-                         @current-change="handleCurrentChange_add"
-                         :current-page="worksheets_list.pageNow"
+                         @size-change="sc_table_add_works"
+                         @current-change="hcc_table_add_works"
+                         :current-page="table_add_works.pageNow"
                          :page-sizes="[10,50,100]"
-                         :page-size="10"
+                         :page-size="table_add_works.eachPage"
                          layout="total, sizes, prev, pager, next"
-                         :total="worksheets_list.count">
+                         :total="table_add_works.count">
           </el-pagination>
         </div>
       </div>
       <div class="btn_box">
-        <el-button @click="add_closed_state"
+        <el-button @click="add_closed_state1"
                    class="cancel_btn">取消</el-button>
-        <el-button @click="add_ok_worksheets"
+        <el-button @click="add_ok_state"
                    class="ok_btn">确定</el-button>
       </div>
     </el-dialog>
@@ -1356,6 +1362,37 @@ export default {
         // 告警数组
         network_detail: []
       },
+
+      //
+      table_alerts: {
+        tableData: [],
+        count: 0,
+        pageNow: 1,
+        maxPage: 1,
+        eachPage: 10,
+        loading: true,
+        multipleSelection: []
+      },
+      //添加到工单
+      add_state_change: false,
+      table_add_works: {
+        tableData: [],
+        count: 0,
+        pageNow: 1,
+        maxPage: 1,
+        eachPage: 10,
+        loading: true,
+        multipleSelection: []
+      },
+      add_params: {
+        name: "",
+        level: "",
+        operator: [],
+        notice: ['email'],
+        remarks: "",
+        multiple: [],
+        old_as:[],
+      }
     };
   },
   components: {
@@ -1370,6 +1407,194 @@ export default {
     // outreachthreat  外联威胁告警  outreath
   },
   methods: {
+    /**************************************************************************************************************/
+    /***************新加到工单*****************/
+
+    //添加到工单打开
+    open_add_new () {
+      this.add_open_state();
+    },
+
+    //新加到工单打开状态
+    add_open_state () {
+
+      let status = this.table_alerts.tableData[0].status;
+
+      if (status == '3' || status == '4' || status == '5') {
+        this.$message({ message: '告警状态为已处置、已忽略、误报的不能添加到工单。', type: 'warning' });
+      } else {
+        this.add_state_change = true;
+        this.get_table_works_list();
+      }
+    },
+    //新加到工单取消状态
+    add_closed_state1 () {
+      this.add_state_change = false;
+      this.add_params = {
+        name: "",
+        level: "",
+        operator: "",
+        new_operator: [],
+        notice: ['email'],
+        textarea: "",
+        multiple: [],
+        old_as:[]
+      };
+    },
+    //获取列表
+    get_table_works_list () {
+      let workorder_list = '';
+      switch (this.$route.query.type) {
+        case 'alert':
+          workorder_list = '/yiiapi/alert/workorder-list'
+          break;
+        case 'lateral':
+          workorder_list = '/yiiapi/horizontalthreat/workorder-list'
+          break;
+        case 'outside':
+          workorder_list = '/yiiapi/externalthreat/workorder-list'
+          break;
+        case 'outreath':
+          workorder_list = '/yiiapi/outreachthreat/workorder-list'
+          break;
+        default:
+          break;
+      }
+
+      this.$axios.get(workorder_list, {
+        params: {
+          page: this.table_add_works.pageNow,
+          rows: this.table_add_works.eachPage
+        }
+      }).then((resp) => {
+        console.log('*************8')
+        console.log(resp)
+        this.table_add_works.loading = false;
+        let { status, data } = resp.data;
+        let datas = data;
+        if (status == 0) {
+          let { data, count, maxPage, pageNow } = datas;
+          data.map(function (v, k) {
+            v.new_perator = (JSON.parse(v.perator)).join(',');
+            v.checked = false;
+          });
+          this.table_add_works.tableData = data;
+          this.table_add_works.count = count;
+          this.table_add_works.maxPage = maxPage;
+          this.table_add_works.pageNow = Number(pageNow);
+        }
+      })
+    },
+
+    //新加工单列表勾选某一条记录
+    handle_sel_table_add_works (row) {
+      // el-radio单选框,不需要这一步
+      console.log('&&&&&3434')
+      console.log(row)
+      this.table_add_works.multipleSelection = row;
+    },
+
+    //新加到工单确定
+    add_ok_state () {
+      let selected_attr = this.table_alerts.multipleSelection
+        .map(x => { return x.id * 1 });
+      this.add_params.multiple = selected_attr;
+
+      //判断工单列表长度
+      let multipe = this.table_add_works.multipleSelection;
+
+      if (multipe.length == 0) {
+        this.$message({ message: '请选择要添加的工单！', type: 'warning' });
+      } else if(multipe.length > 1){
+        this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
+      }else{
+        console.log('******************')
+        this.add_params.id = multipe[0].id;
+        this.add_params.name = multipe[0].name;
+        this.add_params.level = multipe[0].priority;
+        this.add_params.perator = JSON.parse(multipe[0].perator);
+        this.add_params.remarks = multipe[0].remarks;
+        this.add_params.remind = JSON.parse(multipe[0].remind);
+
+        this.add_params.old_as = JSON.parse(multipe[0].te_alert);
+        //console.log(this.add_params);
+        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+
+        console.log(this.add_params.multiple);
+        this.add_params.multiple = [...new Set(this.add_params.multiple)];
+
+        var newArr = this.add_params.multiple.filter(item => item)
+
+        this.add_params.multiple = newArr;
+
+        console.log(this.add_params)
+        console.log(this.add_params.perator);
+        this.loading = true;
+
+
+        var add_workorder = ''
+        // horizontalthreat  横向威胁告警  lateral
+        // externalthreat  外部威胁告警  outside
+        // outreachthreat  外联威胁告警  outreath
+        switch (this.$route.query.type) {
+          case 'alert':
+            add_workorder = '/yiiapi/alert/add-workorder'
+            break;
+          case 'lateral':
+            add_workorder = '/yiiapi/horizontalthreat/add-workorder'
+            break;
+          case 'outside':
+            add_workorder = '/yiiapi/externalthreat/add-workorder'
+            break;
+          case 'outreath':
+            add_workorder = '/yiiapi/outreachthreat/add-workorder'
+            break;
+          default:
+            break;
+        }
+
+        this.$axios.post(add_workorder,
+          {
+            id: this.add_params.id,
+            type: "alert",
+            name: this.add_params.name,
+            priority: this.add_params.level,
+            perator: this.add_params.perator,
+            remind: this.add_params.remind,
+            remarks: this.add_params.remarks,
+            te_alert: this.add_params.multiple
+          }).then((resp) => {
+          this.loading = false;
+          let { status, msg, data } = resp.data;
+          if (status == 0) {
+            this.$message.success('添加成功');
+            //清空状态
+            this.add_closed_state1();
+            this.get_data();
+          } else if (status == 1) {
+            this.$message.error(msg);
+          }
+        })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+
+    //每页显示多少条
+    sc_table_add_works (val) {
+      this.table_add_works.eachPage = val;
+      this.table_add_works.pageNow = 1;
+      this.get_table_works_list();
+    },
+
+    //新加工单列表分页页面切换
+    hcc_table_add_works (val) {
+      this.table_add_works.pageNow = val;
+      this.get_table_works_list();
+    },
+
+    /**************************************************************************************************************/
     // ^[0-9]*$
     // _-.@
     get_rex (str) {
@@ -1407,7 +1632,17 @@ export default {
         }
       })
         .then(response => {
-          this.loading = false
+
+
+
+          this.loading = false;
+          console.log('*************************************')
+          console.log(response)
+          let attr = [];
+          attr.push(response.data.data);
+          this.table_alerts.tableData = attr;
+          console.log('*************************************')
+
           this.network_detail = response.data.data
 
           this.network_detail.attack_stage_cn = ''
@@ -2634,9 +2869,11 @@ export default {
 
         this.get_user_list();
       } else if (command == "2") {
+
+        this.open_add_new();
         // 添加到工单，只有告警状态 0 1
         // 告警：0新告警，1待处置，2处置中，3已处置，4已忽略，5误报
-        console.log(this.network_detail);
+       /* console.log(this.network_detail);
         if (this.network_detail.status != 1 && this.network_detail.status != 0 && this.network_detail.status != 2) {
           this.$message(
             {
@@ -2657,7 +2894,10 @@ export default {
           return false
         }
         this.worksheets_data.tableRadio = {};
-        this.get_worksheets_list()
+
+
+        this.get_worksheets_list()*/
+
       }
     },
     // 添加到工单
@@ -3012,6 +3252,22 @@ export default {
 <style lang="less">
 @import '../../../../assets/css/less/reset_css/reset_tab.less';
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
+.reset_table{
+  .el-table__header-wrapper{
+    .el-table__header{
+      thead.has-gutter{
+        th{
+          background: #F8F8F8;
+          .cell{
+            font-family: PingFangMedium;
+            color: #333;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
 .el-input__inner {
   background: #f8f8f8;
   border: 0;

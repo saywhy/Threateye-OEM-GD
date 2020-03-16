@@ -61,7 +61,7 @@
             <el-button type="primary" class="bw_btn bw_btn_add" @click="open_task_new();">
               <span>新增</span>
             </el-button>
-            <el-button type="primary" class="bw_btn bw_btn_edit" @click="open_task_new('edit');">
+            <el-button type="primary" class="bw_btn bw_btn_edit" @click="edit_task_pop();">
               <span>编辑</span>
             </el-button>
             <el-button type="primary" class="bw_btn bw_btn_download" @click="worksdownload();">
@@ -330,6 +330,253 @@
          </div>
       </div>
     </el-dialog>
+
+    <!-- 编辑工单-szs !***********************************************-->
+    <!-- 工单任务 -->
+    <el-dialog class="task_new_box"
+               width='840px'
+               :close-on-click-modal="false"
+               :modal-append-to-body="false"
+               :visible.sync="edit.pop">
+      <img src="@/assets/images/emerge/closed.png"
+           @click="closed_edit_pop"
+           class="closed_img"
+           alt="">
+      <div class="title">
+        <div class="mask"></div>
+        <span class="title_name">编辑工单</span>
+      </div>
+      <div class="step_box">
+        <div class="step_box1">
+          <span class="step1_span"
+                :class="edit.task.frist?'step_now':'step_past'">基本信息</span>
+          <img src="@/assets/images/emerge/selected01.png"
+               class="selected_img"
+               alt="">
+        </div>
+        <div class="step_box2">
+          <span class="step2_span"
+                :class="!edit.task.frist?'step_now':'step_past'">处置内容</span>
+        </div>
+      </div>
+      <!-- 基本信息 -->
+      <div class="task_new_content"
+           v-if="edit.task.frist">
+        <div class="task_content_box">
+          <div class="content_top">
+            <div class="content_top_left">
+              <li class="left_item">
+                <div class="title">
+                  <span>工单名称</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-input class="task_new_input"
+                          placeholder="请输入工单名称"
+                          v-model="edit.data.name"
+                          show-word-limit
+                          maxlength="32"
+                          clearable>
+                </el-input>
+              </li>
+              <li class="left_item">
+                <div class="title">
+                  <span>经办人</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-select class="task_new_input"
+                           v-model="task_params.operator"
+                           clearable
+                           placeholder="请选择经办人">
+                  <el-option v-for="item in edit.operator_list"
+                             @click.native="select_changced_edit(item)"
+                             :key="item.id"
+                             :label="item.username"
+                             :value="item.username">
+                  </el-option>
+                </el-select>
+              </li>
+            </div>
+            <div class="content_top_right">
+              <li class="right_item">
+                <div class="title">
+                  <span>优先级</span>
+                  <span class="improtant_ico">*</span>
+                </div>
+                <el-select class="task_new_input"
+                           v-model="edit.data.priority"
+                           clearable
+                           placeholder="请选择优先级">
+                  <el-option v-for="item in task_new.level_list"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value">
+                  </el-option>
+                </el-select>
+              </li>
+              <li class="right_item">
+                <el-checkbox-group v-model="edit.notice">
+                  <el-checkbox label="email"
+                               value="email">邮件通知</el-checkbox>
+                  <el-checkbox label="message"
+                               value="message">短信通知</el-checkbox>
+                  <!--<el-checkbox label="news" value="news">消息中心通知</el-checkbox>-->
+                </el-checkbox-group>
+              </li>
+            </div>
+          </div>
+          <div class="content_remarks">
+            <p class="title">备注</p>
+            <el-input type="textarea"
+                      :rows="4"
+                      placeholder="请输入内容"
+                      maxlength="500"
+                      show-word-limit
+                      v-model="edit.data.remarks">
+            </el-input>
+          </div>
+          <div class="content_table">
+            <el-table :data="edit.table_operator"
+                      style="width: 100%">
+              <el-table-column prop="username"
+                               label="经办人"></el-table-column>
+              <el-table-column prop="department"
+                               label="部门"></el-table-column>
+              <el-table-column prop="email_addr"
+                               label="邮箱"></el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <div class="btn_box">
+          <el-button @click="closed_edit_pop"
+                     class="cancel_btn">取消</el-button>
+          <el-button @click="next_task_edit"
+                     class="next_btn">下一步</el-button>
+        </div>
+      </div>
+      <!-- 处置内容 -->
+      <div class="task_handle_content"
+           v-if="!edit.task.frist">
+        <div class="task_content_box">
+          <div class='table_box'>
+            <ul class="table_box_title">
+              <li class="active">
+                <span v-if="edit.data.type == 'asset'">资产</span>
+                <span v-if="edit.data.type == 'alert'">告警</span>
+              </li>
+            </ul>
+            <div>
+              <!-- 资产列表 -->
+              <div v-if="edit.data.type == 'asset'">
+                <el-table align="center"
+                          :data="edit.asset_list.data"
+                          tooltip-effect="dark"
+                          :row-key="getRowKeys"
+                          ref="assetTable"
+                          style="width: 100%"
+                          @selection-change="handle_sel_assets">
+                  <el-table-column label="全选"
+                                   width="40"></el-table-column>
+                  <el-table-column align='left'
+                                   :reserve-selection="true"
+                                   type="selection"
+                                   width="50"></el-table-column>
+                  <el-table-column prop="asset_ip"
+                                   label="资产"></el-table-column>
+                  <el-table-column prop="label_group"
+                                   label="资产组"
+                                   show-overflow-tooltip></el-table-column>
+                  <el-table-column label="威胁等级"
+                                   width="100">
+                    <template slot-scope="scope">
+                      <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
+                        {{ scope.row.degree | degree }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="状态"
+                                   width="80">
+                    <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                  </el-table-column>
+                </el-table>
+                <el-pagination class="pagination_box"
+                               @current-change="current_change_assets"
+                               :page-sizes="[10]"
+                               :page-size="10"
+                               :current-page="edit.asset_list.pageNow"
+                               :total="edit.asset_list.count"
+                               layout="total, prev, pager, next">
+                </el-pagination>
+              </div>
+              <!-- 告警列表 -->
+              <div v-if="edit.data.type == 'alert'">
+                <el-table align="center"
+                          :data="edit.alert_list.data"
+                          tooltip-effect="dark"
+                          ref="alertTable"
+                          style="width: 100%"
+                          @selection-change="handle_sel_alert">
+                  <el-table-column label="全选"
+                                   prop="type"
+                                   width="40">
+                  </el-table-column>
+                  <el-table-column type="selection"
+                                   width="50">
+                  </el-table-column>
+                  <el-table-column prop="category"
+                                   label="告警类型"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="indicator"
+                                   label="威胁指标"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="src_ip"
+                                   label="源地址"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="dest_ip"
+                                   label="目的地址"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="application"
+                                   label="应用"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column prop="degree"
+                                   label="威胁等级"
+                                   width="100"
+                                   show-overflow-tooltip>
+                  </el-table-column>
+                  <el-table-column label="状态"
+                                   width="80">
+                    <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+                  </el-table-column>
+                </el-table>
+                <el-pagination class="pagination_box"
+                               @current-change="current_change_alert"
+                               :page-sizes="[10]"
+                               :page-size="10"
+                               :current-page="edit.alert_list.pageNow"
+                               :total="edit.alert_list.count"
+                               layout="total, prev, pager, next">
+                </el-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn_box">
+          <el-button @click="closed_edit_pop"
+                     class="cancel_btn">取消</el-button>
+          <el-button @click="prev_task_handle_edit"
+                     class="prev_btn">上一步</el-button>
+          <el-button @click="prev_task_handle_assign_edit"
+                     class="prev_btn">分配</el-button>
+          <el-button @click="prev_task_handle_save_edit"
+                     class="prev_btn">保存</el-button>
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 编辑工单-szs !***********************************************-->
+
   </div>
 </template>
 
@@ -488,6 +735,46 @@
           maxPage: 1,
           eachPage: 10,
           multipleSelection: []
+        },
+        // 编辑工单数据
+        edit: {
+          pop: false,
+          task: {
+            frist: true,
+            new_contet: true,
+          },
+          data: {
+
+          },
+          level_list: [
+            {
+              value: "highest",
+              label: "最高"
+            },
+            {
+              value: "high",
+              label: "高"
+            },
+            {
+              value: "medium",
+              label: "中"
+            },
+            {
+              value: "low",
+              label: "低"
+            }
+          ],
+          perator: [],
+          operator_list: [],
+          notice: [],
+          table_operator: [],
+          // 经办人传输数组
+          // 告警和资产数组
+          handle_sel: [],
+          asset_list: {},
+          alert_list: {},
+          page: 1,
+          rows: 10
         }
       }
     },
@@ -806,18 +1093,22 @@
 
           let stu = selected[0].status;
           if(stu == 1 || stu == 2){
-            var url1 = "/yiiapi/workorder/download-test?id=1" + (selected[0].id * 1);
+            var url1 = "/yiiapi/workorder/download-test?id=" + (selected[0].id * 1);
             this.$axios.get(url1)
               .then(resp => {
                 let { status,msg,data} = resp.data;
 
                 console.log(resp)
-                if(status == 0){
+                /*if(status == 0){
                   var url2 = "/workorder/download?id=" + (selected[0].id * 1);
                   window.location.href = url2;
                 } else {
                   this.$message({ type: 'warning', message: msg});
-                }
+                }*/
+                this.$axios.get('/workorder/download?id='+(selected[0].id * 1))
+                  .then(resp => {
+                  console.log(resp)
+                })
             })
           }else {
             this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});
@@ -1135,7 +1426,420 @@
               });
           }
         }
-      }
+      },
+      // 编辑工单 重写 szs --------------------------------------------------
+      //打开工单新增编辑弹窗
+      //获取用户列表(经办人使用)
+      open_task_edit () {
+        this.$axios.get('/yiiapi/site/user-list')
+          .then(resp => {
+            let { status, data } = resp.data;
+            if (status == 0) {
+              console.log(this.edit);
+
+              this.edit.operator_list = data;
+              if (this.edit.data.perator.length != 0) {
+                this.edit.operator_list.forEach(element => {
+                  this.edit.data.perator.forEach(item => {
+                    if (element.username == item) {
+                      this.edit.table_operator.push(element)
+                    }
+                  });
+                });
+              } else {
+                this.edit.table_operator = []
+              }
+
+              console.log(this.edit.operator_list);
+
+              this.edit.pop = true
+              this.edit.task.frist = true;
+            }
+          })
+          .catch(err => {
+            console.log('用户列表错误');
+            console.log(err);
+          })
+      },
+      // 关闭弹窗
+      closed_edit_pop () {
+        this.edit.pop = false
+      },
+      // 打开编辑弹窗
+      edit_task_pop (item) {
+        // 初始化  // 编辑工单数据
+        this.edit.data = {}
+        this.edit.notice = []
+        this.edit.perator = []
+        this.edit.table_operator = []
+        this.edit.operator_list = []
+        this.edit.handle_sel = []
+        this.edit.asset_list = []
+        this.edit.alert_list = []
+        this.edit.page = 1
+        this.edit.rows = 10
+        let sel_table_data = this.table.multipleSelection;
+        if (sel_table_data.length != 1) {
+          this.$message({ message: '请选择一项需要编辑的工单！', type: 'warning' });
+          return false;
+        }
+        if (sel_table_data[0].status != '0') {
+          this.$message({ message: '工单状态只有‘待分配’可以被编辑！', type: 'warning' });
+          return false;
+        }
+        this.edit.data = sel_table_data[0]
+        this.edit.notice = JSON.parse(this.edit.data.remind)
+        // 储存资产数组
+        this.edit.data.risk_asset_cn = []
+        if (JSON.parse(this.edit.data.risk_asset).length != 0) {
+          this.edit.data.risk_asset_cn = JSON.parse(this.edit.data.risk_asset)
+        } else {
+          this.edit.data.risk_asset_cn = []
+        }
+        // 储存告警数组
+        this.edit.data.risk_alert_cn = []
+        if (JSON.parse(this.edit.data.te_alert).length != 0) {
+          JSON.parse(this.edit.data.te_alert).forEach(element => {
+            if (element != '') {
+              this.edit.data.risk_alert_cn.push(element + '')
+            }
+          });
+        } else {
+          this.edit.data.risk_alert_cn = []
+        }
+
+
+
+        // 获取经办人
+        this.open_task_edit();
+      },
+      //经办人change处理
+      select_changced_edit (item) {
+        console.log(item);
+        let level_list = this.edit.table_operator
+        let selected_id_attr = level_list.map(x => { return x.id });
+        if (selected_id_attr.includes(item.id)) {
+          this.$message.error('已存在');
+        } else {
+          this.edit.table_operator.unshift(item);
+        }
+        let selected_name_attr = this.edit.table_operator.map(x => { return x.username });
+        console.log(selected_name_attr);
+
+        // this.task_params.new_operator = selected_name_attr;
+      },
+      //下一步时候验证工单名称，优先级、经办人等参数
+      next_task_edit () {
+        if (this.edit.data.name == '') {
+          this.$message.error('工单名称不能为空');
+        } else if (this.edit.data.level == '') {
+          this.$message.error('优先级未选择');
+        } else if (this.edit.table_operator.length == 0) {
+          this.$message.error('经办人未选择');
+        } else {
+          this.task.new_contet = false;
+          if (this.edit.data.type == 'asset') {
+            this.get_list_assets()
+          } else if (this.edit.data.type == 'alert') {
+            this.get_list_alert()
+          }
+          console.log(this.edit.data.risk_asset_cn);
+          console.log(this.edit.data.risk_alert_cn);
+          console.log(this.edit);
+          this.edit.task.frist = false;
+          this.edit.handle_sel = []
+        }
+      },
+      //上一步
+      prev_task_handle_edit () {
+        this.edit.task.frist = true;
+      },
+      //获取全部资产列表
+      get_list_assets (name) {
+        this.$axios.get('/yiiapi/workorder/asset-list', {
+          params: {
+            page: this.edit.page,
+            rows: this.edit.rows,
+            id: this.edit.data.id
+          }
+        })
+          .then((resp) => {
+            let { status, data } = resp.data;
+            // console.log(data);
+            this.edit.asset_list = data
+            this.edit.asset_list.data.map(function (v, k) {
+              v.label = JSON.parse(v.label);
+              if (v.label && v.label.length) {
+                v.label_group = v.label.join(',');
+              } else {
+                v.label_group = '';
+              }
+            });
+            this.edit.handle_sel = []
+            this.edit.data.risk_asset_cn.forEach(element => {
+              this.edit.asset_list.data.forEach((item, index) => {
+                if (element == item.asset_ip) {
+                  // console.log(item);
+                  this.$nextTick(() => {
+                    // this.edit.data.risk_asset_cn.splice(element, 1);
+                    this.$refs.assetTable.toggleRowSelection(item, true);
+                  })
+                }
+              });
+            });
+          });
+      },
+      //获取全部告警列表
+      get_list_alert () {
+        this.$axios.get('/yiiapi/workorder/alert-list', {
+          params: {
+            page: this.edit.page,
+            rows: this.edit.rows,
+            id: this.edit.data.id
+          }
+        })
+          .then((resp) => {
+            let { status, data } = resp.data;
+            console.log(data);
+            this.edit.alert_list = data;
+            // 清空选择
+            this.edit.data.risk_alert_cn.forEach(element => {
+              this.edit.alert_list.data.forEach((item, index) => {
+                if (element == item.id) {
+                  // console.log(item);
+                  this.$nextTick(() => {
+                    // this.edit.data.risk_asset_cn.splice(element, 1);
+                    this.$refs.alertTable.toggleRowSelection(item, true);
+                  })
+                }
+              });
+            });
+
+          });
+      },
+      getRowKeys (row) {
+        return row.id;
+      },
+      // 选择资产列表
+      handle_sel_assets (val) {
+        this.edit.handle_sel = val
+
+        var arr1 = []
+        var arr2 = []
+        if (this.edit.handle_sel.length == 0) {
+          this.edit.asset_list.data.forEach(item => {
+            arr1.push(item.asset_ip)
+          });
+        } else {
+          this.edit.asset_list.data.forEach(element => {
+            this.edit.handle_sel.forEach(item => {
+              if (item.asset_ip != element.asset_ip) {
+                arr1.push(element.asset_ip)
+              } else {
+                arr2.push(element.asset_ip)
+              }
+            });
+          });
+        }
+        this.edit.data.risk_asset_cn.forEach(element => {
+          arr1.forEach(item => {
+            if (element == item) {
+              this.removeByValue(this.edit.data.risk_asset_cn, item)
+            }
+          });
+        });
+        this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, arr2)
+        console.log(arr1);
+        console.log(arr2);
+        console.log(this.edit.data.risk_asset_cn);
+
+
+      },
+      // 选择告警列表
+      handle_sel_alert (val) {
+        this.edit.handle_sel = val
+        var arr1 = []
+        var arr2 = []
+        if (this.edit.handle_sel.length == 0) {
+          this.edit.alert_list.data.forEach(item => {
+            arr1.push(item.id)
+          });
+        } else {
+          this.edit.alert_list.data.forEach(element => {
+            this.edit.handle_sel.forEach(item => {
+              if (item.id != element.id) {
+                arr1.push(element.id)
+              } else {
+                arr2.push(element.id)
+              }
+            });
+          });
+        }
+        this.edit.data.risk_alert_cn.forEach(element => {
+          arr1.forEach(item => {
+            if (element == item) {
+              this.removeByValue(this.edit.data.risk_alert_cn, item)
+            }
+          });
+        });
+        this.edit.data.risk_alert_cn = this.arr_repeat(this.edit.data.risk_alert_cn, arr2)
+        console.log(arr1);
+        console.log(arr2);
+        console.log(this.edit.data.risk_alert_cn);
+      },
+
+      removeByValue (arr, val) {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] == val) {
+            arr.splice(i, 1);
+            break;
+          }
+        }
+        return arr
+      },
+      // 资产分页
+      current_change_assets (val) {
+        this.edit.page = val
+      },
+      // 封装数组去重
+      arr_repeat (arr1, arr2) {
+        //合并两个数组
+        arr1.push(...arr2)//或者arr1 = [...arr1,...arr2]
+        //去重
+        let arr3 = Array.from(new Set(arr1))//let arr3 = [...new Set(arr1)]
+        return arr3
+      },
+      // 告警分页
+      current_change_alert (val) {
+        this.edit.page = val
+        this.get_list_alert();
+      },
+
+      //编辑工单保存
+      prev_task_handle_save_edit () {
+        console.log(this.edit);
+        this.edit.table_operator.forEach(element => {
+          this.edit.perator.push(element.username)
+        });
+
+        var handle_sel_list = []
+        this.edit.handle_sel.forEach(element => {
+          handle_sel_list.push(element.asset_ip)
+        });
+        this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
+        console.log(this.edit.data);
+
+        let all_params = {
+          id: this.edit.data.id,
+          name: this.edit.data.name,
+          priority: this.edit.data.priority,
+          perator: this.edit.perator,
+          remarks: this.edit.data.remarks,
+          type: this.edit.data.type,
+          remind: this.edit.notice
+        };
+        if (this.edit.data.type == 'asset') {
+          if (this.edit.data.risk_asset_cn.length == 0) {
+            this.$message({ message: '请选择至少一项资产！', type: 'warning' });
+            return false;
+          }
+          all_params.risk_asset = this.edit.data.risk_asset_cn
+        } else {
+
+          if (this.edit.data.risk_alert_cn.length == 0) {
+            this.$message({ message: '请选择至少一项告警！', type: 'warning' });
+            return false;
+          }
+          var risk_alert_cn_arr = []
+          this.edit.data.risk_alert_cn.forEach(element => {
+            risk_alert_cn_arr.push(parseInt(element))
+          });
+
+
+          all_params.te_alert = risk_alert_cn_arr
+        }
+        console.log(all_params);
+        this.handle.save = true
+        this.$axios.post('/yiiapi/workorder/add', all_params)
+          .then((resp) => {
+            this.handle.save = false
+            let { status, msg, data } = resp.data;
+            console.log(resp);
+            // "存在已被创建工单的资产"
+            if (resp.data.status == 0) {
+              this.$message.success('修改成功');
+              this.get_list_works();
+              this.edit.pop = false
+            } else {
+              this.$message.error(resp.data.msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+
+      },
+      //分配工单
+      prev_task_handle_assign_edit () {
+        this.edit.table_operator.forEach(element => {
+          this.edit.perator.push(element.username)
+        });
+        console.log(this.edit);
+        var handle_sel_list = []
+        this.edit.handle_sel.forEach(element => {
+          handle_sel_list.push(element.asset_ip)
+        });
+        this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
+        console.log(this.edit.data);
+
+        let all_params = {
+          id: this.edit.data.id,
+          name: this.edit.data.name,
+          priority: this.edit.data.priority,
+          perator: this.edit.perator,
+          remarks: this.edit.data.remarks,
+          type: this.edit.data.type,
+          remind: this.edit.notice
+        };
+        if (this.edit.data.type == 'asset') {
+          if (this.edit.data.risk_asset_cn.length == 0) {
+            this.$message({ message: '请选择至少一项资产！', type: 'warning' });
+            return false;
+          }
+          all_params.risk_asset = this.edit.data.risk_asset_cn
+        } else {
+
+          if (this.edit.data.risk_alert_cn.length == 0) {
+            this.$message({ message: '请选择至少一项告警！', type: 'warning' });
+            return false;
+          }
+
+          var risk_alert_cn_arr = []
+          this.edit.data.risk_alert_cn.forEach(element => {
+            risk_alert_cn_arr.push(parseInt(element))
+          });
+          all_params.te_alert = risk_alert_cn_arr
+        }
+        console.log(all_params);
+        this.handle.save = true
+        this.$axios.put('/yiiapi/workorder/distribution', all_params)
+          .then((resp) => {
+            this.handle.save = false
+            let { status, msg, data } = resp.data;
+            console.log(resp);
+            // "存在已被创建工单的资产"
+            if (resp.data.status == 0) {
+              this.$message.success('修改成功');
+              this.get_list_works();
+              this.edit.pop = false
+            } else {
+              this.$message.error(resp.data.msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
     }
   }
 </script>

@@ -498,11 +498,17 @@
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
+                      @current-change="clickChange"
                       @selection-change="handle_sel_table_add_works">
               <el-table-column label="选择"
                                width="40"></el-table-column>
               <el-table-column type="selection"
                                width="50"></el-table-column>
+              <!--<el-table-column label="选择" width="55" align="left">
+                <template slot-scope="scope">
+                  <el-radio  v-model="tableRadio" :label="scope.row"><i></i></el-radio>
+                </template>
+              </el-table-column>-->
               <el-table-column prop="name"
                                label="工单名称"
                                show-overflow-tooltip>
@@ -719,6 +725,10 @@ export default {
 
   },
   methods: {
+    clickChange(item){
+      console.log(item)
+      this.tableRadio = item
+    },
     //资产頂部
     get_list_top () {
       this.$axios.get('/yiiapi/alert/risk-asset-top')

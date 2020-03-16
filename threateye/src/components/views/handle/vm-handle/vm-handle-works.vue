@@ -789,6 +789,9 @@
       //打开新建工单
       open_task_new(args) {
 
+
+
+
         if(args != undefined){
           this.task.status = args;
           let melsetion = this.table.multipleSelection;
@@ -803,6 +806,19 @@
             this.open_task();
           }
         }else {
+          //新增
+          this.task_params = {
+            name: "",
+            level: "",
+            operator: "",
+            new_operator:[],
+            notice: ['email'],
+            textarea: "",
+            multiple_assets:[],
+            multiple_alerts:[],
+            type:'asset'
+          };
+          this.table_operator.tableData = [];
           this.open_task();
         }
       },

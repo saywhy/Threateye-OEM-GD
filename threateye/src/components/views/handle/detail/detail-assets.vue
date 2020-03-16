@@ -1744,7 +1744,7 @@ export default {
           font-size: 16px;
           color: #666666;
           .c_it {
-            padding: 0 2px;
+            /*padding: 0 2px;*/
             margin: 0 2px;
             color: #fff;
             background: #5389e0;

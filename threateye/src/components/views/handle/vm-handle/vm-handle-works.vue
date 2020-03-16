@@ -655,14 +655,14 @@
             }
           });
       },
-
-      /**************************************************替换***********************************************************/
+      
 
       changeTime(data) {
-        this.params.startTime = (data[0].valueOf()).toFixed(0);
-        this.params.endTime = (data[1].valueOf()).toFixed(0);
+        this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
       },
 
+      /**************************************************替换***********************************************************/
       //搜索按鈕點擊事件
       submitClick() {
         this.get_list_works();

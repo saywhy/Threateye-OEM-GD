@@ -107,6 +107,8 @@ Vue.filter('work_status', function (args) {
     str = '已处置';
   } else if (args == 4) {
     str = '已取消';
+  }else if(args == ''){
+    str = '未关联工单';
   }
   return str;
 });

@@ -312,6 +312,7 @@
                     ref="multipleTable"
                     align="center"
                     :data="table.tableData"
+                    @row-click="detail_click"
                     tooltip-effect="dark"
                     style="width: 100%">
             <el-table-column label="告警时间"
@@ -1637,7 +1638,11 @@ export default {
           });
       }
     },
-
+    // 跳转列表详情
+    detail_click (val) {
+      console.log(val);
+      this.$router.push({ path: "/detail/assets/alert", query: { detail: val.id, type: 'asset' } });
+    },
     //每页显示多少条
     sc_table_add_works (val) {
       this.table_add_works.eachPage = val;

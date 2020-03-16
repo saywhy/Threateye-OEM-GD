@@ -870,7 +870,7 @@
 <script type="text/ecmascript-6">
 import backTitle from "@/components/common/back-title";
 export default {
-  name: "detail-network",
+  name: "assets_alert",
   data () {
     return {
       loading: false,
@@ -1383,28 +1383,7 @@ export default {
     get_data () {
       this.loading = true
       console.log(this.$route.query.detail);
-      var url = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          url = '/yiiapi/alert/alert-details'
-          break;
-        case 'lateral':
-          url = '/yiiapi/horizontalthreat/alert-details'
-          break;
-        case 'outside':
-          url = '/yiiapi/externalthreat/alert-details'
-          break;
-        case 'outreath':
-          url = '/yiiapi/outreachthreat/alert-details'
-          break;
-        default:
-          break;
-      }
-
-      this.$axios.get(url, {
+      this.$axios.get('/yiiapi/asset/alert-details', {
         params: {
           id: this.$route.query.detail
         }
@@ -1423,35 +1402,8 @@ export default {
           } else {
             this.network_detail.label_obj = JSON.parse(this.network_detail.label)
           }
-
-
-          var workorders = ''
-
-          var workorders = ''
-          // horizontalthreat  横向威胁告警  lateral
-          // externalthreat  外部威胁告警  outside
-          // outreachthreat  外联威胁告警  outreath
-          switch (this.$route.query.type) {
-            case 'alert':
-              workorders = '/yiiapi/alert/workorders'
-              break;
-            case 'lateral':
-              workorders = '/yiiapi/horizontalthreat/workorders'
-              break;
-            case 'outside':
-              workorders = '/yiiapi/externalthreat/workorders'
-              break;
-            case 'outreath':
-              workorders = '/yiiapi/outreachthreat/workorders'
-              break;
-            default:
-              break;
-          }
-
-
-
           // 获取当前告警的工单状态
-          this.$axios.get(workorders, {
+          this.$axios.get('/yiiapi/asset/workorders', {
             params: {
               id: this.$route.query.detail
             }
@@ -2150,53 +2102,12 @@ export default {
         funDownload(item.network_event.payload, "payload.dat");
       }
       if (value.value == "点击下载" && value.name == '文件下载') {
-        var window_open = ''
-        // horizontalthreat  横向威胁告警  lateral
-        // externalthreat  外部威胁告警  outside
-        // outreachthreat  外联威胁告警  outreath
-        switch (this.$route.query.type) {
-          case 'alert':
-            window_open = '/yiiapi/alert/get-file?md5='
-            break;
-          case 'lateral':
-            window_open = '/yiiapi/horizontalthreat/get-file?md5='
-            break;
-          case 'outside':
-            window_open = '/yiiapi/externalthreat/get-file?md5='
-            break;
-          case 'outreath':
-            window_open = '/yiiapi/outreachthreat/get-file?md5='
-            break;
-          default:
-            break;
-        }
-        window.open(window_open + value.md5);
+        window.open('/yiiapi/asset/get-file?md5=' + value.md5);
       }
     },
     // 当前受威胁资产
     new_list () {
-      var new_list = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          new_list = '/yiiapi/alert/get-same-indicator-alert'
-          break;
-        case 'lateral':
-          new_list = '/yiiapi/horizontalthreat/get-same-indicator-alert'
-          break;
-        case 'outside':
-          new_list = '/yiiapi/externalthreat/get-same-indicator-alert'
-          break;
-        case 'outreath':
-          new_list = '/yiiapi/outreachthreat/get-same-indicator-alert'
-          break;
-        default:
-          break;
-      }
-
-      this.$axios.get(new_list, {
+      this.$axios.get('/yiiapi/asset/get-same-indicator-alert', {
         params: {
           indicator: this.network_detail.indicator,
           is_deal: 0,
@@ -2223,27 +2134,7 @@ export default {
     },
     // 历史受威胁资产
     old_list () {
-      var new_list = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          new_list = '/yiiapi/alert/get-same-indicator-alert'
-          break;
-        case 'lateral':
-          new_list = '/yiiapi/horizontalthreat/get-same-indicator-alert'
-          break;
-        case 'outside':
-          new_list = '/yiiapi/externalthreat/get-same-indicator-alert'
-          break;
-        case 'outreath':
-          new_list = '/yiiapi/outreachthreat/get-same-indicator-alert'
-          break;
-        default:
-          break;
-      }
-      this.$axios.get(new_list, {
+      this.$axios.get('/yiiapi/asset/get-same-indicator-alert', {
         params: {
           indicator: this.network_detail.indicator,
           is_deal: 2,
@@ -2274,28 +2165,7 @@ export default {
       console.log(item);
       var id_list = []
       id_list.push(this.$route.query.detail)
-
-      var alarm = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          alarm = '/yiiapi/alert/do-alarm'
-          break;
-        case 'lateral':
-          alarm = '/yiiapi/horizontalthreat/do-alarm'
-          break;
-        case 'outside':
-          alarm = '/yiiapi/externalthreat/do-alarm'
-          break;
-        case 'outreath':
-          alarm = '/yiiapi/outreachthreat/do-alarm'
-          break;
-        default:
-          break;
-      }
-      this.$axios.put(alarm, {
+      this.$axios.put('/yiiapi/asset/do-alarm', {
         id: id_list,
         status: item
       })
@@ -2303,7 +2173,6 @@ export default {
           let { status, data } = response.data;
           console.log(data);
           console.log(response);
-
           if (status == 0) {
             this.get_data();
             this.$message(
@@ -2352,27 +2221,7 @@ export default {
           label_list.push(element.name)
         }
       });
-      var label = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          label = '/yiiapi/alert/label-edit'
-          break;
-        case 'lateral':
-          label = '/yiiapi/horizontalthreat/label-edit'
-          break;
-        case 'outside':
-          label = '/yiiapi/externalthreat/label-edit'
-          break;
-        case 'outreath':
-          label = '/yiiapi/outreachthreat/label-edit'
-          break;
-        default:
-          break;
-      }
-      this.$axios.put(label, {
+      this.$axios.put('/yiiapi/asset/label-edit', {
         id: this.$route.query.detail,
         label: label_list
       })
@@ -2448,30 +2297,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var join = ''
-          // horizontalthreat  横向威胁告警  lateral
-          // externalthreat  外部威胁告警  outside
-          // outreachthreat  外联威胁告警  outreath
-          switch (this.$route.query.type) {
-            case 'alert':
-              join = '/yiiapi/alert/join-external-dynamics'
-              break;
-            case 'lateral':
-              join = '/yiiapi/horizontalthreat/join-external-dynamics'
-              break;
-            case 'outside':
-              join = '/yiiapi/externalthreat/join-external-dynamics'
-              break;
-            case 'outreath':
-              join = '/yiiapi/outreachthreat/join-external-dynamics'
-              break;
-            default:
-              break;
-          }
-
-
-
-          this.$axios.post(join, {
+          this.$axios.post('/yiiapi/asset/join-external-dynamics', {
             addr: this.network_detail.src_ip,
             type: 1
           })
@@ -2522,30 +2348,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var join = ''
-
-          // horizontalthreat  横向威胁告警  lateral
-          // externalthreat  外部威胁告警  outside
-          // outreachthreat  外联威胁告警  outreath
-          switch (this.$route.query.type) {
-            case 'alert':
-              join = '/yiiapi/alert/join-external-dynamics'
-              break;
-            case 'lateral':
-              join = '/yiiapi/horizontalthreat/join-external-dynamics'
-              break;
-            case 'outside':
-              join = '/yiiapi/externalthreat/join-external-dynamics'
-              break;
-            case 'outreath':
-              join = '/yiiapi/outreachthreat/join-external-dynamics'
-              break;
-            default:
-              break;
-          }
-
-
-          this.$axios.post(join, {
+          this.$axios.post('/yiiapi/asset/join-external-dynamics', {
             addr: this.network_detail.dest_ip,
             type: 1
           })
@@ -2579,9 +2382,6 @@ export default {
         });
       }
     },
-
-
-
     time_active (index) {
       console.log("111");
       this.time_choose = index;
@@ -2604,8 +2404,6 @@ export default {
     //工单任务选择
     change_task (command) {
       if (command == "1") {
-
-
         this.new_worksheets_list.name = ''
         this.new_worksheets_list.level = ''
         this.new_worksheets_list.operator = ''
@@ -2666,30 +2464,11 @@ export default {
     // 添加到工单
     //获取工单列表
     get_worksheets_list () {
-      var workorder_list = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          workorder_list = '/yiiapi/alert/workorder-list'
-          break;
-        case 'lateral':
-          workorder_list = '/yiiapi/horizontalthreat/workorder-list'
-          break;
-        case 'outside':
-          workorder_list = '/yiiapi/externalthreat/workorder-list'
-          break;
-        case 'outreath':
-          workorder_list = '/yiiapi/outreachthreat/workorder-list'
-          break;
-        default:
-          break;
-      }
-      this.$axios.get(workorder_list, {
+      this.$axios.get('/yiiapi/asset/workorder-list', {
         params: {
           page: this.worksheets_data.page,
           rows: this.worksheets_data.rows,
+          type: 'alert'
         }
       }).then((resp) => {
         let { status, data } = resp.data;
@@ -2755,27 +2534,7 @@ export default {
       });
       te_alert.push(this.$route.query.detail * 1)
       console.log(te_alert);
-      var add_workorder = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          add_workorder = '/yiiapi/alert/add-workorder'
-          break;
-        case 'lateral':
-          add_workorder = '/yiiapi/horizontalthreat/add-workorder'
-          break;
-        case 'outside':
-          add_workorder = '/yiiapi/externalthreat/add-workorder'
-          break;
-        case 'outreath':
-          add_workorder = '/yiiapi/outreachthreat/add-workorder'
-          break;
-        default:
-          break;
-      }
-      this.$axios.post(add_workorder,
+      this.$axios.post('/yiiapi/asset/add-workorder',
         {
           id: this.worksheets_data.tableRadio.id,
           type: "alert",
@@ -2892,36 +2651,15 @@ export default {
       console.log(te_alert);
       console.log(perator_list);
       console.log(this.new_worksheets_list);
-      var distribution_workorder = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          distribution_workorder = '/yiiapi/alert/distribution-workorder'
-          break;
-        case 'lateral':
-          distribution_workorder = '/yiiapi/horizontalthreat/distribution-workorder'
-          break;
-        case 'outside':
-          distribution_workorder = '/yiiapi/externalthreat/distribution-workorder'
-          break;
-        case 'outreath':
-          distribution_workorder = '/yiiapi/outreachthreat/distribution-workorder'
-          break;
-        default:
-          break;
-      }
-
-
-      this.$axios.put(distribution_workorder,
+      this.$axios.put('/yiiapi/asset/distribution-workorder',
         {
           name: this.new_worksheets_list.name,
           priority: this.new_worksheets_list.level,
           perator: perator_list,
           remarks: this.new_worksheets_list.textarea,
           te_alert: te_alert,
-          remind: this.new_worksheets_list.notice
+          remind: this.new_worksheets_list.notice,
+          type: 'alert'
         })
         .then((resp) => {
           let { status, msg, data } = resp.data;
@@ -2948,28 +2686,7 @@ export default {
       te_alert.push(this.network_detail.id * 1)
       console.log(te_alert);
       console.log(this.new_worksheets_list);
-
-      var add_workorder = ''
-      // horizontalthreat  横向威胁告警  lateral
-      // externalthreat  外部威胁告警  outside
-      // outreachthreat  外联威胁告警  outreath
-      switch (this.$route.query.type) {
-        case 'alert':
-          add_workorder = '/yiiapi/alert/add-workorder'
-          break;
-        case 'lateral':
-          add_workorder = '/yiiapi/horizontalthreat/add-workorder'
-          break;
-        case 'outside':
-          add_workorder = '/yiiapi/externalthreat/add-workorder'
-          break;
-        case 'outreath':
-          add_workorder = '/yiiapi/outreachthreat/add-workorder'
-          break;
-        default:
-          break;
-      }
-      this.$axios.post(add_workorder,
+      this.$axios.post('/yiiapi/asset/add-workorder',
         {
           type: "alert",
           name: this.new_worksheets_list.name,
@@ -2994,9 +2711,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-
-
-
     },
   },
   filters: {

@@ -63,8 +63,7 @@ export const constantRouterMap = [{
       title: '详情'
     },
     component: LayoutNot,
-    children: [
-      {
+    children: [{
         path: '/detail/network',
         name: 'detail_network',
         meta: {
@@ -99,6 +98,18 @@ export const constantRouterMap = [{
           rootAuth: '13'
         },
         component: () => import('@/components/views/handle/detail/detail-assets')
+      },
+      {
+        path: '/detail/assets/alert',
+        name: 'assets_alert',
+        meta: {
+          title: '风险资产详情',
+          auth: '21',
+          icon: 'el-icon-picture-outline',
+          parentAuth: '13',
+          rootAuth: '13'
+        },
+        component: () => import('@/components/views/handle/detail/detail-alert')
       },
       {
         path: '/detail/works',
@@ -144,19 +155,18 @@ export const asyncRouterMap = [
     },
     component: Layout,
     children: [{
-        path: '/home/overview',
-        name: 'overview',
-        meta: {
-          title: '总览',
-          auth: '2',
-          icon: 'e-aside-overview',
-          parentAuth: '1',
-          rootAuth: '1',
-          deep: 1
-        },
-        component: () => import('@/components/views/home/Overview')
-      }
-    ]
+      path: '/home/overview',
+      name: 'overview',
+      meta: {
+        title: '总览',
+        auth: '2',
+        icon: 'e-aside-overview',
+        parentAuth: '1',
+        rootAuth: '1',
+        deep: 1
+      },
+      component: () => import('@/components/views/home/Overview')
+    }]
   },
   /*处置*/
   {
@@ -194,8 +204,7 @@ export const asyncRouterMap = [
           deep: 1
         },
         component: () => import('@/components/views/handle/Risks'),
-        children: [
-          {
+        children: [{
             path: '/handle/risks/outside',
             name: 'outside',
             meta: {
@@ -262,19 +271,18 @@ export const asyncRouterMap = [
     },
     component: Layout,
     children: [{
-        path: '/emerge/network',
-        name: 'network',
-        meta: {
-          title: '告警',
-          auth: '59',
-          icon: 'e-aside-network',
-          parentAuth: '58',
-          rootAuth: '58',
-          deep: 1
-        },
-        component: () => import('@/components/views/emerge/Network')
-      }
-    ]
+      path: '/emerge/network',
+      name: 'network',
+      meta: {
+        title: '告警',
+        auth: '59',
+        icon: 'e-aside-network',
+        parentAuth: '58',
+        rootAuth: '58',
+        deep: 1
+      },
+      component: () => import('@/components/views/emerge/Network')
+    }]
   },
   /*追查*/
   {

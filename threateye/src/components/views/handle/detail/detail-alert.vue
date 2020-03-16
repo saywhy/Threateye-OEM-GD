@@ -827,14 +827,18 @@
                                    width="100"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
-                      <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
-                        {{ scope.row.degree | degree_sino }}</span>
+                      <span class="btn_alert_background"
+                            :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+                        {{ scope.row.degree | degree }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性"
                                    width="100"
                                    show-overflow-tooltip>
-                    <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'':'已失陷' }}</template>
+                    <template slot-scope="scope">
+                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                        {{ scope.row.fall_certainty | certainty }}</span>
+                    </template>
 
                   </el-table-column>
                   <el-table-column label="状态"

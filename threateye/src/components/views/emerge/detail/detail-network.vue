@@ -827,25 +827,22 @@
                                    width="100"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
-                      <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
-                        {{ scope.row.degree | degree_sino }}</span>
+                      <span class="btn_alert_background"
+                            :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+                        {{ scope.row.degree | degree }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性"
                                    width="100"
                                    show-overflow-tooltip>
-                    <template slot-scope="scope">{{ scope.row.fall_certainty== '0'?'':'已失陷' }}</template>
-
+                    <template slot-scope="scope">
+                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                        {{ scope.row.fall_certainty | certainty }}</span>
+                    </template>
                   </el-table-column>
                   <el-table-column label="状态"
                                    width="80">
-                    <template slot-scope="scope">
-                      <span v-if="scope.row.status==0">未确认</span>
-                      <span v-if="scope.row.status==1">已确认</span>
-                      <span v-if="scope.row.status==2">已处置</span>
-                      <span v-if="scope.row.status==3">已忽略</span>
-                      <span v-if="scope.row.status==4">误报</span>
-                    </template>
+                    <template slot-scope="scope">{{ scope.row.status | work_status }}</template>
                   </el-table-column>
                 </el-table>
               </div>

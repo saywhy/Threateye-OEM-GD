@@ -77,9 +77,7 @@ export default {
             color: "#ccc"
           },
           axisPointer: {
-            lineStyle: {
-              color: "#ccc"
-            }
+            type:'none'
           }
         },
         color: ["#47CAD9","#E0C840","#DC5F5F"],

@@ -4,7 +4,7 @@
      <div class="invest">
        <sup class="h_count hc1">{{number.created}}</sup>
        <sup class="h_count hc2">{{number.distributed}}</sup>
-       <sup class="h_count hc3">{{number.all}}</sup>
+       <sup class="h_count hc3" v-show = "number.role == 'admin'">{{number.all}}</sup>
        <el-tabs v-model="activeName" @tab-click="handleClick">
 
          <!--我创建的-->
@@ -18,10 +18,9 @@
          </el-tab-pane>
 
          <!--所有工单-->
-         <el-tab-pane label="所有工单" name="third">
+         <el-tab-pane label="所有工单" name="third" v-if ="number.role == 'admin'">
            <vm-handle-works :owned="owned" v-if="childUpdate3" @updateNum="updateTopNum"></vm-handle-works>
          </el-tab-pane>
-
        </el-tabs>
      </div>
    </div>
@@ -37,7 +36,8 @@
         number:{
           created:0,
           distributed:0,
-          all:0
+          all:0,
+          role:'admin'
         },
         activeName: 'first',
         owned:'created',
@@ -59,6 +59,7 @@
           .then(resp => {
             let {status,msg, data} = resp.data;
             if(status == 0){
+              console.log(data)
               if(data){
                 if(data.created == null){
                   this.number.created = 0;
@@ -76,6 +77,7 @@
                 }else {
                   this.number.all = data.all;
                 }
+                this.number.role = data.role;
               }
             }
           })

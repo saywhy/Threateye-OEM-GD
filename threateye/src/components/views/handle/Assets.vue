@@ -1231,6 +1231,7 @@ export default {
           rows: this.table_add_works.eachPage
         }
       }).then((resp) => {
+        console.log(resp)
         this.table_add_works.loading = false;
         let { status, data } = resp.data;
         let datas = data;

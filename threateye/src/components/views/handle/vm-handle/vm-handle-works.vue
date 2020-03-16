@@ -251,8 +251,9 @@
              <div>
                <div v-show="handle.active == 0">
                  <el-table align="center"
-                           :data="table_assets.tableData_new"
+                           :data="table_assets.tableData"
                            tooltip-effect="dark"
+                           ref="adAssetTable"
                            style="width: 100%"
                            @selection-change="handle_sel_table_assets">
                    <el-table-column label="全选" width="40"></el-table-column>
@@ -281,8 +282,9 @@
                </div>
                <div v-show="handle.active == 1">
                  <el-table align="center"
-                           :data="table_alerts.tableData_new"
+                           :data="table_alerts.tableData"
                            tooltip-effect="dark"
+                           ref="adAlertTable"
                            style="width: 100%"
                            @selection-change="handle_sel_table_alerts">
                    <el-table-column label="全选" prop="type" width="40">
@@ -376,7 +378,7 @@
           },
           {
             value: "2",
-            label: "处理中"
+            label: "处置中"
           },
           {
             value: "3",
@@ -412,6 +414,7 @@
           loading: true,
         },
 
+        my_risk_asset:[],
         //弹窗部分
         state_change: false,
         process_state: "",
@@ -504,7 +507,9 @@
         this.$axios.get('/yiiapi/workorder/asset-list')
           .then((resp) => {
             let {status, data} = resp.data;
-            if (status == 0) {
+            let datas = data;
+            if(status == 0) {
+              let {data, count, maxPage,pageNow} = datas;
               data.map(function (v,k) {
                 v.label = JSON.parse(v.label);
                 if(v.label && v.label.length){
@@ -514,9 +519,9 @@
                 }
               });
               this.table_assets.tableData = data;
-              this.table_assets.count = data.length;
-
-              this.table_assets.pageNow = 1;
+              this.table_assets.count = count;
+              this.table_assets.pageNow = pageNow;
+              this.table_assets.pageNow = maxPage;
             }
           });
       },
@@ -525,13 +530,17 @@
         this.$axios.get('/yiiapi/workorder/alert-list')
           .then((resp) => {
             let {status, data} = resp.data;
-            if (status == 0) {
+            let datas = data;
+            if(status == 0) {
+              let {data, count, maxPage,pageNow} = datas;
               this.table_alerts.tableData = data;
-              this.table_alerts.count = data.length;
-              this.table_alerts.pageNow = 1;
+              this.table_alerts.count = count;
+              this.table_alerts.pageNow = pageNow;
+              this.table_alerts.pageNow = maxPage;
             }
           });
       },
+
       //工单中心列表
       get_list_works(){
         this.table.loading = true;
@@ -610,23 +619,6 @@
       //多选获取选中数据
       handleSelChange(val) {
         this.table.multipleSelection = val;
-        if(val.length == 1){
-          console.log(val)
-           this.task_params.name = val[0].name;
-           this.task_params.level = val[0].priority;
-           this.task_params.type = val[0].type;
-           this.task_params.textarea = val[0].remarks;
-           this.task_params.new_operator = val[0].perator;
-
-           let table_operator = [];
-           if(val[0].perator.length > 0){
-             this.task_params.new_operator.forEach(function (v,k) {
-               table_operator.push({username:v})
-             })
-           }
-           this.table_operator.tableData = table_operator;
-           this.task.id = val[0].id;
-         }
       },
 
       //工单列表跳转
@@ -742,7 +734,6 @@
       },
 
       /*******************删除**********************/
-
       worksDelete(){
         let that = this;
         let multiple = this.table.multipleSelection;
@@ -787,57 +778,26 @@
 
       /*******************新增编辑**********************/
 
-      //打开新建工单
-      open_task_new(args) {
-
-
-
-
-        if(args != undefined){
-          this.task.status = args;
-          let melsetion = this.table.multipleSelection;
-
-          if(melsetion.length == 0){
-            this.$message({message:'请选择需要编辑的工单。',type: 'warning'});
-          }else if(melsetion.length > 1){
-            this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
-          }/*else if(melsetion[0].status != 0){
-            this.$message({message:'只有待分配的工单才能编辑。',type: 'warning'});
-          }*/ else {
-            this.open_task();
-          }
-        }else {
-          //新增
-          this.task_params = {
-            name: "",
-            level: "",
-            operator: "",
-            new_operator:[],
-            notice: ['email'],
-            textarea: "",
-            multiple_assets:[],
-            multiple_alerts:[],
-            type:'asset'
-          };
-          this.table_operator.tableData = [];
-          this.open_task();
-        }
+      //新增
+      open_task_new() {
+        //新增
+        this.task_params = {
+          name: "",
+          level: "",
+          operator: "",
+          new_operator:[],
+          notice: ['email'],
+          textarea: "",
+          multiple_assets:[],
+          multiple_alerts:[],
+          type:'asset'
+        };
+        this.table_operator.tableData = [];
+        this.open_task();
       },
 
       //打开工单新增编辑弹窗
       open_task() {
-        let assets = this.table_assets.tableData;
-        let now_assets = this.table_assets.pageNow;
-        let e_page_assets = this.table_alerts.eachPage;
-        let assets_data = assets.slice((now_assets-1) * e_page_assets,now_assets * e_page_assets)
-        this.table_assets.tableData_new = assets_data;
-
-        let alerts = this.table_alerts.tableData;
-        let now_alerts = this.table_alerts.pageNow;
-        let e_page_alerts = this.table_alerts.eachPage;
-        let alerts_data = alerts.slice((now_alerts-1) * e_page_alerts,now_alerts * e_page_alerts);
-        this.table_alerts.tableData_new = alerts_data;
-
         //获取用户列表(经办人使用)
         this.$axios.get('/yiiapi/site/user-list')
           .then(resp => {
@@ -878,7 +838,6 @@
 
       //下一步时候验证工单名称，优先级、经办人等参数
       next_task_new() {
-
         if(this.task_params.name == ''){
           this.$message.error('工单名称不能为空');
         }else if(this.task_params.level == ''){
@@ -914,35 +873,26 @@
       sc_table_assets(val){
         this.table_assets.eachPage = val;
         this.table_assets.pageNow = 1;
-        let handle_data = this.table_assets.tableData.slice(0, val);
-        this.table_assets.tableData_new = handle_data;
+        //调用资产列表
+        this.get_list_assets_info();
       },
 
       //tabs下第一个table页数点击(资产)
       hcc_table_assets (val) {
         this.table_assets.pageNow = val;
-        let eachPage = this.table_assets.eachPage;
-        let handle_data = this.table_assets.tableData
-          .slice((val - 1) * eachPage, val * eachPage);
-        this.table_assets.tableData_new = handle_data;
+        this.get_list_assets_info();
       },
-
 
       //tabs下table每页显示多少条
       sc_table_alerts(val){
         this.table_alerts.eachPage = val;
         this.table_alerts.pageNow = 1;
-        let handle_data = this.table_alerts.tableData.slice(0, val);
-        this.table_alerts.tableData_new = handle_data;
+        this.get_list_alerts_info();
       },
-
       //tabs下第一个table页数点击
       hcc_table_alerts (val) {
         this.table_alerts.pageNow = val;
-        let eachPage = this.table_alerts.eachPage;
-        let handle_data = this.table_alerts.tableData
-          .slice((val - 1) * eachPage, val * eachPage);
-        this.table_alerts.tableData_new = handle_data;
+        this.get_list_alerts_info();
       },
 
       //tab下第一个table多选
@@ -983,11 +933,6 @@
           risk_asset: this.task_params.multiple_assets,
           remind:this.task_params.notice
         };
-
-        if(this.task.status == 'edit'){
-          Object.assign(all_params, {id:this.task.id});
-        }
-
         if(this.task_params.type == 'asset'){
           if(this.task_params.multiple_assets.length == 0){
             this.$message({ message: '请选择至少一条列表！', type: 'warning' });
@@ -1042,6 +987,7 @@
 
       //新建工单保存
       prev_task_handle_save() {
+
         let all_params = {
           name: this.task_params.name,
           priority:this.task_params.level,
@@ -1052,15 +998,9 @@
           risk_asset: this.task_params.multiple_assets,
           remind:this.task_params.notice
         };
-        if(this.task.status == 'edit'){
-          Object.assign(all_params, {id:this.task.id});
-        }
-        console.log(this.task.status);
-        console.log("***************");
-        console.log(all_params);
         if(this.task_params.type == 'asset'){
           if(this.task_params.multiple_assets.length == 0){
-            this.$message({ message: '请选择至少一条列表！', type: 'warning' });
+            this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
           }else{
             this.handle.save = true;
             this.$axios.post('/yiiapi/workorder/add',all_params)
@@ -1071,9 +1011,7 @@
                   this.$message.success('保存成功');
                   this.closed_task_new();
                   this.get_list_works();
-
                   this.$emit('updateNum');
-
                 }else if (status == 1){
                   this.$message.error(msg);
                 }
@@ -1084,7 +1022,7 @@
           }
         }else if(this.task_params.type == 'alert'){
           if(this.task_params.multiple_alerts.length == 0){
-            this.$message({ message: '请选择至少一条列表！', type: 'warning' });
+            this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
           }else{
             this.handle.save = true;
             this.$axios.post('/yiiapi/workorder/add',all_params)

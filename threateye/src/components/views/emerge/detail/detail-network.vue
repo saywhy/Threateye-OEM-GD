@@ -1496,7 +1496,7 @@ export default {
 
     //新加到工单确定
     add_ok_state () {
-      let selected_attr = this.table_alerts.multipleSelection
+      let selected_attr = this.table_alerts.tableData
         .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
 

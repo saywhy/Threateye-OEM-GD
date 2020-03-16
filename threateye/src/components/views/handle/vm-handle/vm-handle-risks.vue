@@ -443,12 +443,10 @@
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
                       @selection-change="handle_sel_table_add_works">
-              <el-table-column label="单选"
-                               width="40">
-                <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.checked"></el-checkbox>
-                </template>
-              </el-table-column>
+              <el-table-column label="选择"
+                               width="40"></el-table-column>
+              <el-table-column type="selection"
+                               width="50"></el-table-column>
               <el-table-column prop="name"
                                label="工单名称"
                                show-overflow-tooltip>
@@ -643,7 +641,8 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
+        remind: ['email']
       }
     };
   },
@@ -1097,7 +1096,8 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
+        remind: ['email'],
       };
       this.$refs.multipleTable.clearSelection();
     },
@@ -1127,43 +1127,53 @@ export default {
       })
     },
 
-
-
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
+      console.log('**');
+      console.log(row);
       this.table_add_works.multipleSelection = row;
     },
 
     //新加到工单确定
     add_ok_state () {
+
       let selected_attr = this.table.multipleSelection
-        .map(x => { return x.asset_ip });
+        .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
 
       //判断工单列表长度
+
+      console.log(this.table_add_works.multipleSelection)
+
       let multipe = this.table_add_works.multipleSelection;
+
+      console.log('******************')
+      console.log(multipe)
 
       if (multipe.length == 0) {
         this.$message({ message: '请选择要添加的工单！', type: 'warning' });
       } else if(multipe.length > 1){
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
       }else{
-        console.log('******************')
+        console.log('******************');
         this.add_params.id = multipe[0].id;
         this.add_params.name = multipe[0].name;
         this.add_params.level = multipe[0].priority;
         this.add_params.perator = JSON.parse(multipe[0].perator);
         this.add_params.remarks = multipe[0].remarks;
-        //this.add_params.remind = JSON.parse(multipe[0].remind);
+        this.add_params.remind = JSON.parse(multipe[0].remind);
 
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
 
-        console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)]
 
-        console.log(this.add_params.perator);
+        var newArr = this.add_params.multiple.filter(item => item)
+
+        this.add_params.multiple = newArr;
+
+        console.log(this.add_params.multiple)
 
         this.handle.save = true;
         this.$axios.post('/yiiapi/' + this.threats + '/add-workorder',
@@ -1172,13 +1182,15 @@ export default {
             name: this.add_params.name,
             priority: this.add_params.level,
             perator: this.add_params.perator,
-            remind: this.add_params.notice,
+            remind: this.add_params.remind,
             remarks: this.add_params.remarks,
             te_alert: this.add_params.multiple
           })
           .then((resp) => {
             this.handle.save = false;
             let { status, msg, data } = resp.data;
+
+            console.log(resp)
             if (status == 0) {
               this.$message.success('添加成功');
               //清空状态

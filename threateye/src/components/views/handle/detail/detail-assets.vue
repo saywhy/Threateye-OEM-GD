@@ -788,7 +788,8 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
+        remind: ['email']
       },
       //攻击阶段分布
       attack_stage_list: [
@@ -1581,20 +1582,27 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
+        remind: ['email']
       };
     },
 
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
+      console.log('************')
+      console.log(row);
       this.table_add_works.multipleSelection = row;
     },
 
     //新加到工单确定
     add_ok_state () {
-      let selected_attr = this.table.multipleSelection
+
+      console.log('原table的值')
+      let selected_attr = this.table_assets.tableData
         .map(x => { return x.asset_ip });
       this.add_params.multiple = selected_attr;
+
+      console.log(this.add_params.multiple)
 
       //判断工单列表长度
       let multipe = this.table_add_works.multipleSelection;
@@ -1610,16 +1618,21 @@ export default {
         this.add_params.level = multipe[0].priority;
         this.add_params.perator = JSON.parse(multipe[0].perator);
         this.add_params.remarks = multipe[0].remarks;
-        //this.add_params.remind = JSON.parse(multipe[0].remind);
+        this.add_params.remind = JSON.parse(multipe[0].remind);
 
         this.add_params.old_as = JSON.parse(multipe[0].risk_asset);
         //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
-        this.add_params.multiple = [...new Set(this.add_params.multiple)]
+        this.add_params.multiple = [...new Set(this.add_params.multiple)];
 
-        console.log(this.add_params.perator);
+        var newArr = this.add_params.multiple.filter(item => item)
+
+        this.add_params.multiple = newArr;
+
+
+        console.log(this.add_params.multiple);
         this.handle.save = true;
         this.$axios.post('/yiiapi/asset/add-workorder',
           {
@@ -1627,7 +1640,7 @@ export default {
             name: this.add_params.name,
             priority: this.add_params.level,
             perator: this.add_params.perator,
-            remind: this.add_params.notice,
+            remind: this.add_params.remind,
             remarks: this.add_params.remarks,
             risk_asset: this.add_params.multiple,
             type: 'asset'

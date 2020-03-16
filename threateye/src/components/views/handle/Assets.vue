@@ -702,7 +702,8 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
+        remind: ['email']
       }
     };
   },
@@ -1250,7 +1251,8 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[]
+        old_as:[],
+        remind:['email']
       };
       this.$refs.multipleTable.clearSelection();
     },
@@ -1281,14 +1283,19 @@ export default {
         this.add_params.level = multipe[0].priority;
         this.add_params.perator = JSON.parse(multipe[0].perator);
         this.add_params.remarks = multipe[0].remarks;
-        //this.add_params.remind = JSON.parse(multipe[0].remind);
+        this.add_params.remind = JSON.parse(multipe[0].remind);
 
         this.add_params.old_as = JSON.parse(multipe[0].risk_asset);
         //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
-        this.add_params.multiple = [...new Set(this.add_params.multiple)]
+        this.add_params.multiple = [...new Set(this.add_params.multiple)];
+
+        var newArr = this.add_params.multiple.filter(item => item)
+
+        this.add_params.multiple = newArr;
+
 
         console.log(this.add_params.perator);
 
@@ -1300,7 +1307,7 @@ export default {
             name: this.add_params.name,
             priority: this.add_params.level,
             perator: this.add_params.perator,
-            remind: this.add_params.notice,
+            remind: this.add_params.remind,
             remarks: this.add_params.remarks,
             risk_asset: this.add_params.multiple,
             type:'asset'

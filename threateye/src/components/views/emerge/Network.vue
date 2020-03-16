@@ -429,12 +429,10 @@
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
                       @selection-change="handle_sel_table_add_works">
-              <el-table-column label="单选"
-                               width="40">
-                <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.checked"></el-checkbox>
-                </template>
-              </el-table-column>
+              <el-table-column label="选择"
+                               width="40"></el-table-column>
+              <el-table-column type="selection"
+                               width="50"></el-table-column>
               <el-table-column prop="name"
                                label="工单名称"
                                show-overflow-tooltip>
@@ -570,7 +568,8 @@ export default {
         new_operator: [],
         notice: ['email'],
         textarea: "",
-        multiple: []
+        multiple: [],
+        remind: ['email']
       },
       task_new: {
         level_list: [
@@ -880,7 +879,8 @@ export default {
         new_operator: [],
         notice: ['email'],
         textarea: "",
-        multiple: []
+        multiple: [],
+        remind:['email']
       };
       this.table_operator.tableData = [];
       this.table_alerts.tableData_new = [];
@@ -1091,13 +1091,14 @@ export default {
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
       // el-radio单选框,不需要这一步
+      console.log(row)
       this.table_add_works.multipleSelection = row;
     },
 
     //新加到工单确定
     add_ok_state () {
       let selected_attr = this.table.multipleSelection
-        .map(x => { return x.asset_ip });
+        .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
 
       //判断工单列表长度
@@ -1114,15 +1115,20 @@ export default {
         this.add_params.level = multipe[0].priority;
         this.add_params.perator = JSON.parse(multipe[0].perator);
         this.add_params.remarks = multipe[0].remarks;
-        //this.add_params.remind = JSON.parse(multipe[0].remind);
+        this.add_params.remind = JSON.parse(multipe[0].remind);
 
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
-        this.add_params.multiple = [...new Set(this.add_params.multiple)]
+        this.add_params.multiple = [...new Set(this.add_params.multiple)];
 
+        var newArr = this.add_params.multiple.filter(item => item)
+
+        this.add_params.multiple = newArr;
+
+        console.log(this.add_params.remind)
         console.log(this.add_params.perator);
         this.handle.save = true;
         this.$axios.post('/yiiapi/alert/add-workorder',

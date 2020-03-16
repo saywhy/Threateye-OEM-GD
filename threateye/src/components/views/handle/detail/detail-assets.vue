@@ -1,5 +1,6 @@
 <template>
-  <div class="detail-assets" v-loading.fullscreen.lock="handle.save"
+  <div class="detail-assets"
+       v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <back-title :title-name="title_name"></back-title>
 
@@ -71,7 +72,9 @@
         <li>
           <span class="title">
             <i class="b_i"></i>资产类型：</span>
-          <span class="content"><span class="c_it">{{assets_top.new_base_category}}</span></span>
+          <span class="content">
+            <span class="c_it">{{assets_top.new_base_category}}</span>
+          </span>
         </li>
         <li>
           <span class="title">
@@ -260,6 +263,7 @@
              alt=""
              class="icon_img">
         <span class="suggest_title">威胁及安全建议</span>
+
       </div>
       <div class="suggest_bom">
         <p class="suggest_bom_title">威胁描述</p>
@@ -289,6 +293,10 @@
             {{item}}
           </p>
         </div>
+        <div style="margin-top:12px;"
+             v-if="notes">
+          <span>注：本处只提供了本资产一个告警的处置建议，请参考下列告警详情获取所有告警的处置建议。</span>
+        </div>
       </div>
     </div>
 
@@ -297,7 +305,7 @@
 
       <el-tabs v-model="activeName">
         <!-- 网络风险视角 -->
-        <el-tab-pane label="网络风险视角"
+        <el-tab-pane label="告警列表"
                      class="tabs-item"
                      name="first">
           <el-table class="handle_table_detail"
@@ -307,11 +315,12 @@
                     tooltip-effect="dark"
                     style="width: 100%">
             <el-table-column label="告警时间"
-                             width="150">
+                             width="180">
               <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
             </el-table-column>
             <el-table-column prop="category"
                              label="告警类型"
+                             width="150"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="indicator"
@@ -320,18 +329,21 @@
             </el-table-column>
             <el-table-column prop="src_ip"
                              label="源地址"
+                             width="150"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="dest_ip"
                              label="目的地址"
+                             width="150"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="application"
                              label="应用"
+                             width="100"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="威胁等级"
-                            width="100">
+                             width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
@@ -339,7 +351,7 @@
               </template>
             </el-table-column>
             <el-table-column label="失陷确定性"
-                           width="100">
+                             width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
@@ -551,7 +563,7 @@
                                  label="关联威胁"
                                  show-overflow-tooltip></el-table-column>
                 <el-table-column label="威胁等级"
-                                width="100">
+                                 width="100">
                   <template slot-scope="scope">
                     <span class="btn_alert_background"
                           :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
@@ -679,6 +691,7 @@ export default {
   components: { backTitle, VmHanleRank },
   data () {
     return {
+      notes: false,
       network_times: [],
       network_detail: {},
       detail: {},
@@ -1219,7 +1232,12 @@ export default {
           let datas = data;
           if (status == 0) {
             let { data, count, maxPage, pageNow } = datas;
+
             this.table.tableData = data;
+            console.log(this.table.tableData);
+            if (this.table.tableData.length > 1) {
+              this.notes = true
+            }
             this.table.count = count;
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
@@ -1424,7 +1442,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_assets (val) {
       this.table_assets.multipleSelection = val;
-      let selected = val.map(x => { return x.asset_ip});
+      let selected = val.map(x => { return x.asset_ip });
       this.task_params.multiple = selected;
     },
 
@@ -1435,9 +1453,9 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         let selected = this.table_assets.tableData
-          .map(x => {return x.asset_ip});
+          .map(x => { return x.asset_ip });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1468,9 +1486,9 @@ export default {
 
     //编辑工单保存
     prev_task_handle_save () {
-      if(this.task_params.multiple.length == 0){
+      if (this.task_params.multiple.length == 0) {
         let selected = this.table_assets.tableData
-          .map(x => {return x.asset_ip});
+          .map(x => { return x.asset_ip });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);

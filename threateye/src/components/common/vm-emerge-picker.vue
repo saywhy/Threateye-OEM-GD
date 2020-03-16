@@ -1,12 +1,13 @@
 
 <template>
   <el-date-picker class="vm_emerge_picker"
-                  v-model="pickerOptions.time"
+                  v-model="option"
                   type="datetimerange"
                   format="yyyy-MM-dd HH:mm"
                   :picker-options="pickerOptions"
                   range-separator="至"
                   @change="chooseTime"
+                  clearable
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   align="center">
@@ -47,24 +48,28 @@ export default {
             }
           }
         ],
-        time: [
-          /*new Date(new Date().getTime() - 7 * 24 * 3600 * 1000),
-          new Date()*/
-        ]
+        // time: []
       }
     };
   },
   props: {
     option: {
-      type: Object,
+      type: Array,
       default: () => { }
     }
   },
   created () { },
-  mounted () { },
+  mounted () {
+    console.log(this.option);
+  },
+  computed: {
+
+  },
   methods: {
     chooseTime () {
-      this.$emit("changeTime", this.pickerOptions.time);
+      console.log(this.option);
+      // console.log(this.pickerOptions.time);
+      this.$emit("changeTime", this.option);
     }
   }
 };

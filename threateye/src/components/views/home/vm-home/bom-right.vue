@@ -30,7 +30,9 @@
                        show-overflow-tooltip>
         <template slot-scope="scope">
                 <span class="btn_alert_background"
-                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                      :class="{'high_background':scope.row.degree =='高',
+                      'mid_background':scope.row.degree =='中',
+                      'low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
         </template>
       </el-table-column>

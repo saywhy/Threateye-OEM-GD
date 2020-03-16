@@ -13,7 +13,7 @@
                        label="威胁指标"
                        show-overflow-tooltip></el-table-column>
       <el-table-column prop="category"
-                       label="威胁类型"
+                       label="告警类型"
                        show-overflow-tooltip></el-table-column>
     </el-table>
   </el-col>

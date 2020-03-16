@@ -705,7 +705,25 @@
 
       /*******************下载**********************/
       worksdownload() {
-        this.$axios.get('/yiiapi/workorder/export',{
+
+        this.$confirm('是否确定下载工单列表?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          var url1 = "/yiiapi/workorder/export?stime=" + this.params.startTime + '&etime=' + this.params.endTime;
+          +'&status=' + this.params.status + '&key_word=' + this.params.key + '&owned=' + this.owned +'&priority='+this.params.priority;
+          window.location.href = url1;
+
+        }).catch(() => {
+
+          this.$message({ type: 'info', message: '已取消下载' });
+
+          this.$refs.multipleTable.clearSelection();
+        });
+
+        /*this.$axios.get('/yiiapi/workorder/export',{
           params: {
             stime:this.params.startTime,
             etime:this.params.endTime,
@@ -720,7 +738,7 @@
              if(status == 200){
                this.$message.success('下载成功');
              }
-          })
+          })*/
       },
 
       /*******************删除**********************/
@@ -780,7 +798,9 @@
             this.$message({message:'请选择需要编辑的工单。',type: 'warning'});
           }else if(melsetion.length > 1){
             this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
-          }else {
+          }else if(melsetion[0].status != 0){
+            this.$message({message:'只有待分配的工单才能编辑。',type: 'warning'});
+          } else {
             this.open_task();
           }
         }else {
@@ -1019,6 +1039,9 @@
         if(this.task.status == 'edit'){
           Object.assign(all_params, {id:this.task.id});
         }
+        console.log(this.task.status);
+        console.log("***************");
+        console.log(all_params);
         if(this.task_params.type == 'asset'){
           if(this.task_params.multiple_assets.length == 0){
             this.$message({ message: '请选择至少一条列表！', type: 'warning' });

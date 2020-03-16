@@ -109,7 +109,7 @@
         </li>
         <li>
           <span class="title">工单状态：</span>
-          <span class="content">{{assets_top.workorder_status | risk_status}}</span>
+          <span class="content">{{assets_top.workorder_status | work_status}}</span>
         </li>
       </div>
     </div>
@@ -1634,7 +1634,8 @@ export default {
             perator: this.add_params.perator,
             remind: this.add_params.notice,
             remarks: this.add_params.remarks,
-            risk_asset: this.add_params.multiple
+            risk_asset: this.add_params.multiple,
+            type: 'asset'
           })
           .then((resp) => {
             let { status, msg, data } = resp.data;

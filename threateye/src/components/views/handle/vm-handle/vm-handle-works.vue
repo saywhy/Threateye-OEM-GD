@@ -355,7 +355,7 @@
             label: "高"
           },
           {
-            value: "midium",
+            value: "medium",
             label: "中"
           },
           {
@@ -392,10 +392,9 @@
         params: {
           key: "",
           priority: "",
-          status: "all",
+          status: "",
           startTime: "",
           endTime: "",
-
         },
         count: {
           count: 0,
@@ -413,7 +412,6 @@
           multipleSelection: [],
           loading: true,
         },
-
         my_risk_asset:[],
         //弹窗部分
         state_change: false,
@@ -448,7 +446,7 @@
               label: "高"
             },
             {
-              value: "midium",
+              value: "medium",
               label: "中"
             },
             {
@@ -497,6 +495,63 @@
       VmEmergePicker
     },
     created(){
+      /********************************************************替换**************************************************/
+      console.log(this.owned)
+      if(this.owned == 'distributed'){
+        this.options_status = [
+          {
+            value: "all",
+            label: "所有"
+          },
+          {
+            value: "1",
+            label: "已分配"
+          },
+          {
+            value: "2",
+            label: "处置中"
+          },
+          {
+            value: "3",
+            label: "已处置"
+          },
+          {
+            value: "4",
+            label: "已取消"
+          }
+        ]
+      }else {
+        this.options_status = [
+          {
+            value: "all",
+            label: "所有"
+          },
+          {
+            value: "0",
+            label: "待分配"
+          },
+          {
+            value: "1",
+            label: "已分配"
+          },
+          {
+            value: "2",
+            label: "处置中"
+          },
+          {
+            value: "3",
+            label: "已处置"
+          },
+          {
+            value: "4",
+            label: "已取消"
+          }
+        ]
+      }
+      if(this.owned != 'created'){
+        this.params.status = '';
+      }
+      /********************************************************替换**************************************************/
       this.get_list_works();
       this.get_list_assets_info();
       this.get_list_alerts_info();
@@ -525,6 +580,7 @@
             }
           });
       },
+
       //获取全部告警列表
       get_list_alerts_info(){
         this.$axios.get('/yiiapi/workorder/alert-list')
@@ -540,17 +596,38 @@
             }
           });
       },
-
+      /**************************************************替换***********************************************************/
       //工单中心列表
       get_list_works(){
         this.table.loading = true;
+        console.log('************');
+        let params_status = '';
 
+        if(this.owned == 'created'){
+          if(this.params.status == ''){
+            params_status = 'default';
+          }else if(this.params.status == 'all'){
+            params_status = '';
+          }else {
+            params_status = this.params.status;
+          }
+        }else {
+          if(this.params.status == ''){
+            params_status = '';
+          }else if(this.params.status == 'all'){
+            params_status = '';
+          }else {
+            params_status = this.params.status;
+          }
+        }
+
+        console.log(params_status)
         this.$axios.get('/yiiapi/workorder/list',
           {
             params: {
               stime:this.params.startTime,
               etime:this.params.endTime,
-              status: this.params.status,
+              status: params_status,
               priority:this.params.priority,
               key_word: this.params.key,
               owned: this.owned,
@@ -571,15 +648,15 @@
                   v.new_perator = v.perator.join(',')
                 }
               });
-
               this.table.tableData = data;
               this.table.count = Number(count.count);
               this.table.maxPage = maxPage;
               this.table.pageNow = pageNow;
-
             }
           });
       },
+
+      /**************************************************替换***********************************************************/
 
       changeTime(data) {
         this.params.startTime = (data[0].valueOf()).toFixed(0);
@@ -626,10 +703,8 @@
         this.$router.push({ path: "/detail/works", query: { id: row.id} });
       },
 
-      /***********************************以下是弹窗部分****************************************/
-      /***********************************以下是弹窗部分****************************************/
-
-
+      /***********************************以下是弹窗部分***********/
+      /***********************************以下是弹窗部分***********/
       // 状态变更选择
       change_state(command) {
         this.process_state = command;
@@ -686,6 +761,9 @@
               this.$message.success('工单状态变更成功！');
               this.get_list_works();
               this.closed_state();
+              /******************************************************替换***********************************************/
+              this.$emit('updateNum');
+              /******************************************************替换***********************************************/
             } else {
               this.$message.error('工单状态变更失败！');
             }
@@ -695,45 +773,57 @@
           })
       },
 
-      /*******************下载**********************/
+      /*******************下载**********************************替换******************************************************/
       worksdownload() {
 
-        this.$confirm('是否确定下载工单列表?', '提示', {
+        /*this.$confirm('是否确定下载工单列表?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
 
-          var url1 = "/yiiapi/workorder/export?stime=" + this.params.startTime + '&etime=' + this.params.endTime;
-          +'&status=' + this.params.status + '&key_word=' + this.params.key + '&owned=' + this.owned +'&priority='+this.params.priority;
-          window.location.href = url1;
+
+
+          /!*this.$axios.get('/yiiapi/workorder/download-test',{
+            params: {
+              id:
+            }
+          }).then(resp => {
+              let { status,data} = resp;
+              if(status == 200){
+                this.$message.success('下载成功');
+              }
+            })*!/
+
 
         }).catch(() => {
 
-          this.$message({ type: 'info', message: '已取消下载' });
+          //this.$message({ type: 'info', message: '已取消下载' });
 
           this.$refs.multipleTable.clearSelection();
-        });
+        });*/
 
-        /*this.$axios.get('/yiiapi/workorder/export',{
-          params: {
-            stime:this.params.startTime,
-            etime:this.params.endTime,
-            status: this.params.status,
-            priority:this.params.priority,
-            key_word: this.params.key,
-            owned: this.owned
+        let selected = this.table.multipleSelection;
+
+        if(selected.length == 0){
+          this.$message({ type: 'warning', message: '请选择需要下载的工单！' });
+        }else if(selected.length > 1){
+          this.$message({ type: 'warning', message: '每次只能选择一个工单下载！' });
+        }else {
+          let status = selected[0].status;
+
+          console.log('status='+status)
+          if(status == 1 || status == 2){
+            var url1 = "/yiiapi/workorder/download-test?id=" + (selected[0].id * 1);
+            window.location.href = url1;
+          }else {
+            this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});
           }
-        })
-          .then(resp => {
-            let { status,data} = resp;
-             if(status == 200){
-               this.$message.success('下载成功');
-             }
-          })*/
+
+        }
       },
 
-      /*******************删除**********************/
+      /*******************删除***************************************替换*********************************************************************************/
       worksDelete(){
         let that = this;
         let multiple = this.table.multipleSelection;
@@ -746,37 +836,36 @@
         }).then(() => {
           if(selected.length == 0){
              that.$message({message:'请选择要删除的工单！',type:'warning'});
+          }else {
+            console.log(selected)
+            that.$axios.delete('/yiiapi/workorder/del', {
+              data: {id: selected}})
+              .then(resp => {
+                let {status,msg, data} = resp.data;
+                if(status == 0){
+                  that.$message.success('删除工单成功');
+                  that.get_list_works();
+                  that.$emit('updateNum');
+                }else {
+                  if(msg == '' || msg == undefined){
+                    that.$message.error('删除工单失败');
+                  }else {
+                    that.$message.error(msg);
+                  }
+                  that.$refs.multipleTable.clearSelection();
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
           }
-          console.log(selected)
-          that.$axios.delete('/yiiapi/workorder/del', {
-            data: {
-              id: selected
-            }
-          })
-            .then(resp => {
-            let {status,msg, data} = resp.data;
-            if(status == 0){
-              that.$message.success('删除工单成功');
-              that.get_list_works();
-              that.$emit('updateNum');
-            }else {
-              if(msg == '' || msg ==undefined){
-                that.$message.error('删除工单失败');
-              }else {
-                that.$message.error(msg);
-              }
-              that.$refs.multipleTable.clearSelection();
-            }
-          })
-            .catch(err => {
-              console.log(err);
-          });
+
         }).catch(() => {
           this.$refs.multipleTable.clearSelection();
         });
       },
 
-      /*******************新增编辑**********************/
+      /*******************新增编辑**************************下载********************************************************/
 
       //新增
       open_task_new() {
@@ -1140,7 +1229,8 @@
   }
   /* 弹窗 */
   /* 状态变更 */
-  /deep/ .pop_state_box {
+  /deep/
+  .pop_state_box {
     .el-dialog {
       .el-dialog__header {
         display: none;

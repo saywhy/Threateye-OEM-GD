@@ -177,16 +177,6 @@
                              label="资产组"
                              show-overflow-tooltip
                              min-width="120">
-              <!--<template slot-scope="scope">
-                <span class="btn_tag_box"
-                      v-if="item!=''"
-                      v-for="item in scope.row.label">
-                  <el-button type="primary"
-                             class="btn_tag">
-                    {{item}}
-                  </el-button>
-                </span>
-              </template>-->
             </el-table-column>
             <el-table-column min-width="140"
                              label="关联威胁">
@@ -203,10 +193,6 @@
             </el-table-column>
             <el-table-column label="威胁等级"
                              width="100">
-              <!-- <template slot-scope="scope">
-                <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
-                  {{ scope.row.degree | degree }}</span>
-              </template>-->
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
@@ -920,6 +906,8 @@ export default {
     //多选获取选中数据
     handleSelChange (val) {
       this.table.multipleSelection = val;
+
+
     },
 
     /************************************/
@@ -1271,6 +1259,9 @@ export default {
 
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
+
+      console.log(row);
+      console.log(this.table_add_works.tableData)
       // el-radio单选框,不需要这一步
       if (row != undefined) {
         this.table_add_works.tableData.forEach(item => {
@@ -1280,7 +1271,6 @@ export default {
           }
         });
 
-        console.log(row);
         this.add_params.id = row.id;
         this.add_params.name = row.name;
         this.add_params.level = row.priority;
@@ -1294,6 +1284,8 @@ export default {
 
     //新加到工单确定
     add_ok_state () {
+
+      console.log('这是确定');
       let selected_attr = this.table.multipleSelection
         .map(x => { return x.asset_ip });
       this.add_params.multiple = selected_attr;
@@ -1313,7 +1305,8 @@ export default {
             perator: this.add_params.perator,
             remind: this.add_params.notice,
             remarks: this.add_params.remarks,
-            risk_asset: this.add_params.multiple
+            risk_asset: this.add_params.multiple,
+            type:'asset'
           })
           .then((resp) => {
             let { status, msg, data } = resp.data;

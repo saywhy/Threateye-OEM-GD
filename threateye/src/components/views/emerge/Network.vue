@@ -583,7 +583,7 @@ export default {
             label: "高"
           },
           {
-            value: "midium",
+            value: "medium",
             label: "中"
           },
           {
@@ -1001,7 +1001,7 @@ export default {
           perator: this.task_params.new_operator,
           remarks: this.task_params.textarea,
           te_alert: this.task_params.multiple,
-          remind: this.task_params.notice
+          remind: this.task_params.notice,
         })
         .then((resp) => {
           this.handle.save = false;

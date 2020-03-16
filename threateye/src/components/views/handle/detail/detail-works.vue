@@ -7,9 +7,10 @@
               <span class="top_left_title">基本信息</span>
           </div>
           <div class="top_right">
-            <el-link target="_blank" :href="loadlinks">
+            <!--<el-link target="_blank" :href="loadlinks">
               <el-button class="download_btn">下载</el-button>
-            </el-link>
+            </el-link>-->
+            <el-button class="download_btn" @click="worksdownload">下载</el-button>
           </div>
       </div>
       <div class="detail_base_mid">
@@ -328,7 +329,27 @@ export default {
       this.table_reply.pageNow = val;
       this.get_reply_works_detail();
     },
-    /*********************************************/
+    /*******************下载**************************/
+    worksdownload() {
+
+      /*this.$confirm('是否确定下载工单?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+      }).catch(() => {
+
+      });*/
+
+      let status = this.data.status;
+      if(status == 1 || status == 2){
+        var url1 = "/yiiapi/workorder/download-test?id=" + this.id * 1;
+        window.location.href = url1;
+      }else {
+        this.$message({message:'当前状态下不允许下载工单！',type: 'warning'});
+      }
+    },
 
     //回复记录
     submitReplyClick(){
@@ -372,7 +393,7 @@ export default {
       height: 62px;
       background: #fff;
       position: relative;
-      /*border-bottom: 1px solid #ececec;*/
+      border-bottom: 1px solid #ececec;
       .top_left {
         position: absolute;
         top: 50%;
@@ -407,6 +428,17 @@ export default {
             border: 1px solid #0070ff;
             font-family: PingFangMedium;
           }
+        }
+        /deep/
+        .download_btn {
+          height: 34px;
+          width: 116px;
+          padding: 0;
+          color: #fff;
+          font-size: 14px;
+          background: #0070ff;
+          border: 1px solid #0070ff;
+          font-family: PingFangMedium;
         }
 
       }

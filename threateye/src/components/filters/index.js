@@ -118,7 +118,7 @@ Vue.filter('priority', function (args) {
     str = '最高';
   } else if (args == 'high') {
     str = '高';
-  } else if (args == 'midium') {
+  } else if (args == 'medium') {
     str = '中';
   } else if (args == 'low') {
     str = '低';

@@ -59,24 +59,22 @@
           .then(resp => {
             let {status,msg, data} = resp.data;
             if(status == 0){
-              console.log(data)
-              if(data && data.length){
-
-                if(data[0].created == null){
+              if(data){
+                if(data.created == null){
                   this.number.created = 0;
                 }else {
-                  this.number.created = data[0].created;
+                  this.number.created = data.created;
                 }
                 console.log(this.number.created)
-                if(data[0].distributed == null){
+                if(data.distributed == null){
                   this.number.distributed = 0;
                 }else {
-                  this.number.distributed = data[0].distributed;
+                  this.number.distributed = data.distributed;
                 }
-                if(data[0].all == null){
+                if(data.all == null){
                   this.number.all = 0;
                 }else {
-                  this.number.all = data[0].all;
+                  this.number.all = data.all;
                 }
               }
             }

@@ -572,8 +572,8 @@
       },
 
       changeTime(data) {
-        this.params.startTime = data[0].valueOf();
-        this.params.endTime = data[1].valueOf();
+        this.params.startTime = (data[0].valueOf()).toFixed(0);
+        this.params.endTime = (data[1].valueOf()).toFixed(0);
       },
 
       //搜索按鈕點擊事件
@@ -611,7 +611,6 @@
         this.table.multipleSelection = val;
         if(val.length == 1){
           console.log(val)
-
            this.task_params.name = val[0].name;
            this.task_params.level = val[0].priority;
            this.task_params.type = val[0].type;
@@ -693,7 +692,7 @@
             if (status == 0) {
               this.$message.success('工单状态变更成功！');
               this.get_list_works();
-              /*this.closed_state();*/
+              this.closed_state();
             } else {
               this.$message.error('工单状态变更失败！');
             }
@@ -798,9 +797,9 @@
             this.$message({message:'请选择需要编辑的工单。',type: 'warning'});
           }else if(melsetion.length > 1){
             this.$message({message:'编辑工单只能选择一条。',type: 'warning'});
-          }else if(melsetion[0].status != 0){
+          }/*else if(melsetion[0].status != 0){
             this.$message({message:'只有待分配的工单才能编辑。',type: 'warning'});
-          } else {
+          }*/ else {
             this.open_task();
           }
         }else {
@@ -985,11 +984,9 @@
                   this.$message.success('分配成功');
                   this.closed_task_new();
                   this.get_list_works();
-
                 }else if (status == 1){
                   this.$message.error(msg);
                 }
-
               })
               .catch(err => {
                 console.log(err);

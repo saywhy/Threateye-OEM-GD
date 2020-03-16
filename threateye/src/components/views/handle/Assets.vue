@@ -696,7 +696,7 @@ export default {
         count: 0,
         pageNow: 1,
         maxPage: 1,
-        eachPage: 5,
+        eachPage: 10,
         multipleSelection: []
       },
 
@@ -707,7 +707,7 @@ export default {
         count: 0,
         pageNow: 1,
         maxPage: 1,
-        eachPage: 5,
+        eachPage: 10,
         loading: true
       },
       add_params: {
@@ -1146,7 +1146,8 @@ export default {
           perator: this.task_params.new_operator,
           remarks: this.task_params.textarea,
           risk_asset: this.task_params.multiple,
-          remind: this.task_params.notice
+          remind: this.task_params.notice,
+          type:'asset'
         })
         .then((resp) => {
           this.handle.save = false;
@@ -1180,7 +1181,8 @@ export default {
           perator: this.task_params.new_operator,
           remarks: this.task_params.textarea,
           risk_asset: this.task_params.multiple,
-          remind: this.task_params.notice
+          remind: this.task_params.notice,
+          type:'asset'
         })
         .then((resp) => {
           this.handle.save = false;
@@ -1229,7 +1231,8 @@ export default {
       this.$axios.get('/yiiapi/asset/workorder-list', {
         params: {
           page: this.table_add_works.pageNow,
-          rows: this.table_add_works.eachPage
+          rows: this.table_add_works.eachPage,
+          type: 'asset'
         }
       }).then((resp) => {
         console.log(resp)

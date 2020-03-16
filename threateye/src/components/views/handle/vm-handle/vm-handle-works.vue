@@ -156,7 +156,7 @@
       <img src="@/assets/images/emerge/closed.png" @click="closed_task_new" class="closed_img" alt="">
       <div class="title">
         <div class="mask"></div>
-        <span class="title_name">编辑标签</span>
+        <span class="title_name">编辑工单</span>
       </div>
       <div class="step_box">
         <div class="step_box1">
@@ -476,7 +476,7 @@
           count: 0,
           pageNow: 1,
           maxPage: 1,
-          eachPage: 5,
+          eachPage: 10,
           multipleSelection: []
         },
         table_alerts: {
@@ -485,7 +485,7 @@
           count: 0,
           pageNow: 1,
           maxPage: 1,
-          eachPage: 5,
+          eachPage: 10,
           multipleSelection: []
         }
       }
@@ -1001,6 +1001,7 @@
                   this.$message.success('分配成功');
                   this.closed_task_new();
                   this.get_list_works();
+                  this.$emit('updateNum');
                 }else if (status == 1){
                   this.$message.error(msg);
                 }
@@ -1021,6 +1022,7 @@
                 if (status == 0) {
                   this.$message.success('分配成功');
 
+                  this.$emit('updateNum');
                   this.closed_task_new();
                   this.get_list_works();
 
@@ -1069,6 +1071,9 @@
                   this.$message.success('保存成功');
                   this.closed_task_new();
                   this.get_list_works();
+
+                  this.$emit('updateNum');
+
                 }else if (status == 1){
                   this.$message.error(msg);
                 }
@@ -1090,6 +1095,7 @@
                   this.$message.success('保存成功');
                   this.closed_task_new();
                   this.get_list_works();
+                  this.$emit('updateNum');
                 }else if (status == 1){
                   this.$message.error(msg);
                 }

@@ -135,8 +135,9 @@ export default {
   },
   methods: {
     search () {
-      this.get_data();
+      this.dns_list.pageNow = 1
       this.dns_search.page = 1
+      this.get_data();
     },
     get_data () {
       this.dns_search.loading = true

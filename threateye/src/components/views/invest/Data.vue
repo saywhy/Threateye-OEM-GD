@@ -125,6 +125,7 @@ export default {
     search () {
       this.get_data();
       this.data_search.page = 1
+      this.data_list.pageNow = 1
     },
     get_data () {
       this.data_search.loading = true

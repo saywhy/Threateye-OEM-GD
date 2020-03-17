@@ -128,8 +128,9 @@ export default {
   },
   methods: {
     search () {
-      this.get_data();
       this.flow_search.page = 1
+      this.flow_list.pageNow = 1
+      this.get_data();
     },
     get_data () {
       this.flow_search.loading = true

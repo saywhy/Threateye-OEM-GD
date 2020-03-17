@@ -121,8 +121,9 @@ export default {
   },
   methods: {
     search () {
-      this.get_data();
       this.file_search.page = 1
+      this.file_list.pageNow = 1
+      this.get_data();
     },
     get_data () {
       this.file_search.loading = true

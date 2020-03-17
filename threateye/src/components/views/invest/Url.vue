@@ -138,8 +138,9 @@ export default {
   },
   methods: {
     search () {
-      this.get_data();
       this.url_search.page = 1
+      this.url_list.pageNow = 1
+      this.get_data();
     },
     get_data () {
       this.url_search.loading = true

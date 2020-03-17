@@ -106,8 +106,9 @@ export default {
   },
   methods: {
     search () {
-      this.get_data();
       this.user_search.page = 1
+      this.user_list.pageNow = 1
+      this.get_data();
     },
     get_data () {
       this.user_search.loading = true

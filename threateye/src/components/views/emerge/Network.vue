@@ -183,7 +183,8 @@
     </div>
     <!-- 弹窗 -->
     <!-- 状态变更 -->
-    <el-dialog class="pop_state_box"
+    <el-dialog class="pop_state_box pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -213,7 +214,8 @@
     </el-dialog>
     <!-- 弹窗 -->
     <!-- 工单任务 -->
-    <el-dialog class="task_new_box"
+    <el-dialog class="task_new_box pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png"
@@ -410,7 +412,8 @@
     </el-dialog>
     <!-- 弹窗 -->
     <!-- 添加到工单 -->
-    <el-dialog class="pop_state_add"
+    <el-dialog class="pop_state_add pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="add_state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -810,14 +813,18 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status, data } = resp.data;
+          let { status,msg, data } = resp.data;
           if (status == 0) {
             this.$message.success('告警状态变更成功！');
             //关闭弹窗
             this.closed_state();
             this.get_list_risk();
           } else {
-            this.$message.error('告警状态变更错误！');
+            if(msg == ''){
+              this.$message.error(msg);
+            }else {
+              this.$message.error('状态变更失败');
+            }
           }
         })
         .catch(err => {
@@ -1716,6 +1723,18 @@ export default {
           }
         }
       }
+    }
+  }
+
+  /deep/
+  .pop_box {
+    .el-dialog {
+      background: #FFFFFF;
+      border-radius: 4px;
+      position: fixed;
+      // top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 }

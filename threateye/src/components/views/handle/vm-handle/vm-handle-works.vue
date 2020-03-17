@@ -263,7 +263,7 @@
                              :row-key="getRowKeys_assets"
                              @selection-change="handle_sel_table_assets">
                      <el-table-column label="全选" width="40"></el-table-column>
-                     <el-table-column align='left' type="selection" width="50"></el-table-column>
+                     <el-table-column align='left' type="selection" width="50" :reserve-selection="true"></el-table-column>
                      <el-table-column prop="asset_ip" label="资产"></el-table-column>
                      <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
                      <el-table-column label="威胁等级" width="100">
@@ -875,6 +875,8 @@
                 }
               });
               let that = this;
+              console.log('^^^^')
+              console.log(this.table_assets.multipleSelection)
               data.forEach(element => {
                 this.table_assets.multipleSelection.forEach(function (item) {
                   if(element.asset_ip == item.asset_ip){
@@ -1308,6 +1310,7 @@
 
       //资产匹配
       getRowKeys_assets(row) {
+        console.log(row)
         return row.asset_ip;
       },
 

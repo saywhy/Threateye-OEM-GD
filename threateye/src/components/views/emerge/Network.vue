@@ -183,7 +183,7 @@
     </div>
     <!-- 弹窗 -->
     <!-- 状态变更 -->
-    <el-dialog class="pop_state_box pop_box"
+    <el-dialog class="pop_state_box"
                :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="state_change">

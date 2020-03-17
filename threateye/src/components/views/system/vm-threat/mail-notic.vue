@@ -96,6 +96,8 @@
                     type="textarea"
                     :rows="10"
                     autosize
+                    maxlength="500"
+                    show-word-limit
                     resize='none'
                     placeholder="请输入发送内容"
                     v-model="mail.content"

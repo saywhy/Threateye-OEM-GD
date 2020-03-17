@@ -224,15 +224,19 @@ export default {
     VmEmergePicker
   },
   methods: {
+
     search_data () {
       switch (this.activeButGroup) {
         case '1':
+          this.host_network_page.page = 1
           this.get_data_network()
           break;
         case '2':
+          this.host_file_page.page = 1
           this.get_data_file()
           break;
         case '3':
+          this.host_user_page.page = 1
           this.get_data_user()
           break;
         default:

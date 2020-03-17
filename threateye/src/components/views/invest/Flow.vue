@@ -26,7 +26,7 @@
             <vm-emerge-picker @changeTime='changeTime'
                               :option='time_list'></vm-emerge-picker>
             <el-button class="btn_i"
-                       @click="get_data"> 搜索</el-button>
+                       @click="search"> 搜索</el-button>
             <span class="reset"
                   @click="reset">重置</span>
             <el-button class="btn_right"
@@ -127,6 +127,10 @@ export default {
     };
   },
   methods: {
+    search () {
+      this.get_data();
+      this.flow_search.page = 1
+    },
     get_data () {
       this.flow_search.loading = true
       console.log(this.flow_search);

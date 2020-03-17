@@ -583,7 +583,8 @@
       </div>
     </el-dialog>
     <!-- 弹窗 -->
-    <!-- 添加到工单 --><!--:visible.sync="worksheets_data.pop" class="pop_state_add pop_box"-->
+    <!-- 添加到工单 -->
+    <!--:visible.sync="worksheets_data.pop" class="pop_state_add pop_box"-->
     <el-dialog class="pop_state_add pop_box"
                :close-on-click-modal="false"
                :modal-append-to-body="false"
@@ -635,7 +636,9 @@
                              label="经办人"
                              show-overflow-tooltip>
             </el-table-column>-->
-            <el-table-column prop="new_perator" label="经办人" show-overflow-tooltip>
+            <el-table-column prop="new_perator"
+                             label="经办人"
+                             show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="状态"
                              width="80"
@@ -1391,7 +1394,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
       }
     };
   },
@@ -1438,7 +1441,7 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[]
+        old_as: []
       };
     },
     //获取列表
@@ -1505,9 +1508,9 @@ export default {
 
       if (multipe.length == 0) {
         this.$message({ message: '请选择要添加的工单！', type: 'warning' });
-      } else if(multipe.length > 1){
+      } else if (multipe.length > 1) {
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
-      }else{
+      } else {
         console.log('******************')
         this.add_params.id = multipe[0].id;
         this.add_params.name = multipe[0].name;
@@ -1518,7 +1521,7 @@ export default {
 
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
-        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+        this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)];
@@ -1564,17 +1567,17 @@ export default {
             remarks: this.add_params.remarks,
             te_alert: this.add_params.multiple
           }).then((resp) => {
-          this.loading = false;
-          let { status, msg, data } = resp.data;
-          if (status == 0) {
-            this.$message.success('添加成功');
-            //清空状态
-            this.add_closed_state1();
-            this.get_data();
-          } else if (status == 1) {
-            this.$message.error(msg);
-          }
-        })
+            this.loading = false;
+            let { status, msg, data } = resp.data;
+            if (status == 0) {
+              this.$message.success('添加成功');
+              //清空状态
+              this.add_closed_state1();
+              this.get_data();
+            } else if (status == 1) {
+              this.$message.error(msg);
+            }
+          })
           .catch(err => {
             console.log(err);
           });
@@ -1690,31 +1693,32 @@ export default {
           })
             .then(response => {
               console.log(response.data);
-              this.network_detail.work_order_status = response.data.data.work_order_status
-              switch (response.data.data.work_order_status) {
-                case '':
-                  this.network_detail.work_order_status_cn = '未关联工单'
-                  break;
-                case '0':
-                  this.network_detail.work_order_status_cn = '待分配'
-                  break;
-                case '1':
-                  this.network_detail.work_order_status_cn = '已分配'
-                  break;
-                case '2':
-                  this.network_detail.work_order_status_cn = '处置中'
-                  break;
-                case '3':
-                  this.network_detail.work_order_status_cn = '已处置'
-                  break;
-                case '4':
-                  this.network_detail.work_order_status_cn = '已取消'
-                  break;
-                default:
-                  break;
-              }
-              this.network_detail.work_name = response.data.data.name
-
+              this.$nextTick(() => {
+                this.network_detail.work_order_status = response.data.data.work_order_status
+                switch (response.data.data.work_order_status) {
+                  case '':
+                    this.network_detail.work_order_status_cn = '未关联工单'
+                    break;
+                  case '0':
+                    this.network_detail.work_order_status_cn = '待分配'
+                    break;
+                  case '1':
+                    this.network_detail.work_order_status_cn = '已分配'
+                    break;
+                  case '2':
+                    this.network_detail.work_order_status_cn = '处置中'
+                    break;
+                  case '3':
+                    this.network_detail.work_order_status_cn = '已处置'
+                    break;
+                  case '4':
+                    this.network_detail.work_order_status_cn = '已取消'
+                    break;
+                  default:
+                    break;
+                }
+                this.network_detail.work_name = response.data.data.name
+              })
             })
             .catch(error => {
               console.log(error);
@@ -2873,30 +2877,30 @@ export default {
         this.open_add_new();
         // 添加到工单，只有告警状态 0 1
         // 告警：0新告警，1待处置，2处置中，3已处置，4已忽略，5误报
-       /* console.log(this.network_detail);
-        if (this.network_detail.status != 1 && this.network_detail.status != 0 && this.network_detail.status != 2) {
-          this.$message(
-            {
-              message: '告警状态为已处置、已忽略、误报的不能添加到工单。',
-              type: 'error',
-            }
-          );
-          return false
-        }
-        // 存在被创建工单的告警
-        if (this.network_detail.work_order_status != '') {
-          this.$message(
-            {
-              message: '存在被创建工单的告警',
-              type: 'error',
-            }
-          );
-          return false
-        }
-        this.worksheets_data.tableRadio = {};
-
-
-        this.get_worksheets_list()*/
+        /* console.log(this.network_detail);
+         if (this.network_detail.status != 1 && this.network_detail.status != 0 && this.network_detail.status != 2) {
+           this.$message(
+             {
+               message: '告警状态为已处置、已忽略、误报的不能添加到工单。',
+               type: 'error',
+             }
+           );
+           return false
+         }
+         // 存在被创建工单的告警
+         if (this.network_detail.work_order_status != '') {
+           this.$message(
+             {
+               message: '存在被创建工单的告警',
+               type: 'error',
+             }
+           );
+           return false
+         }
+         this.worksheets_data.tableRadio = {};
+ 
+ 
+         this.get_worksheets_list()*/
 
       }
     },
@@ -3252,13 +3256,13 @@ export default {
 <style lang="less">
 @import '../../../../assets/css/less/reset_css/reset_tab.less';
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
-.reset_table{
-  .el-table__header-wrapper{
-    .el-table__header{
-      thead.has-gutter{
-        th{
-          background: #F8F8F8;
-          .cell{
+.reset_table {
+  .el-table__header-wrapper {
+    .el-table__header {
+      thead.has-gutter {
+        th {
+          background: #f8f8f8;
+          .cell {
             font-family: PingFangMedium;
             color: #333;
             font-size: 14px;

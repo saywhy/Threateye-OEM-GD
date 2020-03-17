@@ -170,7 +170,7 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
-              <span class="item_li_content">{{network_detail.work_order_status_cn}}</span>
+              <span class="item_li_content">{{network_detail.work_order_status | work_status}}</span>
             </li>
           </ul>
         </div>

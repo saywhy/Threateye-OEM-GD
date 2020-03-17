@@ -1649,7 +1649,7 @@ export default {
           this.network_detail = response.data.data
 
           this.network_detail.attack_stage_cn = ''
-
+          this.network_detail.work_order_status = ''
           this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
           this.network_detail.dest_label_obj = JSON.parse(this.network_detail.dest_label)
 
@@ -1682,9 +1682,6 @@ export default {
             default:
               break;
           }
-
-
-
           // 获取当前告警的工单状态
           this.$axios.get(workorders, {
             params: {

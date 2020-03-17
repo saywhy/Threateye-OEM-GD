@@ -1340,7 +1340,7 @@
 
         if(this.task_params.type == 'asset'){
           if(multiple_assets.length == 0){
-            this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
+            this.$message({ message: '至少选择一条资产/告警！', type: 'warning' });
           }else {
             multiple_alerts = [];
 
@@ -1358,7 +1358,7 @@
           }
         }else if(this.task_params.type == 'alert'){
           if(multiple_alerts.length == 0){
-            this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
+            this.$message({ message: '至少选择一条资产/告警！', type: 'warning' });
           }else {
             multiple_assets = [];
 
@@ -1405,7 +1405,7 @@
 
         if(this.task_params.type == 'asset'){
           if(multiple_assets.length == 0){
-            this.$message({ message: '请选择至少一条资产列表！', type: 'warning' });
+            this.$message({ message: '至少选择一条资产/告警！', type: 'warning' });
           }else {
             multiple_alerts = [];
             let all_params = {
@@ -1422,7 +1422,7 @@
           }
         }else if(this.task_params.type == 'alert'){
           if(multiple_alerts.length == 0){
-            this.$message({ message: '请选择至少一条告警列表！', type: 'warning' });
+            this.$message({ message: '至少选择一条资产/告警！', type: 'warning' });
           }else {
             multiple_assets = [];
 

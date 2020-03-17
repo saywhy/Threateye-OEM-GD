@@ -68,11 +68,11 @@ Vue.filter('risk_status', function (args) {
     str = '待处置';
   } else if (args == 2) {
     str = '处置中';
-  } else if(args == 3){
+  } else if (args == 3) {
     str = '已处置'
-  } else if(args == 4){
+  } else if (args == 4) {
     str = '已忽略';
-  } else if(args == 5){
+  } else if (args == 5) {
     str = '误报';
   }
   return str;
@@ -100,19 +100,32 @@ Vue.filter('alert_status', function (args) {
 
 //处理状态(处置-工单中心)
 Vue.filter('work_status', function (args) {
+  console.log(args);
   let str = '';
-  if (args == 0) {
-    str = '待分配';
-  } else if (args == 1) {
-    str = '已分配';
-  } else if (args == 2) {
-    str = '处置中';
-  } else if (args == 3) {
-    str = '已处置';
-  } else if (args == 4) {
-    str = '已取消';
-  }else if(args == ''){
-    str = '未关联工单';
+  switch (args) {
+    case '':
+      str = '未关联工单';
+      break;
+    case 0:
+      str = '待分配';
+      break;
+    case 1:
+      str = '已分配';
+      break;
+    case 2:
+      str = '处置中';
+      break;
+    case 3:
+      str = '已处置';
+      break;
+    case 4:
+      str = '已取消';
+      break;
+    case 5:
+      str = '未关联工单';
+      break;
+    default:
+      break;
   }
   return str;
 });

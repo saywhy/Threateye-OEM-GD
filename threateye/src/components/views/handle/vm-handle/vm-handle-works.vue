@@ -264,9 +264,9 @@
                              @selection-change="handle_sel_table_assets">
                      <el-table-column label="全选" width="40"></el-table-column>
                      <el-table-column align='left' type="selection" width="50" :reserve-selection="true"></el-table-column>
-                     <el-table-column prop="asset_ip" label="资产"></el-table-column>
+                     <el-table-column prop="asset_ip" label="资产" width="180" show-overflow-tooltip></el-table-column>
                      <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
-                     <el-table-column label="威胁等级" width="100">
+                     <el-table-column label="威胁等级" width="140">
                        <template slot-scope="scope">
                   <span class="btn_alert_background"
                         :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
@@ -300,7 +300,7 @@
                      </el-table-column>
                      <el-table-column type="selection" width="50" :reserve-selection="true">
                      </el-table-column>
-                     <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+                     <el-table-column prop="category" label="告警类型"  show-overflow-tooltip>
                      </el-table-column>
                      <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
                      </el-table-column>
@@ -310,7 +310,7 @@
                      </el-table-column>-->
                      <el-table-column prop="application" label="应用" show-overflow-tooltip>
                      </el-table-column>
-                     <el-table-column label="威胁等级" width="100" show-overflow-tooltip>
+                     <el-table-column label="威胁等级" width="120" show-overflow-tooltip>
                        <template slot-scope="scope">
                   <span class="btn_alert_background"
                         :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
@@ -480,7 +480,8 @@
             <div>
               <!-- 资产列表 -->
               <div v-if="edit.data.type == 'asset'">
-                <el-table align="center"
+                <div class="tb_tolling">
+                  <el-table align="center" class="common-table"
                           :data="edit.asset_list.data"
                           tooltip-effect="dark"
                           :row-key="getRowKeys"
@@ -501,8 +502,9 @@
                   <el-table-column label="威胁等级"
                                    width="100">
                     <template slot-scope="scope">
-                      <span :class="{'high':scope.row.degree =='high','mid':scope.row.degree =='medium','low':scope.row.degree =='low'}">
-                        {{ scope.row.degree | degree }}</span>
+                  <span class="btn_alert_background"
+                        :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+                    {{ scope.row.degree | degree }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
@@ -510,6 +512,7 @@
                     <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
                   </el-table-column>
                 </el-table>
+                </div>
                 <el-pagination class="pagination_box"
                                @current-change="current_change_assets"
                                :page-sizes="[10]"
@@ -521,49 +524,56 @@
               </div>
               <!-- 告警列表 -->
               <div v-if="edit.data.type == 'alert'">
-                <el-table align="center"
-                          :data="edit.alert_list.data"
-                          tooltip-effect="dark"
-                          ref="alertTable"
-                          style="width: 100%"
-                          @selection-change="handle_sel_alert">
-                  <el-table-column label="全选"
-                                   prop="type"
-                                   width="40">
-                  </el-table-column>
-                  <el-table-column type="selection"
-                                   width="50">
-                  </el-table-column>
-                  <el-table-column prop="category"
-                                   label="告警类型"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="indicator"
-                                   label="威胁指标"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="src_ip"
-                                   label="源地址"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="dest_ip"
-                                   label="目的地址"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="application"
-                                   label="应用"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column prop="degree"
-                                   label="威胁等级"
-                                   width="100"
-                                   show-overflow-tooltip>
-                  </el-table-column>
-                  <el-table-column label="状态"
-                                   width="80">
-                    <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
-                  </el-table-column>
-                </el-table>
+                <div class="tb_tolling">
+                  <el-table align="center" class="common-table"
+                            :data="edit.alert_list.data"
+                            tooltip-effect="dark"
+                            ref="alertTable"
+                            style="width: 100%"
+                            @selection-change="handle_sel_alert">
+                    <el-table-column label="全选"
+                                     prop="type"
+                                     width="40">
+                    </el-table-column>
+                    <el-table-column type="selection"
+                                     width="50">
+                    </el-table-column>
+                    <el-table-column prop="category"
+                                     label="告警类型"
+                                     show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="indicator"
+                                     label="威胁指标"
+                                     show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="src_ip"
+                                     label="源地址"
+                                     show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="dest_ip"
+                                     label="目的地址"
+                                     show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="application"
+                                     label="应用"
+                                     show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                                     label="威胁等级"
+                                     width="100"
+                                     show-overflow-tooltip>
+                      <template slot-scope="scope">
+                  <span class="btn_alert_background"
+                        :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                    {{ scope.row.degree | degree_sino }}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="状态"
+                                     width="80">
+                      <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+                    </el-table-column>
+                  </el-table>
+                </div>
                 <el-pagination class="pagination_box"
                                @current-change="current_change_alert"
                                :page-sizes="[10]"

@@ -284,7 +284,7 @@
                                 :page-size="table_assets.eachPage"
                                 :current-page="table_assets.pageNow"
                                 :total="table_assets.count"
-                                layout="total, sizes, prev, pager, next">
+                                layout="total, prev, pager, next">
                  </el-pagination>
                </div>
                <div v-show="handle.active == 1">
@@ -328,7 +328,7 @@
                                 :page-size="table_alerts.eachPage"
                                 :current-page="table_alerts.pageNow"
                                 :total="table_alerts.count"
-                                layout="total, sizes, prev, pager, next">
+                                layout="total, prev, pager, next">
                  </el-pagination>
                </div>
              </div>

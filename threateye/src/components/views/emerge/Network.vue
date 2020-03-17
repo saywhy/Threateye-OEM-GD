@@ -118,7 +118,7 @@
                     @row-click="detail_click">
             <el-table-column label="全选"
                              prop="type"
-                             width="40">
+                             width="50">
               <template slot-scope="scope">
                 <div class="new_dot"
                      v-show="scope.row.new_alert=='1'"></div>
@@ -352,7 +352,7 @@
                           @selection-change="handle_sel_table_alerts">
                   <el-table-column label="全选"
                                    prop="type"
-                                   width="40">
+                                   width="50">
                   </el-table-column>
                   <el-table-column type="selection"
                                    width="50"></el-table-column>
@@ -1188,9 +1188,10 @@ export default {
         type: 'warning'
       }).then(() => {
 
-        var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime;
-        +'&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
+        var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
+          +'&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
         window.location.href = url1;
+
 
       }).catch(() => {
 

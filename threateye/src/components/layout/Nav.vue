@@ -77,7 +77,8 @@
     </el-row>
 
     <!-- 修改密码弹窗 -->
-    <el-dialog class="pop_box_password" :close-on-click-modal="false"
+    <el-dialog class="pop_box_password pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="pass_state">
       <img src="@/assets/images/emerge/closed.png"
@@ -646,4 +647,19 @@ export default {
     }
   }
 }
+</style>
+<style scoped lang="less">
+  #Nav{
+    /deep/
+    .pop_box {
+      .el-dialog {
+        background: #FFFFFF;
+        border-radius: 4px;
+        position: fixed;
+        // top: 200px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  }
 </style>

@@ -122,7 +122,8 @@
 
     <!-- 弹窗 -->
     <!-- 状态变更 -->
-    <el-dialog class="pop_state_box"
+    <el-dialog class="pop_state_box pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -152,7 +153,7 @@
     </el-dialog>
     <!-- 弹窗 -->
     <!-- 工单任务 -->
-    <el-dialog class="task_new_box"
+    <el-dialog class="task_new_box pop_box"
                :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="task.new">
@@ -253,32 +254,33 @@
              </ul>
              <div>
                <div v-show="handle.active == 0">
-                 <el-table align="center" class="common-table"
-                           :data="table_assets.tableData"
-                           tooltip-effect="dark"
-                           style="width: 100%"
-                           ref="assetTableName"
-                           :row-key="getRowKeys_assets"
-                           @selection-change="handle_sel_table_assets">
-                   <el-table-column label="全选" width="40"></el-table-column>
-                   <el-table-column align='left' type="selection" width="50"></el-table-column>
-                   <el-table-column prop="asset_ip" label="资产"></el-table-column>
-                   <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
-                   <el-table-column label="威胁等级" width="100">
-                     <template slot-scope="scope">
-                <span class="btn_alert_background"
-                      :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
-                  {{ scope.row.degree | degree }}</span>
-                     </template>
-                   </el-table-column>
-                   <el-table-column label="状态" width="80">
-                     <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
-                   </el-table-column>
-                 </el-table>
+                 <div class="tb_tolling">
+                   <el-table align="center" class="common-table"
+                             :data="table_assets.tableData"
+                             tooltip-effect="dark"
+                             style="width: 100%"
+                             ref="assetTableName"
+                             :row-key="getRowKeys_assets"
+                             @selection-change="handle_sel_table_assets">
+                     <el-table-column label="全选" width="40"></el-table-column>
+                     <el-table-column align='left' type="selection" width="50"></el-table-column>
+                     <el-table-column prop="asset_ip" label="资产"></el-table-column>
+                     <el-table-column prop="label_group" label="资产组" show-overflow-tooltip></el-table-column>
+                     <el-table-column label="威胁等级" width="100">
+                       <template slot-scope="scope">
+                  <span class="btn_alert_background"
+                        :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
+                    {{ scope.row.degree | degree }}</span>
+                       </template>
+                     </el-table-column>
+                     <el-table-column label="状态" width="80">
+                       <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                     </el-table-column>
+                   </el-table>
+                 </div>
                  <el-pagination class="pagination_box"
-                                @size-change="sc_table_assets"
                                 @current-change="hcc_table_assets"
-                                :page-sizes="[10,20,50,100]"
+                                :page-sizes="[10]"
                                 :page-size="table_assets.eachPage"
                                 :current-page="table_assets.pageNow"
                                 :total="table_assets.count"
@@ -286,42 +288,43 @@
                  </el-pagination>
                </div>
                <div v-show="handle.active == 1">
-                 <el-table align="center" class="common-table"
-                           :data="table_alerts.tableData"
-                           tooltip-effect="dark"
-                           ref="alertTableName"
-                           style="width: 100%"
-                           :row-key="getRowKeys_alerts"
-                           @selection-change="handle_sel_table_alerts">
-                   <el-table-column label="全选" prop="type" width="40">
-                   </el-table-column>
-                   <el-table-column type="selection" width="50" :reserve-selection="true">
-                   </el-table-column>
-                   <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
-                   </el-table-column>
-                   <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
-                   </el-table-column>
-                   <!--<el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-                   </el-table-column>
-                   <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-                   </el-table-column>-->
-                   <el-table-column prop="application" label="应用" show-overflow-tooltip>
-                   </el-table-column>
-                   <el-table-column label="威胁等级" width="100" show-overflow-tooltip>
-                     <template slot-scope="scope">
-                <span class="btn_alert_background"
-                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
-                  {{ scope.row.degree | degree_sino }}</span>
-                     </template>
-                   </el-table-column>
-                   <el-table-column label="状态"  width="80">
-                     <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
-                   </el-table-column>
-                 </el-table>
+                 <div class="tb_tolling">
+                   <el-table align="center" class="common-table"
+                             :data="table_alerts.tableData"
+                             tooltip-effect="dark"
+                             ref="alertTableName"
+                             style="width: 100%"
+                             :row-key="getRowKeys_alerts"
+                             @selection-change="handle_sel_table_alerts">
+                     <el-table-column label="全选" prop="type" width="40">
+                     </el-table-column>
+                     <el-table-column type="selection" width="50" :reserve-selection="true">
+                     </el-table-column>
+                     <el-table-column prop="category" label="告警类型" show-overflow-tooltip>
+                     </el-table-column>
+                     <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip>
+                     </el-table-column>
+                     <!--<el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
+                     </el-table-column>
+                     <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
+                     </el-table-column>-->
+                     <el-table-column prop="application" label="应用" show-overflow-tooltip>
+                     </el-table-column>
+                     <el-table-column label="威胁等级" width="100" show-overflow-tooltip>
+                       <template slot-scope="scope">
+                  <span class="btn_alert_background"
+                        :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                    {{ scope.row.degree | degree_sino }}</span>
+                       </template>
+                     </el-table-column>
+                     <el-table-column label="状态"  width="80">
+                       <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                     </el-table-column>
+                   </el-table>
+                 </div>
                  <el-pagination class="pagination_box"
-                                @size-change="sc_table_alerts"
                                 @current-change="hcc_table_alerts"
-                                :page-sizes="[5,10,20,50,100]"
+                                :page-sizes="[10]"
                                 :page-size="table_alerts.eachPage"
                                 :current-page="table_alerts.pageNow"
                                 :total="table_alerts.count"
@@ -739,7 +742,7 @@
           count: 0,
           pageNow: 1,
           maxPage: 1,
-          eachPage: 5,
+          eachPage: 10,
           multipleSelection: [],
           multipleData:[]
         },
@@ -2295,6 +2298,24 @@
         }
 
         .task_handle_content {
+          .tb_tolling{
+            height: 400px;
+            overflow-y: auto;
+            &::-webkit-scrollbar {
+              /*滚动条整体样式*/
+              width: 3px;
+              /*高宽分别对应横竖滚动条的尺寸*/
+              /* border-radius: 6px;*/
+            }
+            &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+               border-radius: 6px;
+               background: #a8a8a8;
+             }
+            &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+               border-radius: 6px;
+               background: #f4f4f4;
+             }
+          }
           .handle_content_top {
             height: 42px;
             text-align: left;
@@ -2373,6 +2394,18 @@
           }
         }
       }
+    }
+  }
+
+  /deep/
+  .pop_box {
+    .el-dialog {
+      background: #FFFFFF;
+      border-radius: 4px;
+      position: fixed;
+      // top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 </style>

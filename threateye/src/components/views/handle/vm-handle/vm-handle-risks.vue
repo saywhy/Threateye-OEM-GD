@@ -194,7 +194,8 @@
 
     <!-- 弹窗 -->
     <!-- 状态变更 -->
-    <el-dialog class="pop_state_box"
+    <el-dialog class="pop_state_box pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -225,7 +226,8 @@
 
     <!-- 弹窗 -->
     <!-- 工单任务 -->
-    <el-dialog class="task_new_box"
+    <el-dialog class="task_new_box pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="task.new">
       <img src="@/assets/images/emerge/closed.png"
@@ -424,7 +426,8 @@
     </el-dialog>
     <!-- 弹窗 -->
     <!-- 添加到工单 -->
-    <el-dialog class="pop_state_add"
+    <el-dialog class="pop_state_add pop_box"
+               :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="add_state_change">
       <img src="@/assets/images/emerge/closed.png"
@@ -1790,6 +1793,18 @@ export default {
           }
         }
       }
+    }
+  }
+
+  /deep/
+  .pop_box {
+    .el-dialog {
+      background: #FFFFFF;
+      border-radius: 4px;
+      position: fixed;
+      // top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 }

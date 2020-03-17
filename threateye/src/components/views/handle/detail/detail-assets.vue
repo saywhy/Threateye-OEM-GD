@@ -1326,6 +1326,7 @@ export default {
           if (status == 0) {
             this.$message.success('状态变更成功！');
             this.closed_state();
+            this.get_assets_detail_top();
           } else {
             this.$message.error('状态变更失败！');
           }
@@ -1479,6 +1480,7 @@ export default {
           if (status == 0) {
             this.$message.success('分配成功');
             this.closed_task_new();
+            this.get_assets_detail_top();
           } else if (status == 1) {
             this.$message.error(msg);
           }
@@ -1513,7 +1515,7 @@ export default {
           if (status == 0) {
             this.$message.success('保存成功');
             this.closed_task_new();
-            this.get_list_risk();
+            this.get_assets_detail_top();
           } else if (status == 1) {
             this.$message.error(msg);
           }
@@ -1653,6 +1655,8 @@ export default {
               this.$message.success('添加成功');
               //清空状态
               this.add_closed_state();
+
+              this.get_assets_detail_top();
             } else if (status == 1) {
               this.$message.error(msg);
             }

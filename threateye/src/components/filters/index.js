@@ -106,23 +106,20 @@ Vue.filter('work_status', function (args) {
     case '':
       str = '未关联工单';
       break;
-    case 0:
+    case '0':
       str = '待分配';
       break;
-    case 1:
+    case '1':
       str = '已分配';
       break;
-    case 2:
+    case '2':
       str = '处置中';
       break;
-    case 3:
+    case '3':
       str = '已处置';
       break;
-    case 4:
+    case '4':
       str = '已取消';
-      break;
-    case 5:
-      str = '未关联工单';
       break;
     default:
       break;

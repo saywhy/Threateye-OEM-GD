@@ -788,7 +788,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
         remind: ['email']
       },
       //攻击阶段分布
@@ -1470,7 +1470,7 @@ export default {
           remarks: this.task_params.textarea,
           risk_asset: this.task_params.multiple,
           remind: this.task_params.notice,
-          type:'asset'
+          type: 'asset'
         })
         .then((resp) => {
           this.handle.save = false;
@@ -1504,7 +1504,7 @@ export default {
           remarks: this.task_params.textarea,
           risk_asset: this.task_params.multiple,
           remind: this.task_params.notice,
-          type:'asset'
+          type: 'asset'
         })
         .then((resp) => {
           this.handle.save = false;
@@ -1582,7 +1582,7 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
         remind: ['email']
       };
     },
@@ -1609,9 +1609,9 @@ export default {
 
       if (multipe.length == 0) {
         this.$message({ message: '请选择要添加的工单！', type: 'warning' });
-      } else if(multipe.length > 1){
+      } else if (multipe.length > 1) {
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
-      }else{
+      } else {
         console.log('******************')
         this.add_params.id = multipe[0].id;
         this.add_params.name = multipe[0].name;
@@ -1622,7 +1622,7 @@ export default {
 
         this.add_params.old_as = JSON.parse(multipe[0].risk_asset);
         //console.log(this.add_params);
-        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+        this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)];

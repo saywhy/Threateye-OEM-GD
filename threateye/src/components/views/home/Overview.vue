@@ -542,7 +542,7 @@ export default {
           this.equipment.echart_array.push(data_item1);
         });
       }
-      // 一个引擎或者一个引擎+探针
+      // 一个引擎或者一个引擎/探针
       if (this.equipment.engine.length != 0) {
         var data_item2 = {
           name: '引擎',
@@ -575,8 +575,8 @@ export default {
         this.equipment.echart_array.push(data_item2);
       } else if (this.equipment.engine_probe.length != 0) {
         var data_item3 = {
-          name: '引擎+探针',
-          names: '引擎+探针',
+          name: '引擎/探针',
+          names: '引擎/探针',
           dev_name: this.equipment.engine_probe[0].name,
           dev_ip: this.equipment.engine_probe[0].ip,
           status: this.equipment.engine_probe[0].status,
@@ -593,7 +593,7 @@ export default {
                 color: '#666',
                 align: 'center',
               },
-              formatter: '引擎+探针'
+              formatter: '引擎/探针'
             }
           },
           itemStyle: {
@@ -653,7 +653,7 @@ export default {
               this.equipment.links_array.push(obj)
             }
           })
-        } else if (element.names == '引擎+探针') {
+        } else if (element.names == '引擎/探针') {
           this.equipment.echart_array.forEach(item => {
             var obj = {
               source: '',
@@ -661,7 +661,7 @@ export default {
             }
             if (item.names == '探针' || item.names == '沙箱') {
               obj.source = item.name
-              obj.target = '引擎+探针'
+              obj.target = '引擎/探针'
               this.equipment.links_array.push(obj)
             }
           })

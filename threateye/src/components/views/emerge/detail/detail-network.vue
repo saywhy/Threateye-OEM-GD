@@ -468,7 +468,7 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="告警等级">
+            <el-table-column label="威胁等级">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
@@ -520,7 +520,7 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="告警等级">
+            <el-table-column label="威胁等级">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">

@@ -105,10 +105,10 @@ export default {
               color: '#0070ff'
             },
             dataBackground:{
-              areaStyle:{
+             /* areaStyle:{
                 color:'blue'
               },
-              fillerColor:'red'
+              fillerColor:'red'*/
             }
           }
         ],

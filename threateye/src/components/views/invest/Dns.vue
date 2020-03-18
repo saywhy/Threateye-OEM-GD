@@ -53,6 +53,7 @@
               </el-table-column>
               <el-table-column prop="timestamp"
                                label="时间"
+                               width="320"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="dns_ip"

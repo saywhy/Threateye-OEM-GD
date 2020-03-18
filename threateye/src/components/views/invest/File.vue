@@ -48,7 +48,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="timestamp"
-                               width="150"
+                               width="320"
                                label="时间"
                                show-overflow-tooltip>
               </el-table-column>

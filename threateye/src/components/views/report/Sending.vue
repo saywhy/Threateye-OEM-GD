@@ -29,7 +29,7 @@
           <el-col :span="21">
             <div class="r_radio">
               <el-radio v-model="send_config.cycle"
-                        label="dayly"
+                        label="daily"
                         class="r_radio_item">每日</el-radio>
               <el-radio v-model="send_config.cycle"
                         label="weekly"
@@ -98,7 +98,7 @@ export default {
   data () {
     return {
       send_config: {
-        cycle: "",
+        cycle: "daily",
         receiver: [],
         receiver_list: [],
         report_type: '',

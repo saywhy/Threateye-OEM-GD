@@ -1451,6 +1451,9 @@ export default {
         case 'alert':
           workorder_list = '/yiiapi/alert/workorder-list'
           break;
+        case 'asset':
+          workorder_list = '/yiiapi/asset/workorder-list'
+          break;
         case 'lateral':
           workorder_list = '/yiiapi/horizontalthreat/workorder-list'
           break;
@@ -1543,6 +1546,9 @@ export default {
           case 'alert':
             add_workorder = '/yiiapi/alert/add-workorder'
             break;
+          case 'asset':
+            add_workorder = '/yiiapi/asset/add-workorder'
+            break;
           case 'lateral':
             add_workorder = '/yiiapi/horizontalthreat/add-workorder'
             break;
@@ -1616,6 +1622,9 @@ export default {
         case 'alert':
           url = '/yiiapi/alert/alert-details'
           break;
+        case 'asset':
+          url = '/yiiapi/asset/alert-details'
+          break;
         case 'lateral':
           url = '/yiiapi/horizontalthreat/alert-details'
           break;
@@ -1669,6 +1678,9 @@ export default {
           switch (this.$route.query.type) {
             case 'alert':
               workorders = '/yiiapi/alert/workorders'
+              break;
+            case 'asset':
+              workorders = '/yiiapi/asset/workorders'
               break;
             case 'lateral':
               workorders = '/yiiapi/horizontalthreat/workorders'
@@ -2391,6 +2403,9 @@ export default {
           case 'alert':
             window_open = '/yiiapi/alert/get-file?md5='
             break;
+          case 'asset':
+            window_open = '/yiiapi/asset/get-file?md5='
+            break;
           case 'lateral':
             window_open = '/yiiapi/horizontalthreat/get-file?md5='
             break;
@@ -2415,6 +2430,9 @@ export default {
       switch (this.$route.query.type) {
         case 'alert':
           new_list = '/yiiapi/alert/get-same-indicator-alert'
+          break;
+        case 'asset':
+          new_list = '/yiiapi/asset/get-same-indicator-alert'
           break;
         case 'lateral':
           new_list = '/yiiapi/horizontalthreat/get-same-indicator-alert'
@@ -2463,6 +2481,9 @@ export default {
       switch (this.$route.query.type) {
         case 'alert':
           new_list = '/yiiapi/alert/get-same-indicator-alert'
+          break;
+        case 'asset':
+          new_list = '/yiiapi/asset/get-same-indicator-alert'
           break;
         case 'lateral':
           new_list = '/yiiapi/horizontalthreat/get-same-indicator-alert'
@@ -2515,6 +2536,9 @@ export default {
       switch (this.$route.query.type) {
         case 'alert':
           alarm = '/yiiapi/alert/do-alarm'
+          break;
+        case 'asset':
+          alarm = '/yiiapi/asset/do-alarm'
           break;
         case 'lateral':
           alarm = '/yiiapi/horizontalthreat/do-alarm'
@@ -2592,6 +2616,9 @@ export default {
       switch (this.$route.query.type) {
         case 'alert':
           label = '/yiiapi/alert/label-edit'
+          break;
+        case 'asset':
+          label = '/yiiapi/asset/label-edit'
           break;
         case 'lateral':
           label = '/yiiapi/horizontalthreat/label-edit'
@@ -2689,6 +2716,9 @@ export default {
             case 'alert':
               join = '/yiiapi/alert/join-external-dynamics'
               break;
+            case 'asset':
+              join = '/yiiapi/asset/join-external-dynamics'
+              break;
             case 'lateral':
               join = '/yiiapi/horizontalthreat/join-external-dynamics'
               break;
@@ -2763,6 +2793,9 @@ export default {
           switch (this.$route.query.type) {
             case 'alert':
               join = '/yiiapi/alert/join-external-dynamics'
+              break;
+            case 'asset':
+              join = '/yiiapi/asset/join-external-dynamics'
               break;
             case 'lateral':
               join = '/yiiapi/horizontalthreat/join-external-dynamics'
@@ -2912,6 +2945,9 @@ export default {
         case 'alert':
           workorder_list = '/yiiapi/alert/workorder-list'
           break;
+        case 'asset':
+          workorder_list = '/yiiapi/asset/workorder-list'
+          break;
         case 'lateral':
           workorder_list = '/yiiapi/horizontalthreat/workorder-list'
           break;
@@ -3000,6 +3036,9 @@ export default {
       switch (this.$route.query.type) {
         case 'alert':
           add_workorder = '/yiiapi/alert/add-workorder'
+          break;
+        case 'asset':
+          add_workorder = '/yiiapi/asset/add-workorder'
           break;
         case 'lateral':
           add_workorder = '/yiiapi/horizontalthreat/add-workorder'
@@ -3138,6 +3177,9 @@ export default {
         case 'alert':
           distribution_workorder = '/yiiapi/alert/distribution-workorder'
           break;
+        case 'asset':
+          distribution_workorder = '/yiiapi/asset/distribution-workorder'
+          break;
         case 'lateral':
           distribution_workorder = '/yiiapi/horizontalthreat/distribution-workorder'
           break;
@@ -3194,6 +3236,9 @@ export default {
       switch (this.$route.query.type) {
         case 'alert':
           add_workorder = '/yiiapi/alert/add-workorder'
+          break;
+        case 'asset':
+          add_workorder = '/yiiapi/asset/add-workorder'
           break;
         case 'lateral':
           add_workorder = '/yiiapi/horizontalthreat/add-workorder'

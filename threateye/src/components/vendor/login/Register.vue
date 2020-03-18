@@ -8,7 +8,7 @@
              :model="registerForm"
              label-width="0">
       <!--用户名-->
-      <el-form-item prop="registername">
+      <el-form-item prop="username">
         <label class="view-label">账户名称</label>
         <el-input class="view-input"
                   @keyup.enter.native="handleLogin"
@@ -103,7 +103,7 @@ export default {
         // password: '!@#QWEasd123'
       },
       registerRules: {
-        registername: [
+        username: [
           { required: true, message: '用户名不能为空', trigger: 'blur' },
           /*{ min: 2, max: 16, message: '用户名长度为2~16个字符', trigger: 'blur' },*/
           /*{ required: true, trigger: 'blur', validator: validateUsername }*/
@@ -133,10 +133,7 @@ export default {
 
       console.log('注册')
 
-     /* let registerForm = {
-        username: this.registerForm.registername,
-        password: this.registerForm.password
-      };*/
+
 
       this.$refs.registerForm.validate(valid => {
         if (valid) {

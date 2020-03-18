@@ -77,7 +77,7 @@
     </el-row>
 
     <!-- 修改密码弹窗 -->
-    <el-dialog class="pop_box_password pop_box"
+    <el-dialog class="pop_box_password"
                :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="pass_state">
@@ -120,15 +120,6 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title">部门</span>
-          </p>
-          <el-input class="select_box"
-                    placeholder="请输入部门"
-                    v-model="user_edit.department"
-                    clearable></el-input>
-        </div>
-        <div class="content_item">
-          <p>
             <span class="title"><span class="it_m">*</span>邮箱</span>
           </p>
           <el-input class="select_box"
@@ -143,6 +134,15 @@
           <el-input class="select_box"
                     placeholder="请输入手机号"
                     v-model="user_edit.mobile"
+                    clearable></el-input>
+        </div>
+        <div class="content_item">
+          <p>
+            <span class="title">部门</span>
+          </p>
+          <el-input class="select_box"
+                    placeholder="请输入部门"
+                    v-model="user_edit.department"
                     clearable></el-input>
         </div>
       </div>
@@ -576,6 +576,10 @@ export default {
     .el-dialog {
       background: #ffffff;
       border-radius: 4px;
+      position: fixed;
+      // top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
       .el-dialog__header {
         display: none;
       }
@@ -647,19 +651,4 @@ export default {
     }
   }
 }
-</style>
-<style scoped lang="less">
-  #Nav{
-    /deep/
-    .pop_box {
-      .el-dialog {
-        background: #FFFFFF;
-        border-radius: 4px;
-        position: fixed;
-        // top: 200px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    }
-  }
 </style>

@@ -116,6 +116,7 @@
     margin-bottom: 0;
     .invest{
       position: relative;
+      min-height: 850px;
       .h_count{
         position: absolute;
         color: #fff;

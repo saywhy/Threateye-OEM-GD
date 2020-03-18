@@ -132,9 +132,6 @@ export default {
     handleLogin () {
 
       console.log('注册')
-
-
-
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('LoginByUsername', this.registerForm)

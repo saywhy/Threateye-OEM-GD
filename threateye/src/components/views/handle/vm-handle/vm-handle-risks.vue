@@ -739,8 +739,10 @@ export default {
     },
     //時間切換
     changeTime (data) {
-      this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
-      this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
+      if(data){
+        this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
+      }
     },
     //搜索按鈕點擊事件
     submitClick () {

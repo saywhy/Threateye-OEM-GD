@@ -84,7 +84,7 @@ export default {
 .vm_emerge_picker {
   width: 400px !important;
   /deep/ .el-range-input {
-    width: auto;
+    /*width: auto;*/
     background-color: #f8f8f8;
   }
   /deep/ .el-range-separator {

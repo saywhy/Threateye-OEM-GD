@@ -9,15 +9,18 @@
 
     <div class="login-box">
       <div class="login-main">
-        <h2 class="l-title">登录</h2>
-        <User></User>
+        <h2 class="l-title">{{name}}</h2>
+        <User v-if="stu"></User>
+        <Register v-if="!stu"></Register>
       </div>
     </div>
+    <p class="ty_copyright">©虎特信息科技（上海）有限公司  版权所有</p>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import User from './User'
+  import Register from './Register'
   export default {
     name: 'Login',
     data() {
@@ -25,16 +28,45 @@
         activeName: 'user',
         website:{
           title: 'nx-admin',
-          logo: 'N',
+         /* logo: 'N',
           author: 'BY nxmin',
           whiteList: ['/login', '/404', '/401', '/lock'],
-          lockPage: '/lock'
-        }
+          lockPage: '/lock'*/
+        },
+        name:'登录',
+        stu:true
+      }
+    },
+    created(){
+      this.register();
+    },
+    methods:{
+      register(){
+        this.$axios.post('/yiiapi/site/login')
+          .then(resp => {
+
+            console.log(resp)
+        //  let datas = resp.data;
+
+            let {status, msg} = resp.data;
+
+            if(status == 207){
+              this.name = '注册';
+              this.stu = false;
+            }else {
+              this.name = '登录';
+              this.stu = true;
+            }
+        }).catch(error => {
+          console.log(error);
+        })
       }
     },
     components:{
-      User
-    }
+      User,
+      Register
+    },
+
   }
 </script>
 
@@ -115,6 +147,17 @@
           line-height: 48px;
         }
       }
+    }
+    .ty_copyright{
+      position: fixed;
+      width: 100%;
+      height: 60px;
+      line-height: 50px;
+      bottom: 0;
+      left: 0;
+      font-family: PingFangSC-Regular;
+      font-size: 16px;
+      color: #FFFFFF;
     }
   }
 </style>

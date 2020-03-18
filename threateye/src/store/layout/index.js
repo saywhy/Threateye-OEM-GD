@@ -70,6 +70,8 @@ export default {
           "login-button": ""
         }).then(resp => {
 
+          console.log(resp)
+
           let datas = resp.data;
 
           console.log(datas)

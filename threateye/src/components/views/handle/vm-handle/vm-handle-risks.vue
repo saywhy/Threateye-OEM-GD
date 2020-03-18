@@ -769,7 +769,6 @@ export default {
       // outside
       // outreath
       this.$router.push({ path: "/detail/network", query: { detail: val.id, type: this.$router.history.current.name } });
-
     },
 
     /***********************************以下是弹窗部分****************************************/

@@ -4,12 +4,13 @@
     <vm-handle-tabs :data_top="data_top"
                     v-if="data_top_show"></vm-handle-tabs>
     <!--全部资产-->
+    {{assets_all.tags}}
     <div class="assets_all">
       <el-row class="assets_all_list">
         <h3 class="title">全部资产</h3>
         <div class="all_list">
-          <el-tag v-for="tag in assets_all.tags"
-                  :key="tag.name"
+          <el-tag v-for="(tag,$index) in assets_all.tags"
+                  :key="$index"
                   closable
                   size="small"
                   type=""
@@ -499,7 +500,6 @@
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
-                      @current-change="clickChange"
                       @selection-change="handle_sel_table_add_works">
               <el-table-column label="选择"
                                width="40"></el-table-column>
@@ -726,10 +726,6 @@ export default {
 
   },
   methods: {
-    clickChange(item){
-      console.log(item)
-      this.tableRadio = item
-    },
     //资产頂部
     get_list_top () {
       this.$axios.get('/yiiapi/alert/risk-asset-top')
@@ -856,10 +852,9 @@ export default {
 
     //全部资产删除标签事件
     deleteAllAssets (item) {
-
-      this.assets_all.base[item.index].value[item.idx].flag = false;
       let tags = this.assets_all.tags;
-      const index = tags.findIndex(item => item.name === item.name);
+      this.assets_all.base[item.index].value[item.idx].flag = false;
+      let index = tags.findIndex(x => x.name == item.name);
       this.assets_all.tags.splice(index, 1);
     },
     //*******************************需要修改

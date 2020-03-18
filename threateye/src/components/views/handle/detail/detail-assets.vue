@@ -295,7 +295,8 @@
         </div>
         <div style="margin-top:12px;"
              v-if="notes">
-          <span>注：本处只提供了本资产一个告警的处置建议，请参考下列告警详情获取所有告警的处置建议。</span>
+          <span class="suggest_bom_title"
+                style="color:#ff5f5c">注：本处只提供了本资产一个告警的处置建议，请参考下列告警详情获取所有告警的处置建议。</span>
         </div>
       </div>
     </div>

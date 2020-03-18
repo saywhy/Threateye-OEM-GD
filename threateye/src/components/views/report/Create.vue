@@ -592,6 +592,8 @@ export default {
       this.report.name = ''
       this.report.type = 'doc'
       this.report.type = 'doc'
+      this.report.start_time = ''
+      this.report.end_time = ''
     },
 
     // 获取列表

@@ -165,6 +165,8 @@ export default {
       this.data_search.flow_size = ''
       this.data_search.flow_duration = ''
       this.data_search.host_ip = '';
+      this.data_search.start_time = '';
+      this.data_search.end_time = '';
       $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载

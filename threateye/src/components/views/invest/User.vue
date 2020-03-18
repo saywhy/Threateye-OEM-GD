@@ -146,6 +146,8 @@ export default {
     reset () {
       this.user_search.username = ''
       this.user_search.host_ip = ''
+      this.user_search.start_time = ''
+      this.user_search.end_time = ''
       $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载

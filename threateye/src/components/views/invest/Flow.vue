@@ -169,6 +169,8 @@ export default {
     reset () {
       this.flow_search.direction = '0'
       this.flow_search.host_ip = ''
+      this.flow_search.start_time = ''
+      this.flow_search.end_time = ''
       $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载

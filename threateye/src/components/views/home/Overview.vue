@@ -780,7 +780,7 @@ export default {
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: "10%",
+          top: "15%",
           left: '2%',
           right: "5%",
           bottom: "20%",
@@ -842,7 +842,7 @@ export default {
           },
           data: this.equipment_detail.statistics_time,
         },
-        yAxis: {
+        yAxis: [{
           splitLine: {
             show: true,
             lineStyle: {
@@ -858,6 +858,9 @@ export default {
             }
           },
           axisLabel: {
+            formatter: function (val) {
+              return val + '%';
+            },
             textStyle: {
               color: "#666666"
             }
@@ -865,7 +868,8 @@ export default {
           axisTick: {
             show: false
           }
-        },
+        }, {
+        }],
         color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
         series: [
           {
@@ -970,7 +974,7 @@ export default {
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: "10%",
+          top: "15%",
           left: '2%',
           right: "5%",
           bottom: "20%",
@@ -1031,7 +1035,11 @@ export default {
           },
           data: this.equipment_detail.statistics_time
         },
-        yAxis: {
+        yAxis: [{
+          name: 'Mbps',
+          nameTextStyle: {
+            color: '#666'
+          },
           splitLine: {
             show: true,
             lineStyle: {
@@ -1054,7 +1062,7 @@ export default {
           axisTick: {
             show: false
           }
-        },
+        }],
         series: [
           {
             name: "流量",

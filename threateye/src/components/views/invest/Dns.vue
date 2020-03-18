@@ -181,7 +181,8 @@ export default {
       this.dns_search.dns_ip = ''
       this.dns_search.domain = ''
       this.dns_search.ttl = ''
-
+      this.dns_search.start_time = ''
+      this.dns_search.end_time = ''
       $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载

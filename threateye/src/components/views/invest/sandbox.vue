@@ -168,6 +168,13 @@ export default {
                   type: 'success',
                 }
               );
+            } else {
+              this.$message(
+                {
+                  message: response.data.msg,
+                  type: 'error',
+                }
+              );
             }
           })
           .catch(error => {

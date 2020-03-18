@@ -52,10 +52,11 @@ Vue.filter('degree', function (args) {
 
 //失陷确定性
 Vue.filter('certainty', function (args) {
+  args += ''
   let str = '';
-  if (args == 0) {
+  if (args == '0') {
     str = '';
-  } else if (args == 1) {
+  } else if (args == '1') {
     str = '已失陷';
   }
   return str;
@@ -63,16 +64,17 @@ Vue.filter('certainty', function (args) {
 
 //处理状态(处置-资产维度)
 Vue.filter('risk_status', function (args) {
+  args += ''
   let str = '';
-  if (args == 1) {
+  if (args == '1') {
     str = '待处置';
-  } else if (args == 2) {
+  } else if (args == '2') {
     str = '处置中';
-  } else if (args == 3) {
+  } else if (args == '3') {
     str = '已处置'
-  } else if (args == 4) {
+  } else if (args == '4') {
     str = '已忽略';
-  } else if (args == 5) {
+  } else if (args == '5') {
     str = '误报';
   }
   return str;
@@ -80,18 +82,19 @@ Vue.filter('risk_status', function (args) {
 
 //处理状态(告警)
 Vue.filter('alert_status', function (args) {
+  args += ''
   let str = '';
-  if (args == 0) {
+  if (args == '0') {
     str = '新告警';
-  } else if (args == 1) {
+  } else if (args == '1') {
     str = '待处置';
-  } else if (args == 2) {
+  } else if (args == '2') {
     str = '处置中';
-  } else if (args == 3) {
+  } else if (args == '3') {
     str = '已处置';
-  } else if (args == 4) {
+  } else if (args == '4') {
     str = '已忽略';
-  } else if (args == 5) {
+  } else if (args == '5') {
     str = '误报';
   }
   return str;
@@ -101,6 +104,7 @@ Vue.filter('alert_status', function (args) {
 //处理状态(处置-工单中心)
 Vue.filter('work_status', function (args) {
   console.log(args);
+  args += ''
   let str = '';
   switch (args) {
     case '':

@@ -18,11 +18,14 @@ import moment from "moment"
 });*/
 
 Vue.filter('time', function (value) {
-  value = value.toString();
-  if (value.length == 10) {
-    value = value * 1000;
+  if (value) {
+    value = value.toString();
+    if (value.length == 10) {
+      value = value * 1000;
+    }
+    return moment(value).format('YYYY-MM-DD HH:mm:ss')
   }
-  return moment(value).format('YYYY-MM-DD HH:mm:ss')
+
 });
 
 Vue.filter('degree_sino', function (args) {

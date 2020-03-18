@@ -301,6 +301,7 @@ export default {
     reset () {
       this.flow_search.direction = '0'
       this.flow_search.host_ip = ''
+      //$(document.querySelector('.el-button--text')).trigger('click');
     },
   },
 }

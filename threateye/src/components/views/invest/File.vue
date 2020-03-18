@@ -163,6 +163,7 @@ export default {
       this.file_search.file_name = ''
       this.file_search.md5 = ''
       this.file_search.host_ip = ''
+      $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载
     download () {

@@ -486,7 +486,6 @@
 <script type="text/ecmascript-6">
 import vmEmergeLine from "./vm-emerge/vm-emerge-line";
 import vmEmergePicker from "@/components/common/vm-emerge-picker";
-import moment from 'moment'
 export default {
   name: "Network",
   components: {
@@ -722,6 +721,7 @@ export default {
         startTime: '',
         endTime: ''
       };
+      $(document.querySelector('.el-button--text')).trigger('click');
       this.get_list_risk();
     },
 

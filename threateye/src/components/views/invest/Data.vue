@@ -164,7 +164,8 @@ export default {
     reset () {
       this.data_search.flow_size = ''
       this.data_search.flow_duration = ''
-      this.data_search.host_ip = ''
+      this.data_search.host_ip = '';
+      $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载
     download () {

@@ -345,6 +345,7 @@ export default {
     // 重置
     reset () {
       this.host_search.host_ip = ''
+      $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载
     download () {

@@ -181,6 +181,8 @@ export default {
       this.dns_search.dns_ip = ''
       this.dns_search.domain = ''
       this.dns_search.ttl = ''
+
+      $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载
     download () {

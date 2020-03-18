@@ -183,6 +183,7 @@ export default {
       this.url_search.dst_ip = ''
       this.url_search.src_port = ''
       this.url_search.dst_port = ''
+      $(document.querySelector('.el-button--text')).trigger('click');
     },
     // 下载
     download () {

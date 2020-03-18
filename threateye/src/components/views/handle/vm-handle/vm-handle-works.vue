@@ -1153,6 +1153,7 @@ export default {
         startTime: "",
         endTime: ""
       };
+      $(document.querySelector('.el-button--text')).trigger('click');
       this.get_list_works();
     },
 

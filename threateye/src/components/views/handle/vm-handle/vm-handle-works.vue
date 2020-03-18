@@ -1018,7 +1018,7 @@
         this.params = {
           key: "",
           priority: "",
-          status: "params",
+          status: "",
           startTime: "",
           endTime: ""
         };

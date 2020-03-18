@@ -166,11 +166,11 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">工单名称:</span>
-              <span class="item_li_content">{{network_detail.work_name}}</span>
+              <span class="item_li_content">{{network_work_order.work_name}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
-              <span class="item_li_content">{{network_detail.work_order_status | work_status}}</span>
+              <span class="item_li_content">{{network_work_order.work_order_status | work_status}}</span>
             </li>
           </ul>
         </div>
@@ -880,6 +880,10 @@ export default {
   data () {
     return {
       loading: false,
+      network_work_order: {
+        work_name: '',
+        work_order_status: '',
+      },
       attack_stage_list: [
         {
           name: "Initial Access",
@@ -1644,9 +1648,6 @@ export default {
         }
       })
         .then(response => {
-
-
-
           this.loading = false;
           console.log('*************************************')
           console.log(response)
@@ -1654,23 +1655,16 @@ export default {
           attr.push(response.data.data);
           this.table_alerts.tableData = attr;
           console.log('*************************************')
-
           this.network_detail = response.data.data
-
           this.network_detail.attack_stage_cn = ''
-          this.network_detail.work_order_status = ''
           this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
           this.network_detail.dest_label_obj = JSON.parse(this.network_detail.dest_label)
-
           if (!this.network_detail.label) {
             this.network_detail.label_obj = []
           } else {
             this.network_detail.label_obj = JSON.parse(this.network_detail.label)
           }
-
-
           var workorders = ''
-
           var workorders = ''
           // horizontalthreat  横向威胁告警  lateral
           // externalthreat  外部威胁告警  outside
@@ -1703,30 +1697,8 @@ export default {
             .then(response => {
               console.log(response.data);
               this.$nextTick(() => {
-                this.network_detail.work_order_status = response.data.data.work_order_status
-                switch (response.data.data.work_order_status) {
-                  case '':
-                    this.network_detail.work_order_status_cn = '未关联工单'
-                    break;
-                  case '0':
-                    this.network_detail.work_order_status_cn = '待分配'
-                    break;
-                  case '1':
-                    this.network_detail.work_order_status_cn = '已分配'
-                    break;
-                  case '2':
-                    this.network_detail.work_order_status_cn = '处置中'
-                    break;
-                  case '3':
-                    this.network_detail.work_order_status_cn = '已处置'
-                    break;
-                  case '4':
-                    this.network_detail.work_order_status_cn = '已取消'
-                    break;
-                  default:
-                    break;
-                }
-                this.network_detail.work_name = response.data.data.name
+                this.network_work_order.work_order_status = response.data.data.work_order_status
+                this.network_work_order.work_name = response.data.data.work_name
               })
             })
             .catch(error => {
@@ -2891,7 +2863,7 @@ export default {
         this.new_worksheets_data.table_operator.eachPage = 5
         this.new_worksheets_data.network_detail = []
         // 存在被创建工单的告警
-        if (this.network_detail.work_order_status != '') {
+        if (this.network_work_order.work_order_status != '') {
           this.$message(
             {
               message: '存在被创建工单的告警',
@@ -2907,31 +2879,6 @@ export default {
         this.open_add_new();
         // 添加到工单，只有告警状态 0 1
         // 告警：0新告警，1待处置，2处置中，3已处置，4已忽略，5误报
-        /* console.log(this.network_detail);
-         if (this.network_detail.status != 1 && this.network_detail.status != 0 && this.network_detail.status != 2) {
-           this.$message(
-             {
-               message: '告警状态为已处置、已忽略、误报的不能添加到工单。',
-               type: 'error',
-             }
-           );
-           return false
-         }
-         // 存在被创建工单的告警
-         if (this.network_detail.work_order_status != '') {
-           this.$message(
-             {
-               message: '存在被创建工单的告警',
-               type: 'error',
-             }
-           );
-           return false
-         }
-         this.worksheets_data.tableRadio = {};
- 
- 
-         this.get_worksheets_list()*/
-
       }
     },
     // 添加到工单

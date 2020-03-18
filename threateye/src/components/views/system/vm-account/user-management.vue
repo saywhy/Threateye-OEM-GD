@@ -124,7 +124,7 @@
             <span class="red">*</span>
           </p>
           <el-input class="select_box"
-                    placeholder="请再次输入密码"
+                    placeholder="请确认密码"
                     v-model="user_add.Re_password"
                     show-password>
           </el-input>

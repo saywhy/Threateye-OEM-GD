@@ -1698,7 +1698,7 @@ export default {
               console.log(response.data);
               this.$nextTick(() => {
                 this.network_work_order.work_order_status = response.data.data.work_order_status
-                this.network_work_order.work_name = response.data.data.work_name
+                this.network_work_order.work_name = response.data.data.name
               })
             })
             .catch(error => {

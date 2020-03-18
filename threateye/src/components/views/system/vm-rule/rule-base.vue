@@ -29,7 +29,7 @@
                @click="open_box">上传更新文件</el-button>
     <el-dialog class="import_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="rule_data.upload_pop">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_upload_box"
@@ -113,13 +113,14 @@ export default {
   activated () { },
   deactivated () { },
   mounted () {
-    // this.timer = setInterval(() => {
     this.get_data();
-    // }, 2000)
+    this.timer = setInterval(() => {
+      this.get_data();
+    }, 2000)
   },
   beforeDestroy () {
     console.log('2222');
-    // clearInterval(this.timer); //关闭
+    clearInterval(this.timer); //关闭
   },
   destroyed () {
     console.log('33333');
@@ -129,12 +130,40 @@ export default {
 
   },
   methods: {
-    get_data () {
-      this.loading = true
+    // 定时更新
+    update_status () {
       this.$axios.get('/yiiapi/rulebase/get-update-status')
         .then(response => {
           console.log(response);
-          this.loading = false
+          if (response.data.status == 0) {
+            this.rule = response.data.data
+            this.rule.forEach(item => {
+              switch (item.status) {
+                case '1':
+                  item.status_cn = '更新中'
+                  break;
+                case '2':
+                  item.status_cn = '成功'
+                  break;
+                case '3':
+                  item.status_cn = '失败'
+                  break;
+                default:
+                  break;
+              }
+            });
+          } else if (response.data.status == 1) {
+
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    get_data () {
+      this.$axios.get('/yiiapi/rulebase/get-update-status')
+        .then(response => {
+          console.log(response);
           if (response.data.status == 0) {
             this.rule = response.data.data
             this.rule.forEach(item => {

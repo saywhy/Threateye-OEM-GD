@@ -54,7 +54,7 @@
         <span class="item_color">(1-5)次</span>
       </div>
       <div class="mid_item">
-        <p class="title item_color">密码长度最登录失败阻断时间：</p>
+        <p class="title item_color">登录失败阻断时间：</p>
         <el-input-number class="input_box"
                          v-model="security_policy.admin_logon_delay_time"
                          :min="1"

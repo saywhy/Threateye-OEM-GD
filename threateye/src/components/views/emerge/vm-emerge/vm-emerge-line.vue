@@ -99,9 +99,16 @@ export default {
           },
           {
             type: 'slider',
-            fillerColor:'rgba(0,112,255,.16)',
+            backgroundColor:'#fff',
+            fillerColor:'rgba(0,112,255,.1)',
             handleStyle:{
               color: '#0070ff'
+            },
+            dataBackground:{
+              areaStyle:{
+                color:'blue'
+              },
+              fillerColor:'red'
             }
           }
         ],

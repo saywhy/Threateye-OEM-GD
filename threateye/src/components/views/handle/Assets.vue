@@ -4,7 +4,6 @@
     <vm-handle-tabs :data_top="data_top"
                     v-if="data_top_show"></vm-handle-tabs>
     <!--全部资产-->
-    {{assets_all.tags}}
     <div class="assets_all">
       <el-row class="assets_all_list">
         <h3 class="title">全部资产</h3>

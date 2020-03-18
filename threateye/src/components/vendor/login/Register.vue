@@ -74,12 +74,25 @@ import { isvalidUsername, isvalidPassword } from '@/assets/js/validate'
 export default {
   name: 'UserRegister',
   data () {
+    const validatePassword = (rule, value, callback) => {
+      /*if (!isvalidPassword(value)) {
+        callback(new Error('密码不正确，请重新输入'))
+      } else {
+        callback()
+      }*/
+      var reg = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9])');
+      if(!reg.test(value)){
+        callback(new Error('密码包含大写、小写、数字和特殊字符其中三项'))
+      }else {
+        callback();
+      }
+    }
     const validateRePassword = (rule, value, callback) => {
       console.log(this.registerForm.password)
       if (value != this.registerForm.password) {
         callback(new Error('两次输入的密码不一致'))
       } else {
-        callback()
+        callback();
       }
     }
     return {
@@ -97,8 +110,8 @@ export default {
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
-          /*{ min: 6, message: '密码长度最少为6位', trigger: 'blur' },*/
-          /*{ required: true, trigger: 'blur', validator: validatePassword }*/
+          { min: 8, max: 30, message: '密码长度为8-30位', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: validatePassword }
         ],
         repassword: [
           { required: true, message: '确认密码不能为空', trigger: 'blur' },
@@ -119,14 +132,20 @@ export default {
     handleLogin () {
 
       console.log('注册')
+
+      let registerForm = {
+        username: this.registerForm.registername,
+        password: this.registerForm.password
+      };
+
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch('LoginByUsername', this.loginForm)
+          this.$store.dispatch('LoginByUsername', registerForm)
           .then((resp) => {
             //返回成功跳转
             if (resp[0]) {
-              this.$message.success('创建管理员成功，欢迎首次登录！');
-              this.$router.push('/login');//登录成功之后重定向到首页
+              this.$message.success('创建管理员成功，欢迎首次登录成功！');
+              this.$router.push('/', () => { });//登录成功之后重定向到首页
               //失败
             } else {
               this.$message.error(resp[1]);

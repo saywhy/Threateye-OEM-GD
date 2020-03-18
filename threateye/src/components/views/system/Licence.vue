@@ -66,7 +66,7 @@
                            show-overflow-tooltip>
             <template slot-scope="scope"
                       show-overflow-tooltip>
-              {{ scope.row.edition=='1'?'基础版':'高级版'}}
+              {{ scope.row.edition=='1'?'企业版':'高级版'}}
             </template>
           </el-table-column>
           <el-table-column prop="status"

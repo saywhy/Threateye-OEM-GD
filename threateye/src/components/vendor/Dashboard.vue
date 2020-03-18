@@ -18,7 +18,7 @@
         </transition>
       </el-main>
     </el-container>
-    <el-footer>虎特信息科技（上海）有限公司 版权所有</el-footer>
+    <el-footer>©虎特信息科技（上海）有限公司  版权所有</el-footer>
   </el-container>
 </template>
 

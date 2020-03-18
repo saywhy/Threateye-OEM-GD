@@ -12,7 +12,7 @@
         <label class="view-label">账户名称</label>
         <el-input class="view-input"
                   @keyup.enter.native="handleLogin"
-                  v-model="registerForm.registername"
+                  v-model="registerForm.username"
                   auto-complete="off"
                   placeholder="请输入用户名">
           <i slot="prefix"
@@ -97,7 +97,7 @@ export default {
     }
     return {
       registerForm: {
-        registername: '',  //admin
+        username: '',  //admin
         password: '', //Hoohoolab*123
         repassword:'',
         // password: '!@#QWEasd123'
@@ -133,14 +133,14 @@ export default {
 
       console.log('注册')
 
-      let registerForm = {
+     /* let registerForm = {
         username: this.registerForm.registername,
         password: this.registerForm.password
-      };
+      };*/
 
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch('LoginByUsername', registerForm)
+          this.$store.dispatch('LoginByUsername', this.registerForm)
           .then((resp) => {
             //返回成功跳转
             if (resp[0]) {

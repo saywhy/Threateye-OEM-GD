@@ -2589,7 +2589,6 @@ export default {
           let { status, data } = response.data;
           console.log(data);
           console.log(response);
-
           if (status == 0) {
             this.get_data();
             this.$message(

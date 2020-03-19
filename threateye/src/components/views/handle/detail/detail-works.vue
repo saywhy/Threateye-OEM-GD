@@ -310,18 +310,20 @@ export default {
         })
         .then((resp) => {
 
-          console.log(resp.data)
+         // console.log(resp.data)
 
           let { status, data } = resp.data;
 
           if (status == 0) {
 
             //对经办人处理
-            let attr = data.perator.map(x => { return x.perator });
-            data.new_perator = attr.join(',');
+            //let attr = data.perator.map(x => { return x.perator });
+            data.new_perator = data.perator.join(',');
 
             //顶部数据参数
             this.data = data;
+
+            console.log(data)
 
             this.page_show = false;
 
@@ -339,7 +341,7 @@ export default {
               this.table.maxPage = data.assets.maxPage;
               this.table.pageNow = data.assets.pageNow;
 
-              console.log(this.table.tableData)
+              //console.log(this.table.tableData)
             }
 
             if (data.alerts) {

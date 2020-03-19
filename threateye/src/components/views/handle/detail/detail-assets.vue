@@ -124,11 +124,14 @@
         </li>
         <li>
           <span class="title">工单名称：</span>
-          <span class="content">{{assets_top.workorder_name}}</span>
+          <span class="content Goto_workorder"
+                @click="Goto_workorder"
+                v-if="assets_top.new_workorder_name!=''">
+            {{assets_top.new_workorder_name}}</span>
         </li>
         <li>
           <span class="title">工单状态：</span>
-          <span class="content">{{assets_top.workorder_status | work_status}}</span>
+          <span class="content">{{assets_top.new_workorder_status}}</span>
         </li>
       </div>
     </div>
@@ -1225,11 +1228,38 @@ export default {
             data.new_business = data.label.business;
 
             console.log(data)
-
-            if(data.workorder_id == '0'){
-              data.workorder_name = '';
-              data.workorder_status = '';
+            ///
+            if (data.workorder_id == '0') {
+              data.new_workorder_status = '未关联工单';
+              data.new_workorder_name = '';
+            } else {
+              if (data.workorder_status && data.workorder_name) {
+                switch (data.workorder_status += '') {
+                  case '0':
+                    data.new_workorder_status = '待分配'
+                    break;
+                  case '1':
+                    data.new_workorder_status = '已分配';
+                    break;
+                  case '2':
+                    data.new_workorder_status = '处置中';
+                    break;
+                  case '3':
+                    data.new_workorder_status = '已处置';
+                    break;
+                  case '4':
+                    data.new_workorder_status = '已取消';
+                    break;
+                  default:
+                    break;
+                }
+                data.new_workorder_name = data.workorder_name;
+              } else {
+                data.new_workorder_status = '';
+                data.new_workorder_name = '';
+              }
             }
+
 
             this.assets_top = data;
             this.suggest_flag = true;
@@ -1291,7 +1321,11 @@ export default {
       this.get_list_assets_detail();
     },
 
-    /*****************************/
+    //跳转至工单详情
+    Goto_workorder(){
+      this.$router.push({ path: "/detail/works", query: { id: this.assets_top.workorder_id, type: 'asset' } });
+    },
+
     /***********************************以下是弹窗部分****************************************/
     /***********************************以下是弹窗部分****************************************/
 
@@ -1788,6 +1822,10 @@ export default {
           flex: 1;
           font-size: 16px;
           color: #666;
+          &.Goto_workorder {
+            color: #0070ff;
+            cursor: pointer;
+          }
           .tag_btn_box {
             margin: 0 2px;
             display: inline-block;

@@ -132,6 +132,10 @@
               <span class="item_li_title">告警类型:</span>
               <span class="item_li_content">{{network_detail.category}}</span>
             </li>
+            <li class="item_li">
+              <span class="item_li_title">告警类型:</span>
+              <span class="item_li_content">{{network_detail.status | alert_status}}</span>
+            </li>
           </ul>
         </div>
         <div class="detail_base_bottom_item">
@@ -170,7 +174,7 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
-              <span class="item_li_content">{{network_work_order.work_order_status | work_status}}</span>
+              <span class="item_li_content">{{network_work_order.work_order_status}}</span>
             </li>
           </ul>
         </div>
@@ -1665,7 +1669,6 @@ export default {
             this.network_detail.label_obj = JSON.parse(this.network_detail.label)
           }
           var workorders = ''
-          var workorders = ''
           // horizontalthreat  横向威胁告警  lateral
           // externalthreat  外部威胁告警  outside
           // outreachthreat  外联威胁告警  outreath
@@ -1697,8 +1700,38 @@ export default {
             .then(response => {
               console.log(response.data);
               this.$nextTick(() => {
-                this.network_work_order.work_order_status = response.data.data.work_order_status
-                this.network_work_order.work_name = response.data.data.name
+                console.log(response.data);
+                if (response.data.data.workorder_id == '0') {
+                  console.log(213213);
+                  this.network_work_order.work_order_status = '未关联工单'
+                  this.network_work_order.work_name = ''
+                } else {
+                  if (response.data.data.work_order_status && response.data.data.work_name) {
+                    switch (response.data.data.work_order_status += '') {
+                      case '0':
+                        this.network_work_order.work_order_status = '待分配'
+                        break;
+                      case '1':
+                        this.network_work_order.work_order_status = '已分配';
+                        break;
+                      case '2':
+                        this.network_work_order.work_order_status = '处置中';
+                        break;
+                      case '3':
+                        this.network_work_order.work_order_status = '已处置';
+                        break;
+                      case '4':
+                        this.network_work_order.work_order_status = '已取消';
+                        break;
+                      default:
+                        break;
+                    }
+                    this.network_work_order.work_name = response.data.data.work_name
+                  } else {
+                    this.network_work_order.work_order_status = ''
+                    this.network_work_order.work_name = ''
+                  }
+                }
               })
             })
             .catch(error => {

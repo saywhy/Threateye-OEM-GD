@@ -1,5 +1,6 @@
 <template>
-  <div class="handle-assets" v-loading.fullscreen.lock="handle.save"
+  <div class="handle-assets"
+       v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <vm-handle-tabs :data_top="data_top"
                     v-if="data_top_show"></vm-handle-tabs>
@@ -442,7 +443,8 @@
                       {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="失陷确定性" width="100">
+                <el-table-column label="失陷确定性"
+                                 width="100">
                   <template slot-scope="scope">
                     <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                       {{ scope.row.fall_certainty | certainty }}</span>
@@ -708,7 +710,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
         remind: ['email']
       }
     };
@@ -968,7 +970,7 @@ export default {
 
       let selected = this.table.multipleSelection;
       //资产ID处理
-      let asset_ip_group = selected.map(x => { return x.asset_ip; });
+      let asset_ip_group = selected.map(x => { return x.id * 1 });
       //状态设置
       let process = this.process_state;
       let change_status = 0;
@@ -1115,7 +1117,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_assets (val) {
       this.table_assets.multipleSelection = val;
-      let selected = val.map(x => { return x.asset_ip });
+      let selected = val.map(x => { return x.id * 1 });
       this.task_params.multiple = selected;
     },
 
@@ -1128,7 +1130,7 @@ export default {
     prev_task_handle_assign () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.asset_ip});
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       this.handle.save = true;
@@ -1140,7 +1142,7 @@ export default {
           remarks: this.task_params.textarea,
           risk_asset: this.task_params.multiple,
           remind: this.task_params.notice,
-          type:'asset'
+          type: 'asset'
         })
         .then((resp) => {
           this.handle.save = false;
@@ -1162,7 +1164,7 @@ export default {
     prev_task_handle_save () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
-          .map(x => { return x.asset_ip});
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1175,7 +1177,7 @@ export default {
           remarks: this.task_params.textarea,
           risk_asset: this.task_params.multiple,
           remind: this.task_params.notice,
-          type:'asset'
+          type: 'asset'
         })
         .then((resp) => {
           this.handle.save = false;
@@ -1256,8 +1258,8 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[],
-        remind:['email']
+        old_as: [],
+        remind: ['email']
       };
       this.$refs.multipleTable.clearSelection();
     },
@@ -1271,7 +1273,7 @@ export default {
     add_ok_state () {
 
       let selected_attr = this.table.multipleSelection
-        .map(x => { return x.asset_ip });
+        .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
 
       //判断工单列表长度
@@ -1279,9 +1281,9 @@ export default {
 
       if (multipe.length == 0) {
         this.$message({ message: '请选择要添加的工单！', type: 'warning' });
-      } else if(multipe.length > 1){
+      } else if (multipe.length > 1) {
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
-      }else{
+      } else {
         console.log('******************')
         this.add_params.id = multipe[0].id;
         this.add_params.name = multipe[0].name;
@@ -1292,7 +1294,7 @@ export default {
 
         this.add_params.old_as = JSON.parse(multipe[0].risk_asset);
         //console.log(this.add_params);
-        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+        this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)];
@@ -1315,7 +1317,7 @@ export default {
             remind: this.add_params.remind,
             remarks: this.add_params.remarks,
             risk_asset: this.add_params.multiple,
-            type:'asset'
+            type: 'asset'
           })
           .then((resp) => {
             this.handle.save = false;
@@ -2036,10 +2038,9 @@ export default {
       }
     }
   }
-  /deep/
-  .pop_box {
+  /deep/ .pop_box {
     .el-dialog {
-      background: #FFFFFF;
+      background: #ffffff;
       border-radius: 4px;
       position: fixed;
       // top: 200px;

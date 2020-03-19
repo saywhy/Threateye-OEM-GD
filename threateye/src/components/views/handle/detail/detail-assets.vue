@@ -1447,7 +1447,7 @@ export default {
     //tab下第一个table多选
     handle_sel_table_assets (val) {
       this.table_assets.multipleSelection = val;
-      let selected = val.map(x => { return x.asset_ip });
+      let selected = val.map(x => { return x.id * 1 });
       this.task_params.multiple = selected;
     },
 
@@ -1460,7 +1460,7 @@ export default {
     prev_task_handle_assign () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table_assets.tableData
-          .map(x => { return x.asset_ip });
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1495,7 +1495,7 @@ export default {
     prev_task_handle_save () {
       if (this.task_params.multiple.length == 0) {
         let selected = this.table_assets.tableData
-          .map(x => { return x.asset_ip });
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1603,7 +1603,7 @@ export default {
 
       console.log('原table的值')
       let selected_attr = this.table_assets.tableData
-        .map(x => { return x.asset_ip });
+        .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
 
       console.log(this.add_params.multiple)

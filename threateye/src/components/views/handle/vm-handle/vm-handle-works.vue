@@ -1132,7 +1132,7 @@ export default {
     },
 
     changeTime (data) {
-      if(data){
+      if (data) {
         this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
         this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
       } else {
@@ -1486,7 +1486,7 @@ export default {
 
     //新建工单分配
     prev_task_handle_assign () {
-      let multiple_assets = this.table_assets.multipleSelection.map(x => { return x.asset_ip });
+      let multiple_assets = this.table_assets.multipleSelection.map(x => { return x.id * 1 });
       let multiple_alerts = this.table_alerts.multipleSelection.map(x => { return x.id * 1 });
 
       if (this.task_params.type == 'asset') {
@@ -1551,7 +1551,7 @@ export default {
 
     //新建工单保存
     prev_task_handle_save () {
-      let multiple_assets = this.table_assets.multipleSelection.map(x => { return x.asset_ip });
+      let multiple_assets = this.table_assets.multipleSelection.map(x => { return x.id * 1 });
       let multiple_alerts = this.table_alerts.multipleSelection.map(x => { return x.id * 1 });
 
       if (this.task_params.type == 'asset') {
@@ -2073,7 +2073,7 @@ export default {
   }
   .common_priority {
     height: 60px;
-    line-height: 56px;
+    line-height: 60px;
     .common_btn_priority {
       height: 60px;
       .item_list {
@@ -2089,7 +2089,7 @@ export default {
         /deep/ .el-tag {
           height: 24px;
           width: 72px;
-          line-height: 22px;
+          line-height: 24px;
           border-radius: 0;
           border-width: 0;
           position: relative;

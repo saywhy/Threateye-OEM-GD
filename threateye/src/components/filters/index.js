@@ -106,7 +106,7 @@ Vue.filter('alert_status', function (args) {
 
 //处理状态(处置-工单中心)
 Vue.filter('work_status', function (args) {
-  console.log(args);
+  //console.log(args);
   args += ''
   let str = '';
   switch (args) {

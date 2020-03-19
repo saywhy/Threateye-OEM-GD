@@ -15,7 +15,8 @@
         </div>
         <div class="top_right">
           <el-row class="common_btn common_btn_124">
-            <el-col :span="24" class="common_btn_list">
+            <el-col :span="24"
+                    class="common_btn_list">
               <el-dropdown @command="change_state"
                            trigger="click"
                            placement='bottom-start'
@@ -2923,16 +2924,13 @@ export default {
         this.new_worksheets_data.table_operator.eachPage = 5
         this.new_worksheets_data.network_detail = []
         // 存在被创建工单的告警
-        if (this.network_work_order.work_order_status != '') {
-          this.$message(
-            {
-              message: '存在被创建工单的告警',
-              type: 'error',
-            }
-          );
+        console.log(this.network_detail.status);
+
+        // this.table_alerts.tableData[0].status
+        if (this.network_detail.status == '3' || this.network_detail.status == '4' || this.network_detail.status == '5') {
+          this.$message({ message: '告警状态为已处置、已忽略、误报的不能新建工单。', type: 'warning' });
           return false
         }
-
         this.get_user_list();
       } else if (command == "2") {
 
@@ -4296,9 +4294,9 @@ export default {
 </style>
 
 <style lang="less">
-  body{
-    > ul.dropdown_ul_box_124{
-      width: 128px!important;
-    }
+body {
+  > ul.dropdown_ul_box_124 {
+    width: 128px !important;
   }
+}
 </style>

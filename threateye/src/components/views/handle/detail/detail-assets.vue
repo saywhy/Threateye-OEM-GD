@@ -583,10 +583,20 @@
                                  label="资产组"
                                  min-width="120"
                                  show-overflow-tooltip></el-table-column>
-                <el-table-column prop="category_group"
-                                 min-width="140"
+                <el-table-column min-width="140"
                                  label="关联威胁"
-                                 show-overflow-tooltip></el-table-column>
+                                 show-overflow-tooltip>
+                  <template slot-scope="scope">
+                <span class="btn_tag_box"
+                      v-if="item!=''"
+                      v-for="item in scope.row.category">
+                  <el-button type="primary"
+                             class="btn_tag">
+                    {{item}}
+                  </el-button>
+                </span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="威胁等级"
                                  width="100">
                   <template slot-scope="scope">
@@ -1192,8 +1202,8 @@ export default {
     this.detail.asset_ip = asset_ip;
     this.detail.status = status;
     this.detail.id = id;
-   // this.get_list_assets_detail();
-   // this.get_assets_detail_top();
+    this.get_list_assets_detail();
+    this.get_assets_detail_top();
   },
   methods: {
     //获取资产详情顶部
@@ -1758,6 +1768,17 @@ export default {
 @import '../../../../assets/css/less/common-table-pattern.less';
 .detail-assets {
   text-align: left;
+  .btn_tag_box {
+    .btn_tag {
+      margin: 2px;
+      background: #5389e0;
+      border-radius: 2px;
+      min-height: 20px;
+      font-size: 10px;
+      color: #ffffff;
+      padding: 2px 5px;
+    }
+  }
   .detail_base_top {
     padding: 0 56px;
     height: 62px;

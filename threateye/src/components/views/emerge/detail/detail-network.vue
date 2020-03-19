@@ -14,43 +14,47 @@
                alt="">
         </div>
         <div class="top_right">
-          <el-dropdown @command="change_state"
-                       trigger="click"
-                       placement='bottom-start'
-                       size='148'>
-            <el-button type="primary"
-                       class="change_btn">
-              <span>状态变更</span>
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown"
-                              class="dropdown_ul_box_detail">
-              <el-dropdown-item command='2'
-                                class="select_item">处置中</el-dropdown-item>
-              <el-dropdown-item command="3"
-                                class="select_item">已处置</el-dropdown-item>
-              <el-dropdown-item command='4'
-                                class="select_item">已忽略</el-dropdown-item>
-              <el-dropdown-item command="5"
-                                class="select_item">误报</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <el-dropdown @command="change_task"
-                       placement='bottom-start'
-                       trigger="click">
-            <el-button type="primary"
-                       class="change_btn">
-              <span>工单任务</span>
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown"
-                              class="dropdown_ul_box_detail">
-              <el-dropdown-item command="1">新建工单</el-dropdown-item>
-              <el-dropdown-item command="2">添加到工单</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <el-button class="edit_btn"
-                     @click="edit_tag_box">编辑标签</el-button>
+          <el-row class="common_btn common_btn_124">
+            <el-col :span="24" class="common_btn_list">
+              <el-dropdown @command="change_state"
+                           trigger="click"
+                           placement='bottom-start'
+                           size='148'>
+                <el-button type="primary"
+                           class="change_btn">
+                  <span>状态变更</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown"
+                                  class="dropdown_ul_box_124">
+                  <el-dropdown-item command='2'
+                                    class="select_item">处置中</el-dropdown-item>
+                  <el-dropdown-item command="3"
+                                    class="select_item">已处置</el-dropdown-item>
+                  <el-dropdown-item command='4'
+                                    class="select_item">已忽略</el-dropdown-item>
+                  <el-dropdown-item command="5"
+                                    class="select_item">误报</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+              <el-dropdown @command="change_task"
+                           placement='bottom-start'
+                           trigger="click">
+                <el-button type="primary"
+                           class="change_btn">
+                  <span>工单任务</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown"
+                                  class="dropdown_ul_box_124">
+                  <el-dropdown-item command="1">新建工单</el-dropdown-item>
+                  <el-dropdown-item command="2">添加到工单</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+              <el-button class="edit_btn"
+                         @click="edit_tag_box">编辑标签</el-button>
+            </el-col>
+          </el-row>
         </div>
       </div>
       <div class="detail_base_bottom">
@@ -3301,6 +3305,8 @@ export default {
 <style lang="less">
 @import '../../../../assets/css/less/reset_css/reset_tab.less';
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
+
+@import '../../../../assets/css/less/common-dropdown.less';
 .reset_table {
   .el-table__header-wrapper {
     .el-table__header {
@@ -3834,7 +3840,7 @@ export default {
       }
       .top_right {
         float: right;
-        margin-top: 14px;
+        /*margin-top: 14px;*/
         // line-height: 62px;
         .change_btn {
           height: 34px;
@@ -4287,4 +4293,12 @@ export default {
     }
   }
 }
+</style>
+
+<style lang="less">
+  body{
+    > ul.dropdown_ul_box_124{
+      width: 128px!important;
+    }
+  }
 </style>

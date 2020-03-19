@@ -132,7 +132,7 @@
               @row-click="detail_click">
       <el-table-column label="全选"
                        prop="type"
-                       width="40">
+                       width="50">
         <template slot-scope="scope">
           <div class="new_dot"
                v-show="scope.row.if_new == '1'"></div>
@@ -364,7 +364,7 @@
                             :row-key="getRowKeys_assets"
                             @selection-change="handle_sel_table_assets">
                     <el-table-column label="全选"
-                                     width="40"></el-table-column>
+                                     width="50"></el-table-column>
                     <el-table-column align='left'
                                      type="selection"
                                      width="50"
@@ -411,7 +411,7 @@
                             @selection-change="handle_sel_table_alerts">
                     <el-table-column label="全选"
                                      prop="type"
-                                     width="40">
+                                     width="50">
                     </el-table-column>
                     <el-table-column type="selection"
                                      width="50"
@@ -618,7 +618,7 @@
                             style="width: 100%"
                             @selection-change="handle_sel_assets">
                     <el-table-column label="全选"
-                                     width="40"></el-table-column>
+                                     width="50"></el-table-column>
                     <el-table-column align='left'
                                      :reserve-selection="true"
                                      type="selection"
@@ -663,7 +663,7 @@
                             @selection-change="handle_sel_alert">
                     <el-table-column label="全选"
                                      prop="type"
-                                     width="40">
+                                     width="50">
                     </el-table-column>
                     <el-table-column type="selection"
                                      width="50">
@@ -1180,7 +1180,7 @@ export default {
 
     //工单列表跳转
     detail_click (row) {
-      this.$router.push({ path: "/detail/works", query: { id: row.id } });
+      this.$router.push({ path: "/detail/works", query: { id: row.id ,type:'workorder'} });
     },
 
     /***********************************以下是弹窗部分***********/
@@ -1673,30 +1673,43 @@ export default {
       }
       this.edit.data = sel_table_data[0]
       this.edit.notice = JSON.parse(this.edit.data.remind)
-      // 储存资产数组
-      this.edit.data.risk_asset_cn = []
-      if (JSON.parse(this.edit.data.risk_asset).length != 0) {
-        this.edit.data.risk_asset_cn = JSON.parse(this.edit.data.risk_asset)
-      } else {
-        this.edit.data.risk_asset_cn = []
-      }
-      // 储存告警数组
-      this.edit.data.risk_alert_cn = []
-      if (JSON.parse(this.edit.data.te_alert).length != 0) {
-        JSON.parse(this.edit.data.te_alert).forEach(element => {
-          if (element != '') {
-            this.edit.data.risk_alert_cn.push(element + '')
+      console.log(this.edit.data);
+
+      // 获取工单 资产或者告警数组---------------------------------
+      this.$axios.get('/yiiapi/workorder/get-exists', {
+        params: {
+          id: this.edit.data.id
+        }
+      })
+        .then(resp => {
+          let { status, data } = resp.data;
+          console.log(data);
+          // 储存资产数组
+          this.edit.data.risk_asset_cn = []
+          if (data.risk_asset && data.risk_asset.length != 0) {
+            this.edit.data.risk_asset_cn = data.risk_asset
+          } else {
+            this.edit.data.risk_asset_cn = []
           }
-        });
-      } else {
-        this.edit.data.risk_alert_cn = []
-      }
-
-
-
+          // 储存告警数组
+          this.edit.data.risk_alert_cn = []
+          if (data.te_alert && data.te_alert.length != 0) {
+            data.te_alert.forEach(element => {
+              if (element != '') {
+                this.edit.data.risk_alert_cn.push(element + '')
+              }
+            });
+          } else {
+            this.edit.data.risk_alert_cn = []
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
       // 获取经办人
       this.open_task_edit();
     },
+
     //经办人change处理
     select_changced_edit (item) {
       console.log(item);
@@ -1762,7 +1775,7 @@ export default {
           this.edit.handle_sel = []
           this.edit.data.risk_asset_cn.forEach(element => {
             this.edit.asset_list.data.forEach((item, index) => {
-              if (element == item.asset_ip) {
+              if (element == item.id) {
                 // console.log(item);
                 this.$nextTick(() => {
                   // this.edit.data.risk_asset_cn.splice(element, 1);
@@ -1812,15 +1825,15 @@ export default {
       var arr2 = []
       if (this.edit.handle_sel.length == 0) {
         this.edit.asset_list.data.forEach(item => {
-          arr1.push(item.asset_ip)
+          arr1.push(item.id)
         });
       } else {
         this.edit.asset_list.data.forEach(element => {
           this.edit.handle_sel.forEach(item => {
-            if (item.asset_ip != element.asset_ip) {
-              arr1.push(element.asset_ip)
+            if (item.id != element.id) {
+              arr1.push(element.id)
             } else {
-              arr2.push(element.asset_ip)
+              arr2.push(element.id)
             }
           });
         });
@@ -1908,7 +1921,7 @@ export default {
 
       var handle_sel_list = []
       this.edit.handle_sel.forEach(element => {
-        handle_sel_list.push(element.asset_ip)
+        handle_sel_list.push(element.id)
       });
       this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
       console.log(this.edit.data);
@@ -1971,11 +1984,10 @@ export default {
       console.log(this.edit);
       var handle_sel_list = []
       this.edit.handle_sel.forEach(element => {
-        handle_sel_list.push(element.asset_ip)
+        handle_sel_list.push(element.id)
       });
       this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
       console.log(this.edit.data);
-
       let all_params = {
         id: this.edit.data.id,
         name: this.edit.data.name,

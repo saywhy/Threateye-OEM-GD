@@ -264,10 +264,31 @@ export default {
 
 
   methods: {
+
+    // alert_detail
+    // workorder
+
+    // this.$route.query.id
+
+
+
     //获取工单详情列表
     get_list_works_detail () {
+      var url = ''
+      switch (this.$route.query.type) {
+        case 'workorder':
+          url = '/yiiapi/workorder/details'
+          break;
+        case 'alert_detail':
+          url = '/yiiapi/alert/workorder-details'
+          break;
+
+        default:
+          break;
+      }
+
       this.page_show = true;
-      this.$axios.get('/yiiapi/workorder/details',
+      this.$axios.get(url,
         {
           params: {
             id: this.id,

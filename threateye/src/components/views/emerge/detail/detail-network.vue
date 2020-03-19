@@ -170,7 +170,8 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">工单名称:</span>
-              <span class="item_li_content">{{network_work_order.work_name}}</span>
+              <span class="item_li_content"
+                    @click="Goto_workorder">{{network_work_order.work_name}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
@@ -886,6 +887,7 @@ export default {
       loading: false,
       network_work_order: {
         work_name: '',
+        workorder_id: '',
         work_order_status: '',
       },
       attack_stage_list: [
@@ -1701,13 +1703,14 @@ export default {
               console.log(response.data);
               this.$nextTick(() => {
                 console.log(response.data);
+                this.network_work_order.workorder_id = response.data.data.workorder_id
                 if (response.data.data.workorder_id == '0') {
                   console.log(213213);
                   this.network_work_order.work_order_status = '未关联工单'
                   this.network_work_order.work_name = ''
                 } else {
-                  if (response.data.data.work_order_status && response.data.data.work_name) {
-                    switch (response.data.data.work_order_status += '') {
+                  if (response.data.data.workorder_status && response.data.data.workorder_name) {
+                    switch (response.data.data.workorder_status += '') {
                       case '0':
                         this.network_work_order.work_order_status = '待分配'
                         break;
@@ -1726,7 +1729,7 @@ export default {
                       default:
                         break;
                     }
-                    this.network_work_order.work_name = response.data.data.work_name
+                    this.network_work_order.work_name = response.data.data.workorder_name
                   } else {
                     this.network_work_order.work_order_status = ''
                     this.network_work_order.work_name = ''
@@ -2151,8 +2154,8 @@ export default {
                     }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                      { name: 'Source IP', value: item.network_event.src_ip + item.network_event.src_port },
-                      { name: 'Destination IP', value: item.network_event.dest_ip + item.network_event.dest_port },
+                      { name: 'Source IP', value: item.network_event.src_ip + ':' + item.network_event.src_port },
+                      { name: 'Destination IP', value: item.network_event.dest_ip + ':' + item.network_event.dest_port },
                       { name: 'Mail_from', value: item.network_event.email.from },
                       { name: 'Recpt_to', value: item.network_event.email_to },
                       { name: 'Traffic', value: 'pop3' },
@@ -2162,7 +2165,7 @@ export default {
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
                       { name: 'Source IP', value: item.network_event.src_ip + ':' + item.network_event.src_port },
-                      { name: 'Destination IP', value: item.network_event.dest_ip + item.network_event.dest_port },
+                      { name: 'Destination IP', value: item.network_event.dest_ip + ':' + item.network_event.dest_port },
                       { name: 'Domain', value: '-' },
                       { name: 'User', value: '-' },
                       { name: 'Traffic', value: 'smb' },
@@ -2262,8 +2265,8 @@ export default {
                 }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
-                  { name: 'Source IP', value: item.network_event.src_ip + item.network_event.src_port },
-                  { name: 'Destination IP', value: item.network_event.dest_ip + item.network_event.dest_port },
+                  { name: 'Source IP', value: item.network_event.src_ip + ':' + item.network_event.src_port },
+                  { name: 'Destination IP', value: item.network_event.dest_ip + ':' + item.network_event.dest_port },
                   { name: 'SectianType', value: item.network_event.dns.rrtype },
                   { name: 'Domain', value: item.network_event.dns.rrname },
                   { name: 'TTL', value: item.network_event.dns.HostAddr },
@@ -2356,14 +2359,11 @@ export default {
           // 攻击阶段
           this.attack_stage_list.forEach(element => {
             element.count = 0;
-            console.log('&&&&&&&&&&&')
-            console.log(this.network_detail.attack_stage)
             if (this.network_detail.attack_stage == element.name) {
               this.network_detail.attack_stage_cn = element.value
             }
           });
           this.network_times.forEach(item => {
-            console.log(item);
             this.attack_stage_list.forEach(element => {
               if (item.attack_stage == element.name) {
                 item.attack_stage_cn = element.value
@@ -2379,6 +2379,11 @@ export default {
         .catch(error => {
           console.log(error);
         })
+    },
+    // 跳转到工单详情
+    Goto_workorder () {
+
+      this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id,type:'alert_detail' } });
     },
     // 下载payload
     download (value, item) {

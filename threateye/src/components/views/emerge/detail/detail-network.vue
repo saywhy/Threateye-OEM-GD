@@ -132,6 +132,10 @@
               <span class="item_li_title">告警类型:</span>
               <span class="item_li_content">{{network_detail.category}}</span>
             </li>
+            <li class="item_li">
+              <span class="item_li_title">告警类型:</span>
+              <span class="item_li_content">{{network_detail.status | alert_status}}</span>
+            </li>
           </ul>
         </div>
         <div class="detail_base_bottom_item">

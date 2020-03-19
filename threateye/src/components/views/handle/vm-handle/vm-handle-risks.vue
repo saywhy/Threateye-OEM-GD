@@ -1,5 +1,6 @@
 <template>
-  <div class="handle-risks_common" v-loading.fullscreen.lock="handle.save"
+  <div class="handle-risks_common"
+       v-loading.fullscreen.lock="handle.save"
        v-cloak>
     <div class="outside-top">
       <div class="ost ost-1">
@@ -161,14 +162,16 @@
                              label="应用"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="威胁等级" width="100">
+            <el-table-column label="威胁等级"
+                             width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="失陷确定性" width="100">
+            <el-table-column label="失陷确定性"
+                             width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>
@@ -180,12 +183,12 @@
             </el-table-column>
           </el-table>
           <el-pagination class="handle-pagination"
-               @size-change="handleSizeChange"
-               @current-change="handleCurrentChange"
-               :page-sizes="[10, 20, 50,100]"
-               :page-size="table.eachPage"
-               :total="table.count"
-               layout="total, sizes, prev, pager, next">
+                         @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         :page-sizes="[10, 20, 50,100]"
+                         :page-size="table.eachPage"
+                         :total="table.count"
+                         layout="total, sizes, prev, pager, next">
           </el-pagination>
         </div>
 
@@ -381,17 +384,19 @@
                   <el-table-column prop="application"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级" width="100">
+                  <el-table-column label="威胁等级"
+                                   width="100">
                     <template slot-scope="scope">
-                <span class="btn_alert_background"
-                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
-                  {{ scope.row.degree | degree_sino }}</span>
+                      <span class="btn_alert_background"
+                            :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                        {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性" width="100">
+                  <el-table-column label="失陷确定性"
+                                   width="100">
                     <template slot-scope="scope">
-                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                  {{ scope.row.fall_certainty | certainty }}</span>
+                      <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                        {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
@@ -473,7 +478,8 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span="24" class="e-pagination">
+          <el-col :span="24"
+                  class="e-pagination">
             <el-pagination class="handle-pagination"
                            @size-change="sc_table_add_works"
                            @current-change="hcc_table_add_works"
@@ -614,12 +620,12 @@ export default {
         add: "",
         table_title: ["告警"],
         active: 0,
-        dist:false,
-        save:false
+        dist: false,
+        save: false
       },
       table_alerts: {
         tableData: [],
-        tableData_new:[],
+        tableData_new: [],
         count: 0,
         pageNow: 1,
         maxPage: 1,
@@ -644,7 +650,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
         remind: ['email']
       }
     };
@@ -718,7 +724,7 @@ export default {
           this.table.maxPage = maxPage;
           this.table.pageNow = pageNow;
 
-         // console.log(data)
+          // console.log(data)
         }
       })
     },
@@ -739,10 +745,10 @@ export default {
     },
     //時間切換
     changeTime (data) {
-      if(data){
+      if (data) {
         this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
         this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
-      }else {
+      } else {
         this.params.startTime = ''
         this.params.endTime = ''
       }
@@ -822,12 +828,12 @@ export default {
     ok_state () {
       let selected = this.table.multipleSelection;
       //资产ID处理
-      let id_group = selected.map(x => { return x.id * 1; });
+      let id_group = selected.map(x => { return x.asset_ip });
       //状态设置
       let process = this.process_state;
       let change_status = 0;
 
-      if(process == '处置中'){
+      if (process == '处置中') {
         change_status = 2;
       } else if (process == '已处置') {
         change_status = 3;
@@ -966,7 +972,7 @@ export default {
     },
 
     //tabs下table每页显示多少条
-    sc_table_alerts(val){
+    sc_table_alerts (val) {
       this.table_alerts.eachPage = val;
       this.table_alerts.pageNow = 1;
       let handle_data = this.table_alerts.tableData.slice(0, val);
@@ -996,10 +1002,10 @@ export default {
 
     //编辑工单分配
     prev_task_handle_assign () {
-      if(this.task_params.multiple.length == 0) {
+      if (this.task_params.multiple.length == 0) {
         let alerts = this.table.multipleSelection;
         let selected = this.table.multipleSelection
-          .map(x => { return x.id * 1});
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1035,7 +1041,7 @@ export default {
       if (this.task_params.multiple.length == 0) {
         let alerts = this.table.multipleSelection;
         let selected = this.table.multipleSelection
-          .map(x => { return x.id * 1});
+          .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
       console.log(this.task_params.multiple);
@@ -1104,7 +1110,7 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
         remind: ['email'],
       };
       this.$refs.multipleTable.clearSelection();
@@ -1160,9 +1166,9 @@ export default {
 
       if (multipe.length == 0) {
         this.$message({ message: '请选择要添加的工单！', type: 'warning' });
-      } else if(multipe.length > 1){
+      } else if (multipe.length > 1) {
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
-      }else{
+      } else {
         console.log('******************');
         this.add_params.id = multipe[0].id;
         this.add_params.name = multipe[0].name;
@@ -1173,7 +1179,7 @@ export default {
 
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
-        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+        this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
 
         this.add_params.multiple = [...new Set(this.add_params.multiple)]
 
@@ -1215,7 +1221,7 @@ export default {
     },
 
     //每页显示多少条
-    sc_table_add_works(val){
+    sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();
@@ -1801,10 +1807,9 @@ export default {
     }
   }
 
-  /deep/
-  .pop_box {
+  /deep/ .pop_box {
     .el-dialog {
-      background: #FFFFFF;
+      background: #ffffff;
       border-radius: 4px;
       position: fixed;
       // top: 200px;

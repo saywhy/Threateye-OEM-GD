@@ -38,7 +38,7 @@ export default {
         {asset_ip:'192.168.1.193',indicator:21},
         {asset_ip:'192.168.1.192',indicator:50},
       ]*/
-
+      
       let that = this;
       tableData.map(function (v, k) {
         that.$set(v, 'id', k + 1);

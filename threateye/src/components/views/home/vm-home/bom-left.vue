@@ -31,7 +31,7 @@ export default {
   computed: {
     tableData () {
       let tableData = this.bom_left;
-      console.log(this.bom_left);
+     // console.log(this.bom_left);
       let that = this;
       tableData.map(function (v, k) {
         that.$set(v, 'index', k + 1);
@@ -42,7 +42,7 @@ export default {
   methods: {
     //进入详情页面
     detail_click (val) {
-      console.log(val);
+     // console.log(val);
       this.$router.push({ path: "/detail/network", query: { detail: val.id, type: 'alert' } });
       // this.$router.push({ path: "/handle/risks/outside" });
     },

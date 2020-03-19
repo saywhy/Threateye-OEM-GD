@@ -8,8 +8,8 @@ export default {
   name: "agree",
   props: {
     top_right: {
-      type: Array,
-      default:() => []
+      type: Object,
+      default:() => {}
     }
   },
   data(){

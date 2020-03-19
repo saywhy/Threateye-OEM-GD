@@ -320,7 +320,7 @@ export default {
     init_top_left () {
       this.$axios.get('/yiiapi/alert/system-state')
         .then((resp) => {
-          console.log(resp)
+         // console.log(resp)
           let {
             status,
             data
@@ -335,7 +335,7 @@ export default {
     init_top_mid () {
       this.$axios.get('/yiiapi/alert/flow-file-statistics')
         .then((resp) => {
-          console.log(resp)
+         // console.log(resp)
           let {
             status,
             data
@@ -1261,7 +1261,7 @@ export default {
           th:nth-child(3) {
             /*.cell{
                           padding: 0!important;
-          
+
                         }*/
           }
         }

@@ -829,7 +829,7 @@ export default {
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
 
-            // console.log(data)
+             console.log(data)
           }
         })
         .catch(error => {
@@ -913,15 +913,13 @@ export default {
     //多选获取选中数据
     handleSelChange (val) {
       this.table.multipleSelection = val;
-
-
     },
 
     /************************************/
     //进入详情页
     detailClick (row, column, event) {
-      this.$router.push({        path: '/detail/assets', name: 'detail_assets',
-        query: { asset_ip: row.asset_ip, status: row.status }      });
+      this.$router.push({path: '/detail/assets', name: 'detail_assets',
+        query: {id:row.id, asset_ip: row.asset_ip, status: row.status}      });
     },
 
     /***********************************以下是弹窗部分****************************************/

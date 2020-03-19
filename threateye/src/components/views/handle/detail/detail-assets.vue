@@ -71,18 +71,31 @@
         </li>
         <li>
           <span class="title">
+            <i class="b_i"></i>状态：</span>
+          <span class="content">{{detail.status | risk_status}}</span>
+        </li>
+        <li>
+          <span class="title">
             <i class="b_i"></i>资产类型：</span>
           <span class="content">
-            <span class="c_it">{{assets_top.new_base_category}}</span>
+            <ul>
+                <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_base_category"
+                    :key="$idx">
+                  <span class="tag_btn">{{it}}</span>
+                </li>
+            </ul>
           </span>
         </li>
         <li>
           <span class="title">
             <i class="b_i"></i>分支：</span>
           <span class="content">
-            <span class="c_it"
-                  v-for="(it,$idx) in assets_top.new_branch"
-                  :key="$idx">{{it}}</span>
+            <ul>
+                <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_branch"
+                    :key="$idx">
+                  <span class="tag_btn">{{it}}</span>
+                </li>
+            </ul>
           </span>
         </li>
       </div>
@@ -90,17 +103,23 @@
         <li>
           <span class="title">部门：</span>
           <span class="content">
-            <span class="c_it"
-                  v-for="(it,$idx) in assets_top.new_department"
-                  :key="$idx">{{it}}</span>
+            <ul>
+                <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_department"
+                    :key="$idx">
+                  <span class="tag_btn">{{it}}</span>
+                </li>
+            </ul>
           </span>
         </li>
         <li>
           <span class="title">业务：</span>
           <span class="content">
-            <span class="c_it"
-                  v-for="(it,$idx) in assets_top.new_business"
-                  :key="$idx">{{it}}</span>
+            <ul>
+              <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_business"
+                   :key="$idx">
+                <span class="tag_btn">{{it}}</span>
+              </li>
+            </ul>
           </span>
         </li>
         <li>
@@ -115,7 +134,7 @@
     </div>
 
     <!--攻击阶段分布-->
-    <div class="detail_base_stg">
+    <div class="detail_base_stg" >
       <div class="top_left">
         <img class="b_img"
              src="@/assets/images/emerge/detai_attack.png" />
@@ -257,7 +276,7 @@
     </div>
 
     <!-- 威胁及安全建议 -->
-    <div class="suggest_box">
+    <div class="suggest_box" v-if="suggest_flag">
       <div class="suggest_top">
         <img src="@/assets/images/emerge/detal_jianyi.png"
              alt=""
@@ -692,6 +711,7 @@ export default {
   components: { backTitle, VmHanleRank },
   data () {
     return {
+      suggest_flag:false,
       notes: false,
       network_times: [],
       network_detail: {},
@@ -1165,18 +1185,21 @@ export default {
   created () {
     let asset_ip = this.$route.query.asset_ip;
     let status = this.$route.query.status;
+    let id = this.$route.query.id;
     this.detail.asset_ip = asset_ip;
     this.detail.status = status;
+    this.detail.id = id;
     this.get_list_assets_detail();
     this.get_assets_detail_top();
   },
   methods: {
     //获取资产详情顶部
     get_assets_detail_top () {
+      this.suggest_flag = false;
       this.$axios.get('/yiiapi/asset/asset-details',
         {
           params: {
-            asset_ip: this.detail.asset_ip
+            id:  this.detail.id
           }
         })
         .then((resp) => {
@@ -1191,20 +1214,19 @@ export default {
             let base_category = data.label.base_category;
 
             if (base_category.includes('终端')) {
-              data.new_base_category = '终端';
+              data.new_base_category = ['终端'];
             } else if (base_category.includes('服务器')) {
-              data.new_base_category = '终端';
+              data.new_base_category = ['服务器'];
             } else if (base_category.includes('网络设备')) {
-              data.new_base_category = '网络设备';
+              data.new_base_category = ['网络设备'];
             }
-
             data.new_branch = data.label.branch;
             data.new_department = data.label.department;
             data.new_business = data.label.business;
 
             this.assets_top = data;
 
-            console.log(data)
+            this.suggest_flag = true;
 
             //攻击阶段
             this.attack_stage_list.forEach(function (v, k) {
@@ -1238,7 +1260,6 @@ export default {
             let { data, count, maxPage, pageNow } = datas;
 
             this.table.tableData = data;
-            console.log(this.table.tableData);
             if (this.table.tableData.length > 1) {
               this.notes = true
             }
@@ -1246,7 +1267,6 @@ export default {
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
 
-            console.log(data)
           }
         });
     },
@@ -1735,7 +1755,6 @@ export default {
     padding: 24px 56px;
     background: #fff;
     display: flex;
-    height: 247px;
     .bom_item {
       flex: 1;
       li {
@@ -1763,14 +1782,24 @@ export default {
         .content {
           flex: 1;
           font-size: 16px;
-          color: #666666;
-          .c_it {
-            /*padding: 0 2px;*/
+          color: #666;
+          .tag_btn_box {
             margin: 0 2px;
-            color: #fff;
-            background: #5389e0;
+            display: inline-block;
+            height: 20px;
+            padding: 0 3px;
             border-radius: 2px;
-            font-size: 14px;
+            color: #ffffff;
+            background: #5389e0;
+            text-align: center;
+            .tag_btn {
+              height: 20px;
+              font-size: 10px;
+              line-height: 20px;
+              font-family: PingFang;
+              transform: scale(0.8);
+              display: block;
+            }
           }
           .status {
             background: #eef6ff;
@@ -2552,12 +2581,7 @@ export default {
   }
 }
 </style>
-<style lang="less">
-/*.dropdown_ul_box {
-  width: 136px !important;
-  margin-right: 8px;
-}*/
-</style>
+
 
 
 

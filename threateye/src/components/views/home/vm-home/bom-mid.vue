@@ -51,7 +51,7 @@ export default {
     detail_click (val) {
       console.log(val);
       this.$router.push({        path: '/detail/assets', name: 'detail_assets',
-        query: { asset_ip: val.asset_ip, status: val.status }      });
+        query: {id:val.id, asset_ip: val.asset_ip, status: val.status }      });
     },
   }
 }

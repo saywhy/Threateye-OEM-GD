@@ -282,6 +282,18 @@ export default {
         case 'alert_detail':
           url = '/yiiapi/alert/workorder-details'
           break;
+        case 'asset':
+          url = '/yiiapi/asset/workorder-details'
+          break;
+        case 'lateral':
+          url = '/yiiapi/horizontalthreat/workorder-details'
+          break;
+        case 'outside':
+          url = '/yiiapi/externalthreat/workorder-details'
+          break;
+        case 'outreath':
+          url = '/yiiapi/outreachthreat//workorder-details'
+          break;
 
         default:
           break;
@@ -344,7 +356,30 @@ export default {
 
     //回复记录列表
     get_reply_works_detail () {
-      this.$axios.get('/yiiapi/workorder/reply-list',
+      var url = ''
+      switch (this.$route.query.type) {
+        case 'workorder':
+          url = '/yiiapi/workorder/reply-list'
+          break;
+        case 'alert_detail':
+          url = '/yiiapi/alert/reply-list'
+          break;
+        case 'asset':
+          url = '/yiiapi/asset/reply-list'
+          break;
+        case 'lateral':
+          url = '/yiiapi/horizontalthreat/reply-list'
+          break;
+        case 'outside':
+          url = '/yiiapi/externalthreat/reply-list'
+          break;
+        case 'outreath':
+          url = '/yiiapi/outreachthreat/reply-list'
+          break;
+        default:
+          break;
+      }
+      this.$axios.get(url,
         {
           params: {
             id: this.id,
@@ -399,13 +434,36 @@ export default {
     worksdownload () {
       let stu = this.data.status;
       if (stu == 1 || stu == 2) {
-        var url1 = "/yiiapi/workorder/download-test?id=" + this.id * 1;
+        var url1 = " /yiiapi/site/download-test?id=" + this.id * 1;
         this.$axios.get(url1)
           .then(resp => {
             let { status, msg, data } = resp.data;
             if (status == 0) {
-              var url2 = "/yiiapi/workorder/download?id=" + this.id * 1;
-              window.location.href = url2;
+              var url2 = ''
+              switch (this.$route.query.type) {
+                case 'workorder':
+                  url2 = "/yiiapi/workorder/download?id="
+                  break;
+                case 'alert_detail':
+                  url2 = "/yiiapi/alert/download?id="
+                  break;
+                case 'asset':
+                  url2 = "/yiiapi/asset/download?id="
+                  break;
+                case 'lateral':
+                  url2 = "/yiiapi/horizontalthreat/download?id="
+                  break;
+                case 'outside':
+                  url2 = "/yiiapi/externalthreat/download?id="
+                  break;
+                case 'outreath':
+                  url2 = "/yiiapi/outreachthreat/download?id="
+                  break;
+                default:
+                  break;
+              }
+              var url3 = url2 + this.id * 1;
+              window.location.href = url3;
             } else {
               this.$message({ type: 'warning', message: msg });
             }
@@ -417,7 +475,32 @@ export default {
 
     //回复记录
     submitReplyClick () {
-      this.$axios.post('/yiiapi/workorder/reply',
+      var url2 = ''
+      switch (this.$route.query.type) {
+        case 'workorder':
+          url2 = '/yiiapi/workorder/reply'
+          break;
+        case 'alert_detail':
+          url2 = '/yiiapi/alert/reply'
+          break;
+        case 'asset':
+          url2 = '/yiiapi/asset/reply'
+          break;
+        case 'lateral':
+          url2 = '/yiiapi/horizontalthreat/reply'
+          break;
+        case 'outside':
+          url2 = '/yiiapi/externalthreat/reply'
+          break;
+        case 'outreath':
+          url2 = '/yiiapi/outreachthreat/reply'
+          break;
+        default:
+          break;
+      }
+
+
+      this.$axios.post(url2,
         {
           work_order_id: this.id,
           comment: this.reply

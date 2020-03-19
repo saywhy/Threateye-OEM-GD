@@ -170,8 +170,9 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">工单名称:</span>
-              <span class="item_li_content"
-                    @click="Goto_workorder">{{network_work_order.work_name}}</span>
+              <span class="item_li_content Goto_workorder"
+                    @click="Goto_workorder"
+                    v-if="network_work_order.work_name!=''">{{network_work_order.work_name}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
@@ -2382,8 +2383,26 @@ export default {
     },
     // 跳转到工单详情
     Goto_workorder () {
+      switch (this.$route.query.type) {
+        case 'alert':
+          this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id, type: 'alert_detail' } });
+          break;
+        case 'asset':
+          this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id, type: 'asset' } });
+          break;
+        case 'lateral':
+          this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id, type: 'lateral' } });
+          break;
+        case 'outside':
+          this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id, type: 'outside' } });
+          break;
+        case 'outreath':
+          this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id, type: 'outreath' } });
+          break;
+        default:
+          break;
+      }
 
-      this.$router.push({ path: "/detail/works", query: { id: this.network_work_order.workorder_id,type:'alert_detail' } });
     },
     // 下载payload
     download (value, item) {
@@ -3898,6 +3917,10 @@ export default {
               transform: scale(0.8);
               display: block;
             }
+          }
+          .Goto_workorder {
+            color: #0070ff;
+            cursor: pointer;
           }
           .btn_fall {
             display: inline-block;

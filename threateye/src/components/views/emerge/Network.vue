@@ -101,7 +101,7 @@
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button class="edit_btn"
+            <el-button class="b_btn b_btn_edit"
                        @click="export_box">导出</el-button>
           </el-col>
         </el-row>

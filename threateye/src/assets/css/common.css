@@ -180,7 +180,6 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
    background: #f4f4f4;
  }*/
 
-
 .el-date-editor .el-range-separator {
   width: auto;
 }
@@ -226,12 +225,9 @@ textarea {
   font-family: PingFang !important;
 }
 
-.el-dropdown-menu{
-  width: 136px!important;
+.dropdown_ul_box{
+  width: 148px!important;
 }
-/**/
-@media screen and (min-width: 1601px) {
-  .el-dropdown-menu{
-    width: 120px!important;
-  }
-}
+
+
+

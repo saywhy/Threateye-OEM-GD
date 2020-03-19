@@ -13,9 +13,9 @@
       </div>
       <div class="top_right">
         <!--按钮组-->
-        <el-row class="common_btn">
-          <el-col :span="24"
-                  class="common_btn_list">
+        <el-row class="common_btn common_btn_124">
+
+          <el-col :span="24" class="common_btn_list">
             <el-dropdown @command="change_state"
                          trigger="click"
                          placement='bottom-start'
@@ -26,7 +26,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown"
-                                class="dropdown_ul_box">
+                                class="dropdown_ul_box_124">
                 <el-dropdown-item command="处置中"
                                   class="select_item">处置中</el-dropdown-item>
                 <el-dropdown-item command="已处置"
@@ -46,7 +46,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown"
-                                class="dropdown_ul_box">
+                                class="dropdown_ul_box_124">
                 <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
@@ -1192,8 +1192,8 @@ export default {
     this.detail.asset_ip = asset_ip;
     this.detail.status = status;
     this.detail.id = id;
-    this.get_list_assets_detail();
-    this.get_assets_detail_top();
+   // this.get_list_assets_detail();
+   // this.get_assets_detail_top();
   },
   methods: {
     //获取资产详情顶部
@@ -1781,15 +1781,7 @@ export default {
     }
     .top_right {
       float: right;
-      .common_btn {
-        margin-top: 10px;
-        .common_btn_list {
-          font-size: 0;
-          /deep/ .el-dropdown {
-            margin-right: 8px;
-          }
-        }
-      }
+      height: 62px;
     }
   }
 
@@ -1797,6 +1789,7 @@ export default {
     padding: 24px 56px;
     background: #fff;
     display: flex;
+    width: 100%;
     .bom_item {
       flex: 1;
       li {
@@ -2626,7 +2619,16 @@ export default {
     }
   }
 }
+
 </style>
+<style lang="less">
+  body{
+    > ul.dropdown_ul_box_124{
+      width: 128px!important;
+    }
+  }
+</style>
+
 
 
 

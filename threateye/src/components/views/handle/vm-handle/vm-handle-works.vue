@@ -1180,7 +1180,7 @@ export default {
 
     //工单列表跳转
     detail_click (row) {
-      this.$router.push({ path: "/detail/works", query: { id: row.id ,type:'workorder'} });
+      this.$router.push({ path: "/detail/works", query: { id: row.id, type: 'workorder' } });
     },
 
     /***********************************以下是弹窗部分***********/
@@ -1496,6 +1496,7 @@ export default {
           multiple_alerts = [];
 
           let all_params = {
+
             name: this.task_params.name,
             priority: this.task_params.level,
             perator: this.task_params.new_operator,
@@ -1927,6 +1928,7 @@ export default {
       console.log(this.edit.data);
 
       let all_params = {
+        workorder_edit: '1',
         id: this.edit.data.id,
         name: this.edit.data.name,
         priority: this.edit.data.priority,
@@ -1989,6 +1991,7 @@ export default {
       this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
       console.log(this.edit.data);
       let all_params = {
+        workorder_edit: '1',
         id: this.edit.data.id,
         name: this.edit.data.name,
         priority: this.edit.data.priority,

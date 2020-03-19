@@ -138,7 +138,7 @@ export default {
           .then((resp) => {
             //返回成功跳转
             if (resp[0]) {
-              this.$message.success('创建管理员成功，欢迎首次登录成功！');
+              this.$message.success('注册管理员成功，欢迎首次登录！');
               this.$router.push('/', () => { });//登录成功之后重定向到首页
               //失败
             } else {

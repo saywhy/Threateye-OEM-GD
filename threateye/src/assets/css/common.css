@@ -180,9 +180,6 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
    background: #f4f4f4;
  }*/
 
-.dropdown_ul_box {
-  width: 136px !important;
-}
 
 .el-date-editor .el-range-separator {
   width: auto;
@@ -228,4 +225,8 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
 
 textarea {
   font-family: PingFang !important;
+}
+
+.el-dropdown-menu{
+  width: 120px!important;
 }

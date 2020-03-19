@@ -220,7 +220,6 @@ body::-webkit-scrollbar-track {!*滚动条里面轨道*!
 
 .el-textarea__inner {
   font-family: PingFang !important;
-
 }
 
 textarea {
@@ -228,5 +227,11 @@ textarea {
 }
 
 .el-dropdown-menu{
-  width: 120px!important;
+  width: 136px!important;
+}
+/**/
+@media screen and (min-width: 1601px) {
+  .el-dropdown-menu{
+    width: 120px!important;
+  }
 }

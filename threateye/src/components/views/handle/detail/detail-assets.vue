@@ -1383,13 +1383,16 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status, data } = resp.data;
+          let { status, data ,msg} = resp.data;
           if (status == 0) {
             this.$message.success('状态变更成功！');
             this.closed_state();
             this.get_assets_detail_top();
+          } else if(status == 9){
+            this.$message.error(msg);
+            this.$router.path({ path:"/handle/assets"});
           } else {
-            this.$message.error('状态变更失败！');
+            this.$message.error(msg);
           }
         }).catch(err => {
           console.log(err);

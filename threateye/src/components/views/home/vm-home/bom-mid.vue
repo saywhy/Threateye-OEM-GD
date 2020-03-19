@@ -4,7 +4,7 @@
               ref="multipleTable"
               @row-click="detail_click"
               :data="tableData">
-      <el-table-column prop="id"
+      <el-table-column prop="pid"
                        label="排名"
                        width="60"
                        align="center"></el-table-column>
@@ -33,15 +33,13 @@ export default {
   computed: {
     tableData () {
       let tableData = this.bom_mid;
-
       /*tableData = [
         {asset_ip:'192.168.1.193',indicator:21},
         {asset_ip:'192.168.1.192',indicator:50},
       ]*/
-
       let that = this;
       tableData.map(function (v, k) {
-        that.$set(v, 'id', k + 1);
+        that.$set(v, 'pid', k + 1);
       });
       return tableData;
     }
@@ -50,7 +48,7 @@ export default {
     //进入详情页面
     detail_click (val) {
       console.log(val);
-      this.$router.push({        path: '/detail/assets', name: 'detail_assets',
+      this.$router.push({path: '/detail/assets', name: 'detail_assets',
         query: {id:val.id, asset_ip: val.asset_ip, status: val.status }      });
     },
   }

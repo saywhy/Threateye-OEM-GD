@@ -817,7 +817,6 @@ export default {
           if (status == 0) {
 
             let { data, count, maxPage, pageNow } = datas;
-            console.log(data);
             data.map(function (v, k) {
 
               let label_group = (Object.values(v.label)).join(',');

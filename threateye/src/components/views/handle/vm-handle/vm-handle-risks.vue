@@ -828,7 +828,7 @@ export default {
     ok_state () {
       let selected = this.table.multipleSelection;
       //资产ID处理
-      let id_group = selected.map(x => { return x.asset_ip });
+      let id_group = selected.map(x => { return x.id * 1 });
       //状态设置
       let process = this.process_state;
       let change_status = 0;

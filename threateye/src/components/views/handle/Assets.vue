@@ -830,7 +830,7 @@ export default {
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
 
-             console.log(data)
+            console.log(data)
           }
         })
         .catch(error => {
@@ -919,8 +919,8 @@ export default {
     /************************************/
     //进入详情页
     detailClick (row, column, event) {
-      this.$router.push({path: '/detail/assets', name: 'detail_assets',
-        query: {id:row.id, asset_ip: row.asset_ip, status: row.status}      });
+      this.$router.push({        path: '/detail/assets', name: 'detail_assets',
+        query: { id: row.id, asset_ip: row.asset_ip, status: row.status }      });
     },
 
     /***********************************以下是弹窗部分****************************************/
@@ -969,7 +969,7 @@ export default {
 
       let selected = this.table.multipleSelection;
       //资产ID处理
-      let asset_ip_group = selected.map(x => { return x.id * 1 });
+      let asset_ip_group = selected.map(x => { return x.asset_ip });
       //状态设置
       let process = this.process_state;
       let change_status = 0;
@@ -1392,17 +1392,15 @@ export default {
         text-align: left;
         line-height: 36px;
         padding: 12px 0;
-        /deep/
-        .el-tag {
+        /deep/ .el-tag {
           border-radius: 2px;
           margin-right: 5px;
           border-style: dashed;
         }
       }
-      .tog{
+      .tog {
         width: 124px;
-        /deep/
-        .assets-toggle {
+        /deep/ .assets-toggle {
           position: absolute;
           bottom: 0;
           right: 0;

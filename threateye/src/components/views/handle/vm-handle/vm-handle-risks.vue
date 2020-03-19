@@ -127,7 +127,7 @@
                     @row-click="detail_click">
             <el-table-column label="全选"
                              prop="type"
-                             width="40">
+                             width="50">
               <template slot-scope="scope">
                 <div class="new_dot"
                      v-show="scope.row.new_alert=='1'"></div>
@@ -368,7 +368,7 @@
                           @selection-change="handle_sel_table_alerts">
                   <el-table-column label="全选"
                                    prop="type"
-                                   width="40">
+                                   width="50">
                   </el-table-column>
                   <el-table-column type="selection"
                                    width="50"></el-table-column>
@@ -447,7 +447,7 @@
                       :data="table_add_works.tableData"
                       @selection-change="handle_sel_table_add_works">
               <el-table-column label="选择"
-                               width="40"></el-table-column>
+                               width="50"></el-table-column>
               <el-table-column type="selection"
                                width="50"></el-table-column>
               <el-table-column prop="name"

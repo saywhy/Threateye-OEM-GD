@@ -573,7 +573,7 @@
                         style="width: 100%"
                         @selection-change="handle_sel_table_assets">
                 <el-table-column label="全选"
-                                 width="40"></el-table-column>
+                                 width="50"></el-table-column>
                 <el-table-column type="selection"
                                  width="50"></el-table-column>
                 <el-table-column prop="asset_ip"
@@ -655,7 +655,7 @@
                       :data="table_add_works.tableData"
                       @selection-change="handle_sel_table_add_works">
               <el-table-column label="选择"
-                               width="40"></el-table-column>
+                               width="50"></el-table-column>
               <el-table-column type="selection"
                                width="50"></el-table-column>
               <el-table-column prop="name"

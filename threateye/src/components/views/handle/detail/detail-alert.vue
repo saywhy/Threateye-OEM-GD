@@ -606,7 +606,7 @@
                     @selection-change="handleSelectionChange"
                     style="width: 100%">
             <el-table-column label="选择"
-                             width="55">
+                             width="50">
               <template slot-scope="scope">
                 <el-radio v-model="worksheets_data.tableRadio"
                           :label="scope.row">

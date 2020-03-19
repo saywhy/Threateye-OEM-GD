@@ -320,7 +320,7 @@ export default {
     init_top_left () {
       this.$axios.get('/yiiapi/alert/system-state')
         .then((resp) => {
-         // console.log(resp)
+          // console.log(resp)
           let {
             status,
             data
@@ -335,7 +335,7 @@ export default {
     init_top_mid () {
       this.$axios.get('/yiiapi/alert/flow-file-statistics')
         .then((resp) => {
-         // console.log(resp)
+          // console.log(resp)
           let {
             status,
             data
@@ -780,9 +780,9 @@ export default {
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: "15%",
-          left: '2%',
-          right: "5%",
+          top: "18%",
+          left: '5%',
+          right: "3%",
           bottom: "20%",
           containLabel: true
         },
@@ -843,6 +843,10 @@ export default {
           data: this.equipment_detail.statistics_time,
         },
         yAxis: [{
+          name: '单位(%)',
+          nameTextStyle: {
+            color: '#666'
+          },
           splitLine: {
             show: true,
             lineStyle: {
@@ -858,9 +862,7 @@ export default {
             }
           },
           axisLabel: {
-            formatter: function (val) {
-              return val + '%';
-            },
+
             textStyle: {
               color: "#666666"
             }
@@ -868,7 +870,6 @@ export default {
           axisTick: {
             show: false
           }
-        }, {
         }],
         color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
         series: [
@@ -974,9 +975,9 @@ export default {
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: "15%",
-          left: '2%',
-          right: "5%",
+          top: "18%",
+          left: '5%',
+          right: "3%",
           bottom: "20%",
           containLabel: true
         },
@@ -1036,7 +1037,7 @@ export default {
           data: this.equipment_detail.statistics_time
         },
         yAxis: [{
-          name: 'Mbps',
+          name: '单位(Mbps)',
           nameTextStyle: {
             color: '#666'
           },

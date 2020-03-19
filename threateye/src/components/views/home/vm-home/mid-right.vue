@@ -1,5 +1,5 @@
 <template>
-    <div id="edr"></div>
+  <div id="edr"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -11,27 +11,27 @@ export default {
       default: () => []
     }
   },
-  data() {
+  data () {
     return {
-      threat_type:{
-        type:[],
-        num:[]
+      threat_type: {
+        type: [],
+        num: []
       }
     };
   },
-  created(){
+  created () {
     let chartData = this.mid_right;
 
-    chartData.forEach((item,index,array)=>{
+    chartData.forEach((item, index, array) => {
       this.threat_type.type.push(item.alert_type);
       this.threat_type.num.push(item.total_count);
     });
   },
-  mounted() {
+  mounted () {
     this.graph();
   },
   methods: {
-    graph() {
+    graph () {
 
       let type = this.threat_type.type;
       let num = this.threat_type.num;
@@ -43,16 +43,22 @@ export default {
       // 绘制图表
       myChart.setOption({
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          trigger: "axis",
+          borderColor: "rgba(83,137,224,0.3)",
+          borderWidth: 2,
+          backgroundColor: "#fff",
+          textStyle: {
+            color: "#ccc"
+          },
+          axisPointer: {
+            type: 'none'
           }
         },
         legend: {
-          show:false
+          show: false
         },
         grid: {
-          top:0,
+          top: 0,
           left: 0,
           right: '4%',
           bottom: '1%',
@@ -110,8 +116,8 @@ export default {
             label: {
               show: false
             },
-            barWidth:'40%',
-            color:'#5389E0',
+            barWidth: '40%',
+            color: '#5389E0',
             data: num
           },
           /*{

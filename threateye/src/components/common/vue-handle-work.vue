@@ -205,7 +205,7 @@
                           tooltip-effect="dark"
                           @selection-change="handle_sel_table_mul">
                   <el-table-column label="全选"
-                                   width="40"></el-table-column>
+                                   width="50"></el-table-column>
                   <el-table-column align='left'
                                    type="selection"
                                    width="40"></el-table-column>
@@ -248,7 +248,7 @@
                           @selection-change="handle_sel_table_mul">
                   <el-table-column label="全选"
                                    prop="type"
-                                   width="40">
+                                   width="50">
                   </el-table-column>
                   <el-table-column type="selection"
                                    width="40"></el-table-column>
@@ -261,13 +261,15 @@
                   <el-table-column prop="application"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
-                  <el-table-column label="威胁等级" width="100">
+                  <el-table-column label="威胁等级"
+                                   width="100">
                     <template slot-scope="scope">
                       <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
                         {{ scope.row.degree | degree_sino }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性" width="100">
+                  <el-table-column label="失陷确定性"
+                                   width="100">
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                         {{ scope.row.fall_certainty | certainty }}</span>
@@ -326,7 +328,7 @@
                       :data="table_add_works.tableData"
                       @current-change="handle_sel_table_add_works">
               <el-table-column label="单选"
-                               width="40">
+                               width="50">
                 <template slot-scope="scope">
                   <el-checkbox v-model="scope.row.checked"></el-checkbox>
                 </template>

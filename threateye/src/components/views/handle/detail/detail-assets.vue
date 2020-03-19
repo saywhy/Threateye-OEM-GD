@@ -1224,8 +1224,14 @@ export default {
             data.new_department = data.label.department;
             data.new_business = data.label.business;
 
-            this.assets_top = data;
+            console.log(data)
 
+            if(data.workorder_id == '0'){
+              data.workorder_name = '';
+              data.workorder_status = '';
+            }
+
+            this.assets_top = data;
             this.suggest_flag = true;
 
             //攻击阶段
@@ -1621,7 +1627,6 @@ export default {
     //新加到工单确定
     add_ok_state () {
 
-      console.log('原table的值')
       let selected_attr = this.table_assets.tableData
         .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
@@ -1760,7 +1765,7 @@ export default {
       li {
         display: flex;
         margin-bottom: 16px;
-        line-height: 36px;
+        line-height: 30px;
         .title {
           width: 130px;
           font-family: PingFang;
@@ -1768,13 +1773,13 @@ export default {
           color: #333333;
           .b_i {
             width: 18px;
-            height: 18px;
+            height: 16px;
             margin-right: 8px;
             display: inline-block;
             &.b_name {
               vertical-align: unset;
               background-repeat: no-repeat;
-              background-size: 18px;
+              background-size: 18px 16px;
               background-image: url('../../../../assets/images/handle/others/works-name.png');
             }
           }

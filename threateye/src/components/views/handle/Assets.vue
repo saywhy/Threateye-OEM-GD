@@ -19,12 +19,14 @@
             {{tag.name}}
           </el-tag>
         </div>
-        <el-button class="assets-toggle"
-                   @click="toggle_top_show = !toggle_top_show">
-          <span class="name">收起更多</span>
-          <i class="icons"
-             :class="{'top_down':!toggle_top_show}"></i>
-        </el-button>
+        <div class="tog">
+          <el-button class="assets-toggle"
+                     @click="toggle_top_show = !toggle_top_show">
+            <span class="name">收起更多</span>
+            <i class="icons"
+               :class="{'top_down':!toggle_top_show}"></i>
+          </el-button>
+        </div>
       </el-row>
       <el-row class="assets_all_detail"
               v-show="toggle_top_show">
@@ -1375,60 +1377,63 @@ export default {
     margin-top: 30px;
 
     .assets_all_list {
-      height: 60px;
-      line-height: 60px;
-
+      min-height: 60px;
       display: flex;
       position: relative;
-
       .title {
         width: 120px;
         color: #333333;
         font-size: 18px;
+        margin-top: 16px;
         font-family: PingFangMedium;
       }
 
       .all_list {
         flex: 1;
         text-align: left;
-
-        /deep/ .el-tag {
+        line-height: 36px;
+        padding: 12px 0;
+        /deep/
+        .el-tag {
           border-radius: 2px;
           margin-right: 5px;
           border-style: dashed;
         }
       }
-
-      /deep/ .assets-toggle {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        height: 34px;
+      .tog{
         width: 124px;
-        line-height: 0;
-        border-width: 0;
-        background: #f8f8f8;
-        text-align: center;
+        /deep/
+        .assets-toggle {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          height: 34px;
+          width: 124px;
+          line-height: 0;
+          border-width: 0;
+          background: #f8f8f8;
+          text-align: center;
 
-        .name {
-          font-family: PingFang;
-          font-size: 12px;
-          color: #666666;
-        }
+          .name {
+            font-family: PingFang;
+            font-size: 12px;
+            color: #666666;
+          }
 
-        .icons {
-          width: 16px;
-          height: 16px;
-          display: inline-block;
-          vertical-align: middle;
-          background-repeat: no-repeat;
-          background-size: 16px;
-          background-position: 0px -2px;
-          background-image: url('../../../assets/images/handle/others/tog-top-down.png');
+          .icons {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            background-position: 0px -2px;
+            background-image: url('../../../assets/images/handle/others/tog-top-down.png');
 
-          &.top_down {
-            background-position: 0px -4px;
-            background-image: url('../../../assets/images/handle/others/tog-top.png');
+            &.top_down {
+              background-position: 0px -4px;
+              background-image: url('../../../assets/images/handle/others/tog-top.png');
+            }
           }
         }
       }

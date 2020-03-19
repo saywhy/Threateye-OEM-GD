@@ -192,7 +192,7 @@
                      @size-change="handleSizeChangeReply"
                      @current-change="handleCurrentChangeReply"
                      :current-page="table_reply.pageNow"
-                     :page-sizes="[5,10,20]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="table_reply.eachPage"
                      :total="table_reply.count"
                      layout="total, sizes, prev, pager, next">
@@ -827,6 +827,7 @@ export default {
       border: 1px solid #fff;
       resize: none;
       padding: 24px;
+      outline: none;
     }
   }
 

@@ -651,7 +651,12 @@ export default {
         .then(response => {
           this.e_line.loading = false;
           this.e_line.data_show = true;
-          this.echarts_data = response.data.data;
+
+          if(response.data.data){
+            this.echarts_data = response.data.data;
+          }else{
+            this.echarts_data = [{statistics_time:'',alert_count:0}]
+          }
         })
         .catch(error => {
           console.log(error);

@@ -1621,7 +1621,6 @@ export default {
           let { status, data } = resp.data;
           if (status == 0) {
             console.log(this.edit);
-
             this.edit.operator_list = data;
             if (this.edit.data.perator && this.edit.data.perator.length != 0) {
               this.edit.operator_list.forEach(element => {
@@ -1689,6 +1688,12 @@ export default {
           this.edit.data.risk_asset_cn = []
           if (data.risk_asset && data.risk_asset.length != 0) {
             this.edit.data.risk_asset_cn = data.risk_asset
+            this.edit.data.risk_asset_cn.forEach(item => {
+              var obj = {
+                id: item
+              }
+              this.edit.handle_sel.push(obj)
+            })
           } else {
             this.edit.data.risk_asset_cn = []
           }
@@ -1699,6 +1704,12 @@ export default {
               if (element != '') {
                 this.edit.data.risk_alert_cn.push(element + '')
               }
+              this.edit.data.risk_alert_cn.forEach(item => {
+                var obj = {
+                  id: item
+                }
+                this.edit.handle_sel.push(obj)
+              });
             });
           } else {
             this.edit.data.risk_alert_cn = []
@@ -1707,6 +1718,7 @@ export default {
         .catch(err => {
           console.log(err);
         })
+
       // 获取经办人
       this.open_task_edit();
     },
@@ -1743,9 +1755,8 @@ export default {
         }
         console.log(this.edit.data.risk_asset_cn);
         console.log(this.edit.data.risk_alert_cn);
-        console.log(this.edit);
         this.edit.task.frist = false;
-        this.edit.handle_sel = []
+
       }
     },
     //上一步
@@ -1773,14 +1784,12 @@ export default {
               v.label_group = '';
             }
           });
-          this.edit.handle_sel = []
-          this.edit.data.risk_asset_cn.forEach(element => {
+          // 显示选择
+          this.edit.handle_sel.forEach(element => {
             this.edit.asset_list.data.forEach((item, index) => {
-              if (element == item.id) {
-                // console.log(item);
+              if (element.id == item.id) {
                 this.$nextTick(() => {
-                  // this.edit.data.risk_asset_cn.splice(element, 1);
-                  this.$refs.assetTable.toggleRowSelection(item, true);
+                  this.$refs.alertTable.toggleRowSelection(item, true);
                 })
               }
             });
@@ -1797,22 +1806,19 @@ export default {
         }
       })
         .then((resp) => {
+          console.log(this.edit.data.risk_alert_cn);
           let { status, data } = resp.data;
-          console.log(data);
           this.edit.alert_list = data;
-          // 清空选择
-          this.edit.data.risk_alert_cn.forEach(element => {
+          // 显示选择
+          this.edit.handle_sel.forEach(element => {
             this.edit.alert_list.data.forEach((item, index) => {
-              if (element == item.id) {
-                // console.log(item);
+              if (element.id == item.id) {
                 this.$nextTick(() => {
-                  // this.edit.data.risk_asset_cn.splice(element, 1);
                   this.$refs.alertTable.toggleRowSelection(item, true);
                 })
               }
             });
           });
-
         });
     },
     getRowKeys (row) {
@@ -1821,69 +1827,10 @@ export default {
     // 选择资产列表
     handle_sel_assets (val) {
       this.edit.handle_sel = val
-
-      var arr1 = []
-      var arr2 = []
-      if (this.edit.handle_sel.length == 0) {
-        this.edit.asset_list.data.forEach(item => {
-          arr1.push(item.id)
-        });
-      } else {
-        this.edit.asset_list.data.forEach(element => {
-          this.edit.handle_sel.forEach(item => {
-            if (item.id != element.id) {
-              arr1.push(element.id)
-            } else {
-              arr2.push(element.id)
-            }
-          });
-        });
-      }
-      this.edit.data.risk_asset_cn.forEach(element => {
-        arr1.forEach(item => {
-          if (element == item) {
-            this.removeByValue(this.edit.data.risk_asset_cn, item)
-          }
-        });
-      });
-      this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, arr2)
-      console.log(arr1);
-      console.log(arr2);
-      console.log(this.edit.data.risk_asset_cn);
-
-
     },
     // 选择告警列表
     handle_sel_alert (val) {
       this.edit.handle_sel = val
-      var arr1 = []
-      var arr2 = []
-      if (this.edit.handle_sel.length == 0) {
-        this.edit.alert_list.data.forEach(item => {
-          arr1.push(item.id)
-        });
-      } else {
-        this.edit.alert_list.data.forEach(element => {
-          this.edit.handle_sel.forEach(item => {
-            if (item.id != element.id) {
-              arr1.push(element.id)
-            } else {
-              arr2.push(element.id)
-            }
-          });
-        });
-      }
-      this.edit.data.risk_alert_cn.forEach(element => {
-        arr1.forEach(item => {
-          if (element == item) {
-            this.removeByValue(this.edit.data.risk_alert_cn, item)
-          }
-        });
-      });
-      this.edit.data.risk_alert_cn = this.arr_repeat(this.edit.data.risk_alert_cn, arr2)
-      console.log(arr1);
-      console.log(arr2);
-      console.log(this.edit.data.risk_alert_cn);
     },
 
     removeByValue (arr, val) {
@@ -1915,17 +1862,14 @@ export default {
 
     //编辑工单保存
     prev_task_handle_save_edit () {
-      console.log(this.edit);
+      console.log(this.edit.handle_sel);
       this.edit.table_operator.forEach(element => {
         this.edit.perator.push(element.username)
       });
-
       var handle_sel_list = []
       this.edit.handle_sel.forEach(element => {
         handle_sel_list.push(element.id)
       });
-      this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
-      console.log(this.edit.data);
 
       let all_params = {
         workorder_edit: '1',
@@ -1938,24 +1882,17 @@ export default {
         remind: this.edit.notice
       };
       if (this.edit.data.type == 'asset') {
-        if (this.edit.data.risk_asset_cn.length == 0) {
+        if (handle_sel_list.length == 0) {
           this.$message({ message: '请选择至少一项资产！', type: 'warning' });
           return false;
         }
-        all_params.risk_asset = this.edit.data.risk_asset_cn
+        all_params.risk_asset = handle_sel_list
       } else {
-
-        if (this.edit.data.risk_alert_cn.length == 0) {
+        if (handle_sel_list.length == 0) {
           this.$message({ message: '请选择至少一项告警！', type: 'warning' });
           return false;
         }
-        var risk_alert_cn_arr = []
-        this.edit.data.risk_alert_cn.forEach(element => {
-          risk_alert_cn_arr.push(parseInt(element))
-        });
-
-
-        all_params.te_alert = risk_alert_cn_arr
+        all_params.te_alert = handle_sel_list
       }
       console.log(all_params);
       this.handle.save = true
@@ -1983,13 +1920,11 @@ export default {
       this.edit.table_operator.forEach(element => {
         this.edit.perator.push(element.username)
       });
-      console.log(this.edit);
       var handle_sel_list = []
       this.edit.handle_sel.forEach(element => {
         handle_sel_list.push(element.id)
       });
-      this.edit.data.risk_asset_cn = this.arr_repeat(this.edit.data.risk_asset_cn, handle_sel_list)
-      console.log(this.edit.data);
+
       let all_params = {
         workorder_edit: '1',
         id: this.edit.data.id,
@@ -2001,23 +1936,17 @@ export default {
         remind: this.edit.notice
       };
       if (this.edit.data.type == 'asset') {
-        if (this.edit.data.risk_asset_cn.length == 0) {
+        if (handle_sel_list.length == 0) {
           this.$message({ message: '请选择至少一项资产！', type: 'warning' });
           return false;
         }
-        all_params.risk_asset = this.edit.data.risk_asset_cn
+        all_params.risk_asset = handle_sel_list
       } else {
-
-        if (this.edit.data.risk_alert_cn.length == 0) {
+        if (handle_sel_list.length == 0) {
           this.$message({ message: '请选择至少一项告警！', type: 'warning' });
           return false;
         }
-
-        var risk_alert_cn_arr = []
-        this.edit.data.risk_alert_cn.forEach(element => {
-          risk_alert_cn_arr.push(parseInt(element))
-        });
-        all_params.te_alert = risk_alert_cn_arr
+        all_params.te_alert = handle_sel_list
       }
       console.log(all_params);
       this.handle.save = true

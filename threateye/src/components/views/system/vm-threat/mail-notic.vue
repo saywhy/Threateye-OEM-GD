@@ -166,7 +166,7 @@ export default {
           }
           this.mail.alertEmail_list = []
           if (data.alertEmail.length == 0) {
-            this.alertEmail_list.push(
+            this.mail.alertEmail_list.push(
               {
                 name: '',
                 icon: true,

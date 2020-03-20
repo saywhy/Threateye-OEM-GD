@@ -932,7 +932,6 @@ export default {
   },
   created () {
     /********************************************************替换**************************************************/
-    console.log(this.owned)
     if (this.owned == 'distributed') {
       this.options_status = [
         {
@@ -1096,7 +1095,6 @@ export default {
         }
       }
 
-      console.log(params_status)
       this.$axios.get('/yiiapi/workorder/list',
         {
           params: {
@@ -1296,14 +1294,14 @@ export default {
       let multiple = this.table.multipleSelection;
       let selected = multiple.map(x => { return x.id * 1; });
 
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (selected.length == 0) {
-          that.$message({ message: '请选择要删除的工单！', type: 'warning' });
-        } else {
+      if (selected.length == 0) {
+        that.$message({ message: '请选择要删除的工单！', type: 'warning' });
+      } else {
+        this.$confirm('是否确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           console.log(selected)
           that.$axios.delete('/yiiapi/workorder/del', {
             data: { id: selected }          })
@@ -1325,11 +1323,10 @@ export default {
             .catch(err => {
               console.log(err);
             });
-        }
-
-      }).catch(() => {
-        this.$refs.multipleTable.clearSelection();
-      });
+        }).catch(() => {
+          this.$refs.multipleTable.clearSelection();
+        });
+      }
     },
 
     /************************************************新增*****************************************************/

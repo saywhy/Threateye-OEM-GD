@@ -51,6 +51,9 @@
     },
     created(){
       this.get_top_num();
+
+      let activeName = window.sessionStorage('activeName');
+      console.log(activeName);
     },
     methods: {
       //顶部数字列表
@@ -59,14 +62,12 @@
           .then(resp => {
             let {status,msg, data} = resp.data;
             if(status == 0){
-              console.log(data)
               if(data){
                 if(data.created == null){
                   this.number.created = 0;
                 }else {
                   this.number.created = data.created;
                 }
-                console.log(this.number.created)
                 if(data.distributed == null){
                   this.number.distributed = 0;
                 }else {

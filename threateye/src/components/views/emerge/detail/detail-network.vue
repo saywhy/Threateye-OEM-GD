@@ -491,7 +491,7 @@
                          @size-change="handleSizeChange_now"
                          @current-change="handleCurrentChange_now"
                          :current-page="emerge_list.now.pageNow"
-                         :page-sizes="[10,50,100]"
+                          :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          layout="total, sizes, prev, pager, next"
                          :total="emerge_list.now.count">
@@ -543,7 +543,7 @@
                          @size-change="handleSizeChange_old"
                          @current-change="handleCurrentChange_old"
                          :current-page="emerge_list.old.pageNow"
-                         :page-sizes="[10,50,100]"
+                        :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          layout="total, sizes, prev, pager, next"
                          :total="emerge_list.old.count">
@@ -661,7 +661,7 @@
                          @size-change="sc_table_add_works"
                          @current-change="hcc_table_add_works"
                          :current-page="table_add_works.pageNow"
-                         :page-sizes="[10,50,100]"
+                        :page-sizes="[10,20,50,100]"
                          :page-size="table_add_works.eachPage"
                          layout="total, sizes, prev, pager, next"
                          :total="table_add_works.count">
@@ -789,14 +789,6 @@
               <el-table-column prop="email_addr"
                                label="邮箱"></el-table-column>
             </el-table>
-            <!-- <el-pagination class="pagination_box"
-                           @current-change="hcc_table_operator"
-                           :page-sizes="[5]"
-                           :page-size="5"
-                           :current-page="new_worksheets_data.table_operator.pageNow"
-                           :total="new_worksheets_data.table_operator.tableData.length"
-                           layout="total,sizes, prev, pager, next">
-            </el-pagination> -->
           </div>
         </div>
 

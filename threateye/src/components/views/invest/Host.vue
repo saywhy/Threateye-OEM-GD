@@ -80,7 +80,7 @@
                              @size-change="handleSizeChange_network"
                              @current-change="handleCurrentChange_network"
                              :current-page="host_network.pageNow"
-                             :page-sizes="[10,50,100]"
+                              :page-sizes="[10,20,50,100]"
                              :page-size="10"
                              layout="total, sizes, prev, pager, next"
                              :total="host_network.count">
@@ -125,7 +125,7 @@
                              @size-change="handleSizeChange_file"
                              @current-change="handleCurrentChange_file"
                              :current-page="host_file.pageNow"
-                             :page-sizes="[10,50,100]"
+                             :page-sizes="[10,20,50,100]"
                              :page-size="10"
                              layout="total, sizes, prev, pager, next"
                              :total="host_file.count">
@@ -162,7 +162,7 @@
                              @size-change="handleSizeChange_user"
                              @current-change="handleCurrentChange_user"
                              :current-page="host_user.pageNow"
-                             :page-sizes="[10,50,100]"
+                           :page-sizes="[10,20,50,100]"
                              :page-size="10"
                              layout="total, sizes, prev, pager, next"
                              :total="host_user.count">

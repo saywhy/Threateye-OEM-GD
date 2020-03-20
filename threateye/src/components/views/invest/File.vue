@@ -77,7 +77,7 @@
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
                            :current-page="file_list.pageNow"
-                           :page-sizes="[10,50,100]"
+                             :page-sizes="[10,20,50,100]"
                            :page-size="10"
                            layout="total, sizes, prev, pager, next"
                            :total="file_list.count">

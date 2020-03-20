@@ -85,7 +85,7 @@
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
                            :current-page="dns_list.pageNow"
-                           :page-sizes="[10,50,100]"
+                           :page-sizes="[10,20,50,100]"
                            :page-size="10"
                            layout="total, sizes, prev, pager, next"
                            :total="dns_list.count">

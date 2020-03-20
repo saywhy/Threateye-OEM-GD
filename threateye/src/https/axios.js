@@ -101,6 +101,7 @@ import axios from 'axios';
 import Vue from 'vue'
 
 axios.defaults.baseURL = '';
+import Router from '@/router/index'
 
 import {Message} from 'element-ui';
 
@@ -130,15 +131,16 @@ axios.interceptors.response.use(response => {
       //return false;
       break;
     case 600:
-      Vue.$router.push({path:'/600'});
+      Router.push({path:'/600'});
       break;
     case 404:
-      Vue.$router.push({path:'/404'});
+      Router.push({path:'/404'});
       break;
     case 401:
-      Vue.$router.push({path:'/404'});
+      Router.push({path:'/404'});
       break;
     default:
+      Router.push({path:'/emerge/network'})
       //console.log(`请求状态${response.status}`)
   }
   return response

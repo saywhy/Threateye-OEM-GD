@@ -63,21 +63,28 @@
       init_tabs_info(){
         let locate = window.sessionStorage;
         let activeName = locate.getItem('activeName');
-        console.log(activeName);
         if(activeName){
           this.activeName = activeName;
           if(activeName == 'first'){
             this.owned ='created';
+            this.childUpdate1 = true;
+            this.childUpdate2 = false;
+            this.childUpdate3 = false;
           }else if(activeName == 'second'){
             this.owned ='distributed';
+            this.childUpdate1 = false;
+            this.childUpdate2 = true;
+            this.childUpdate3 = false;
           }else if(activeName == 'third'){
             this.owned ='all';
+            this.childUpdate1 = false;
+            this.childUpdate2 = false;
+            this.childUpdate3 = true;
           }
         }else {
           this.activeName = 'first';
           this.owned = 'created';
         }
-        console.log(this.owned)
       },
       //顶部数字列表
       get_top_num(){

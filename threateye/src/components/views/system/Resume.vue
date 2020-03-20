@@ -1,5 +1,6 @@
 <template>
   <div id="system_control_resume"
+       v-loading.fullscreen.lock="loading"
        class="container">
     <div class="content_box">
       <p class="title">恢复出厂设置</p>
@@ -16,7 +17,7 @@ export default {
   name: "system_control_resume",
   data () {
     return {
-
+      loading: false
     }
   },
   methods: {
@@ -26,8 +27,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.loading = true
         this.$axios.put('/yiiapi/seting/restore')
           .then(response => {
+            this.loading = false
             let { status, data } = response.data;
             if (status == 0) {
               this.$message(
@@ -36,7 +39,8 @@ export default {
                   type: 'success',
                 }
               );
-              this.$router.push({ path: '/login' });
+              location.reload();
+              this.$router.push('/login');
             }
           })
           .catch(error => {
@@ -55,8 +59,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.loading = true
         this.$axios.put('/yiiapi/seting/reboot')
           .then(response => {
+            this.loading = false
             let { status, data } = response.data;
             if (status == 0) {
               this.$message(
@@ -65,7 +71,8 @@ export default {
                   type: 'success',
                 }
               );
-              this.$router.push({ path: '/login' });
+              location.reload();
+              this.$router.push('/login');
             }
           })
           .catch(error => {

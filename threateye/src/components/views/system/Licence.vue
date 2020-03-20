@@ -1,5 +1,6 @@
 <template>
   <div id="system_control_licence"
+       v-loading.fullscreen.lock="loading"
        class="container">
     <div class="content_box">
       <p class="title">系统版本号：
@@ -133,6 +134,7 @@ export default {
   name: "system_control_licence",
   data () {
     return {
+      loading: false,
       license_list: {
       },
       license_data: {
@@ -232,11 +234,13 @@ export default {
         );
         return false
       }
+      this.loading = true
       this.$axios.post('/yiiapi/license/online', {
         SN: this.licence_pop.cdk,
         key: this.licence_pop.key
       })
         .then(response => {
+          this.loading = false
           console.log(response);
           if (response.data.status == 'fail') {
             switch (response.data.errorMessage) {

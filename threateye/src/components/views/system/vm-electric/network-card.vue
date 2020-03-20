@@ -20,7 +20,8 @@
         <el-select class="select_box"
                    @change='change_role'
                    v-model="network_model.role_name"
-                   placeholder="请选择角色">
+                   placeholder="请选择角色"
+                   clearable>
           <el-option v-for="item in network_model.role"
                      :key="item.name"
                      :label="item.name"
@@ -156,6 +157,9 @@ export default {
       this.network.forEach(item => {
         if (item.NAME == value) {
           switch (item.PORT) {
+            case 0:
+              this.network_model.role_name = "";
+              break;
             case 1:
               this.network_model.role_name = "管理口";
               break;
@@ -169,6 +173,7 @@ export default {
               this.network_model.role_name = "沙箱口";
               break;
             default:
+              this.network_model.role_name = "";
               break;
           }
           switch (item.BOOTPROTO) {
@@ -259,6 +264,9 @@ export default {
         ONBOOT = 'no'
       }
       switch (this.network_model.role_name) {
+        case '':
+          PORT = 0;
+          break;
         case '管理口':
           PORT = 1;
           break;

@@ -28,10 +28,6 @@
         activeName: 'user',
         website:{
           title: 'nx-admin',
-         /* logo: 'N',
-          author: 'BY nxmin',
-          whiteList: ['/login', '/404', '/401', '/lock'],
-          lockPage: '/lock'*/
         },
         name:'登录',
         stu:true

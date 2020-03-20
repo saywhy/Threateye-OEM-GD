@@ -60,14 +60,14 @@ export default {
   },
   created () { },
   mounted () {
-    console.log(this.option);
+    //console.log(this.option);
   },
   computed: {
 
   },
   methods: {
     chooseTime () {
-      console.log(this.option);
+     // console.log(this.option);
       // console.log(this.pickerOptions.time);
       this.$emit("changeTime", this.pickerOptions.time);
     }

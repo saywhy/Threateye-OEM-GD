@@ -8,7 +8,7 @@
        <el-tabs v-model="activeName" @tab-click="handleClick">
 
          <!--我创建的-->
-         <el-tab-pane label="我创建的" name="first">
+         <el-tab-pane label="我创建的" name="first" >
            <vm-handle-works :owned="owned" v-if="childUpdate1" @updateNum="updateTopNum"></vm-handle-works>
          </el-tab-pane>
 
@@ -50,12 +50,35 @@
       VmHandleWorks
     },
     created(){
+      this.init_tabs_info();
       this.get_top_num();
 
-      let activeName = window.sessionStorage('activeName');
-      console.log(activeName);
+      this.$forceUpdate();
+    },
+    destroyed(){
+      console.log('已销毁')
     },
     methods: {
+      //tabs初始化
+      init_tabs_info(){
+        let locate = window.sessionStorage;
+        let activeName = locate.getItem('activeName');
+        console.log(activeName);
+        if(activeName){
+          this.activeName = activeName;
+          if(activeName == 'first'){
+            this.owned ='created';
+          }else if(activeName == 'second'){
+            this.owned ='distributed';
+          }else if(activeName == 'third'){
+            this.owned ='all';
+          }
+        }else {
+          this.activeName = 'first';
+          this.owned = 'created';
+        }
+        console.log(this.owned)
+      },
       //顶部数字列表
       get_top_num(){
         this.$axios.get('/yiiapi/workorder/top')
@@ -90,21 +113,25 @@
       /*****************************/
       handleClick(tab, event) {
         let name = tab.name;
+        let locate = window.sessionStorage;
         if(name == "first"){
           this.owned = 'created';
           this.childUpdate1 = true;
           this.childUpdate2 = false;
           this.childUpdate3 = false;
+          locate.setItem('activeName','first');
         }else if(name == "second"){
           this.owned = 'distributed';
           this.childUpdate1 = false;
           this.childUpdate2 = true;
           this.childUpdate3 = false;
+          locate.setItem('activeName','second');
         }else if(name == "third"){
           this.owned = 'all';
           this.childUpdate1 = false;
           this.childUpdate2 = false;
           this.childUpdate3 = true;
+          locate.setItem('activeName','third');
         }
       }
     }

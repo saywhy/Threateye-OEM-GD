@@ -180,7 +180,7 @@
     <el-pagination class="handle-pagination"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
-                    :page-sizes="[10,20,50,100]"
+                   :page-sizes="[10,20,50,100]"
                    :page-size="table.eachPage"
                    :current-page="table.pageNow"
                    :total="table.count"
@@ -1450,7 +1450,7 @@ export default {
 
     //资产匹配
     getRowKeys_assets (row) {
-     // console.log(row)
+      // console.log(row)
       return row.asset_ip;
     },
 
@@ -1781,7 +1781,7 @@ export default {
             this.edit.asset_list.data.forEach((item, index) => {
               if (element.id == item.id) {
                 this.$nextTick(() => {
-                  this.$refs.alertTable.toggleRowSelection(item, true);
+                  this.$refs.assetTable.toggleRowSelection(item, true);
                 })
               }
             });

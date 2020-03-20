@@ -36,6 +36,7 @@ export default {
                   type: 'success',
                 }
               );
+              this.$router.push({ path: '/login' });
             }
           })
           .catch(error => {
@@ -64,6 +65,7 @@ export default {
                   type: 'success',
                 }
               );
+              this.$router.push({ path: '/login' });
             }
           })
           .catch(error => {

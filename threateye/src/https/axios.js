@@ -119,7 +119,7 @@ axios.interceptors.response.use(response => {
   //console.log(response)
   //status内层
   switch (response.data.status) {
-    case 600:
+    case 602:
       console.log(response.data.msg)
       Message.warning(response.data.msg+',请修改个人信息');
       //Message.warning('请修改个人信息');
@@ -128,6 +128,15 @@ axios.interceptors.response.use(response => {
       //location.reload();
       //Vue.$router.push({path:'/login'});
       //return false;
+      break;
+    case 600:
+      Vue.$router.push({path:'/600'});
+      break;
+    case 404:
+      Vue.$router.push({path:'/404'});
+      break;
+    case 401:
+      Vue.$router.push({path:'/404'});
       break;
     default:
       //console.log(`请求状态${response.status}`)

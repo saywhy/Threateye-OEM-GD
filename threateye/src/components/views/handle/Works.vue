@@ -55,9 +55,6 @@
 
       this.$forceUpdate();
     },
-    destroyed(){
-      console.log('已销毁')
-    },
     methods: {
       //tabs初始化
       init_tabs_info(){

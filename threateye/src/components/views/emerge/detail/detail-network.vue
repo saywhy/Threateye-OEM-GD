@@ -491,7 +491,7 @@
                          @size-change="handleSizeChange_now"
                          @current-change="handleCurrentChange_now"
                          :current-page="emerge_list.now.pageNow"
-                          :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          layout="total, sizes, prev, pager, next"
                          :total="emerge_list.now.count">
@@ -543,7 +543,7 @@
                          @size-change="handleSizeChange_old"
                          @current-change="handleCurrentChange_old"
                          :current-page="emerge_list.old.pageNow"
-                        :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          layout="total, sizes, prev, pager, next"
                          :total="emerge_list.old.count">
@@ -661,7 +661,7 @@
                          @size-change="sc_table_add_works"
                          @current-change="hcc_table_add_works"
                          :current-page="table_add_works.pageNow"
-                        :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="table_add_works.eachPage"
                          layout="total, sizes, prev, pager, next"
                          :total="table_add_works.count">
@@ -1455,21 +1455,27 @@ export default {
     //获取列表
     get_table_works_list () {
       let workorder_list = '';
+      let workorder_type = '';
       switch (this.$route.query.type) {
         case 'alert':
           workorder_list = '/yiiapi/alert/workorder-list'
+          workorder_type = 'alert'
           break;
         case 'asset':
           workorder_list = '/yiiapi/asset/workorder-list'
+          workorder_type = 'asset'
           break;
         case 'lateral':
           workorder_list = '/yiiapi/horizontalthreat/workorder-list'
+          workorder_type = 'alert'
           break;
         case 'outside':
           workorder_list = '/yiiapi/externalthreat/workorder-list'
+          workorder_type = 'alert'
           break;
         case 'outreath':
           workorder_list = '/yiiapi/outreachthreat/workorder-list'
+          workorder_type = 'alert'
           break;
         default:
           break;
@@ -1478,7 +1484,8 @@ export default {
       this.$axios.get(workorder_list, {
         params: {
           page: this.table_add_works.pageNow,
-          rows: this.table_add_works.eachPage
+          rows: this.table_add_works.eachPage,
+          type: workorder_type
         }
       }).then((resp) => {
         console.log('*************8')
@@ -2935,24 +2942,30 @@ export default {
     //获取工单列表
     get_worksheets_list () {
       var workorder_list = ''
+      var workorder_type = ''
       // horizontalthreat  横向威胁告警  lateral
       // externalthreat  外部威胁告警  outside
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
           workorder_list = '/yiiapi/alert/workorder-list'
+          workorder_type = 'alert'
           break;
         case 'asset':
           workorder_list = '/yiiapi/asset/workorder-list'
+          workorder_type = 'asset'
           break;
         case 'lateral':
           workorder_list = '/yiiapi/horizontalthreat/workorder-list'
+          workorder_type = 'alert'
           break;
         case 'outside':
           workorder_list = '/yiiapi/externalthreat/workorder-list'
+          workorder_type = 'alert'
           break;
         case 'outreath':
           workorder_list = '/yiiapi/outreachthreat/workorder-list'
+          workorder_type = 'alert'
           break;
         default:
           break;
@@ -2961,6 +2974,7 @@ export default {
         params: {
           page: this.worksheets_data.page,
           rows: this.worksheets_data.rows,
+          type: workorder_type
         }
       }).then((resp) => {
         let { status, data } = resp.data;

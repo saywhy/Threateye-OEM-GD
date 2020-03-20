@@ -15,7 +15,8 @@
         <!--按钮组-->
         <el-row class="common_btn common_btn_124">
 
-          <el-col :span="24" class="common_btn_list">
+          <el-col :span="24"
+                  class="common_btn_list">
             <el-dropdown @command="change_state"
                          trigger="click"
                          placement='bottom-start'
@@ -72,17 +73,18 @@
         <li>
           <span class="title">
             <i class="b_i"></i>状态：</span>
-          <span class="content">{{detail.status | risk_status}}</span>
+          <span class="content">{{assets_top.asset_status | risk_status}}</span>
         </li>
         <li>
           <span class="title">
             <i class="b_i"></i>资产类型：</span>
           <span class="content">
             <ul>
-                <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_base_category"
-                    :key="$idx">
-                  <span class="tag_btn">{{it}}</span>
-                </li>
+              <li class="tag_btn_box"
+                  v-for="(it,$idx) in assets_top.new_base_category"
+                  :key="$idx">
+                <span class="tag_btn">{{it}}</span>
+              </li>
             </ul>
           </span>
         </li>
@@ -91,10 +93,11 @@
             <i class="b_i"></i>分支：</span>
           <span class="content">
             <ul>
-                <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_branch"
-                    :key="$idx">
-                  <span class="tag_btn">{{it}}</span>
-                </li>
+              <li class="tag_btn_box"
+                  v-for="(it,$idx) in assets_top.new_branch"
+                  :key="$idx">
+                <span class="tag_btn">{{it}}</span>
+              </li>
             </ul>
           </span>
         </li>
@@ -104,10 +107,11 @@
           <span class="title">部门：</span>
           <span class="content">
             <ul>
-                <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_department"
-                    :key="$idx">
-                  <span class="tag_btn">{{it}}</span>
-                </li>
+              <li class="tag_btn_box"
+                  v-for="(it,$idx) in assets_top.new_department"
+                  :key="$idx">
+                <span class="tag_btn">{{it}}</span>
+              </li>
             </ul>
           </span>
         </li>
@@ -115,8 +119,9 @@
           <span class="title">业务：</span>
           <span class="content">
             <ul>
-              <li class="tag_btn_box" v-for="(it,$idx) in assets_top.new_business"
-                   :key="$idx">
+              <li class="tag_btn_box"
+                  v-for="(it,$idx) in assets_top.new_business"
+                  :key="$idx">
                 <span class="tag_btn">{{it}}</span>
               </li>
             </ul>
@@ -137,7 +142,7 @@
     </div>
 
     <!--攻击阶段分布-->
-    <div class="detail_base_stg" >
+    <div class="detail_base_stg">
       <div class="top_left">
         <img class="b_img"
              src="@/assets/images/emerge/detai_attack.png" />
@@ -279,7 +284,8 @@
     </div>
 
     <!-- 威胁及安全建议 -->
-    <div class="suggest_box" v-if="suggest_flag">
+    <div class="suggest_box"
+         v-if="suggest_flag">
       <div class="suggest_top">
         <img src="@/assets/images/emerge/detal_jianyi.png"
              alt=""
@@ -583,16 +589,17 @@
                                  label="资产组"
                                  width="90"
                                  show-overflow-tooltip></el-table-column>
-                <el-table-column label="关联威胁" show-overflow-tooltip>
+                <el-table-column label="关联威胁"
+                                 show-overflow-tooltip>
                   <template slot-scope="scope">
-                <span class="btn_tag_box"
-                      v-if="item!=''"
-                      v-for="item in scope.row.category">
-                  <el-button type="primary"
-                             class="btn_tag">
-                    {{item}}
-                  </el-button>
-                </span>
+                    <span class="btn_tag_box"
+                          v-if="item!=''"
+                          v-for="item in scope.row.category">
+                      <el-button type="primary"
+                                 class="btn_tag">
+                        {{item}}
+                      </el-button>
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column label="威胁等级">
@@ -720,7 +727,7 @@ export default {
   components: { backTitle, VmHanleRank },
   data () {
     return {
-      suggest_flag:false,
+      suggest_flag: false,
       notes: false,
       network_times: [],
       network_detail: {},
@@ -1208,12 +1215,13 @@ export default {
       this.$axios.get('/yiiapi/asset/asset-details',
         {
           params: {
-            id:  this.detail.id
+            id: this.detail.id
           }
         })
         .then((resp) => {
           //console.log(resp)
-          let { status, data,msg } = resp.data;
+          let { status, data, msg } = resp.data;
+
           if (status == 0) {
             let attr = [];
 
@@ -1269,11 +1277,8 @@ export default {
                 data.new_workorder_name = '';
               }
             }
-
-
             this.assets_top = data;
             this.suggest_flag = true;
-
             //攻击阶段
             this.attack_stage_list.forEach(function (v, k) {
               if (data.attack_stage && data.attack_stage.length) {
@@ -1285,10 +1290,7 @@ export default {
                 })
               }
             });
-          }
-          else if(status == 9){
-            this.$message.error(msg);
-            this.$router.path({ path:"/handle/assets"});
+
           }
         });
     },
@@ -1336,7 +1338,7 @@ export default {
     },
 
     //跳转至工单详情
-    Goto_workorder(){
+    Goto_workorder () {
       this.$router.push({ path: "/detail/works", query: { id: this.assets_top.workorder_id, type: 'asset' } });
     },
 
@@ -1397,12 +1399,15 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status, data ,msg} = resp.data;
+          let { status, data, msg } = resp.data;
+          this.closed_state();
           if (status == 0) {
             this.$message.success('状态变更成功！');
-            this.closed_state();
             this.get_assets_detail_top();
-          }  else {
+          } else if (status == 9) {
+            // this.$message.error(msg);
+            this.$router.push({ path: "/handle/assets" });
+          } else {
             this.$message.error(msg);
           }
         }).catch(err => {
@@ -2641,14 +2646,13 @@ export default {
     }
   }
 }
-
 </style>
 <style lang="less">
-  body{
-    > ul.dropdown_ul_box_124{
-      width: 128px!important;
-    }
+body {
+  > ul.dropdown_ul_box_124 {
+    width: 128px !important;
   }
+}
 </style>
 
 

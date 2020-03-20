@@ -80,7 +80,7 @@
                              @size-change="handleSizeChange_network"
                              @current-change="handleCurrentChange_network"
                              :current-page="host_network.pageNow"
-                              :page-sizes="[10,20,50,100]"
+                             :page-sizes="[10,20,50,100]"
                              :page-size="10"
                              layout="total, sizes, prev, pager, next"
                              :total="host_network.count">
@@ -162,7 +162,7 @@
                              @size-change="handleSizeChange_user"
                              @current-change="handleCurrentChange_user"
                              :current-page="host_user.pageNow"
-                           :page-sizes="[10,20,50,100]"
+                             :page-sizes="[10,20,50,100]"
                              :page-size="10"
                              layout="total, sizes, prev, pager, next"
                              :total="host_user.count">
@@ -462,7 +462,7 @@ export default {
 <style scoped lang="less">
 #invest_host {
   /deep/ .el-button-group {
-    padding: 15px 0 9px 0;
+    padding: 0 0 24px 0;
     .el-button {
       border: 1px solid #0070ff;
       background: #fff;

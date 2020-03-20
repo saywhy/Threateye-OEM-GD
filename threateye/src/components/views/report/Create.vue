@@ -100,7 +100,7 @@
           <el-pagination @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
                          :current-page="report_lsit.pageNow"
-                           :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          layout="total, sizes, prev, pager, next"
                          :total="report_lsit.count">
@@ -594,6 +594,7 @@ export default {
       this.report.type = 'doc'
       this.report.start_time = ''
       this.report.end_time = ''
+      $(document.querySelector('.el-button--text')).trigger('click');
     },
 
     // 获取列表

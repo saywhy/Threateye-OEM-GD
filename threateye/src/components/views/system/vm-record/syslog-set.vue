@@ -51,7 +51,7 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="syslog_list.pageNow"
-                      :page-sizes="[10,20,50,100]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
                      :total="syslog_list.count">
@@ -73,7 +73,7 @@
       <div class="content">
         <div class="content_item">
           <div class="item_top">
-            <span>是否启用</span>
+            <span style="margin-right:10px;">是否启用</span>
             <el-switch v-model="syslog_pop.add.switch">
             </el-switch>
           </div>
@@ -92,7 +92,7 @@
         <div class="content_space"></div>
         <div class="content_item">
           <div class="item_top">
-            <span>状态</span>
+            <span style="margin-right:10px;">状态</span>
             <el-radio v-model="syslog_pop.add.protocol"
                       label="udp"
                       class="r_radio_item">udp</el-radio>

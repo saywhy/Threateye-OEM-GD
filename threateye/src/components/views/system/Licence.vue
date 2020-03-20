@@ -23,8 +23,7 @@
                  :on-success='onsuccess'
                  :on-exceed="handleExceed"
                  :file-list="fileList">
-        <el-button size="small"
-                   class="btn_o"
+        <el-button class="btn_o"
                    type="primary">导入许可证</el-button>
       </el-upload>
       <div class="licence_table">
@@ -407,12 +406,16 @@ export default {
       margin-bottom: 24px;
     }
     .btn_i {
+      font-size: 14px;
       width: 148px;
       height: 42px;
       background: #0070ff;
       color: #fff;
+      padding: 0;
     }
     .btn_o {
+      padding: 0;
+      font-size: 14px;
       width: 148px;
       height: 42px;
       background: #fff;

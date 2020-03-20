@@ -578,14 +578,12 @@
                                  width="50"></el-table-column>
                 <el-table-column prop="asset_ip"
                                  label="资产"
-                                 max-width="100"></el-table-column>
+                                 show-overflow-tooltip></el-table-column>
                 <el-table-column prop="label_group"
                                  label="资产组"
-                                 min-width="120"
+                                 width="90"
                                  show-overflow-tooltip></el-table-column>
-                <el-table-column min-width="140"
-                                 label="关联威胁"
-                                 show-overflow-tooltip>
+                <el-table-column label="关联威胁" show-overflow-tooltip>
                   <template slot-scope="scope">
                 <span class="btn_tag_box"
                       v-if="item!=''"
@@ -597,24 +595,22 @@
                 </span>
                   </template>
                 </el-table-column>
-                <el-table-column label="威胁等级"
-                                 width="100">
+                <el-table-column label="威胁等级">
                   <template slot-scope="scope">
                     <span class="btn_alert_background"
                           :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
                       {{ scope.row.degree | degree }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="失陷确定性"
-                                 width="100">
+                <el-table-column label="失陷确定性">
                   <template slot-scope="scope">
                     <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                       {{ scope.row.fall_certainty | certainty }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="状态"
-                                 width="80">
-                  <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                                 width="60">
+                  <template slot-scope="scope">{{ scope.row.asset_status | risk_status }}</template>
                 </el-table-column>
               </el-table>
               <el-pagination class="pagination_box"
@@ -1220,7 +1216,11 @@ export default {
           let { status, data } = resp.data;
           if (status == 0) {
             let attr = [];
+
+            data.label_group = data.asset_label.join(',');
+
             attr.push(data);
+
             this.table_assets.tableData = attr;
             this.table_assets.count = 1;
             this.table_assets.pageNow = 1;

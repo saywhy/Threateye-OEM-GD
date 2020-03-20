@@ -42,12 +42,14 @@
           <el-dropdown class="avatar-container right-menu-item"
                        trigger="click">
             <div class="avatar-wrapper">
-              <img class="user-avatar" style="display: none;"
+              <img class="user-avatar"
+                   style="display: none;"
                    :src="avatarSrc">
               <label class="avatar-name">{{token}}</label>
               <i class="el-icon-caret-bottom"></i>
             </div>
-            <el-dropdown-menu slot="dropdown" class="nav-dropdown-menu">
+            <el-dropdown-menu slot="dropdown"
+                              class="nav-dropdown-menu">
               <!-- <router-link :to="{path: '/'}">-->
               <!--<a target='_blank' @click="enter_home()">
                 <el-dropdown-item>
@@ -111,7 +113,9 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title"><span class="it_m">*</span>旧密码</span>
+            <span class="title">旧密码
+              <span class="it_m">*</span>
+            </span>
           </p>
           <el-input class="select_box"
                     placeholder="请再次输入密码"
@@ -120,7 +124,10 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title"><span class="it_m">*</span>邮箱</span>
+            <span class="title">
+              邮箱
+              <span class="it_m">*</span>
+            </span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入邮箱"
@@ -129,7 +136,10 @@
         </div>
         <div class="content_item">
           <p>
-            <span class="title"><span class="it_m">*</span>手机号</span>
+            <span class="title">
+              手机号
+              <span class="it_m">*</span>
+            </span>
           </p>
           <el-input class="select_box"
                     placeholder="请输入手机号"
@@ -229,19 +239,19 @@ export default {
 
               if (status == 0) {
 
-              //setToken(data.data.token);
+                //setToken(data.data.token);
 
-              console.log(data.data)
+                console.log(data.data)
 
-              localStorage.setItem("token", data.data.token);
+                localStorage.setItem("token", data.data.token);
 
-              let datas = data.data;
+                let datas = data.data;
 
-              this.user_edit.department = datas.department;
-              this.user_edit.mobile = datas.mobile;
-              this.user_edit.email_addr= datas.email_addr;
+                this.user_edit.department = datas.department;
+                this.user_edit.mobile = datas.mobile;
+                this.user_edit.email_addr = datas.email_addr;
 
-              //this.edit_user();
+                //this.edit_user();
 
               } else {
 
@@ -363,8 +373,8 @@ export default {
                       this.$router.push('/login');
                     }
                   }).catch(error => {
-                  console.log(error);
-                })
+                    console.log(error);
+                  })
                 // location.reload();
               }, 500);
             }
@@ -399,12 +409,12 @@ export default {
     logout () {
       this.$store.dispatch('LogOut')
         .then((resp) => {
-        //In order to re-instantiate the vue-router object to avoid bugs
-        this.$message.success('退出登录成功');
-        location.reload();
-      }).catch(error => {
-        this.$message.error('退出登录操作失败'+error);
-      })
+          //In order to re-instantiate the vue-router object to avoid bugs
+          this.$message.success('退出登录成功');
+          location.reload();
+        }).catch(error => {
+          this.$message.error('退出登录操作失败' + error);
+        })
     },
     //通知点击事件
     messageClick () {
@@ -526,8 +536,7 @@ export default {
       }
     }
   }
-  /deep/
-  .el-dialog {
+  /deep/ .el-dialog {
     width: 550px;
     .el-dialog__body {
       width: 550px;
@@ -541,7 +550,7 @@ export default {
           .title {
             font-size: 12px;
             color: #999999;
-            .it_m{
+            .it_m {
               color: red;
             }
           }

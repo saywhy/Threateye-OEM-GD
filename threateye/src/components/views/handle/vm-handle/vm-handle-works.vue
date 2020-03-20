@@ -444,7 +444,7 @@
                     </el-table-column>
                     <el-table-column label="状态"
                                      width="80">
-                      <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
+                      <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                     </el-table-column>
                   </el-table>
                 </div>

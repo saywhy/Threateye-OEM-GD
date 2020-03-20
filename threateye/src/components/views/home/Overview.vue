@@ -1194,8 +1194,6 @@ export default {
           }
           .legend_title {
             margin-right: 10px;
-            color: #0070ff;
-            text-decoration: underline;
           }
         }
         // 第一个

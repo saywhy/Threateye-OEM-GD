@@ -35,18 +35,21 @@
                         tooltip-effect="dark"
                         style="width: 100%">
                 <el-table-column label="结果"
+                                 width='120'
                                  show-overflow-tooltip>
                   <template slot-scope="scope">
                     <span :class="scope.row.result==0?'color_red':''">{{scope.row.result_cn}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="创建时间"
+                                 width='180'
                                  show-overflow-tooltip>
                   <template slot-scope="scope">
                     <span>{{scope.row.created_at*1000 | formatDate}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="扫描状态"
+                                 width='150'
                                  show-overflow-tooltip>
                   <template slot-scope="scope">
                     <span>{{scope.row.status=='1'?'扫描中':"扫描结束"}}</span>
@@ -56,7 +59,8 @@
                                  label='文件名'
                                  show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column label='扫描详情'>
+                <el-table-column label='扫描详情'
+                                 width='100'>
                   <template slot-scope="scope">
                     <img src="@/assets/images/common/download.png"
                          class="img_icon"
@@ -65,7 +69,8 @@
                          @click.stop='download(scope.row)'>
                   </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作"
+                                 width='100'>
                   <template slot-scope="scope">
                     <img src="@/assets/images/common/delete.png"
                          class="img_icon"
@@ -80,7 +85,7 @@
                              @size-change="handleSizeChange"
                              @current-change="handleCurrentChange"
                              :current-page="sandbox_list.pageNow"
-                            :page-sizes="[10,20,50,100]"
+                             :page-sizes="[10,20,50,100]"
                              :page-size="10"
                              layout="total, sizes, prev, pager, next"
                              :total="sandbox_list.count">

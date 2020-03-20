@@ -8,17 +8,17 @@
         <el-tab-pane label="审计日志"
                      class="tabs-item"
                      name="first">
-          <audit-log></audit-log>
+          <audit-log v-if="tab_show.first"></audit-log>
         </el-tab-pane>
         <el-tab-pane label="SYSLOG配置"
                      class="tabs-item"
                      name="second">
-          <syslog-set></syslog-set>
+          <syslog-set v-if="tab_show.second"></syslog-set>
         </el-tab-pane>
         <el-tab-pane label="故障日志"
                      class="tabs-item"
                      name="third">
-          <fault-log></fault-log>
+          <fault-log v-if="tab_show.third"></fault-log>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -37,11 +37,37 @@ export default {
   name: "system_control_record",
   data () {
     return {
-      activeName: "first"
+      activeName: "first",
+      tab_show: {
+        first: true,
+        second: false,
+        third: false,
+      }
     };
   },
   methods: {
-    handleClick () { }
+    handleClick (tab, event) {
+      console.log(tab);
+      switch (tab.name) {
+        case "first":
+          this.tab_show.first = true;
+          this.tab_show.second = false;
+          this.tab_show.third = false;
+          break;
+        case "second":
+          this.tab_show.first = false;
+          this.tab_show.second = true;
+          this.tab_show.third = false;
+          break;
+        case "third":
+          this.tab_show.first = false;
+          this.tab_show.second = false;
+          this.tab_show.third = true;
+          break;
+        default:
+          break;
+      }
+    }
   }
 };
 </script>

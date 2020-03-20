@@ -280,7 +280,7 @@
             </div>
             <div class="content_item">
               <p>
-                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网段设备”。</span>
+                <span class="title">注: 标签属性有7个预留字段“**业务” “总部” “**分支” “**部门” “终端” “服务器” “网络设备”。</span>
               </p>
             </div>
           </div>
@@ -488,7 +488,7 @@ export default {
       if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
-            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
             type: 'error',
           }
         );
@@ -497,7 +497,7 @@ export default {
       if (tag_test_str.indexOf("服务器") != -1 && (tag_test_str.indexOf("终端") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
-            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
             type: 'error',
           }
         );
@@ -506,7 +506,7 @@ export default {
       if (tag_test_str.indexOf("网络设备") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("终端") != -1)) {
         this.$message(
           {
-            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
             type: 'error',
           }
         );
@@ -694,7 +694,7 @@ export default {
       if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
-            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
             type: 'error',
           }
         );
@@ -703,7 +703,7 @@ export default {
       if (tag_test_str.indexOf("服务器") != -1 && (tag_test_str.indexOf("终端") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
-            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
             type: 'error',
           }
         );
@@ -712,7 +712,7 @@ export default {
       if (tag_test_str.indexOf("网络设备") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("终端") != -1)) {
         this.$message(
           {
-            message: '“终端”、“服务器”、或者是“网络设备”三者不能共存。',
+            message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
             type: 'error',
           }
         );

@@ -1264,7 +1264,7 @@ export default {
 
         let stu = selected[0].status;
         if (stu == 1 || stu == 2) {
-          var url1 = "/yiiapi/workorder/download-test?id=" + (selected[0].id * 1);
+          var url1 = "/yiiapi/site/download-test?id=" + (selected[0].id * 1);
           this.$axios.get(url1)
             .then(resp => {
               let { status, msg, data } = resp.data;

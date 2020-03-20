@@ -213,7 +213,7 @@ export default {
             this.$message(
               {
                 message: '请输入ip地址',
-                type: 'error',
+                type: 'warning',
               }
             );
             return false
@@ -225,7 +225,7 @@ export default {
             this.$message(
               {
                 message: '请输入域名',
-                type: 'error',
+                type: 'warning',
               }
             );
             return false

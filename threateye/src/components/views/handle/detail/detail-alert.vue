@@ -558,7 +558,7 @@
           <div class="item_addrs"
                v-for="(item,index) in edit_tag.tag_list">
             <el-input class="select_box"
-                      placeholder="请输入标签，最多可以设置5个标签。"
+                      placeholder="请输入标签，最多可以设置5个标签"
                       v-model="item.name"
                       clearable>
             </el-input>

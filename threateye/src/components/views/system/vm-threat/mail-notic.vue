@@ -201,7 +201,7 @@ export default {
         this.$message(
           {
             message: '请输入收件箱地址',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false;
@@ -210,7 +210,7 @@ export default {
         this.$message(
           {
             message: '请输入邮箱密码',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false;
@@ -271,7 +271,7 @@ export default {
         this.$message(
           {
             message: '请输入收件箱地址',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false;
@@ -280,7 +280,7 @@ export default {
         this.$message(
           {
             message: '请输入邮箱密码',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false;

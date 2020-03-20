@@ -381,7 +381,7 @@ export default {
       if (this.equipment_pop.type == '') {
         this.$message(
           {
-            message: '请选择设备类型',
+            message: '请选择设备类型！',
             type: 'warning',
           }
         );

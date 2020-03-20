@@ -146,7 +146,7 @@ export default {
       if (this.send_config.receiver_list.length == 0) {
         this.$message(
           {
-            message: '请输入发件人邮箱。',
+            message: '请输入发件人邮箱',
             type: 'warning',
           }
         );

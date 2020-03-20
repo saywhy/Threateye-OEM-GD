@@ -106,7 +106,7 @@ export default {
         this.$message(
           {
             message: '并未发现任何yara规则文件，请先上传规则库文件！',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false

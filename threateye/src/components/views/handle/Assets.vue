@@ -933,7 +933,7 @@ export default {
     open_state () {
       let sel_table_data = this.table.multipleSelection;
       if (sel_table_data.length == 0) {
-        this.$message({ message: '请选择需要变更的资产', type: 'warning' });
+        this.$message({ message: '请选择需要变更的资产！', type: 'warning' });
         return false;
       } else {
         this.state_change = true;
@@ -998,7 +998,7 @@ export default {
       let sel_table_data = this.table.multipleSelection;
       let sel_table_attr = sel_table_data.map(x => { return x.status });
       if (sel_table_data.length == 0) {
-        this.$message({ message: '请选择需要编辑的资产', type: 'warning' });
+        this.$message({ message: '请选择需要编辑的资产！', type: 'warning' });
         return false;
       } else {
         if (sel_table_attr.includes('3')

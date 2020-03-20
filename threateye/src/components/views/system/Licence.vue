@@ -228,7 +228,7 @@ export default {
       if (this.licence_pop.cdk == '') {
         this.$message(
           {
-            message: '请输入序列号！',
+            message: '请输入序列号',
             type: 'warning',
           }
         );

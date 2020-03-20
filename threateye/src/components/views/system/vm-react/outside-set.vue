@@ -312,7 +312,7 @@ export default {
         this.$message(
           {
             message: '请输入用户名',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -321,7 +321,7 @@ export default {
         this.$message(
           {
             message: '请输入密码',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -370,7 +370,7 @@ export default {
         this.$message(
           {
             message: '请输入用户名',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -379,7 +379,7 @@ export default {
         this.$message(
           {
             message: '请输入密码',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false

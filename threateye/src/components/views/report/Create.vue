@@ -174,7 +174,7 @@ export default {
       if (this.report.name == '') {
         this.$message(
           {
-            message: '请输入报表名称!',
+            message: '请输入报表名称',
             type: 'warning',
           }
         );
@@ -183,7 +183,7 @@ export default {
       if (this.report.start_time == '' || this.report.end_time == '') {
         this.$message(
           {
-            message: '请选择时间范围!',
+            message: '请选择时间范围！',
             type: 'warning',
           }
         );

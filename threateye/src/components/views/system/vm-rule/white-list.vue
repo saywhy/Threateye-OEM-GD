@@ -186,7 +186,7 @@ export default {
         this.$message(
           {
             message: '请输入指标',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false

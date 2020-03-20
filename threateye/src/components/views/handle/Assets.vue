@@ -778,6 +778,8 @@ export default {
         params.label.push(v.name);
       })
 
+      console.log(params.label)
+
       params.label = JSON.stringify(params.label);
 
       this.$axios.get('/yiiapi/alert/risk-asset',

@@ -72,6 +72,8 @@ export default {
 
           console.log(resp)
 
+          window.sessionStorage.removeItem('activeName');
+
           let datas = resp.data;
 
           console.log(datas)

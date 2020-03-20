@@ -29,6 +29,8 @@
 
 <script type="text/ecmascript-6">
   import VmHandleWorks from  './vm-handle/vm-handle-works'
+  import {getToken} from "../../../store/layout/cookie";
+
   export default {
     name: "handle-works",
     data() {
@@ -52,12 +54,11 @@
     created(){
       this.init_tabs_info();
       this.get_top_num();
-
-      this.$forceUpdate();
     },
     methods: {
       //tabs初始化
       init_tabs_info(){
+
         let locate = window.sessionStorage;
         let activeName = locate.getItem('activeName');
         if(activeName){

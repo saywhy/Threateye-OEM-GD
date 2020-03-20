@@ -24,9 +24,9 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("emergeLine"));
 
-      myChart.showLoading({ text: '正在加载数据...' });
+     // myChart.showLoading({ text: '正在加载数据...' });
 
-      myChart.clear();
+      //myChart.clear();
       // 绘制图表
       myChart.setOption({
         grid: {
@@ -129,7 +129,7 @@ export default {
         }
       });
 
-      myChart.hideLoading();
+      //myChart.hideLoading();
 
       window.addEventListener("resize", () => {
         myChart.resize();

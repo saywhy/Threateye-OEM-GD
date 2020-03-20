@@ -2,7 +2,9 @@
   <div id="equipment">
     <div class="container">
       <div class="top">
-        <div class="left item">
+        <div class="item"
+             :class="{'left_active':activeDiv=='1'}"
+             @click="chooseDiv('1')">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/yq.png"
@@ -20,7 +22,9 @@
             </p>
           </div>
         </div>
-        <div class="mid item">
+        <div class="mid item "
+             :class="{'left_active':activeDiv=='2'}"
+             @click="chooseDiv('2')">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/yt.png"
@@ -38,7 +42,9 @@
             </p>
           </div>
         </div>
-        <div class="mid item">
+        <div class="mid item "
+             :class="{'left_active':activeDiv=='3'}"
+             @click="chooseDiv('3')">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/tz.png"
@@ -56,7 +62,9 @@
             </p>
           </div>
         </div>
-        <div class="right item"
+        <div class="right item "
+             :class="{'left_active':activeDiv=='4'}"
+             @click="chooseDiv('4')"
              v-if="sandbox_show">
           <div class="item_left">
             <img class="img_box"
@@ -148,7 +156,7 @@
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
                          :current-page="equipment_list.pageNow"
-                          :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          layout="total, sizes, prev, pager, next"
                          :total="equipment_list.count">
@@ -255,6 +263,7 @@ export default {
   name: "system_control_orient",
   data () {
     return {
+      activeDiv: '1',
       equipment_list: {
       },
       equipment_data: {
@@ -300,6 +309,9 @@ export default {
     this.get_version();
   },
   methods: {
+    chooseDiv (index) {
+      this.activeDiv = index
+    },
     // 获取列表
     get_data () {
       this.$axios.get('/yiiapi/dev/list', {
@@ -900,6 +912,7 @@ export default {
       display: flex;
       margin-bottom: 24px;
       .item {
+        cursor: pointer;
         width: 324px;
         height: 108px;
         background: #ffffff;
@@ -928,14 +941,14 @@ export default {
             margin-top: 25px;
             margin-bottom: 16px;
           }
-          .left_title {
-            color: #e1bf3e;
-          }
         }
       }
-      .left {
+      .left_active {
         border: 1px solid #e1bf3e;
         box-shadow: 0 0 6px 2px rgba(46, 63, 96, 0.12);
+        .item_right_title {
+          color: #e1bf3e !important;
+        }
       }
     }
     .bottom {

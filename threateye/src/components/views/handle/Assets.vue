@@ -174,8 +174,7 @@
             <el-table-column type="selection"
                              width="50"></el-table-column>
             <el-table-column prop="asset_ip"
-                             label="资产"
-                             max-width="100"></el-table-column>
+                             label="资产"></el-table-column>
             <el-table-column prop="label_group"
                              label="资产组"
                              show-overflow-tooltip
@@ -195,7 +194,7 @@
               </template>
             </el-table-column>
             <el-table-column label="威胁等级"
-                             width="100">
+                             min-width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='high','mid_background':scope.row.degree =='medium','low_background':scope.row.degree =='low'}">
@@ -203,7 +202,7 @@
               </template>
             </el-table-column>
             <el-table-column label="失陷确定性"
-                             width="100">
+                             min-width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                   {{ scope.row.fall_certainty | certainty }}</span>

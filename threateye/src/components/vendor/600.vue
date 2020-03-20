@@ -1,13 +1,12 @@
 <template>
   <div class="nofind_600">
     <p>
-      <span>6</span>
+      <span>4</span>
       <span>0</span>
-      <span>0</span>
+      <span>1</span>
     </p>
     <p>您无权访问此页面(´･ω･`)</p>
-    <a class="nofind_ref"
-       @click="reLastPage()">点击返回上一页</a>
+    <span class="re_last">请激活后再访问！<a class="nofind_ref" @click="reLastPage()">点此激活</a></span>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -67,18 +66,24 @@ body {
 .nofind_600 p:not(:first-child) {
   text-align: center;
   color: #666;
-  font-family: cursive;
+  /*font-family: cursive;*/
   font-size: 20px;
   text-shadow: 0 1px 0 #fff;
   letter-spacing: 1px;
   line-height: 2em;
   margin-top: 50px;
+  font-family: PingFang;
+}
+.re_last{
+  font-size: 20px;
+  font-family: PingFang;
+  color: #666;
 }
 .nofind_ref {
-  font-size: 16px;
+  font-size: 20px;
   color: #0070ff;
   cursor: pointer;
-  font-family: 'Open Sans', sans-serif;
   text-decoration: underline;
+  font-family: PingFang;
 }
 </style>

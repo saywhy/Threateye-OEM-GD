@@ -133,8 +133,23 @@ export default {
 
   },
   mounted () {
+    this.test()
   },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'investigate/dns-investigation',
+        }
+      })
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     search () {
       this.dns_list.pageNow = 1
       this.dns_search.page = 1

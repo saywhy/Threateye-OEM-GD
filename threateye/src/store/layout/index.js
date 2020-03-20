@@ -72,6 +72,7 @@ export default {
 
           console.log(resp)
 
+          //把工单中心上面tabs清空
           window.sessionStorage.removeItem('activeName');
 
           let datas = resp.data;

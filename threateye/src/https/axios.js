@@ -140,7 +140,7 @@ axios.interceptors.response.use(response => {
       Router.push({path:'/404'});
       break;
     default:
-      Router.push({path:'/emerge/network'})
+     // Router.push({path:'/emerge/network'})
       //console.log(`请求状态${response.status}`)
   }
   return response

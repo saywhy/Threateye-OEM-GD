@@ -352,11 +352,13 @@
                      :on-change="fileChange"
                      :on-success="handleSuccess"
                      :on-error="handleError"
+                     :limit="1"
+                     :on-exceed="onExceed"
                      :file-list="fileList"
                      accept=".xls"
                      drag
                      action="/yiiapi/ipsegment/upload-excel"
-                     multiple>
+                     :multiple='false'>
             <img class="upload_img"
                  src="@/assets/images/setting/upload_s.png"
                  alt="">
@@ -467,29 +469,58 @@ export default {
       this.monitor_add.ip_segment_list = [{ name: '', icon: true }]
     },
     add_data () {
+      this.monitor_add.tag = [];
       var isRepeat_ip_segment = []
       this.monitor_add.ip_segment = [];
+      this.monitor_add.ip_segment = [];
       var isRepeat_tag = []
+      var tag_test = []
+      var tag_test_str = ''
       this.monitor_add.ip_segment_list.forEach(item => {
         if (item.name != '') {
           isRepeat_ip_segment.push(item.name)
         }
       });
-      var tag_test = []
-      var tag_test_str = ''
-
+      if (isRepeat_ip_segment.length == 0) {
+        this.$message(
+          {
+            message: 'IP地址段不能为空！',
+            type: 'warning',
+          }
+        );
+        return false
+      }
+      if (this.isRepeat(isRepeat_ip_segment)) {
+        this.$message(
+          {
+            message: 'IP地址或地址段有重复项,请重新输入！',
+            type: 'warning',
+          }
+        );
+        return false
+      }
+      // 标签处理
       this.monitor_add.tag_list.forEach(item => {
         if (item.name != '') {
           tag_test.push(item.name)
         }
       });
+      if (this.isRepeat(tag_test)) {
+        this.$message(
+          {
+            message: '标签有重复项,请重新输入。',
+            type: 'warning',
+          }
+        );
+        return false
+      }
       tag_test_str = JSON.stringify(tag_test)
       console.log(tag_test_str.indexOf("终端") != -1);
       if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
             message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -498,7 +529,7 @@ export default {
         this.$message(
           {
             message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -507,48 +538,13 @@ export default {
         this.$message(
           {
             message: '“终端”、“服务器”、“网络设备”三类标签只能设置其中的一种，请重新设置！',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
       }
-      this.monitor_add.tag_list.forEach(item => {
-        if (item.name != '') {
-          isRepeat_tag.push(item.name)
-        }
-      });
       console.log(isRepeat_tag);
       console.log(isRepeat_ip_segment);
-      if (isRepeat_ip_segment.length == 0) {
-        this.$message(
-          {
-            message: 'IP地址段不能为空',
-            type: 'error',
-          }
-        );
-        return false
-      }
-
-      if (this.isRepeat(isRepeat_ip_segment)) {
-        this.$message(
-          {
-            message: 'IP地址或地址段有重复项,请重新输入。',
-            type: 'error',
-          }
-        );
-        return false
-      }
-      if (this.isRepeat(isRepeat_tag)) {
-        this.$message(
-          {
-            message: '标签有重复项,请重新输入。',
-            type: 'error',
-          }
-        );
-        return false
-      }
-
-
       this.monitor_add.tag_list.forEach(item => {
         if (item.name != '') {
           this.monitor_add.tag.push(item.name)
@@ -675,15 +671,21 @@ export default {
       }
     },
     edit_data () {
+      console.log(this.monitor_edit.ip_segment_list);
+      console.log(this.monitor_edit.label_list);
+
       var isRepeat_ip_segment_edit = []
       var isRepeat_tag_edit = []
+      this.monitor_edit.ip_segment = []
+      this.monitor_edit.tag = []
+      var tag_test = []
+      var tag_test_str = ''
+
       this.monitor_edit.ip_segment_list.forEach(item => {
         if (item.name != '') {
           isRepeat_ip_segment_edit.push(item.name)
         }
       });
-      var tag_test = []
-      var tag_test_str = ''
       this.monitor_edit.label_list.forEach(item => {
         if (item.name != '') {
           tag_test.push(item.name)
@@ -802,8 +804,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请选择要删除的IP/IP段！',
-            type: 'error',
+            message: '请选择需要删除的IP/IP段！',
+            type: 'warning',
           }
         );
         return false
@@ -828,14 +830,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败！',
                   type: 'error',
                 }
               );
@@ -869,18 +871,24 @@ export default {
       window.location.href = url1;
     },
     // 导入
+
+    onExceed (files, fileList) {
+      this.$message.warning('请选择单文件上传!');
+      console.log(files)
+      // console.log(file.raw)
+      console.log(fileList)
+    },
     // 文件状态改变时的钩子
     fileChange (file, fileList) {
-      // console.log(file)
-      // console.log(file.raw)
-      // console.log(fileList)
+
     },
     // 上传文件之前的钩子, 参数为上传的文件,若返回 false 或者返回 Promise 且被 reject，则停止上传
     beforeUploadFile (file) {
+      console.log(file);
       let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
       let size = file.size / 1024 / 1024 < 10
       if (!size) {
-        this.$message.error('上传文件大小不能超过 10MB!');
+        this.$message.warning('上传文件大小不能超过 10MB!');
       }
       return size
 
@@ -900,7 +908,7 @@ export default {
         this.monitor_state.import = false;
         this.$message(
           {
-            message: '上传成功',
+            message: '上传成功！',
             type: 'success',
           }
         );

@@ -1525,7 +1525,7 @@ export default {
       let multipe = this.table_add_works.multipleSelection;
 
       if (multipe.length == 0) {
-        this.$message({ message: '请选择要添加的工单！', type: 'warning' });
+        this.$message({ message: '请选择需要添加的工单！', type: 'warning' });
       } else if (multipe.length > 1) {
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
       } else {
@@ -2597,7 +2597,7 @@ export default {
             this.get_data();
             this.$message(
               {
-                message: '修改状态成功',
+                message: '修改状态成功!',
                 type: 'success',
               }
             );
@@ -2674,7 +2674,7 @@ export default {
           if (status == 0) {
             this.$message(
               {
-                message: '修改标签成功',
+                message: '修改标签成功!',
                 type: 'success',
               }
             );
@@ -2707,7 +2707,7 @@ export default {
         });
         this.edit_tag.tag_list.push({ name: '', icon: true })
       } else {
-        this.$message.error(
+        this.$message.warning(
           {
             message: '最多可以设置5个标签。',
             offset: 50
@@ -2776,7 +2776,7 @@ export default {
               if (status == 0) {
                 this.$message(
                   {
-                    message: '加入外部动态列表成功',
+                    message: '加入外部动态列表成功!',
                     type: 'success',
                   }
                 );
@@ -2853,7 +2853,7 @@ export default {
               if (status == 0) {
                 this.$message(
                   {
-                    message: '加入外部动态列表成功',
+                    message: '加入外部动态列表成功!',
                     type: 'success',
                   }
                 );
@@ -3025,8 +3025,8 @@ export default {
       if (Object.keys(this.worksheets_data.tableRadio).length == 0) {
         this.$message(
           {
-            message: '请选择工单',
-            type: 'error',
+            message: '请选择工单!',
+            type: 'warning',
           }
         );
         return false

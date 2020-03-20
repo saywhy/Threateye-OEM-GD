@@ -21,8 +21,7 @@
                  :on-error='onerror'
                  :on-exceed="handleExceed"
                  :file-list="fileList">
-        <el-button size="small"
-                   class="btn_o"
+        <el-button class="btn_o"
                    type="primary">批量导入</el-button>
       </el-upload>
 
@@ -67,7 +66,7 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="white_list.pageNow"
-                      :page-sizes="[10,20,50,100]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
                      :total="white_list.count">
@@ -248,7 +247,7 @@ export default {
       if (params.status == 'fail') {
         this.$message(
           {
-            message: '上传失败',
+            message: '上传失败！',
             type: 'error',
           }
         );
@@ -267,7 +266,7 @@ export default {
         this.get_data();
         this.$message(
           {
-            message: '上传成功',
+            message: '上传成功！',
             type: 'success',
           }
         );
@@ -278,7 +277,7 @@ export default {
       if (params.status == 'fail') {
         this.$message(
           {
-            message: '上传失败',
+            message: '上传失败！',
             type: 'error',
           }
         );
@@ -295,8 +294,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请选择要删除的白名单！',
-            type: 'error',
+            message: '请选择需要删除的白名单！',
+            type: 'warning',
           }
         );
         return false
@@ -321,14 +320,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败！',
                   type: 'error',
                 }
               );

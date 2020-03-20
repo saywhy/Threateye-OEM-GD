@@ -261,8 +261,8 @@ export default {
           console.log(data);
           if (data.count > 10000) {
             this.$message({
-              type: 'error',
-              message: '数据超过一万条,请缩小搜索条件。'
+              type: 'warning',
+              message: '数据超过一万条,请缩小搜索条件!'
             });
             return false
           }
@@ -294,8 +294,8 @@ export default {
           console.log(data);
           if (data.count > 10000) {
             this.$message({
-              type: 'error',
-              message: '数据超过一万条,请缩小搜索条件。'
+              type: 'warning',
+              message: '数据超过一万条,请缩小搜索条件!'
             });
             return false
           }
@@ -326,8 +326,8 @@ export default {
           let { status, data } = response.data;
           if (data.count > 10000) {
             this.$message({
-              type: 'error',
-              message: '数据超过一万条,请缩小搜索条件。'
+              type: 'warning',
+              message: '数据超过一万条,请缩小搜索条件!'
             });
             return false
           }
@@ -355,14 +355,14 @@ export default {
         case '1':
           if (!this.host_network.data || this.host_network.data.data.length == 0) {
             this.$message({
-              type: 'error',
-              message: '请先搜索需要下载的数据'
+              type: 'warning',
+              message: '请先搜索需要下载的数据！'
             });
             return false
           }
           if (this.host_network.count > 1000) {
             this.$message({
-              type: 'error',
+              type: 'warning',
               message: '下载数据不能超出1000条！'
             });
             return false
@@ -373,14 +373,14 @@ export default {
         case '2':
           if (!this.host_file.data || this.host_file.data.data.length == 0) {
             this.$message({
-              type: 'error',
-              message: '请先搜索需要下载的数据'
+              type: 'warning',
+              message: '请先搜索需要下载的数据！'
             });
             return false
           }
           if (this.host_file.count > 1000) {
             this.$message({
-              type: 'error',
+              type: 'warning',
               message: '下载数据不能超出1000条！'
             });
             return false
@@ -391,14 +391,14 @@ export default {
         case '3':
           if (!this.host_user.data || this.host_user.data.data.length == 0) {
             this.$message({
-              type: 'error',
-              message: '请先搜索需要下载的数据'
+              type: 'warning',
+              message: '请先搜索需要下载的数据！'
             });
             return false
           }
           if (this.host_user.count > 1000) {
             this.$message({
-              type: 'error',
+              type: 'warning',
               message: '下载数据不能超出1000条！'
             });
             return false

@@ -2174,7 +2174,7 @@ export default {
             this.get_data();
             this.$message(
               {
-                message: '修改状态成功',
+                message: '修改状态成功!',
                 type: 'success',
               }
             );
@@ -2228,7 +2228,7 @@ export default {
           if (status == 0) {
             this.$message(
               {
-                message: '修改标签成功',
+                message: '修改标签成功!',
                 type: 'success',
               }
             );
@@ -2261,7 +2261,7 @@ export default {
         });
         this.edit_tag.tag_list.push({ name: '', icon: true })
       } else {
-        this.$message.error(
+        this.$message.warning(
           {
             message: '最多可以设置5个标签。',
             offset: 50
@@ -2304,7 +2304,7 @@ export default {
               if (status == 0) {
                 this.$message(
                   {
-                    message: '加入外部动态列表成功',
+                    message: '加入外部动态列表成功!',
                     type: 'success',
                   }
                 );
@@ -2355,7 +2355,7 @@ export default {
               if (status == 0) {
                 this.$message(
                   {
-                    message: '加入外部动态列表成功',
+                    message: '加入外部动态列表成功!',
                     type: 'success',
                   }
                 );
@@ -2423,8 +2423,8 @@ export default {
         if (this.network_detail.work_order_status != '') {
           this.$message(
             {
-              message: '存在被创建工单的告警',
-              type: 'error',
+              message: '存在被创建工单的告警!',
+              type: 'warning',
             }
           );
           return false
@@ -2438,8 +2438,8 @@ export default {
         if (this.network_detail.status != 1 && this.network_detail.status != 0 && this.network_detail.status != 2) {
           this.$message(
             {
-              message: '告警状态为已处置、已忽略、误报的不能添加到工单。',
-              type: 'error',
+              message: '告警状态为已处置、已忽略、误报的不能添加到工单!',
+              type: 'warning',
             }
           );
           return false
@@ -2448,8 +2448,8 @@ export default {
         if (this.network_detail.work_order_status != '') {
           this.$message(
             {
-              message: '存在被创建工单的告警',
-              type: 'error',
+              message: '存在被创建工单的告警!',
+              type: 'warning',
             }
           );
           return false
@@ -2516,8 +2516,8 @@ export default {
       if (Object.keys(this.worksheets_data.tableRadio).length == 0) {
         this.$message(
           {
-            message: '请选择工单',
-            type: 'error',
+            message: '请选择工单!',
+            type: 'warning',
           }
         );
         return false

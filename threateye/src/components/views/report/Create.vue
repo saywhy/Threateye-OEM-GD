@@ -174,8 +174,8 @@ export default {
       if (this.report.name == '') {
         this.$message(
           {
-            message: '请输入报表名称',
-            type: 'error',
+            message: '请输入报表名称!',
+            type: 'warning',
           }
         );
         return false
@@ -183,8 +183,8 @@ export default {
       if (this.report.start_time == '' || this.report.end_time == '') {
         this.$message(
           {
-            message: '请选择时间范围',
-            type: 'error',
+            message: '请选择时间范围!',
+            type: 'warning',
           }
         );
         return false
@@ -266,7 +266,7 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '报表生成成功',
+                  message: '报表生成成功!',
                   type: 'success',
                 }
               );
@@ -643,14 +643,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功!',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败!',
                   type: 'error',
                 }
               );

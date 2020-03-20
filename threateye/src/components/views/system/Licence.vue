@@ -228,8 +228,8 @@ export default {
       if (this.licence_pop.cdk == '') {
         this.$message(
           {
-            message: '请输入序列号',
-            type: 'error',
+            message: '请输入序列号！',
+            type: 'warning',
           }
         );
         return false
@@ -286,7 +286,7 @@ export default {
                 } else {
                   this.$message(
                     {
-                      message: '许可证导入成功。',
+                      message: '许可证导入成功！',
                       type: 'success',
                     }
                   );
@@ -320,7 +320,7 @@ export default {
             } else {
               this.$message(
                 {
-                  message: '许可证导入成功。',
+                  message: '许可证导入成功！',
                   type: 'success',
                 }
               );

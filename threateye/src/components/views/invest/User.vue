@@ -127,8 +127,8 @@ export default {
           let { status, data } = response.data;
           if (data.count > 10000) {
             this.$message({
-              type: 'error',
-              message: '数据超过一万条,请缩小搜索条件。'
+              type: 'warning',
+              message: '数据超过一万条,请缩小搜索条件!'
             });
             return false
           }
@@ -154,14 +154,14 @@ export default {
     download () {
       if (!this.user_list.data || this.user_list.data.data.length == 0) {
         this.$message({
-          type: 'error',
-          message: '请先搜索需要下载的数据'
+          type: 'warning',
+          message: '请先搜索需要下载的数据！'
         });
         return false
       }
       if (this.user_list.count > 1000) {
         this.$message({
-          type: 'error',
+          type: 'warning',
           message: '下载数据不能超出1000条！'
         });
         return false

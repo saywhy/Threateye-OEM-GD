@@ -1122,7 +1122,7 @@ export default {
       let multipe = this.table_add_works.multipleSelection;
 
       if (multipe.length == 0) {
-        this.$message({ message: '请选择要添加的工单！', type: 'warning' });
+        this.$message({ message: '请选择需要添加的工单！', type: 'warning' });
       } else if(multipe.length > 1){
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
       }else{

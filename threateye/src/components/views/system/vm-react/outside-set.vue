@@ -58,7 +58,7 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="user_list.pageNow"
-                 :page-sizes="[10,20,50,100]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
                      :total="user_list.count">
@@ -67,7 +67,7 @@
     <!-- 创建账号 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="outside_pop.add.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_add_box"
@@ -112,7 +112,7 @@
     <!-- 编辑账号 -->
     <el-dialog class="add_box pop_box"
                :close-on-click-modal="false"
-                 :modal-append-to-body="false"
+               :modal-append-to-body="false"
                :visible.sync="outside_pop.edit.show">
       <img src="@/assets/images/emerge/closed.png"
            @click="closed_edit_box"
@@ -153,7 +153,7 @@ export default {
   data () {
     return {
       outside_set: {
-        switch: true
+        switch: false
       },
       outside_list: {
         ip: [],
@@ -431,14 +431,14 @@ export default {
               this.get_user_list();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败！',
                   type: 'error',
                 }
               );

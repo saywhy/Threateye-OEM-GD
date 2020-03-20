@@ -68,7 +68,7 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="role_list.pageNow"
-                      :page-sizes="[10,20,50,100]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
                      :total="role_list.count">
@@ -494,7 +494,7 @@ export default {
         this.$message(
           {
             message: '请输入角色名称',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -503,7 +503,7 @@ export default {
         this.$message(
           {
             message: '请至少选择一项角色权限',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -548,7 +548,7 @@ export default {
         this.$message(
           {
             message: '请输入角色名称',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -557,7 +557,7 @@ export default {
         this.$message(
           {
             message: '请至少选择一项角色权限',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -582,7 +582,7 @@ export default {
             this.get_data();
             this.$message(
               {
-                message: '修改角色成功',
+                message: '修改角色成功！',
                 type: 'success',
               }
             );
@@ -606,8 +606,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请选择要删除的角色！',
-            type: 'error',
+            message: '请选择需要删除的角色！',
+            type: 'warning',
           }
         );
         return false
@@ -632,7 +632,7 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );

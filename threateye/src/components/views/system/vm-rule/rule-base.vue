@@ -258,7 +258,7 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '上传成功',
+                  message: '上传成功！',
                   type: 'success',
                 }
               );

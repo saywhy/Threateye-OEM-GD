@@ -442,7 +442,7 @@ export default {
         this.$message(
           {
             message: '请输入用户名',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -451,7 +451,7 @@ export default {
         this.$message(
           {
             message: '请输入密码',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -460,7 +460,7 @@ export default {
         this.$message(
           {
             message: '两次输入密码不一致',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -469,7 +469,7 @@ export default {
         this.$message(
           {
             message: '密码必须同时包含大写、小写、数字和特殊字符其中三项',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -540,7 +540,7 @@ export default {
         this.$message(
           {
             message: '两次输入密码不一致',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -549,7 +549,7 @@ export default {
         this.$message(
           {
             message: '密码必须同时包含大写、小写、数字和特殊字符其中三项',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -604,8 +604,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请选择要删除的用户！',
-            type: 'error',
+            message: '请选择需要删除的用户！',
+            type: 'warning',
           }
         );
         return false
@@ -630,14 +630,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败！',
                   type: 'error',
                 }
               );

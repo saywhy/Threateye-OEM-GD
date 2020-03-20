@@ -146,8 +146,8 @@ export default {
       if (this.send_config.receiver_list.length == 0) {
         this.$message(
           {
-            message: '请输入发件人邮箱',
-            type: 'error',
+            message: '请输入发件人邮箱。',
+            type: 'warning',
           }
         );
         return false
@@ -189,9 +189,9 @@ export default {
         });
         this.send_config.receiver_list.push({ ip: '', icon: true })
       } else {
-        this.$message.error(
+        this.$message.warning(
           {
-            message: '最多可以设置5个收件人邮箱',
+            message: '最多可以设置5个收件人邮箱。',
             offset: 50
           })
       }

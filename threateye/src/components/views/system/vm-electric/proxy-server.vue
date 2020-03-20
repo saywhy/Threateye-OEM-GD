@@ -157,6 +157,13 @@ export default {
                 type: 'success',
               }
             );
+          } else {
+            this.$message(
+              {
+                message: response.data.msg,
+                type: 'error',
+              }
+            );
           }
           console.log(data.data);
         })

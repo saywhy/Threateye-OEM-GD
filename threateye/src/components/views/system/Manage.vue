@@ -373,7 +373,7 @@ export default {
         this.$message(
           {
             message: '请输入设备名称',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -382,7 +382,7 @@ export default {
         this.$message(
           {
             message: '请选择设备类型',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -391,7 +391,7 @@ export default {
         this.$message(
           {
             message: '请输入设备IP',
-            type: 'error',
+            type: 'warning',
           }
         );
         return false
@@ -408,7 +408,7 @@ export default {
             this.equipment_pop.show = false
             this.$message(
               {
-                message: '添加设备成功',
+                message: '添加设备成功！',
                 type: 'success',
               }
             );
@@ -430,8 +430,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需删除的信息',
-            type: 'error',
+            message: '请先选中要删除的信息',
+            type: 'warning',
           }
         );
         return false
@@ -456,14 +456,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败！',
                   type: 'error',
                 }
               );

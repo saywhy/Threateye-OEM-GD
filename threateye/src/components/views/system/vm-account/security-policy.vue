@@ -161,7 +161,7 @@ export default {
           if (response.data.status == 0) {
             this.get_data();
             this.$message({
-              message: '修改成功',
+              message: '修改成功！',
               type: 'success'
             });
           } else {

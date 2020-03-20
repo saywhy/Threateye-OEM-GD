@@ -38,7 +38,7 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="fault_list.pageNow"
-                      :page-sizes="[10,20,50,100]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
                      :total="fault_list.count">
@@ -121,8 +121,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请选择要下载的故障日志！',
-            type: 'error',
+            message: '请选择需要下载的故障日志！',
+            type: 'warning',
           }
         );
         return false
@@ -154,8 +154,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请选择要删除的故障日志！',
-            type: 'error',
+            message: '请选择需要删除的故障日志！',
+            type: 'warning',
           }
         );
         return false
@@ -181,14 +181,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功！',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败！',
                   type: 'error',
                 }
               );

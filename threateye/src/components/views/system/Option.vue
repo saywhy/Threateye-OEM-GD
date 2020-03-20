@@ -374,7 +374,7 @@ export default {
             this.get_data()
             this.$message(
               {
-                message: '修改成功',
+                message: '修改成功！',
                 type: 'success',
               }
             );
@@ -457,9 +457,9 @@ export default {
         });
         this.option.login_ip.push({ ip: '', icon: true })
       } else {
-        this.$message.error(
+        this.$message.warning(
           {
-            message: '最多可以设置5个单IP/IP网段',
+            message: '最多可以设置5个单IP/IP网段。',
             offset: 50
           })
       }

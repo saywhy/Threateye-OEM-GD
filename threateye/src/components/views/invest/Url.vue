@@ -81,7 +81,7 @@
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
                            :current-page="url_list.pageNow"
-                             :page-sizes="[10,20,50,100]"
+                           :page-sizes="[10,20,50,100]"
                            :page-size="10"
                            layout="total, sizes, prev, pager, next"
                            :total="url_list.count">
@@ -162,8 +162,8 @@ export default {
           let { status, data } = response.data;
           if (data.count > 10000) {
             this.$message({
-              type: 'error',
-              message: '数据超过一万条,请缩小搜索条件。'
+              type: 'warning',
+              message: '数据超过一万条,请缩小搜索条件!'
             });
             return false
           }
@@ -191,14 +191,14 @@ export default {
     download () {
       if (!this.url_list.data || this.url_list.data.data.length == 0) {
         this.$message({
-          type: 'error',
-          message: '请先搜索需要下载的数据'
+          type: 'warning',
+          message: '请先搜索需要下载的数据！'
         });
         return false
       }
       if (this.url_list.count > 1000) {
         this.$message({
-          type: 'error',
+          type: 'warning',
           message: '下载数据不能超出1000条！'
         });
         return false

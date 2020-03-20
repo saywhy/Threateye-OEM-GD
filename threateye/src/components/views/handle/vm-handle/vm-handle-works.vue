@@ -1295,7 +1295,7 @@ export default {
       let selected = multiple.map(x => { return x.id * 1; });
 
       if (selected.length == 0) {
-        that.$message({ message: '请选择要删除的工单！', type: 'warning' });
+        that.$message({ message: '请选择需要删除的工单！', type: 'warning' });
       } else {
         this.$confirm('是否确定删除?', '提示', {
           confirmButtonText: '确定',

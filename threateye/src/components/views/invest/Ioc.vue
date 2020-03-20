@@ -92,7 +92,7 @@
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
                            :current-page="ioc_list.pageNow"
-                            :page-sizes="[10,20,50,100]"
+                           :page-sizes="[10,20,50,100]"
                            :page-size="10"
                            layout="total, sizes, prev, pager, next"
                            :total="ioc_list.count">
@@ -158,7 +158,7 @@ export default {
       if (params.status == 'fail') {
         this.$message(
           {
-            message: '上传失败',
+            message: '上传失败!',
             type: 'error',
           }
         );
@@ -177,7 +177,7 @@ export default {
         this.get_data();
         this.$message(
           {
-            message: '上传成功',
+            message: '上传成功!',
             type: 'success',
           }
         );
@@ -187,7 +187,7 @@ export default {
       if (params.status == 'fail') {
         this.$message(
           {
-            message: '上传失败',
+            message: '上传失败!',
             type: 'error',
           }
         );
@@ -225,8 +225,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需下载的信息',
-            type: 'error',
+            message: '请先选中需下载的信息!',
+            type: 'warning',
           }
         );
         return false
@@ -246,8 +246,8 @@ export default {
       if (this.select_list.length == 0) {
         this.$message(
           {
-            message: '请先选中需删除的信息',
-            type: 'error',
+            message: '请先选中要删除的信息',
+            type: 'warning',
           }
         );
         return false
@@ -273,14 +273,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功',
+                  message: '删除成功!',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败',
+                  message: '删除失败!',
                   type: 'error',
                 }
               );

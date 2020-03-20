@@ -28,7 +28,7 @@ export default {
     test () {
       this.$axios.get('/yiiapi/site/check-auth-exist', {
         params: {
-          pathInfo: '/seting/restore',
+          pathInfo: 'seting/restore',
         }
       })
         .then(response => {

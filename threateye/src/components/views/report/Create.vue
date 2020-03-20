@@ -97,7 +97,8 @@
         </el-col>
         <el-col :span="24"
                 class="e-pagination">
-          <el-pagination @size-change="handleSizeChange"
+          <el-pagination style="margin-top:24px;"
+                         @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
                          :current-page="report_lsit.pageNow"
                          :page-sizes="[10,20,50,100]"

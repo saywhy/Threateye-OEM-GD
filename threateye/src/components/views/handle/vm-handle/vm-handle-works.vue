@@ -1874,16 +1874,16 @@ export default {
         remind: this.edit.notice
       };
       if (this.edit.data.type == 'asset') {
-        if (handle_sel_list.length == 0) {
-          this.$message({ message: '请选择至少一项资产！', type: 'warning' });
-          return false;
-        }
+        // if (handle_sel_list.length == 0) {
+        //   this.$message({ message: '请选择至少一项资产！', type: 'warning' });
+        //   return false;
+        // }
         all_params.risk_asset = handle_sel_list
       } else {
-        if (handle_sel_list.length == 0) {
-          this.$message({ message: '请选择至少一项告警！', type: 'warning' });
-          return false;
-        }
+        // if (handle_sel_list.length == 0) {
+        //   this.$message({ message: '请选择至少一项告警！', type: 'warning' });
+        //   return false;
+        // }
         all_params.te_alert = handle_sel_list
       }
       console.log(all_params);
@@ -1928,16 +1928,16 @@ export default {
         remind: this.edit.notice
       };
       if (this.edit.data.type == 'asset') {
-        if (handle_sel_list.length == 0) {
-          this.$message({ message: '请选择至少一项资产！', type: 'warning' });
-          return false;
-        }
+        // if (handle_sel_list.length == 0) {
+        //   this.$message({ message: '请选择至少一项资产！', type: 'warning' });
+        //   return false;
+        // }
         all_params.risk_asset = handle_sel_list
       } else {
-        if (handle_sel_list.length == 0) {
-          this.$message({ message: '请选择至少一项告警！', type: 'warning' });
-          return false;
-        }
+        // if (handle_sel_list.length == 0) {
+        //   this.$message({ message: '请选择至少一项告警！', type: 'warning' });
+        //   return false;
+        // }
         all_params.te_alert = handle_sel_list
       }
       console.log(all_params);

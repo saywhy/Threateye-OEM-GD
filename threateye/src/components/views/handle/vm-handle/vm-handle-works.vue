@@ -1332,7 +1332,7 @@ export default {
       });
     },
 
-    /*******************新增编辑**************************下载********************************************************/
+    /************************************************新增*****************************************************/
 
     //新增
     open_task_new () {
@@ -1352,8 +1352,6 @@ export default {
 
     //打开工单新增编辑弹窗
     open_task () {
-
-
       //获取用户列表(经办人使用)
       this.$axios.get('/yiiapi/site/user-list')
         .then(resp => {
@@ -1455,7 +1453,7 @@ export default {
 
     //资产匹配
     getRowKeys_assets (row) {
-      console.log(row)
+     // console.log(row)
       return row.asset_ip;
     },
 
@@ -1494,9 +1492,7 @@ export default {
           this.$message({ message: '至少选择一条资产/告警！', type: 'warning' });
         } else {
           multiple_alerts = [];
-
           let all_params = {
-
             name: this.task_params.name,
             priority: this.task_params.level,
             perator: this.task_params.new_operator,
@@ -1577,7 +1573,6 @@ export default {
           this.$message({ message: '至少选择一条资产/告警！', type: 'warning' });
         } else {
           multiple_assets = [];
-
           let all_params = {
             name: this.task_params.name,
             priority: this.task_params.level,

@@ -23,7 +23,7 @@
     font-size: 14px;
     color: #3c3c3c;
   }
-  .nofind{width:600px;margin:0 auto;}
+  .nofind_600{width:600px;margin:0 auto;}
   .nofind_600 p:first-child {
     text-align: center;
     font-family: cursive;

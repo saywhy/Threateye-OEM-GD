@@ -609,7 +609,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="状态"
-                                 width="60">
+                                 width="80">
                   <template slot-scope="scope">{{ scope.row.asset_status | risk_status }}</template>
                 </el-table-column>
               </el-table>
@@ -1213,7 +1213,7 @@ export default {
         })
         .then((resp) => {
           //console.log(resp)
-          let { status, data } = resp.data;
+          let { status, data,msg } = resp.data;
           if (status == 0) {
             let attr = [];
 
@@ -1285,6 +1285,10 @@ export default {
                 })
               }
             });
+          }
+          else if(status == 9){
+            this.$message.error(msg);
+            this.$router.path({ path:"/handle/assets"});
           }
         });
     },
@@ -1398,10 +1402,7 @@ export default {
             this.$message.success('状态变更成功！');
             this.closed_state();
             this.get_assets_detail_top();
-          } else if(status == 9){
-            this.$message.error(msg);
-            this.$router.path({ path:"/handle/assets"});
-          } else {
+          }  else {
             this.$message.error(msg);
           }
         }).catch(err => {

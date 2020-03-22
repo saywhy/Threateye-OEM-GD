@@ -136,11 +136,12 @@ export default {
         this.select_list.forEach(element => {
           id_list.push(element.id)
         });
+        this.select_list = []
+        this.$refs.multipleTable.clearSelection()
         console.log(id_list);
         var id_list_str = JSON.stringify(id_list)
         var url2 = "/yiiapi/faultlog/download?id=" + id_list_str;
         window.location.href = url2;
-        this.select_list = []
       }).catch(() => {
         this.select_list = []
         this.$message({

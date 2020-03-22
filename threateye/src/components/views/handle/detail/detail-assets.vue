@@ -1291,6 +1291,9 @@ export default {
               }
             });
 
+          } else if (status == 9) {
+            // this.$message.error(msg);
+            this.$router.push({ path: "/handle/assets" });
           }
         });
     },
@@ -1404,9 +1407,6 @@ export default {
           if (status == 0) {
             this.$message.success('状态变更成功！');
             this.get_assets_detail_top();
-          } else if (status == 9) {
-            // this.$message.error(msg);
-            this.$router.push({ path: "/handle/assets" });
           } else {
             this.$message.error(msg);
           }

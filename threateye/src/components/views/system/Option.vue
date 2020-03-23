@@ -274,6 +274,10 @@ export default {
         ntp: "",
         endpoint_ip: "",
         login_ip: [
+          {
+            ip: '',
+            icon: true
+          }
         ],
       },
       disabled: {
@@ -399,22 +403,32 @@ export default {
       this.$axios.get('/yiiapi/seting/get-allow-ip')
         .then(response => {
           let { status, data } = response.data;
-          this.option.login_ip = []
           console.log(data);
-          if (data.length == 0) {
-            this.option.login_ip.push({
-              ip: '',
-              icon: true
-            })
-          } else {
-            data.forEach(item => {
+          console.log(status);
+          if (status == 0) {
+            this.option.login_ip = []
+            if (data.length == 0) {
               this.option.login_ip.push({
-                ip: item,
-                icon: false
+                ip: '',
+                icon: true
               })
-            });
-            this.option.login_ip[this.option.login_ip.length - 1].icon = true
+            } else {
+              data.forEach(item => {
+                this.option.login_ip.push({
+                  ip: item,
+                  icon: false
+                })
+              });
+              this.option.login_ip[this.option.login_ip.length - 1].icon = true
+            }
+          } else {
+            this.$message.error(
+              {
+                message: response.data.msg,
+                offset: 50
+              })
           }
+
         })
         .catch(error => {
           console.log(error);

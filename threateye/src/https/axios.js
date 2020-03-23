@@ -103,9 +103,13 @@ import Vue from 'vue'
 axios.defaults.baseURL = '';
 import Router from '@/router/index'
 
-import {Message} from 'element-ui';
+import {
+  Message
+} from 'element-ui';
 
-import {removeToken} from '@/store/layout/cookie';
+import {
+  removeToken
+} from '@/store/layout/cookie';
 
 axios.interceptors.request.use(
   config => {
@@ -122,7 +126,7 @@ axios.interceptors.response.use(response => {
   switch (response.data.status) {
     case 602:
       console.log(response.data.msg)
-      Message.warning(response.data.msg+',请修改个人信息');
+      Message.warning(response.data.msg + ',请修改个人信息');
       //Message.warning('请修改个人信息');
       //删除token
       //removeToken();
@@ -131,16 +135,22 @@ axios.interceptors.response.use(response => {
       //return false;
       break;
     case 600:
-      Router.push({path:'/600'});
+      Router.push({
+        path: '/600'
+      });
       break;
     case 404:
-      Router.push({path:'/404'});
+      Router.push({
+        path: '/404'
+      });
       break;
     case 401:
-      Router.push({path:'/404'});
+      Router.push({
+        path: '/404'
+      });
       break;
     default:
-     // Router.push({path:'/404'})
+      // Router.push({path:'/404'})
       //console.log(`请求状态${response.status}`)
   }
   return response
@@ -154,7 +164,16 @@ axios.interceptors.response.use(response => {
         console.log('未授权，请重新登录')
         break;
       case 403:
-        console.log('拒绝访问')
+        console.log('拒绝访问111')
+        removeToken();
+        location.reload();
+        Vue.$router.push({
+          path: '/login'
+        });
+        return false;
+        // Router.push({
+        //   path: '/login'
+        // });
         break;
       case 404:
         console.log('请求错误,未找到该资源')

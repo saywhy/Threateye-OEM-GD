@@ -59,6 +59,9 @@
                        @click="submitClick();">搜索</el-button>
             <el-link class="s_link"
                      @click="resetClick();">重置</el-link>
+
+            <el-button class="s_btn_edit"
+                       @click="export_box">导出</el-button>
           </el-col>
         </el-row>
 
@@ -101,8 +104,7 @@
                 <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button class="b_btn b_btn_edit"
-                       @click="export_box">导出</el-button>
+
           </el-col>
         </el-row>
       </el-form>
@@ -133,9 +135,11 @@
             </el-table-column>
             <el-table-column prop="category"
                              label="告警类型"
+                             width="100"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="indicator"
                              label="威胁指标"
+                             min-width="120"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="src_ip"
                              label="源地址"
@@ -145,6 +149,7 @@
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="application"
                              label="应用"
+                             width="60"
                              show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级"
                              width="100">
@@ -167,8 +172,7 @@
             </el-table-column>
           </el-table>
         </el-col>
-        <el-col :span="24"
-                class="e-pagination">
+        <el-col :span="24" class="e-pagination">
           <el-pagination class="handle-pagination"
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"

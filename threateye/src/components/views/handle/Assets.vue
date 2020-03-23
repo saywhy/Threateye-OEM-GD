@@ -556,6 +556,8 @@ export default {
 
   data () {
     return {
+      //
+      search_flag:false,
       //頂部數據
       data_top: {},
       data_top_show: false,
@@ -778,9 +780,9 @@ export default {
         params.label.push(v.name);
       })
 
-      console.log(params.label)
-
       params.label = JSON.stringify(params.label);
+
+      console.log(params.label)
 
       this.$axios.get('/yiiapi/alert/risk-asset',
         {
@@ -837,6 +839,18 @@ export default {
         this.assets_all.tags.splice(index, 1);
         this.assets_all.base[$index].value[$idx].flag = false;
       }
+
+
+      if(!this.search_flag){
+        this.params = {
+          key: "",
+          threat: "",
+          degree: "",
+          status: "",
+        };
+      }
+
+      this.get_list_risk();
     },
 
     //全部资产删除标签事件
@@ -845,6 +859,17 @@ export default {
       this.assets_all.base[item.index].value[item.idx].flag = false;
       let index = tags.findIndex(x => x.name == item.name);
       this.assets_all.tags.splice(index, 1);
+
+      if(!this.search_flag){
+        this.params = {
+          key: "",
+          threat: "",
+          degree: "",
+          status: "",
+        };
+      }
+
+      this.get_list_risk();
     },
     //*******************************需要修改
 
@@ -862,6 +887,7 @@ export default {
 
     //搜索按鈕點擊事件
     submitClick () {
+      this.search_flag = true;
       this.get_list_risk();
     },
 

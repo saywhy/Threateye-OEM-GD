@@ -421,7 +421,7 @@ export default {
               });
               this.option.login_ip[this.option.login_ip.length - 1].icon = true
             }
-          } else {
+          } else if (status == 1) {
             this.$message.error(
               {
                 message: response.data.msg,

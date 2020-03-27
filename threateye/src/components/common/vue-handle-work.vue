@@ -422,7 +422,7 @@ export default {
             label: "高"
           },
           {
-            value: "midium",
+            value: "medium",
             label: "中"
           },
           {

@@ -1298,7 +1298,7 @@ export default {
             label: "高"
           },
           {
-            value: "midium",
+            value: "medium",
             label: "中"
           },
           {
@@ -1336,7 +1336,7 @@ export default {
             label: "高"
           },
           {
-            value: "midium",
+            value: "medium",
             label: "中"
           },
           {

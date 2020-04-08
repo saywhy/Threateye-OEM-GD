@@ -22,10 +22,10 @@
       <el-table-column prop="dest_ip"
                        label="目的地址"
                        show-overflow-tooltip></el-table-column>
-      <el-table-column prop="application"
+      <!--<el-table-column prop="application"
                        label="应用"
                        width="60"
-                       show-overflow-tooltip></el-table-column>
+                       show-overflow-tooltip></el-table-column>-->
       <el-table-column label="威胁等级"
                        show-overflow-tooltip>
         <template slot-scope="scope">

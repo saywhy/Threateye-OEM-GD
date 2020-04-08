@@ -5,8 +5,11 @@
       <span>0</span>
       <span>1</span>
     </p>
-    <p>您无权访问此页面(´･ω･`)</p>
-    <span class="re_last">请激活后再访问！<a class="nofind_ref" @click="reLastPage()">点此激活</a></span>
+    <p>You don't have permission to access this page!(´･ω･`)</p>
+    <span class="re_last">Please activate before you access!
+      <a class="nofind_ref"
+         @click="reLastPage()">Click here to activate</a>
+    </span>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -74,7 +77,7 @@ body {
   margin-top: 50px;
   font-family: PingFang;
 }
-.re_last{
+.re_last {
   font-size: 20px;
   font-family: PingFang;
   color: #666;

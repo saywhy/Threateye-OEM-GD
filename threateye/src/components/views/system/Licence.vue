@@ -49,7 +49,7 @@
                            label="序列号"
                            show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="product"
+          <el-table-column prop="orgName"
                            label="受保护机构"
                            show-overflow-tooltip>
           </el-table-column>

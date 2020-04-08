@@ -172,13 +172,13 @@
           <div class="content_item_box">
             <div class="content_item">
               <p>
-                <span class="title">IP地址段</span>
+                <span class="title"></span>
                 <span class="title_color">*</span>
               </p>
               <div class="item_addrs"
                    v-for="(item,index) in monitor_add.ip_segment_list">
                 <el-input class="select_box"
-                          placeholder="请输入IP地址段或IP地址"
+                          placeholder="请输入IP网段（CIDR格式如192.168.1.0/24 ）或者IP地址"
                           v-model="item.name"
                           clearable>
                 </el-input>
@@ -295,7 +295,7 @@
               <div class="item_addrs"
                    v-for="(item,index) in monitor_edit.ip_segment_list">
                 <el-input class="select_box"
-                          placeholder="请输入IP地址段或IP地址"
+                          placeholder="请输入IP网段（CIDR格式如192.168.1.0/24 ）或者IP地址"
                           v-model="item.name"
                           clearable>
                 </el-input>

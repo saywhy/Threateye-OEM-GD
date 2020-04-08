@@ -252,7 +252,7 @@ export default {
           label: '告警',
           children: [{
             id: 59,
-            label: '网络告警',
+            label: '告警',
           }]
         },
         // 追查

@@ -186,6 +186,13 @@ export default {
             console.log(error);
           })
 
+      } else {
+        this.$message(
+          {
+            message: JSON.parse(response).msg,
+            type: 'error',
+          }
+        );
       }
       console.log(chunk);
     },

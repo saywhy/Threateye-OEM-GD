@@ -126,6 +126,11 @@ export const constantRouterMap = [{
     ]
   },
   {
+    path: '/screen',
+    name:'screen',
+    component: () => import('@/components/vendor/Screen')
+  },
+  {
     path: '/600',
     component: () => import('@/components/vendor/600')
   },
@@ -170,20 +175,20 @@ export const asyncRouterMap = [
         deep: 1
       },
       component: () => import('@/components/views/home/Overview')
-    },
+     },
       {
-        path: '/home/screen',
-        name: 'screen',
+        path: '/home/screen_index',
+        name: 'screen_index',
         meta: {
-          title: '大屏设置',
+          title: '大屏',
           auth: '995',
           icon: 'e-aside-big',
           parentAuth: '1',
           rootAuth: '1',
           deep: 1
         },
-        component: () => import('@/components/views/home/Screen'),
-        children: [
+        redirect: '/screen'
+       /* children: [
           {
             path: '/home/base_screen',
             name: 'base_screen',
@@ -223,7 +228,7 @@ export const asyncRouterMap = [
             },
             component: () => import('@/components/views/home/vm-screen/vm-screen-aside')
           }
-        ]
+        ]*/
       }]
   },
   /*处置*/

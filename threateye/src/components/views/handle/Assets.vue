@@ -782,8 +782,6 @@ export default {
 
       params.label = JSON.stringify(params.label);
 
-      console.log(params.label)
-
       this.$axios.get('/yiiapi/alert/risk-asset',
         {
           params: {
@@ -818,8 +816,6 @@ export default {
             this.table.count = count;
             this.table.maxPage = maxPage;
             this.table.pageNow = pageNow;
-
-            console.log(data)
           }
         })
         .catch(error => {

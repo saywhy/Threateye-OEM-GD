@@ -4,7 +4,6 @@
       <template v-if="!item.children">
         <router-link class="item" :to="item.path" :key="item.meta.auth" active-class="" exact-active-class="">
           <el-menu-item :index="String(item.meta.auth)" >
-            <!--<i class="el-icon-menu" v-if="item.meta.deep == 1"></i>-->
             <i v-if="item.meta.deep == 1" class="e-aside-icon" :class="item.meta.icon"></i>
             <span slot="title" class="title">{{item.meta.title}}</span>
           </el-menu-item>
@@ -20,7 +19,6 @@
 
         <aside-item v-for="child in item.children" :key="child.path" :item="child"></aside-item>
       </el-submenu>
-
 
   </div>
 </template>
@@ -114,6 +112,9 @@
           &.e-aside-ioc{
             background-image: url("../../../assets/images/layout/aside/default/ioc.png");
           }
+          &.e-aside-big{
+            background-image: url("../../../assets/images/layout/aside/default/big.png");
+          }
         }
         span.title{
           vertical-align: inherit;
@@ -175,9 +176,6 @@
             }
             &.e-aside-ioc{
               background-image: url("../../../assets/images/layout/aside/active/ioc.png");
-            }
-            &.e-aside-big{
-              background-image: url("../../../assets/images/layout/aside/active/big.png");
             }
           }
           &:after{

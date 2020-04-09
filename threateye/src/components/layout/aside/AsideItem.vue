@@ -176,6 +176,9 @@
             &.e-aside-ioc{
               background-image: url("../../../assets/images/layout/aside/active/ioc.png");
             }
+            &.e-aside-big{
+              background-image: url("../../../assets/images/layout/aside/active/big.png");
+            }
           }
           &:after{
             content: "";
@@ -215,6 +218,9 @@
           }
           &.e-aside-setting{
             background-image: url("../../../assets/images/layout/aside/default/setting.png");
+          }
+          &.e-aside-big{
+            background-image: url("../../../assets/images/layout/aside/default/big.png");
           }
         }
         i.el-submenu__icon-arrow{

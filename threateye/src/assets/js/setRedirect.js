@@ -4,9 +4,16 @@ export function setRedirect(per) {
   let redirect = '/404';
   //首页
   if (per.includes('1')) {
-
     if(per.includes('2')){
       redirect = '/home/overview';
+    }else if(per.includes('995')){
+      if(per.includes('996')){
+        redirect = '/home/base_screen';
+      }else if(per.includes('997')){
+        redirect = '/home/top_index';
+      }else if(per.includes('998')){
+        redirect = '/home/aside_content';
+      }
     }
   //处置
   }else if(per.includes('13')){
@@ -14,7 +21,6 @@ export function setRedirect(per) {
     if(per.includes('14')){
       redirect = '/handle/assets';
     }else if(per.includes('23')){
-
       if(per.includes('24')){
         redirect = '/handle/risks/outside';
       }else if(per.includes('32')){

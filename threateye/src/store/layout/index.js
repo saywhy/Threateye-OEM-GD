@@ -77,8 +77,6 @@ export default {
 
           let datas = resp.data;
 
-          console.log(datas)
-
           let {status, msg, data} = datas;
 
           let tips = '输入用户名或密码错误';
@@ -119,6 +117,8 @@ export default {
         let resp = await axios('/yiiapi/site/menu');
 
         let roles = forRoleList(resp);
+
+        roles = [...roles,...['995','996','997','998']]
 
         // console.log(roles);
         commit('SET_ROLES', roles);

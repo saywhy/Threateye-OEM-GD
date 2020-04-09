@@ -34,7 +34,6 @@ export function forRoleList(auth) {
       }
     });
   }
-
   return roles;
 }
 

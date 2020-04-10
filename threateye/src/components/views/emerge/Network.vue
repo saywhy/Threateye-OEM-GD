@@ -172,7 +172,8 @@
             </el-table-column>
           </el-table>
         </el-col>
-        <el-col :span="24" class="e-pagination">
+        <el-col :span="24"
+                class="e-pagination">
           <el-pagination class="handle-pagination"
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
@@ -640,7 +641,7 @@ export default {
         notice: ['email'],
         remarks: "",
         multiple: [],
-        old_as:[],
+        old_as: [],
       }
     };
   },
@@ -656,10 +657,10 @@ export default {
           this.e_line.loading = false;
           this.e_line.data_show = true;
 
-          if(response.data.data){
+          if (response.data.data) {
             this.echarts_data = response.data.data;
-          }else{
-            this.echarts_data = [{statistics_time:'',alert_count:0}]
+          } else {
+            this.echarts_data = [{ statistics_time: '', alert_count: 0 }]
           }
         })
         .catch(error => {
@@ -710,10 +711,10 @@ export default {
     },
 
     changeTime (data) {
-      if(data){
+      if (data) {
         this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
         this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
-      }else {
+      } else {
         this.params.startTime = ''
         this.params.endTime = ''
       }
@@ -827,16 +828,16 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status,msg, data } = resp.data;
+          let { status, msg, data } = resp.data;
           if (status == 0) {
             this.$message.success('告警状态变更成功！');
             //关闭弹窗
             this.closed_state();
             this.get_list_risk();
           } else {
-            if(msg == ''){
+            if (msg == '') {
               this.$message.error(msg);
-            }else {
+            } else {
               this.$message.error('状态变更失败');
             }
           }
@@ -901,7 +902,7 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        remind:['email']
+        remind: ['email']
       };
       this.table_operator.tableData = [];
       this.table_alerts.tableData_new = [];
@@ -1078,7 +1079,7 @@ export default {
         notice: ['email'],
         textarea: "",
         multiple: [],
-        old_as:[]
+        old_as: []
       };
       this.$refs.multipleTable.clearSelection();
     },
@@ -1127,9 +1128,9 @@ export default {
 
       if (multipe.length == 0) {
         this.$message({ message: '请选择需要添加的工单！', type: 'warning' });
-      } else if(multipe.length > 1){
+      } else if (multipe.length > 1) {
         this.$message({ message: '资产/告警不能添加到多个工单，请重新选择！', type: 'warning' });
-      }else{
+      } else {
         console.log('******************')
         this.add_params.id = multipe[0].id;
         this.add_params.name = multipe[0].name;
@@ -1140,7 +1141,7 @@ export default {
 
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
-        this.add_params.multiple = [...this.add_params.multiple,...this.add_params.old_as];
+        this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
 
         console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)];
@@ -1163,7 +1164,7 @@ export default {
             remarks: this.add_params.remarks,
             te_alert: this.add_params.multiple
           }).then((resp) => {
-          this.handle.save = false;
+            this.handle.save = false;
             let { status, msg, data } = resp.data;
             if (status == 0) {
               this.$message.success('添加成功');
@@ -1201,12 +1202,19 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
-        var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
-          +'&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
-        window.location.href = url1;
-
-
+        this.$axios.get('/yiiapi/site/check-auth-exist', {
+          params: {
+            pathInfo: 'yararule/download',
+          }
+        })
+          .then(response => {
+            var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
+              + '&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
+            window.location.href = url1;
+          })
+          .catch(error => {
+            console.log(error);
+          })
       }).catch(() => {
 
         this.$message({ type: 'info', message: '已取消导出' });
@@ -1324,8 +1332,7 @@ export default {
   }
 
   // 编辑工单
-  /deep/
-  .task_new_box {
+  /deep/ .task_new_box {
     .el-dialog {
       .el-dialog__header {
         display: none;
@@ -1741,10 +1748,9 @@ export default {
     }
   }
 
-  /deep/
-  .pop_box {
+  /deep/ .pop_box {
     .el-dialog {
-      background: #FFFFFF;
+      background: #ffffff;
       border-radius: 4px;
       position: fixed;
       // top: 200px;

@@ -183,13 +183,23 @@ export default {
         });
         return false
       }
-      var url1 = "/yiiapi/investigate/file-investigation-export?file_name=" + this.file_search.file_name +
-        '&md5=' + this.file_search.md5 +
-        '&host_ip=' + this.file_search.host_ip +
-        '&start_time=' + this.file_search.start_time +
-        '&end_time=' + this.file_search.end_time +
-        '&current_page=0&per_page_count=0';
-      window.location.href = url1;
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url1 = "/yiiapi/investigate/file-investigation-export?file_name=" + this.file_search.file_name +
+            '&md5=' + this.file_search.md5 +
+            '&host_ip=' + this.file_search.host_ip +
+            '&start_time=' + this.file_search.start_time +
+            '&end_time=' + this.file_search.end_time +
+            '&current_page=0&per_page_count=0';
+          window.location.href = url1;
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 分页
     handleSizeChange (val) {

@@ -867,8 +867,19 @@ export default {
     },
     // 下载模板
     download_template () {
-      var url1 = '/yiiapi/ipsegment/template-download';
-      window.location.href = url1;
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url1 = '/yiiapi/ipsegment/template-download';
+          window.location.href = url1;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
     },
     // 导入
 
@@ -924,12 +935,32 @@ export default {
       );
     },
     uploadFile () {
-      this.$refs.uploadExcel.submit()
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          this.$refs.uploadExcel.submit()
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 导出
     download () {
-      var url2 = '/yiiapi/ipsegment/export';
-      window.location.href = url2;
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url2 = '/yiiapi/ipsegment/export';
+          window.location.href = url2;
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
   },
   filters: {

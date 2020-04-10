@@ -218,10 +218,18 @@ export default {
         });
         return false
       }
-      var url2 = "/yiiapi/investigate/dns-investigation-export?host_ip=" + this.dns_search.host_ip + "&dns_ip=" + this.dns_search.dns_ip + '&domain=' + this.dns_search.domain + '&resolve_ip=' + this.dns_search.resolve_ip + '&ttl=' + this.dns_search.ttl + '&resolve_result=' + this.dns_search.resolve_result + '&start_time=' + this.dns_search.start_time + '&end_time=' + this.dns_search.end_time + '&current_page=0&per_page_count=0';
-      window.location.href = url2;
-
-
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url2 = "/yiiapi/investigate/dns-investigation-export?host_ip=" + this.dns_search.host_ip + "&dns_ip=" + this.dns_search.dns_ip + '&domain=' + this.dns_search.domain + '&resolve_ip=' + this.dns_search.resolve_ip + '&ttl=' + this.dns_search.ttl + '&resolve_result=' + this.dns_search.resolve_result + '&start_time=' + this.dns_search.start_time + '&end_time=' + this.dns_search.end_time + '&current_page=0&per_page_count=0';
+          window.location.href = url2;
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 分页
     handleSizeChange (val) {

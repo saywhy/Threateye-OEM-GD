@@ -1264,22 +1264,31 @@ export default {
 
         let stu = selected[0].status;
         if (stu == 1 || stu == 2) {
-          var url1 = "/yiiapi/site/download-test?id=" + (selected[0].id * 1);
-          this.$axios.get(url1)
-            .then(resp => {
-              let { status, msg, data } = resp.data;
-
-              console.log(resp)
-              if (status == 0) {
-                var url2 = "/yiiapi/workorder/download?id=" + (selected[0].id * 1);
-                window.location.href = url2;
-              } else {
-                this.$message({ type: 'warning', message: msg });
-              }
-              /*this.$axios.get('/workorder/download?id='+(selected[0].id * 1))
+          this.$axios.get('/yiiapi/site/check-auth-exist', {
+            params: {
+              pathInfo: 'yararule/download',
+            }
+          })
+            .then(response => {
+              var url1 = "/yiiapi/site/download-test?id=" + (selected[0].id * 1);
+              this.$axios.get(url1)
                 .then(resp => {
-                console.log(resp)
-              })*/
+                  let { status, msg, data } = resp.data;
+                  console.log(resp)
+                  if (status == 0) {
+                    var url2 = "/yiiapi/workorder/download?id=" + (selected[0].id * 1);
+                    window.location.href = url2;
+                  } else {
+                    this.$message({ type: 'warning', message: msg });
+                  }
+                  /*this.$axios.get('/workorder/download?id='+(selected[0].id * 1))
+                    .then(resp => {
+                    console.log(resp)
+                  })*/
+                })
+            })
+            .catch(error => {
+              console.log(error);
             })
         } else {
           this.$message({ message: '当前状态下不允许下载工单！', type: 'warning' });

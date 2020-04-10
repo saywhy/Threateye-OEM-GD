@@ -165,33 +165,53 @@ export default {
       }
     },
     onsuccess (params) {
-      console.log(params);
-      if (params.status == 1) {
-        this.$message(
-          {
-            message: params.msg,
-            type: 'error',
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          if (params.status == 1) {
+            this.$message(
+              {
+                message: params.msg,
+                type: 'error',
+              }
+            );
+          } else if (params.status == 0) {
+            this.get_data();
+            this.$message(
+              {
+                message: '上传成功!',
+                type: 'success',
+              }
+            );
           }
-        );
-      } else if (params.status == 0) {
-        this.get_data();
-        this.$message(
-          {
-            message: '上传成功!',
-            type: 'success',
-          }
-        );
-      }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     onerror (params) {
-      if (params.status == 'fail') {
-        this.$message(
-          {
-            message: '上传失败!',
-            type: 'error',
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          if (params.status == 'fail') {
+            this.$message(
+              {
+                message: '上传失败!',
+                type: 'error',
+              }
+            );
           }
-        );
-      }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
     },
     onBeforeUpload () {
     },
@@ -211,9 +231,18 @@ export default {
     },
     // 下载模板
     download_template () {
-      console.log('1231');
-      var url1 = "/yiiapi/investigate/download-ioc-template";
-      window.location.href = url1;
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url1 = "/yiiapi/investigate/download-ioc-template";
+          window.location.href = url1;
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 禁止选中的项目
     checkSelectable (row) {
@@ -237,9 +266,18 @@ export default {
       });
       console.log(id_list);
       var id_list_str = JSON.stringify(id_list)
-      var url1 = "/yiiapi/investigate/ioc-scanning-download?id=" + id_list_str;
-      window.location.href = url1;
-
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url1 = "/yiiapi/investigate/ioc-scanning-download?id=" + id_list_str;
+          window.location.href = url1;
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 删除列表
     del_list () {

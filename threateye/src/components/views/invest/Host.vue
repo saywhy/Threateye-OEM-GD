@@ -367,8 +367,19 @@ export default {
             });
             return false
           }
-          var url1 = "/yiiapi/investigate/host-network-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
-          window.location.href = url1;
+          this.$axios.get('/yiiapi/site/check-auth-exist', {
+            params: {
+              pathInfo: 'yararule/download',
+            }
+          })
+            .then(response => {
+              var url1 = "/yiiapi/investigate/host-network-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+              window.location.href = url1;
+            })
+            .catch(error => {
+              console.log(error);
+            })
+
           break;
         case '2':
           if (!this.host_file.data || this.host_file.data.data.length == 0) {
@@ -385,8 +396,19 @@ export default {
             });
             return false
           }
-          var url2 = "/yiiapi/investigate/host-file-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
-          window.location.href = url2;
+          this.$axios.get('/yiiapi/site/check-auth-exist', {
+            params: {
+              pathInfo: 'yararule/download',
+            }
+          })
+            .then(response => {
+              var url2 = "/yiiapi/investigate/host-file-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+              window.location.href = url2;
+            })
+            .catch(error => {
+              console.log(error);
+            })
+
           break;
         case '3':
           if (!this.host_user.data || this.host_user.data.data.length == 0) {
@@ -403,8 +425,20 @@ export default {
             });
             return false
           }
-          var url3 = "/yiiapi/investigate/host-user-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
-          window.location.href = url3;
+
+          this.$axios.get('/yiiapi/site/check-auth-exist', {
+            params: {
+              pathInfo: 'yararule/download',
+            }
+          })
+            .then(response => {
+              var url3 = "/yiiapi/investigate/host-user-investigation-export?host_ip=" + this.host_search.host_ip + '&start_time=' + this.host_search.start_time + '&end_time=' + this.host_search.end_time + '&current_page=0&per_page_count=0';
+              window.location.href = url3;
+            })
+            .catch(error => {
+              console.log(error);
+            })
+
           break;
         default:
           break;

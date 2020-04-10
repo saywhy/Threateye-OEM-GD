@@ -108,8 +108,7 @@
                     {{ scope.row.fall_certainty | certainty }}</span>
                 </template>
               </el-table-column>
-              <el-table-column
-                               label="状态"
+              <el-table-column label="状态"
                                width="80">
                 <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
               </el-table-column>
@@ -312,7 +311,7 @@ export default {
         })
         .then((resp) => {
 
-         // console.log(resp.data)
+          // console.log(resp.data)
 
           let { status, data } = resp.data;
 
@@ -438,40 +437,57 @@ export default {
     worksdownload () {
       let stu = this.data.status;
       if (stu == 1 || stu == 2) {
-        var url1 = " /yiiapi/site/download-test?id=" + this.id * 1;
-        this.$axios.get(url1)
-          .then(resp => {
-            let { status, msg, data } = resp.data;
-            if (status == 0) {
-              var url2 = ''
-              switch (this.$route.query.type) {
-                case 'workorder':
-                  url2 = "/yiiapi/workorder/download?id="
-                  break;
-                case 'alert_detail':
-                  url2 = "/yiiapi/alert/download?id="
-                  break;
-                case 'asset':
-                  url2 = "/yiiapi/asset/download?id="
-                  break;
-                case 'lateral':
-                  url2 = "/yiiapi/horizontalthreat/download?id="
-                  break;
-                case 'outside':
-                  url2 = "/yiiapi/externalthreat/download?id="
-                  break;
-                case 'outreath':
-                  url2 = "/yiiapi/outreachthreat/download?id="
-                  break;
-                default:
-                  break;
-              }
-              var url3 = url2 + this.id * 1;
-              window.location.href = url3;
-            } else {
-              this.$message({ type: 'warning', message: msg });
-            }
+
+        this.$axios.get('/yiiapi/site/check-auth-exist', {
+          params: {
+            pathInfo: 'yararule/download',
+          }
+        })
+          .then(response => {
+
+            var url1 = " /yiiapi/site/download-test?id=" + this.id * 1;
+            this.$axios.get(url1)
+              .then(resp => {
+                let { status, msg, data } = resp.data;
+                if (status == 0) {
+                  var url2 = ''
+                  switch (this.$route.query.type) {
+                    case 'workorder':
+                      url2 = "/yiiapi/workorder/download?id="
+                      break;
+                    case 'alert_detail':
+                      url2 = "/yiiapi/alert/download?id="
+                      break;
+                    case 'asset':
+                      url2 = "/yiiapi/asset/download?id="
+                      break;
+                    case 'lateral':
+                      url2 = "/yiiapi/horizontalthreat/download?id="
+                      break;
+                    case 'outside':
+                      url2 = "/yiiapi/externalthreat/download?id="
+                      break;
+                    case 'outreath':
+                      url2 = "/yiiapi/outreachthreat/download?id="
+                      break;
+                    default:
+                      break;
+                  }
+                  var url3 = url2 + this.id * 1;
+                  window.location.href = url3;
+                } else {
+                  this.$message({ type: 'warning', message: msg });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              })
           })
+          .catch(error => {
+            console.log(error);
+          })
+
+
       } else {
         this.$message({ message: '当前状态下不允许下载工单！', type: 'warning' });
       }

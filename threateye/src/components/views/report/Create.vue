@@ -620,9 +620,18 @@ export default {
     },
     // 下载
     download (item) {
-      console.log(item);
-      var url1 = '/yiiapi/report/download-report?id=' + item.id;
-      window.location.href = url1;
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url1 = '/yiiapi/report/download-report?id=' + item.id;
+          window.location.href = url1;
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 删除
     del_box (item) {

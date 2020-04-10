@@ -203,15 +203,27 @@ export default {
         });
         return false
       }
-      var url1 = "/yiiapi/investigate/ipurl-communication-investigation-export?src_ip=" + this.url_search.src_ip +
-        '&dst_ip=' + this.url_search.dst_ip +
-        '&src_port=' + this.url_search.src_port +
-        '&dst_port=' + this.url_search.dst_port +
-        '&email=' + this.url_search.email +
-        '&start_time=' + this.url_search.start_time +
-        '&end_time=' + this.url_search.end_time +
-        '&current_page=0&per_page_count=0';
-      window.location.href = url1;
+
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url1 = "/yiiapi/investigate/ipurl-communication-investigation-export?src_ip=" + this.url_search.src_ip +
+            '&dst_ip=' + this.url_search.dst_ip +
+            '&src_port=' + this.url_search.src_port +
+            '&dst_port=' + this.url_search.dst_port +
+            '&email=' + this.url_search.email +
+            '&start_time=' + this.url_search.start_time +
+            '&end_time=' + this.url_search.end_time +
+            '&current_page=0&per_page_count=0';
+          window.location.href = url1;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
     },
     // 分页
     handleSizeChange (val) {

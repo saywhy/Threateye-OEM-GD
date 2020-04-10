@@ -141,7 +141,9 @@ export default {
     handlePreview () { },
     handleRemove () { },
     beforeRemove () { },
-    onBeforeUpload () { },
+    onBeforeUpload () {
+
+    },
     onChange (params) {
       console.log(params);
       if (params.status == 'fail') {
@@ -154,32 +156,53 @@ export default {
       }
     },
     onsuccess (params) {
-      if (params.status == 1) {
-        this.$message(
-          {
-            message: params.msg,
-            type: 'error',
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          if (params.status == 1) {
+            this.$message(
+              {
+                message: params.msg,
+                type: 'error',
+              }
+            );
+          } else if (params.status == 0) {
+            this.get_data();
+            this.$message(
+              {
+                message: '上传成功！',
+                type: 'success',
+              }
+            );
           }
-        );
-      } else if (params.status == 0) {
-        this.get_data();
-        this.$message(
-          {
-            message: '上传成功！',
-            type: 'success',
-          }
-        );
-      }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
     },
     onerror (params) {
-      if (params.status == 'fail') {
-        this.$message(
-          {
-            message: '上传失败！',
-            type: 'error',
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          if (params.status == 'fail') {
+            this.$message(
+              {
+                message: '上传失败！',
+                type: 'error',
+              }
+            );
           }
-        );
-      }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 删除
     del_yara () {

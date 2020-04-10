@@ -154,8 +154,21 @@ export default {
       }
     },
     download () {
-      var url2 = "/yiiapi/userlog/export?username=" + this.audit_data.key + "&start_time=" + this.audit_data.start_time + '&end_time=' + this.audit_data.end_time;
-      window.location.href = url2;
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var url2 = "/yiiapi/userlog/export?username=" + this.audit_data.key + "&start_time=" + this.audit_data.start_time + '&end_time=' + this.audit_data.end_time;
+          window.location.href = url2;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+
+
     }
   }
 };

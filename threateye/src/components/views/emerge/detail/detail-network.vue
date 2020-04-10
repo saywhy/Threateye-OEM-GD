@@ -2424,47 +2424,68 @@ export default {
     // 下载payload
     download (value, item) {
       if (value.value == "点击下载" && value.name == "PayLoad信息") {
-        var funDownload = function (content, filename) {
-          // 创建隐藏的可下载链接
-          var eleLink = document.createElement("a");
-          eleLink.download = filename;
-          eleLink.style.display = "none";
-          // 字符内容转变成blob地址
-          var blob = new Blob([content]);
-          eleLink.href = URL.createObjectURL(blob);
-          // 触发点击
-          document.body.appendChild(eleLink);
-          eleLink.click();
-          // 然后移除
-          document.body.removeChild(eleLink);
-        };
-        funDownload(item.network_event.payload, "payload.dat");
+        this.$axios.get('/yiiapi/site/check-auth-exist', {
+          params: {
+            pathInfo: 'yararule/download',
+          }
+        })
+          .then(response => {
+            var funDownload = function (content, filename) {
+              // 创建隐藏的可下载链接
+              var eleLink = document.createElement("a");
+              eleLink.download = filename;
+              eleLink.style.display = "none";
+              // 字符内容转变成blob地址
+              var blob = new Blob([content]);
+              eleLink.href = URL.createObjectURL(blob);
+              // 触发点击
+              document.body.appendChild(eleLink);
+              eleLink.click();
+              // 然后移除
+              document.body.removeChild(eleLink);
+            };
+            funDownload(item.network_event.payload, "payload.dat");
+          })
+          .catch(error => {
+            console.log(error);
+          })
+
       }
       if (value.value == "点击下载" && value.name == '文件下载') {
-        var window_open = ''
-        // horizontalthreat  横向威胁告警  lateral
-        // externalthreat  外部威胁告警  outside
-        // outreachthreat  外联威胁告警  outreath
-        switch (this.$route.query.type) {
-          case 'alert':
-            window_open = '/yiiapi/alert/get-file?md5='
-            break;
-          case 'asset':
-            window_open = '/yiiapi/asset/get-file?md5='
-            break;
-          case 'lateral':
-            window_open = '/yiiapi/horizontalthreat/get-file?md5='
-            break;
-          case 'outside':
-            window_open = '/yiiapi/externalthreat/get-file?md5='
-            break;
-          case 'outreath':
-            window_open = '/yiiapi/outreachthreat/get-file?md5='
-            break;
-          default:
-            break;
-        }
-        window.open(window_open + value.md5);
+        this.$axios.get('/yiiapi/site/check-auth-exist', {
+          params: {
+            pathInfo: 'yararule/download',
+          }
+        })
+          .then(response => {
+            var window_open = ''
+            // horizontalthreat  横向威胁告警  lateral
+            // externalthreat  外部威胁告警  outside
+            // outreachthreat  外联威胁告警  outreath
+            switch (this.$route.query.type) {
+              case 'alert':
+                window_open = '/yiiapi/alert/get-file?md5='
+                break;
+              case 'asset':
+                window_open = '/yiiapi/asset/get-file?md5='
+                break;
+              case 'lateral':
+                window_open = '/yiiapi/horizontalthreat/get-file?md5='
+                break;
+              case 'outside':
+                window_open = '/yiiapi/externalthreat/get-file?md5='
+                break;
+              case 'outreath':
+                window_open = '/yiiapi/outreachthreat/get-file?md5='
+                break;
+              default:
+                break;
+            }
+            window.open(window_open + value.md5);
+          })
+          .catch(error => {
+            console.log(error);
+          })
       }
     },
     // 当前受威胁资产

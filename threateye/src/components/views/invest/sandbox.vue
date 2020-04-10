@@ -64,7 +64,7 @@
                   <template slot-scope="scope">
                     <img src="@/assets/images/common/download.png"
                          class="img_icon"
-                         v-if="scope.row.status!=1"
+                         v-if="scope.row.status!=1 &&scope.row.result==0"
                          alt=""
                          @click.stop='download(scope.row)'>
                   </template>

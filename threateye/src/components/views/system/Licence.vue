@@ -220,6 +220,7 @@ export default {
     },
     online_active_pop () {
       this.licence_pop.add = true;
+      this.licence_pop.cdk = '';
     },
     closed_add_box () {
       this.licence_pop.add = false;
@@ -290,6 +291,7 @@ export default {
                       type: 'success',
                     }
                   );
+                  location.reload();
                   this.licence_pop.add = false;
                   this.get_data();
                 }

@@ -59,8 +59,8 @@ axios.interceptors.response.use(response => {
       });
       break;
     default:
-    // Router.push({path:'/404'})
-    //console.log(`请求状态${response.status}`)
+      // Router.push({path:'/404'})
+      //console.log(`请求状态${response.status}`)
   }
   return response
 }, err => {
@@ -74,6 +74,8 @@ axios.interceptors.response.use(response => {
         break;
       case 403:
         console.log('拒绝访问111')
+        let locate = window.sessionStorage;
+        locate.setItem('overtime', 'true');
         removeToken();
         location.reload();
         Vue.$router.push({

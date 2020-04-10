@@ -1,5 +1,5 @@
 <template>
-  <div id="sandbox">
+  <div id="sandbox" v-loading.fullscreen.lock="loading">
     <div class="container">
       <div class="invest_box">
         <el-tabs v-model="activeName"
@@ -103,6 +103,7 @@ export default {
   name: "sandbox",
   data () {
     return {
+      loading:true,
       activeName: 'first',
       options: {
         target: '/yiiapi/sandbox/upload',
@@ -132,10 +133,28 @@ export default {
       }
     };
   },
+  created (){
+   this.get_version()
+  },
   mounted () {
     this.get_data();
   },
   methods: {
+    //获取当前版本
+    get_version(){
+      this.$axios.get('/yiiapi/site/license-version')
+        .then(response => {
+          let { status, data } = response.data;
+          console.log(data);
+          this.loading = false;
+          if(data.edition == 1){
+            this.$router.push({ path: '/401' });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     // 上传
     onFileAdded (file) {
       console.log(file);

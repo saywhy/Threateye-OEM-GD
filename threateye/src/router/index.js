@@ -130,6 +130,10 @@ export const constantRouterMap = [{
     component: () => import('@/components/vendor/600')
   },
   {
+    path: '/401',
+    component: () => import('@/components/vendor/401')
+  },
+  {
     path: '*',
     component: () => import('@/components/vendor/404')
   }

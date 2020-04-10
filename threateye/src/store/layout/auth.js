@@ -38,7 +38,7 @@ export function forRoleList(auth) {
 }
 
 export function formatList(asynRoutes,auths) {
-  return asynRoutes.filter(route =>{
+  return asynRoutes.filter(route => {
     if(auths.includes(route.meta.auth)){
       if(route.children &&route.children.length > 0){
         route.redirect = route.children[0].path;
@@ -47,4 +47,5 @@ export function formatList(asynRoutes,auths) {
       return true;
     }
   });
+
 }

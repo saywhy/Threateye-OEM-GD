@@ -51,11 +51,6 @@ export const constantRouterMap = [{
       component: () => import('@/components/vendor/Message')
     },]
   },
-  /***
-   *
-   * ******************************详情此处后面需要加上权限，现在是临时配置******************************
-   *
-   * **/
   {
     path: '/detail',
     name: 'detail',

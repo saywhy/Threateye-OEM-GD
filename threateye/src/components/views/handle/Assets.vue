@@ -548,6 +548,10 @@
 <script type="text/ecmascript-6">
 import VmHandleTabs from "./vm-handle/vm-handle-tabs";
 
+import {
+  forRoleList,
+  formatList
+} from '@/store/layout/auth'
 export default {
   name: 'assets',
   components: {

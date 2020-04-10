@@ -21,7 +21,7 @@ Vue.prototype.$echarts = echarts;
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;
-// axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
+axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
 import uploader from 'vue-simple-uploader'
 Vue.use(uploader)
 
@@ -73,7 +73,7 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
 
         store.dispatch('GetAuth').then(resp => { // 拉取info
-          //const roles = res.data.role;
+
           const roles = resp;
 
           if (roles == null) {

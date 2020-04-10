@@ -3,7 +3,7 @@
 
       <template v-if="!item.children">
         <router-link class="item" :to="item.path" :key="item.meta.auth" active-class="" exact-active-class="">
-          <el-menu-item :index="String(item.meta.auth)" >
+          <el-menu-item :index="String(item.meta.auth)" v-show="item.meta.title != '沙箱' ? true : sandbox">
             <i v-if="item.meta.deep == 1" class="e-aside-icon" :class="item.meta.icon"></i>
             <span slot="title" class="title">{{item.meta.title}}</span>
           </el-menu-item>
@@ -24,6 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex'
   export default {
     name: 'aside-item',
     props: {
@@ -35,6 +36,14 @@
         type: Boolean,
         default: false
       }
+    },
+    computed:{
+      ...mapState({
+        sandbox: state => state.layout.sandbox,
+      })
+    },
+    created() {
+      console.log(this.sandbox)
     }
   }
 </script>

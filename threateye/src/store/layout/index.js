@@ -13,9 +13,6 @@ import {
   forRoleList,
   formatList
 } from './auth'
-import {
-  fetch
-} from "../../https/api";
 
 export default {
   state: {
@@ -28,7 +25,8 @@ export default {
     token: getToken(),
     roles: [],
     isCollapse: false,
-    sysMonitor: false
+    sysMonitor: false,
+    sandbox: false
   },
   getters: {
     token: state => state.token,
@@ -41,11 +39,31 @@ export default {
       state.token = args;
     },
 
+    SET_SANDBOX:(state, args) => {
+      state.sandbox = args;
+    },
+
     SET_ROLES: (state, args) => {
       state.roles = args;
     },
 
     SET_ROUTERS: (state, routers) => {
+
+      if(state.roles.includes('999')){
+        routers[3].children.push({
+          path: '/invest/sandbox1',
+          name: 'sandbox1',
+          meta: {
+            title: '沙箱1',
+            auth: '999',
+            icon: 'e-aside-ioc',
+            parentAuth: '76',
+            rootAuth: '76',
+            deep: 1
+          },
+          component: () => import('@/components/views/invest/sandbox')
+        })
+      }
       state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers);
     },
@@ -59,9 +77,7 @@ export default {
   },
   actions: {
     //登录
-    LoginByUsername({
-      commit
-    }, userInfo) {
+    LoginByUsername({commit}, userInfo) {
       return new Promise((resolve, reject) => {
         //只要登录就删除token
         removeToken();
@@ -69,8 +85,6 @@ export default {
           "LoginForm": userInfo,
           "login-button": ""
         }).then(resp => {
-
-          console.log(resp)
 
           //把工单中心上面tabs清空
           window.sessionStorage.removeItem('activeName');
@@ -108,32 +122,34 @@ export default {
     //权限设置
     async GetAuth({
       commit,
-      dispatch
+      dispatch,
     }) {
       try {
-        //测试数据
-        //let resp = await axios('/static/data/auth.json');
         //真实数据
         let resp = await axios('/yiiapi/site/menu');
 
         let roles = forRoleList(resp);
 
-        roles = [...roles,...['995','996','997','998']]
+        console.log(roles);
 
-        // console.log(roles);
+        roles.push('995');
+
+        if(!roles.includes('117')){
+          roles.push('117');
+          commit('SET_SANDBOX',false);
+        }else {
+          commit('SET_SANDBOX',true);
+        }
         commit('SET_ROLES', roles);
+
         return roles;
 
       }catch (err) {
         console.log(err);
       }
-
     },
 
-    async LogOut({
-      commit,
-      dispatch
-    }) {
+    async LogOut({commit, dispatch}) {
       try{
         let resp = await axios('/yiiapi/site/logout');
         let {status,msg,data} = resp.data;
@@ -146,20 +162,14 @@ export default {
       }catch (err) {
         console.log(err);
       }
-
     },
 
-    GenerateRoutes({
-      commit
-    }, data) {
+    async GenerateRoutes({commit}, data) {
+
       return new Promise(resolve => {
-        const {
-          roles
-        } = data;
+        const {roles} = data;
 
-        // console.log(roles)
         const accessedRouters = formatList(asyncRouterMap, roles);
-
         commit('SET_ROUTERS', accessedRouters);
         resolve();
       })

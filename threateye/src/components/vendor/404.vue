@@ -5,13 +5,13 @@
       <span>0</span>
       <span>4</span>
     </p>
-    <p>该页面不存在(´･ω･`)</p>
+    <p class="refs_s">该页面不存在(´･ω･`)</p>
   </div>
 </template>
 <style type="text/css" scoped>
 body {
   background-color: #ececec;
-  font-family: 'Open Sans', sans-serif;
+ /* font-family: 'Open Sans', sans-serif;*/
   font-size: 14px;
   color: #3c3c3c;
 }
@@ -28,6 +28,7 @@ body {
   color: #fff;
   margin-top: 20%;
 }
+
 
 .nofind p:first-child span {
   cursor: pointer;
@@ -54,7 +55,7 @@ body {
 .nofind p:not(:first-child) {
   text-align: center;
   color: #666;
-  font-family: cursive;
+  font-family: PingFang;
   font-size: 20px;
   text-shadow: 0 1px 0 #fff;
   letter-spacing: 1px;

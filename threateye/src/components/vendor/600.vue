@@ -25,7 +25,7 @@ export default {
 <style type="text/css" scoped>
 body {
   background-color: #ececec;
-  font-family: 'Open Sans', sans-serif;
+  /*font-family: 'Open Sans', sans-serif;*/
   font-size: 14px;
   color: #3c3c3c;
 }

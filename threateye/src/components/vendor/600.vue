@@ -20,7 +20,6 @@ export default {
       this.$router.push({ path: '/system/licence' });
     }
   }
-
 }
 </script>
 <style type="text/css" scoped>

@@ -129,7 +129,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import moment from 'moment'
+import moment from 'moment'
 export default {
   name: "system_control_licence",
   data () {
@@ -220,6 +220,7 @@ export default {
     },
     online_active_pop () {
       this.licence_pop.add = true;
+      this.licence_pop.cdk = '';
     },
     closed_add_box () {
       this.licence_pop.add = false;

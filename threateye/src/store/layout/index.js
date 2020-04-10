@@ -48,22 +48,6 @@ export default {
     },
 
     SET_ROUTERS: (state, routers) => {
-
-      if(state.roles.includes('999')){
-        routers[3].children.push({
-          path: '/invest/sandbox1',
-          name: 'sandbox1',
-          meta: {
-            title: '沙箱1',
-            auth: '999',
-            icon: 'e-aside-ioc',
-            parentAuth: '76',
-            rootAuth: '76',
-            deep: 1
-          },
-          component: () => import('@/components/views/invest/sandbox')
-        })
-      }
       state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers);
     },

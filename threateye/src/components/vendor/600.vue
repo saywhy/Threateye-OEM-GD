@@ -5,10 +5,10 @@
       <span>0</span>
       <span>1</span>
     </p>
-    <p>You don't have permission to access this page!(´･ω･`)</p>
-    <span class="re_last">Please activate before you access!
+    <p>您没有访问此页的权限!(´･ω･`)</p>
+    <span class="re_last">请在访问之前激活!
       <a class="nofind_ref"
-         @click="reLastPage()">Click here to activate</a>
+         @click="reLastPage()">单击此处激活</a>
     </span>
   </div>
 </template>

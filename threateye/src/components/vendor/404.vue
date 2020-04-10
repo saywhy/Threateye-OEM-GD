@@ -5,7 +5,7 @@
       <span>0</span>
       <span>4</span>
     </p>
-    <p>This page does not exist(´･ω･`)</p>
+    <p>该页面不存在(´･ω･`)</p>
   </div>
 </template>
 <style type="text/css" scoped>

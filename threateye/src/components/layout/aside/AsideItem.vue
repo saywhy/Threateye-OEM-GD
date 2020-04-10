@@ -41,9 +41,6 @@
       ...mapState({
         sandbox: state => state.layout.sandbox,
       })
-    },
-    created() {
-      console.log(this.sandbox)
     }
   }
 </script>

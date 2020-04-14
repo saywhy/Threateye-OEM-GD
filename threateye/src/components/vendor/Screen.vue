@@ -1,100 +1,216 @@
 <template>
   <div class="home-screen">
-    <div class="screen-1">
-      <draggable :list="list1"
-                 @end="end1"
-                 class="dragArea1"
-                 style="height: 100px">
-        <div v-for="(element, index) in list1"
-             :key="element.id" class="list-complete-item">
-          <div class="list-complete-item-handle">{{element.name}}</div>
-        </div>
-      </draggable>
+    <div class="home-top">
+      <div class="home_l">
+        <label class="e_label"></label>
+      </div>
+      <div class="home_c">
+        iView态势感知系统
+      </div>
+      <div class="home_r">
+        <el-button type="primary" class="e_btn e_btn_set">搜索</el-button>
+        <el-button type="primary" class="e_btn e_btn_full">搜索</el-button>
+      </div>
     </div>
-    <div class="screen">
-      11111111
-    </div>
-    <div class="screen-2">
-      <draggable :list="list2"
-                 @end="end2"
-                 class="dragArea2">
-        <div v-for="element in list2" :key="element.id"
-             class="list-complete-item">
-          <div class="list-complete-item-handle2"> {{element.name}}</div>
+    <div class="home-content">
+      <div class="screen-1">
+        <div class="list-item">
+          <header class="title">威胁分布<i class="t_img"></i></header>
+          <vm-screen-left0></vm-screen-left0>
         </div>
-      </draggable>
+        <div class="list-item">
+          <header class="title">全球安全动态<i class="t_img"></i></header>
+          <vm-screen-left1></vm-screen-left1>
+        </div>
+        <div class="list-item">
+          <header class="title">分支安全<i class="t_img"></i></header>
+          <vm-screen-left2></vm-screen-left2>
+        </div>
+      </div>
+      <div class="screen-2">
+        <div class="list-item-top">
+
+        </div>
+        <div class="list-item-middle">
+
+        </div>
+        <div class="list-item-bottom">
+
+        </div>
+
+      </div>
+      <div class="screen-3">
+        <div class="list-item">
+          <header class="title">威胁指标热力图<i class="t_img"></i></header>
+          <vm-screen-right0></vm-screen-right0>
+        </div>
+        <div class="list-item">
+          <header class="title">横向威胁态势<i class="t_img"></i></header>
+          <vm-screen-right1></vm-screen-right1>
+        </div>
+        <div class="list-item">
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import draggable from 'vuedraggable';
+  import VmScreenLeft0 from './vm-screen/vm-screen-left0';
+  import VmScreenLeft1 from './vm-screen/vm-screen-left1';
+  import VmScreenLeft2 from './vm-screen/vm-screen-left2';
+  import VmScreenRight0 from './vm-screen/vm-screen-right0';
+  import VmScreenRight1 from './vm-screen/vm-screen-right1';
   export default {
     name: "home-screen",
     components: {
-      draggable
+      draggable,
+      VmScreenLeft0,
+      VmScreenLeft1,
+      VmScreenLeft2,
+      VmScreenRight0,
+      VmScreenRight1
     },
     data() {
       return {
-        falgs: 'article',
-        disabled: false,
-        list1: [{id: 1, name: 1}, {id: 2, name: 2}, {id: 3, name: 3},
-          {id: 4, name: 4}, {id: 5, name: 5}],
-        list2: [{id: 6, name: 6}, {id: 7, name: 7},
-          {id: 8, name: 8}, {id: 9, name: 9}, {id: 10, name: 10}
-        ]
+
       }
-    },
-    updated() {
-     // console.log(this.list1)
-     // console.log(this.list2)
     },
     methods: {
-      end1 (ev) {
-        /*if (ev.to.className === 'dragArea1') {
-          this.$set(this.list2[ev.oldIndex], 'flag', true)
-        }*/
-        console.log('11111111111')
-        console.log(ev)
-        console.log(this.list1);
-        console.log(this.list2);
 
-        this.$store.dispatch('layout/GetAuth').then(resp => {
-          console.log('kkk')
-        })
-      },
-      end2 (ev) {
-        console.log('22222222222')
-        console.log(ev)
-        console.log(this.list1);
-        console.log(this.list2);
-      }
     }
   }
 </script>
 
 <style scoped lang="less">
 .home-screen{
-  display: flex;
-  .screen-1{
-    flex: 1;
-    border: 1px solid red;
+  padding: 0 36px;
+  background-color: #001034;
+  background-image: url("../../assets/images/screen/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  .home-top{
+    height: 66px;
+    display: flex;
+    .home_l{
+      flex: 1;
+      .e_label{
+        width: 64px;
+        height: 48px;
+        margin-top: 16px;
+        display: block;
+        background-image: url("../../assets/images/screen/head-logo.png");
+        background-repeat: no-repeat;
+        background-size: 64px 48px;
+      }
+    }
+    .home_c{
+      font-family: PingFangSC-Medium;
+      font-size: 24px;
+      color: #FFFFFF;
+      line-height: 60px;
+      width: 1320px;
+      background-image: url("../../assets/images/screen/head-center.png");
+      background-repeat: no-repeat;
+      background-size: 1320px 60px;
+      background-position: 0 6px;
+    }
+    .home_r{
+      flex: 1;
+      text-align: end;
+      font-size: 0;
+      /deep/
+      .e_btn{
+        width: 120px;
+        height: 36px;
+        line-height: 36px;
+        background-size: 120px 36px;
+        border-width: 0;
+        margin-top: 6px;
+        line-height: 0;
+        background-color: #001034;
+        background-repeat: no-repeat;
+        &+.el-button{
+          margin-left: 0;
+        }
+        &.e_btn_set{
+          background-image: url("../../assets/images/screen/head-set.png");
+        }
+        &.e_btn_full{
+          background-image: url("../../assets/images/screen/head-full.png");
+        }
+      }
+    }
   }
-  .screen{
-    width: 400px;
-    border: 1px solid blue;
-  }
-  .screen-2{
-    flex: 1;
-    border: 1px solid green;
-  }
-  .list-complete-item{
-    width: 300px;
-    height: 50px;
-    line-height: 50px;
-    background-color: #42b983;
-    color: #ffffff;
-    border-bottom: 1px solid blue;
+  .home-content{
+    display: flex;
+    padding: 20px 0;
+    .list-item{
+      width: 506px;
+      height: 310px;
+      margin-bottom: 15px;
+      background-image: url("../../assets/images/screen/content-lc.png");
+      background-repeat: no-repeat;
+      background-size: 506px 310px;
+      box-shadow: inset 0 0 12px 6px rgba(0,122,255,0.36);
+      border-radius: 16px;
+      .title{
+        font-size: 18px;
+        color: #00D7E9;
+        text-align: left;
+        padding: 14px 16px;
+        font-family: PingFangSC-Medium;
+        .t_img{
+          width: 140px;
+          height: 24px;
+          margin-left: 6px;
+          display: inline-block;
+          vertical-align: bottom;
+          background-image: url("../../assets/images/screen/content-bt.png");
+          background-repeat: no-repeat;
+          background-size: 140px 24px;
+        }
+      }
+    }
+    .screen-1{
+      flex: 1;
+      .list-item{
+        float: left;
+      }
+    }
+    .screen-2{
+      .list-item-top{
+        width: 800px;
+        height: 85px;
+        margin-bottom: 15px;
+        background-image: url("../../assets/images/screen/content-top.png");
+        background-repeat: no-repeat;
+        background-size: 800px 85px;
+      }
+      .list-item-middle{
+        width: 800px;
+        height: 534px;
+        margin-bottom: 15px;
+        background-image: url("../../assets/images/screen/content-mid.png");
+        background-repeat: no-repeat;
+        background-size: 800px 534px;
+      }
+      .list-item-bottom{
+        width: 800px;
+        height: 310px;
+        background-image: url("../../assets/images/screen/content-bom.png");
+        background-repeat: no-repeat;
+        background-size: 800px 310px;
+      }
+    }
+    .screen-3{
+      flex: 1;
+      .list-item{
+        float: right;
+      }
+    }
   }
 }
 </style>

@@ -54,32 +54,6 @@ export default (Vue) => {
         badge.innerText = '1111';
         let status = `<div>超小按钮</div>`
         el.appendChild(status);
-
-        /*if (!binding.value ||
-            binding.value == '' ||
-            binding.value == 0) {
-            return false;
-          }
-
-          let badge = document.createElement("sup");
-          badge.className = 'e-badge';
-          badge.innerText = binding.value;
-          badge.style = `position: absolute;
-        background-color: #F56C6C;
-        border-radius: 16px;
-        color: #FFF;
-        display: inline-block;
-        font-size: 12px;
-        height: 16px;
-        top: -8px;
-        right: -8px;
-        line-height: 14px;
-        padding: 0 5px;
-        text-align: center;
-        white-space: nowrap;
-        border-width: 0;`;*/
-
-        // el.appendChild(badge);
       }
     })
 }

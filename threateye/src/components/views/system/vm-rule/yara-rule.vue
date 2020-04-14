@@ -146,10 +146,11 @@ export default {
     },
     onChange (params) {
       console.log(params);
+      console.log(1111);
       if (params.status == 'fail') {
         this.$message(
           {
-            message: '上传失败！',
+            message: '上传失败',
             type: 'error',
           }
         );
@@ -173,7 +174,7 @@ export default {
             this.get_data();
             this.$message(
               {
-                message: '上传成功！',
+                message: '上传成功',
                 type: 'success',
               }
             );
@@ -185,6 +186,7 @@ export default {
 
     },
     onerror (params) {
+      console.log(params);
       this.$axios.get('/yiiapi/site/check-auth-exist', {
         params: {
           pathInfo: 'yararule/download',
@@ -194,7 +196,7 @@ export default {
           if (params.status == 'fail') {
             this.$message(
               {
-                message: '上传失败！',
+                message: '上传失败',
                 type: 'error',
               }
             );
@@ -218,14 +220,14 @@ export default {
               this.get_data();
               this.$message(
                 {
-                  message: '删除成功！',
+                  message: '删除成功',
                   type: 'success',
                 }
               );
             } else {
               this.$message(
                 {
-                  message: '删除失败！',
+                  message: '删除失败',
                   type: 'error',
                 }
               );

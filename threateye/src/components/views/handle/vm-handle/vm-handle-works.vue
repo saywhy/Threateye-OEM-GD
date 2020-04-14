@@ -1234,7 +1234,7 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status, data } = resp.data;
+          let { status, data,meg } = resp.data;
           if (status == 0) {
             this.$message.success('工单状态变更成功！');
             this.get_list_works();
@@ -1242,7 +1242,7 @@ export default {
             /******************************************************替换***********************************************/
             this.$emit('updateNum');
           } else {
-            this.$message.error('工单状态变更失败！');
+            this.$message.error(msg);
             this.closed_state();
             /******************************************************替换***********************************************/
           }

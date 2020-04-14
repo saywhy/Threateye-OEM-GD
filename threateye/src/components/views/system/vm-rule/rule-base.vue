@@ -40,11 +40,11 @@
         <span class="title_name">上传更新文件</span>
       </div>
       <div class="content">
-
         <uploader :options="options"
                   :autoStart='false'
                   :fileStatusText='fileStatusText'
                   @file-added="onFileAdded"
+                  @upload-start="onFilestart"
                   @file-success="onFileSuccess"
                   @file-progress="onFileProgress"
                   @file-error="onFileError"
@@ -64,7 +64,9 @@
         <el-button @click="closed_upload_box"
                    class="cancel_btn">取消</el-button>
         <el-button class="ok_btn"
-                   @click="closed_upload_box">确定</el-button>
+                   :disabled="upload_btn"
+                   :class="upload_btn?'disabled_color':''"
+                   @click="upload_ok">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -92,7 +94,7 @@ export default {
 
       fileStatusText: {
         success: '成功',
-        error: '错误',
+        error: '上传失败，请重新上传',
         uploading: '上传中',
         paused: '暂停',
         waiting: '等待'
@@ -101,7 +103,10 @@ export default {
       rule_data: {
         upload_pop: false,
       },
-      timer: null
+      autoStart: false,
+      timer: null,
+      file_content: '',
+      upload_btn: true,
     };
   },
   props: {
@@ -134,7 +139,6 @@ export default {
     update_status () {
       this.$axios.get('/yiiapi/rulebase/get-update-status')
         .then(response => {
-          console.log(response);
           if (response.data.status == 0) {
             this.rule = response.data.data
             this.rule.forEach(item => {
@@ -163,7 +167,6 @@ export default {
     get_data () {
       this.$axios.get('/yiiapi/rulebase/get-update-status')
         .then(response => {
-          console.log(response);
           if (response.data.status == 0) {
             this.rule = response.data.data
             this.rule.forEach(item => {
@@ -190,10 +193,17 @@ export default {
         })
     },
     open_box () {
+      this.upload_btn = true;
       this.rule_data.upload_pop = true;
     },
     closed_upload_box () {
+      this.upload_btn = true;
       this.rule_data.upload_pop = false;
+      if (this.file_content != '') {
+        this.file_content.cancel()
+        this.file_content == ''
+      }
+
     },
     onBeforeUpload () {
 
@@ -208,7 +218,6 @@ export default {
     update_online () {
       this.$axios.post('/yiiapi/rulebase/realtime-update')
         .then(response => {
-          console.log(response);
           let { status, data } = response.data;
           if (status == 0) {
             this.$message({
@@ -227,13 +236,13 @@ export default {
     // 离线更新
     // 上传
     onFileAdded (file) {
+      this.upload_btn = false
       console.log(file.name);
       file.pause()
       if (file.name == 'sdk.tgz' || file.name == 'ids.tgz' || file.name == 'df.tgz') {
-        setTimeout(() => {
-          file.resume();
-        }, 100)
+        this.file_content = file
       } else {
+        this.upload_btn = true;
         this.$message({
           message: '请上传文件名为sdk.tgz、ids.tgz、df.tgz的文件',
           type: 'warning'
@@ -243,18 +252,22 @@ export default {
         }, 100)
       }
     },
+    onFilestart (file) {
+      console.log('213123');
+    },
     onFileSuccess (rootFile, file, response, chunk) {
+      console.log(rootFile);
+      console.log(response, );
+      console.log(chunk);
+      this.upload_btn = true;
       if (JSON.parse(response).status == 0) {
         console.log(file);
-        this.$axios.get('/yiiapi/sandbox/move-file', {
-          params: {
-            upload_name: file.name,
-          }
+        this.$axios.post('/yiiapi/rulebase/upload-success', {
+          "file_name": file.name
         })
           .then(response => {
             let { status, data } = response.data;
             if (status == 0) {
-              file.cancel()
               this.get_data();
               this.$message(
                 {
@@ -262,17 +275,47 @@ export default {
                   type: 'success',
                 }
               );
+              file.cancel()
+              this.rule_data.upload_pop = false;
             }
           })
           .catch(error => {
             console.log(error);
           })
 
+      } else {
+        this.$message(
+          {
+            message: JSON.parse(response).msg,
+            type: 'success',
+          }
+        );
+        file.cancel()
+        this.rule_data.upload_pop = false;
       }
       console.log(chunk);
     },
-    onFileProgress (file) { },
-    onFileError () { },
+    onFileProgress (rootFile, file, chunk) {
+      console.log(`上传中 ${file.name}，chunk：${chunk.startByte / 1024 / 1024} ~ ${chunk.endByte / 1024 / 1024}`)
+      console.log(chunk);
+
+    },
+    onFileError () {
+      this.upload_btn = true;
+      this.file_content.cancel();
+      this.$message(
+        {
+          message: '上传失败，请重新上传',
+          type: 'error',
+        }
+      );
+    },
+    upload_ok () {
+      console.log(this.file_content);
+      setTimeout(() => {
+        this.file_content.resume();
+      }, 100)
+    }
   }
 };
 </script>
@@ -280,6 +323,7 @@ export default {
 <style scoped lang="less">
 #rule_base {
   text-align: left;
+
   .title {
     font-size: 16px;
     font-family: PingFangMedium;
@@ -309,8 +353,23 @@ export default {
 <style lang='less'>
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
 #rule_base {
+  .uploader-file-name {
+    width: 20% !important;
+  }
+  .uploader-file-size {
+    width: 25% !important;
+  }
+  .uploader-file-meta {
+    width: 0% !important;
+  }
+  .uploader-file-status {
+    width: 50% !important;
+  }
+  .disabled_color {
+    background: #ccc !important ;
+  }
   .el-dialog {
-    width: 440px;
+    width: 500px;
     /deep/ .uploader-example {
       width: 100%;
       margin: 0;

@@ -95,10 +95,13 @@
             <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
+                    :type="passw_add"
                     placeholder="请输入密码"
                     v-model="outside_pop.add.pswd"
-                    clearable
-                    show-password>
+                    clearable>
+            <i slot="suffix"
+               :class="icon"
+               @click="showPass_add"></i>
           </el-input>
         </div>
       </div>
@@ -129,9 +132,12 @@
             <span class="red_necessary">*</span>
           </p>
           <el-input class="select_box"
+                    :type="passw_edit"
                     placeholder="请输入密码"
-                    v-model="outside_pop.edit.pswd"
-                    show-password>
+                    v-model="outside_pop.edit.pswd">
+            <i slot="suffix"
+               :class="icon"
+               @click="showPass_edit"></i>
           </el-input>
         </div>
 
@@ -177,7 +183,11 @@ export default {
         rows: 10
       },
       user_list: {},
-      hostip: ''
+      hostip: '',
+      icon: "el-input__icon el-icon-view",
+      //用于改变Input类型
+      passw_edit: "password",
+      passw_add: "password",
     };
   },
   props: {
@@ -303,6 +313,7 @@ export default {
     },
     // 添加外部访问用户
     add_box () {
+      this.passw_add = "password";
       this.outside_pop.add.show = true
       this.outside_pop.add.user = ''
       this.outside_pop.add.pswd = ''
@@ -358,6 +369,7 @@ export default {
     // 编辑
     edit_box (item) {
       console.log(item);
+      this.passw_edit = "password";
       this.outside_pop.edit.show = true
       var item_str = JSON.stringify(item)
       var item_obj = JSON.parse(item_str)
@@ -366,16 +378,7 @@ export default {
       this.outside_pop.edit.pswd = item_obj.passwd
     },
     edit_user () {
-      if (this.outside_pop.edit.user == '') {
-        this.$message(
-          {
-            message: '请输入用户名',
-            type: 'warning',
-          }
-        );
-        return false
-      }
-      if (this.outside_pop.add.pswd == '') {
+      if (this.outside_pop.edit.pswd == '') {
         this.$message(
           {
             message: '请输入密码',
@@ -384,8 +387,9 @@ export default {
         );
         return false
       }
-      this.$axios.put('/yiiapi/externalaccess/edit', {
-        "passwd": "dsfdafgfdagr"
+      this.$axios.post('/yiiapi/externalaccess/edit', {
+        "uname": this.outside_pop.edit.user,
+        "passwd": this.outside_pop.edit.pswd
       })
         .then(response => {
           console.log(response.data);
@@ -398,7 +402,7 @@ export default {
             );
           } else if (response.data.status == 0) {
             this.get_user_list()
-            this.outside_pop.add.show = false
+            this.outside_pop.edit.show = false
             this.$message(
               {
                 message: '修改账号成功',
@@ -411,6 +415,25 @@ export default {
           console.log(error);
         })
 
+    },
+    //密码的隐藏和显示
+    showPass_edit () {
+      //点击图标是密码隐藏或显示
+      if (this.passw_edit == "text") {
+        this.passw_edit = "password";
+        //更换图标
+      } else {
+        this.passw_edit = "text";
+      };
+    },
+    //密码的隐藏和显示
+    showPass_add () {
+      //点击图标是密码隐藏或显示
+      if (this.passw_add == "text") {
+        this.passw_add = "password";
+      } else {
+        this.passw_add = "text";
+      };
     },
     // 删除
     del_box (item) {

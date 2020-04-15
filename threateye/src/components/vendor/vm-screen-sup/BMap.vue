@@ -167,8 +167,8 @@
             selectedMode : 'single',
             itemStyle: {
               normal: {
-                areaColor: '#323c48',
-                borderColor: '#404a59'
+                areaColor: 'rgba(9,102,232,0.12)',
+                borderColor: '#0966e8'
               },
               emphasis: {
                 color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{

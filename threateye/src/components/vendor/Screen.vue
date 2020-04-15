@@ -28,13 +28,14 @@
         </div>
       </div>
       <div class="screen-2">
-        <div class="list-item-top">
+        <div class="list-item list-item-top">
 
         </div>
-        <div class="list-item-middle">
-
+        <div class="list-item list-item-middle">
+          <header class="title">外连分布<i class="t_img"></i></header>
+          <vm-screen-middle1></vm-screen-middle1>
         </div>
-        <div class="list-item-bottom">
+        <div class="list-item list-item-bottom">
 
         </div>
 
@@ -62,6 +63,7 @@
   import VmScreenLeft0 from './vm-screen/vm-screen-left0';
   import VmScreenLeft1 from './vm-screen/vm-screen-left1';
   import VmScreenLeft2 from './vm-screen/vm-screen-left2';
+  import VmScreenMiddle1 from './vm-screen/vm-screen-middle1';
   import VmScreenRight0 from './vm-screen/vm-screen-right0';
   import VmScreenRight1 from './vm-screen/vm-screen-right1';
   import VmScreenRight2 from './vm-screen/vm-screen-right2';
@@ -72,6 +74,7 @@
       VmScreenLeft0,
       VmScreenLeft1,
       VmScreenLeft2,
+      VmScreenMiddle1,
       VmScreenRight0,
       VmScreenRight1,
       VmScreenRight2

@@ -47,7 +47,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import VmScreenProgress from './vm-screen-progress';
+  import VmScreenProgress from '../vm-screen-sup/vm-screen-progress';
   export default {
       name: "vm-screen-right2",
       components: {VmScreenProgress},

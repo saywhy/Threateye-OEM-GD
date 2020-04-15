@@ -41,9 +41,10 @@
     .t-arrow{
       display: inline-block;
       background-image: url("../../../assets/images/screen/aside-arrow.png");
-      width: 18px;
-      height: 18px;
-      background-size: 18px;
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      background-size: 14px;
     }
     .t-time{
       display: block;

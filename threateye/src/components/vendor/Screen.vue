@@ -49,7 +49,8 @@
           <vm-screen-right1></vm-screen-right1>
         </div>
         <div class="list-item">
-
+          <header class="title">系统状态监控<i class="t_img"></i></header>
+          <vm-screen-right2></vm-screen-right2>
         </div>
       </div>
     </div>
@@ -63,6 +64,7 @@
   import VmScreenLeft2 from './vm-screen/vm-screen-left2';
   import VmScreenRight0 from './vm-screen/vm-screen-right0';
   import VmScreenRight1 from './vm-screen/vm-screen-right1';
+  import VmScreenRight2 from './vm-screen/vm-screen-right2';
   export default {
     name: "home-screen",
     components: {
@@ -71,7 +73,8 @@
       VmScreenLeft1,
       VmScreenLeft2,
       VmScreenRight0,
-      VmScreenRight1
+      VmScreenRight1,
+      VmScreenRight2
     },
     data() {
       return {

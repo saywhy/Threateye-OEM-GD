@@ -405,7 +405,7 @@ export default {
             this.outside_pop.edit.show = false
             this.$message(
               {
-                message: '修改账号成功',
+                message: '修改密码成功',
                 type: 'success',
               }
             );

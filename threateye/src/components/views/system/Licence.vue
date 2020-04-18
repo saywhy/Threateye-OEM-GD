@@ -61,8 +61,7 @@
             <template slot-scope="scope"
                       show-overflow-tooltip>{{ scope.row.endTime |formatDate }}</template>
           </el-table-column>
-          <el-table-column prop="orgName"
-                           label='威胁情报'
+          <el-table-column label='威胁情报'
                            show-overflow-tooltip>
             <template slot-scope="scope"
                       show-overflow-tooltip>

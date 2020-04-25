@@ -74,7 +74,7 @@
         margin-right: 8px;
         background-size: 14px;
         vertical-align: text-top;
-        background-image: url("../../../assets/images/screen/aside-arrow.png");
+        background-image: url("../../../../assets/images/screen/aside-arrow.png");
       }
       .t-name{
         font-family: PingFangSC-Regular;
@@ -91,7 +91,7 @@
       width: 162px;
       height: 162px;
       margin: 14px 0;
-      background-image: url("../../../assets/images/screen/state/disk.png");
+      background-image: url("../../../../assets/images/screen/state/disk.png");
       background-repeat: no-repeat;
       background-size: 162px;
       padding: 45px 0;
@@ -128,7 +128,7 @@
           margin-right: 8px;
           background-size: 14px;
           vertical-align: text-top;
-          background-image: url("../../../assets/images/screen/aside-arrow.png");
+          background-image: url("../../../../assets/images/screen/aside-arrow.png");
         }
         .t-name{
           font-family: PingFangSC-Regular;
@@ -141,47 +141,47 @@
         }
         &.it0{
           padding-left: 40px;
-          background-image: url("../../../assets/images/screen/state/st0.png");
+          background-image: url("../../../../assets/images/screen/state/st0.png");
           .t-num{
             right: 56px;
           }
         }
         &.it1{
           padding-left: 50px;
-          background-image: url("../../../assets/images/screen/state/st1.png");
+          background-image: url("../../../../assets/images/screen/state/st1.png");
           .t-num{
             right: 30px;
           }
         }
         &.it2{
           padding-left: 50px;
-          background-image: url("../../../assets/images/screen/state/st2.png");
+          background-image: url("../../../../assets/images/screen/state/st2.png");
           .t-num{
             right: 30px;
           }
         }
         &.it3{
           padding-left: 40px;
-          background-image: url("../../../assets/images/screen/state/st3.png");
+          background-image: url("../../../../assets/images/screen/state/st3.png");
           .t-num{
             right: 56px;
           }
         }
         &.active{
           &.it0{
-            background-image: url("../../../assets/images/screen/state/st0_a.png");
+            background-image: url("../../../../assets/images/screen/state/st0_a.png");
           }
           &.it1{
-            background-image: url("../../../assets/images/screen/state/st1_a.png");
+            background-image: url("../../../../assets/images/screen/state/st1_a.png");
           }
           &.it2{
-            background-image: url("../../../assets/images/screen/state/st2_a.png");
+            background-image: url("../../../../assets/images/screen/state/st2_a.png");
           }
           &.it3{
-            background-image: url("../../../assets/images/screen/state/st3_a.png");
+            background-image: url("../../../../assets/images/screen/state/st3_a.png");
           }
           .t-arrow{
-            background-image: url("../../../assets/images/screen/aside-arrow.png");
+            background-image: url("../../../../assets/images/screen/aside-arrow.png");
           }
         }
       }

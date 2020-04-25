@@ -8,12 +8,12 @@
         iView态势感知系统
       </div>
       <div class="home_r">
-        <el-button type="primary" class="e_btn e_btn_set">搜索</el-button>
-        <el-button type="primary" class="e_btn e_btn_full">搜索</el-button>
+        <el-button type="primary" class="e_btn e_btn_set" @click="set_screen();">设置</el-button>
+        <el-button type="primary" class="e_btn e_btn_full">全屏</el-button>
       </div>
     </div>
     <div class="home-content">
-      <div class="screen-1">
+      <div class="screen-1" >
         <div class="list-item">
           <header class="title">威胁分布<i class="t_img"></i></header>
           <vm-screen-left0></vm-screen-left0>
@@ -26,10 +26,18 @@
           <header class="title">分支安全<i class="t_img"></i></header>
           <vm-screen-left2></vm-screen-left2>
         </div>
+        <div class="list-item">
+          <header class="title">关注告警<i class="t_img"></i></header>
+          <vm-screen-left3></vm-screen-left3>
+        </div>
+        <div class="list-item">
+          <header class="title">风险趋势<i class="t_img"></i></header>
+          <vm-screen-left4></vm-screen-left4>
+        </div>
       </div>
       <div class="screen-2">
         <div class="list-item list-item-top">
-
+          <vm-screen-middle0></vm-screen-middle0>
         </div>
         <div class="list-item list-item-middle">
           <header class="title">外连分布<i class="t_img"></i></header>
@@ -53,6 +61,14 @@
           <header class="title">系统状态监控<i class="t_img"></i></header>
           <vm-screen-right2></vm-screen-right2>
         </div>
+        <div class="list-item">
+          <header class="title">外连国家TOP5<i class="t_img"></i></header>
+          <vm-screen-right3></vm-screen-right3>
+        </div>
+        <div class="list-item">
+          <header class="title">威胁排行<i class="t_img"></i></header>
+          <vm-screen-right4></vm-screen-right4>
+        </div>
       </div>
     </div>
   </div>
@@ -63,10 +79,15 @@
   import VmScreenLeft0 from './vm-screen/vm-screen-left0';
   import VmScreenLeft1 from './vm-screen/vm-screen-left1';
   import VmScreenLeft2 from './vm-screen/vm-screen-left2';
+  import VmScreenLeft3 from './vm-screen/vm-screen-left3';
+  import VmScreenLeft4 from './vm-screen/vm-screen-left4';
+  import VmScreenMiddle0 from './vm-screen/vm-screen-middle0';
   import VmScreenMiddle1 from './vm-screen/vm-screen-middle1';
   import VmScreenRight0 from './vm-screen/vm-screen-right0';
   import VmScreenRight1 from './vm-screen/vm-screen-right1';
   import VmScreenRight2 from './vm-screen/vm-screen-right2';
+  import VmScreenRight3 from './vm-screen/vm-screen-right3';
+  import VmScreenRight4 from './vm-screen/vm-screen-right4';
   export default {
     name: "home-screen",
     components: {
@@ -74,10 +95,15 @@
       VmScreenLeft0,
       VmScreenLeft1,
       VmScreenLeft2,
+      VmScreenLeft3,
+      VmScreenLeft4,
+      VmScreenMiddle0,
       VmScreenMiddle1,
       VmScreenRight0,
       VmScreenRight1,
-      VmScreenRight2
+      VmScreenRight2,
+      VmScreenRight3,
+      VmScreenRight4
     },
     data() {
       return {
@@ -85,7 +111,9 @@
       }
     },
     methods: {
-
+      set_screen(){
+        this.$router.push({path:'/screen/set/top'});
+      }
     }
   }
 </script>
@@ -94,7 +122,7 @@
 .home-screen{
   padding: 0 36px;
   background-color: #001034;
-  background-image: url("../../assets/images/screen/bg.png");
+  background-image: url("../../../assets/images/screen/bg.png");
   background-repeat: no-repeat;
   background-size: cover;
   .home-top{
@@ -107,7 +135,7 @@
         height: 48px;
         margin-top: 16px;
         display: block;
-        background-image: url("../../assets/images/screen/head-logo.png");
+        background-image: url("../../../assets/images/screen/head-logo.png");
         background-repeat: no-repeat;
         background-size: 64px 48px;
       }
@@ -118,7 +146,7 @@
       color: #FFFFFF;
       line-height: 60px;
       width: 1320px;
-      background-image: url("../../assets/images/screen/head-center.png");
+      background-image: url("../../../assets/images/screen/head-center.png");
       background-repeat: no-repeat;
       background-size: 1320px 60px;
       background-position: 0 6px;
@@ -142,10 +170,10 @@
           margin-left: 0;
         }
         &.e_btn_set{
-          background-image: url("../../assets/images/screen/head-set.png");
+          background-image: url("../../../assets/images/screen/head-set.png");
         }
         &.e_btn_full{
-          background-image: url("../../assets/images/screen/head-full.png");
+          background-image: url("../../../assets/images/screen/head-full.png");
         }
       }
     }
@@ -157,7 +185,7 @@
       width: 506px;
       height: 310px;
       margin-bottom: 15px;
-      background-image: url("../../assets/images/screen/content-lc.png");
+      background-image: url("../../../assets/images/screen/content-lc.png");
       background-repeat: no-repeat;
       background-size: 506px 310px;
       box-shadow: inset 0 0 12px 6px rgba(0,122,255,0.36);
@@ -174,7 +202,7 @@
           margin-left: 6px;
           display: inline-block;
           vertical-align: bottom;
-          background-image: url("../../assets/images/screen/content-bt.png");
+          background-image: url("../../../assets/images/screen/content-bt.png");
           background-repeat: no-repeat;
           background-size: 140px 24px;
         }
@@ -191,7 +219,7 @@
         width: 800px;
         height: 85px;
         margin-bottom: 15px;
-        background-image: url("../../assets/images/screen/content-top.png");
+        background-image: url("../../../assets/images/screen/content-top.png");
         background-repeat: no-repeat;
         background-size: 800px 85px;
       }
@@ -199,14 +227,14 @@
         width: 800px;
         height: 534px;
         margin-bottom: 15px;
-        background-image: url("../../assets/images/screen/content-mid.png");
+        background-image: url("../../../assets/images/screen/content-mid.png");
         background-repeat: no-repeat;
         background-size: 800px 534px;
       }
       .list-item-bottom{
         width: 800px;
         height: 310px;
-        background-image: url("../../assets/images/screen/content-bom.png");
+        background-image: url("../../../assets/images/screen/content-bom.png");
         background-repeat: no-repeat;
         background-size: 800px 310px;
       }

@@ -73,7 +73,8 @@ export default {
         width: 56px !important;
         #aside {
           width: 100%;
-          /deep/ .el-menu--collapse {
+          /deep/
+          .el-menu--collapse {
             width: 100%;
             .aside-item {
               .item {

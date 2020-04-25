@@ -40,7 +40,7 @@
     padding: 5px 16px;
     .t-arrow{
       display: inline-block;
-      background-image: url("../../../assets/images/screen/aside-arrow.png");
+      background-image: url("../../../../assets/images/screen/aside-arrow.png");
       width: 14px;
       height: 14px;
       margin-right: 8px;

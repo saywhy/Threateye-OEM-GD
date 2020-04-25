@@ -123,7 +123,28 @@ export const constantRouterMap = [{
   {
     path: '/screen',
     name:'screen',
-    component: () => import('@/components/vendor/Screen')
+    component: () => import('@/components/vendor/screen/Screen')
+  },
+  {
+    path: '/screen/set',
+    name:'screen_set',
+    redirect: '/screen/set/top',
+    component: () => import('@/components/vendor/screen/screen-set/screen-set'),
+    children:[
+      {
+        path: '/screen/set/top',
+        name: 'screen_set_top',
+        meta: {
+          title: '基础设置',
+          auth: '996',
+          icon: 'e-aside-none',
+          parentAuth: '995',
+          rootAuth: '1',
+          deep: 2
+        },
+        component: () => import('@/components/vendor/screen/Screen')
+      }
+    ]
   },
   {
     path: '/600',

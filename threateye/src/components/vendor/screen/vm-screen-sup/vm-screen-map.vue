@@ -7,13 +7,13 @@
 <script>
   import echarts from "echarts";
   // 引入每个地址的坐标
-  import geoCoordData from "../../../../static/data/geoCoordData.json";
+  import geoCoordData from "../../../../../static/data/geoCoordData.json";
   // 引入北上广和其他城市相关联的数据
-  import BJData from "../../../../static/data/BJData.json";
-  import SHData from "../../../../static/data/SHData.json";
-  import GZData from "../../../../static/data/BJData.json";
+  import BJData from "../../../../../static/data/BJData.json";
+  import SHData from "../../../../../static/data/SHData.json";
+  import GZData from "../../../../../static/data/BJData.json";
   // 引入地图样式
-  import MapStyle from "../../../../static/data/MapStyle.json";
+  import MapStyle from "../../../../../static/data/MapStyle.json";
   export default {
     name: "Ddos",
     data() {
@@ -199,8 +199,12 @@
 </script>
 
 <style lang="less" scoped>
-  #map {
+  #ddos{
     width: 100%;
-    height: 460px;
+    #map {
+      width: 100%;
+      height: 460px;
+    }
   }
+
 </style>

@@ -40,7 +40,7 @@
 
         </div>-->
         <div class="item item3">
-           <img class="t_disabled" src="../../../assets/images/screen/system/disabled.png">
+           <img class="t_disabled" src="../../../../assets/images/screen/system/disabled.png">
         </div>
       </div>
     </div>
@@ -179,7 +179,7 @@
       }
       &.t-info_0{
         .t-arrow{
-          background-image: url("../../../assets/images/screen/system/arrow0.png");
+          background-image: url("../../../../assets/images/screen/system/arrow0.png");
         }
         .t-name{
           color: #D0A13F;
@@ -187,7 +187,7 @@
       }
       &.t-info_1{
         .t-arrow{
-          background-image: url("../../../assets/images/screen/system/arrow1.png");
+          background-image: url("../../../../assets/images/screen/system/arrow1.png");
         }
         .t-name{
           color: #60C160;
@@ -195,7 +195,7 @@
       }
       &.t-info_2{
         .t-arrow{
-          background-image: url("../../../assets/images/screen/system/arrow2.png");
+          background-image: url("../../../../assets/images/screen/system/arrow2.png");
         }
         .t-name{
           color: #D44361;
@@ -214,16 +214,16 @@
       background-repeat: no-repeat;
       background-size: 156px 198px;
       &.item0{
-        background-image: url("../../../assets/images/screen/system/bg0.png");
+        background-image: url("../../../../assets/images/screen/system/bg0.png");
       }
       &.item1{
-        background-image: url("../../../assets/images/screen/system/bg1.png");
+        background-image: url("../../../../assets/images/screen/system/bg1.png");
       }
       &.item2{
-        background-image: url("../../../assets/images/screen/system/bg2.png");
+        background-image: url("../../../../assets/images/screen/system/bg2.png");
       }
       &.item3{
-        background-image: url("../../../assets/images/screen/system/bg3.png");
+        background-image: url("../../../../assets/images/screen/system/bg3.png");
         .t_disabled{
           width: 48px;
           height: 48px;
@@ -243,7 +243,7 @@
           width: 18px;
           height: 18px;
           display: inline-block;
-          background-image: url("../../../assets/images/screen/system/fs.png");
+          background-image: url("../../../../assets/images/screen/system/fs.png");
           background-repeat: no-repeat;
           background-size: 18px;
           vertical-align: bottom;
@@ -265,10 +265,10 @@
           vertical-align: bottom;
           background-size: 12px 24px;
           &.t-aw_1{
-            background-image: url("../../../assets/images/screen/system/aw1.png");
+            background-image: url("../../../../assets/images/screen/system/aw1.png");
           }
           &.t-aw_2{
-            background-image: url("../../../assets/images/screen/system/aw2.png");
+            background-image: url("../../../../assets/images/screen/system/aw2.png");
           }
         }
         .t-name{

@@ -1,5 +1,5 @@
 <template>
-  <div class="aside-item">
+  <div class="aside-item" v-cloak>
 
       <template v-if="!item.children">
         <router-link class="item" :to="item.path" :key="item.meta.auth" active-class="" exact-active-class="">

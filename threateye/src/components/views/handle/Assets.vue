@@ -590,19 +590,23 @@ export default {
       ],
       options_degree: [
         {
-          value: "high",
-          label: "高危"
+          value: "low",
+          label: "低危"
         },
         {
           value: "medium",
           label: "中危"
         },
         {
-          value: "low",
-          label: "低危"
+          value: "high",
+          label: "高危"
         }
       ],
       options_status: [
+        {
+          value: "all",
+          label: "所有"
+        },
         {
           value: "1",
           label: "待处置"

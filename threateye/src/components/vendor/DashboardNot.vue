@@ -54,7 +54,7 @@ export default {
       height: calc(100vh - 120px);
       &::-webkit-scrollbar {
         /*滚动条整体样式*/
-        width: 6px;
+        width: 10px;
         /*高宽分别对应横竖滚动条的尺寸*/
         /* border-radius: 6px;*/
       }

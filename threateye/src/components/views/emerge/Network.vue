@@ -17,6 +17,7 @@
                 style="padding: 15px 0;">
           <el-col :span="24"
                   class="common_box_list">
+
             <!--搜索关键词-->
             <el-input class="s_key"
                       placeholder="搜索关键词"
@@ -36,6 +37,19 @@
                        placeholder="失陷确定性"
                        :popper-append-to-body="false">
               <el-option v-for="item in options_threat"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+
+            <!--威胁等级-->
+            <el-select class="s_key"
+                       v-model="params.degree"
+                       clearable
+                       placeholder="威胁等级"
+                       :popper-append-to-body="false">
+              <el-option v-for="item in options_degrees"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value">
@@ -512,8 +526,23 @@ export default {
         threat: "",
         status: "",
         startTime: '',
-        endTime: ''
+        endTime: '',
+        degree:''
       },
+      options_degrees: [
+        {
+          value: "low",
+          label: "低危"
+        },
+        {
+          value: "medium",
+          label: "中危"
+        },
+        {
+          value: "high",
+          label: "高危"
+        }
+      ],
       options_threat: [
         {
           value: "1",
@@ -521,6 +550,10 @@ export default {
         }
       ],
       options_status: [
+        {
+          value: "all",
+          label: "所有"
+        },
         {
           value: "0",
           label: "新告警"
@@ -683,7 +716,7 @@ export default {
           key_word: this.params.key,
           fall_certainty: params_alert.threat,
           status: this.params.status,
-          degree: "",
+          degree: this.params.degree,
           page: this.table.pageNow,
           rows: this.table.eachPage,
         }
@@ -732,7 +765,8 @@ export default {
         threat: "",
         status: "",
         startTime: '',
-        endTime: ''
+        endTime: '',
+        degree:''
       };
       $(document.querySelector('.el-button--text')).trigger('click');
       this.get_list_risk();
@@ -1015,7 +1049,7 @@ export default {
           .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
-      console.log(this.task_params);
+      //console.log(this.task_params);
       this.handle.save = true;
       this.$axios.post('/yiiapi/alert/add-workorder',
         {

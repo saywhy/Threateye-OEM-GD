@@ -55,6 +55,19 @@
                   </el-option>
                 </el-select>
 
+                <!--威胁等级-->
+                <el-select class="s_key"
+                           v-model="params.degree"
+                           clearable
+                           placeholder="威胁等级"
+                           :popper-append-to-body="false">
+                  <el-option v-for="item in options_degrees"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value">
+                  </el-option>
+                </el-select>
+
                 <!--处理状态-->
                 <el-select class="s_key"
                            v-model="params.status"
@@ -226,7 +239,6 @@
                    class="ok_btn">确定</el-button>
       </div>
     </el-dialog>
-
     <!-- 弹窗 -->
     <!-- 工单任务 -->
     <el-dialog class="task_new_box pop_box"
@@ -527,7 +539,33 @@ export default {
           label: "已失陷"
         }
       ],
+      params: {
+        key_word: "",
+        category: "",
+        status: "",
+        startTime: "",
+        endTime: "",
+        degree: ""
+      },
+      options_degrees: [
+        {
+          value: "low",
+          label: "低危"
+        },
+        {
+          value: "medium",
+          label: "中危"
+        },
+        {
+          value: "high",
+          label: "高危"
+        }
+      ],
       options_status: [
+        {
+          value: "all",
+          label: "所有"
+        },
         {
           value: "0",
           label: "新告警"
@@ -553,13 +591,6 @@ export default {
           label: "误报"
         }
       ],
-      params: {
-        key_word: "",
-        category: "",
-        status: "",
-        startTime: "",
-        endTime: "",
-      },
       table: {
         tableData: [],
         count: 0,
@@ -701,7 +732,7 @@ export default {
         params: {
           start_time: this.params.startTime,
           end_time: this.params.endTime,
-          degree: '',
+          degree: this.params.degree,
           fall_certainty: params_alert.threat,
           status: this.params.status,
           key_word: this.params.key_word,
@@ -765,6 +796,7 @@ export default {
         status: "",
         startTime: "",
         endTime: "",
+        degree: ""
       }
       $(document.querySelector('.el-button--text')).trigger('click');
       this.get_list_threat();

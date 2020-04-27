@@ -27,8 +27,8 @@
             </li>
           </ul>-->
           <vuedraggable class="menu-list" v-model="asideList" v-show="defaultIndex == 1">
-            <transition-group>
-                <div v-for="(item,index) in asideList" :key="index" class="item">
+            <transition-group >
+                <div v-for="(item,index) in asideList" class="item">
                   <span class="title">{{item.name}}</span>
                   <button class="bt" :class="{'active':item.flag}">已添加</button>
                 </div>

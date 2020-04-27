@@ -29,7 +29,7 @@ body {
   height: 100%;
   /*font: 12px"\5B8B\4F53", sans-serif;*/
   background: #ffffff;
-  /*overflow-y: hidden;*/
+  overflow-y: hidden;
 }
 
 html {
@@ -163,22 +163,6 @@ input:-ms-input-placeholder {
 @font-face {
   font-family: "PingFang";
 }
-
-body::-webkit-scrollbar {
-  /*滚动条整体样式*/
-  width: 0px;
-  /*高宽分别对应横竖滚动条的尺寸*/
-  /* border-radius: 6px;*/
-}
-
-/*body::-webkit-scrollbar-thumb {!*滚动条里面小方块*!
-   border-radius: 6px;
-   background: #a8a8a8;
- }
-body::-webkit-scrollbar-track {!*滚动条里面轨道*!
-   border-radius: 6px;
-   background: #f4f4f4;
- }*/
 
 .el-date-editor .el-range-separator {
   width: auto;

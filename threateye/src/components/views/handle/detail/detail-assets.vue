@@ -578,7 +578,7 @@
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_assets">
-                <el-table-column label="全选"
+                <el-table-column label=" "
                                  width="50"></el-table-column>
                 <el-table-column type="selection"
                                  width="50"></el-table-column>

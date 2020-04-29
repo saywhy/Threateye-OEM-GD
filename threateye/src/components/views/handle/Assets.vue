@@ -169,7 +169,7 @@
                     :data="table.tableData"
                     @row-click="detailClick"
                     @selection-change="handleSelChange">
-            <el-table-column label="全选"
+            <el-table-column label=" "
                              width="50"></el-table-column>
             <el-table-column type="selection"
                              width="50"></el-table-column>
@@ -401,7 +401,7 @@
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handle_sel_table_assets">
-                <el-table-column label="全选"
+                <el-table-column label=" "
                                  width="50"></el-table-column>
                 <el-table-column type="selection"
                                  width="50"></el-table-column>
@@ -412,16 +412,17 @@
                                  label="资产组"
                                  width="90"
                                  show-overflow-tooltip></el-table-column>
-                <el-table-column label="关联威胁" show-overflow-tooltip>
+                <el-table-column label="关联威胁"
+                                 show-overflow-tooltip>
                   <template slot-scope="scope">
-                <span class="btn_tag_box"
-                      v-if="item!=''"
-                      v-for="item in scope.row.category">
-                  <el-button type="primary"
-                             class="btn_tag">
-                    {{item}}
-                  </el-button>
-                </span>
+                    <span class="btn_tag_box"
+                          v-if="item!=''"
+                          v-for="item in scope.row.category">
+                      <el-button type="primary"
+                                 class="btn_tag">
+                        {{item}}
+                      </el-button>
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column label="威胁等级">
@@ -561,7 +562,7 @@ export default {
   data () {
     return {
       //
-      search_flag:false,
+      search_flag: false,
       //頂部數據
       data_top: {},
       data_top_show: false,
@@ -603,10 +604,6 @@ export default {
         }
       ],
       options_status: [
-        {
-          value: "all",
-          label: "所有"
-        },
         {
           value: "1",
           label: "待处置"
@@ -845,7 +842,7 @@ export default {
       }
 
 
-      if(!this.search_flag){
+      if (!this.search_flag) {
         this.params = {
           key: "",
           threat: "",
@@ -864,7 +861,7 @@ export default {
       let index = tags.findIndex(x => x.name == item.name);
       this.assets_all.tags.splice(index, 1);
 
-      if(!this.search_flag){
+      if (!this.search_flag) {
         this.params = {
           key: "",
           threat: "",

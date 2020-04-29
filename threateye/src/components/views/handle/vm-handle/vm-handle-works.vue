@@ -130,7 +130,7 @@
               tooltip-effect="dark"
               @selection-change="handleSelChange"
               @row-click="detail_click">
-      <el-table-column label="全选"
+      <el-table-column label=" "
                        prop="type"
                        width="50">
         <template slot-scope="scope">
@@ -363,7 +363,7 @@
                             ref="assetTableName"
                             :row-key="getRowKeys_assets"
                             @selection-change="handle_sel_table_assets">
-                    <el-table-column label="全选"
+                    <el-table-column label=" "
                                      width="50"></el-table-column>
                     <el-table-column align='left'
                                      type="selection"
@@ -409,7 +409,7 @@
                             style="width: 100%"
                             :row-key="getRowKeys_alerts"
                             @selection-change="handle_sel_table_alerts">
-                    <el-table-column label="全选"
+                    <el-table-column label=" "
                                      prop="type"
                                      width="50">
                     </el-table-column>
@@ -617,7 +617,7 @@
                             ref="assetTable"
                             style="width: 100%"
                             @selection-change="handle_sel_assets">
-                    <el-table-column label="全选"
+                    <el-table-column label=" "
                                      width="50"></el-table-column>
                     <el-table-column align='left'
                                      :reserve-selection="true"
@@ -661,7 +661,7 @@
                             ref="alertTable"
                             style="width: 100%"
                             @selection-change="handle_sel_alert">
-                    <el-table-column label="全选"
+                    <el-table-column label=" "
                                      prop="type"
                                      width="50">
                     </el-table-column>
@@ -1234,7 +1234,7 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status, data,meg } = resp.data;
+          let { status, data, meg } = resp.data;
           if (status == 0) {
             this.$message.success('工单状态变更成功！');
             this.get_list_works();

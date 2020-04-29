@@ -36,7 +36,7 @@
                 tooltip-effect="dark"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
-        <el-table-column label="全选"
+        <el-table-column label=" "
                          prop=""
                          width="50">
         </el-table-column>

@@ -17,7 +17,7 @@
                     ref="multipleTable"
                     :data="tableData"
                     @selection-change="handleSelectionChange">
-            <el-table-column label="全选"
+            <el-table-column label=" "
                              width="50"></el-table-column>
             <el-table-column align='left'
                              type="selection"
@@ -36,7 +36,7 @@
                 class="e-pagination">
           <el-pagination @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
-                        :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="10"
                          :total="20"
                          layout="total, sizes, prev, pager, next"></el-pagination>

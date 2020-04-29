@@ -23,7 +23,8 @@
                  :auto-upload='true'
                  :on-success='onsuccess'
                  :on-exceed="handleExceed"
-                 :file-list="fileList">
+                 :file-list="fileList"
+                 :multiple="false">
         <el-button class="btn_o"
                    type="primary">导入许可证</el-button>
       </el-upload>
@@ -318,7 +319,7 @@ export default {
                   type: 'error',
                 }
               );
-            } else {
+            } else if (response.data.status == 0) {
               this.$message(
                 {
                   message: '许可证导入成功！',

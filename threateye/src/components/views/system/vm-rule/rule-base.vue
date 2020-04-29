@@ -54,7 +54,10 @@
                src="@/assets/images/setting/upload_s.png"
                alt="">
           <uploader-drop>
-            <uploader-btn class="select_btn">点击上传</uploader-btn>
+            <uploader-btn class="select_btn"
+                          :directory="false"
+                          :attrs="attrs"
+                          :single='true'>点击上传</uploader-btn>
             <span>请上传文件名为sdk.tgz、ids.tgz、df.tgz的文件</span>
           </uploader-drop>
           <uploader-list></uploader-list>
@@ -81,6 +84,7 @@ export default {
       options: {
         target: '/yiiapi/rulebase/upload-package',
         chunkSize: '10048000',   //分块大小
+        singleFile: true,
         testChunks: false,     //是否开启服务器分片校验
         parseTimeRemaining: function (timeRemaining, parsedTimeRemaining) {
           return parsedTimeRemaining
@@ -91,7 +95,9 @@ export default {
             .replace(/\sseconds?/, '秒')
         },
       },
-
+      attrs: {
+        accept: 'application/gzip'//接受文件类型
+      },
       fileStatusText: {
         success: '成功',
         error: '上传失败，请重新上传',
@@ -203,12 +209,6 @@ export default {
         this.file_content.cancel()
         this.file_content == ''
       }
-
-    },
-    onBeforeUpload () {
-
-    },
-    onChange () {
     },
     uploadSuccess () {
       console.log("1111");
@@ -237,19 +237,20 @@ export default {
     // 上传
     onFileAdded (file) {
       this.upload_btn = false
-      console.log(file.name);
+      console.log(this.file_content);
+      console.log(file);
       file.pause()
       if (file.name == 'sdk.tgz' || file.name == 'ids.tgz' || file.name == 'df.tgz') {
         this.file_content = file
       } else {
-        this.upload_btn = true;
         this.$message({
           message: '请上传文件名为sdk.tgz、ids.tgz、df.tgz的文件',
           type: 'warning'
         });
+        file.ignored = true
         setTimeout(() => {
           file.cancel()
-        }, 100)
+        }, 10)
       }
     },
     onFilestart (file) {
@@ -369,7 +370,7 @@ export default {
     background: #ccc !important ;
   }
   .el-dialog {
-    width: 500px;
+    width: 600px;
     /deep/ .uploader-example {
       width: 100%;
       margin: 0;

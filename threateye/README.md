@@ -18,4 +18,9 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+"version": "3.0.3"
+1.修复右侧滚动条。
+2.添加告警处理状态所有。
+3.添加告警详情恶意程序下载。
+4.添加告警威胁等级条件筛选。
+5.修复上传规则库，只允许单选，不允许多选。

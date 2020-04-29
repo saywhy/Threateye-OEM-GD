@@ -132,7 +132,7 @@
                     tooltip-effect="dark"
                     @selection-change="handleSelChange"
                     @row-click="detail_click">
-            <el-table-column label="全选"
+            <el-table-column label=" "
                              prop="type"
                              width="50">
               <template slot-scope="scope">
@@ -369,7 +369,7 @@
                           :data="table_alerts.tableData_new"
                           tooltip-effect="dark"
                           @selection-change="handle_sel_table_alerts">
-                  <el-table-column label="全选"
+                  <el-table-column label=" "
                                    prop="type"
                                    width="50">
                   </el-table-column>
@@ -527,7 +527,7 @@ export default {
         status: "",
         startTime: '',
         endTime: '',
-        degree:''
+        degree: ''
       },
       options_degrees: [
         {
@@ -766,7 +766,7 @@ export default {
         status: "",
         startTime: '',
         endTime: '',
-        degree:''
+        degree: ''
       };
       $(document.querySelector('.el-button--text')).trigger('click');
       this.get_list_risk();

@@ -139,7 +139,7 @@
                     :row-style="{cursor:'pointer'}"
                     @selection-change="handleSelChange"
                     @row-click="detail_click">
-            <el-table-column label="全选"
+            <el-table-column label=" "
                              prop="type"
                              width="50">
               <template slot-scope="scope">
@@ -198,7 +198,7 @@
           <el-pagination class="handle-pagination"
                          @size-change="handleSizeChange"
                          @current-change="handleCurrentChange"
-                        :page-sizes="[10,20,50,100]"
+                         :page-sizes="[10,20,50,100]"
                          :page-size="table.eachPage"
                          :total="table.count"
                          layout="total, sizes, prev, pager, next">
@@ -381,7 +381,7 @@
                           :data="table_alerts.tableData_new"
                           tooltip-effect="dark"
                           @selection-change="handle_sel_table_alerts">
-                  <el-table-column label="全选"
+                  <el-table-column label=" "
                                    prop="type"
                                    width="50">
                   </el-table-column>

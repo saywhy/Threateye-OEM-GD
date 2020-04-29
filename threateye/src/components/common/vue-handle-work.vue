@@ -204,7 +204,7 @@
                 <el-table :data="table.tableData"
                           tooltip-effect="dark"
                           @selection-change="handle_sel_table_mul">
-                  <el-table-column label="全选"
+                  <el-table-column label=" "
                                    width="50"></el-table-column>
                   <el-table-column align='left'
                                    type="selection"
@@ -246,7 +246,7 @@
                           tooltip-effect="dark"
                           style="width: 100%"
                           @selection-change="handle_sel_table_mul">
-                  <el-table-column label="全选"
+                  <el-table-column label=" "
                                    prop="type"
                                    width="50">
                   </el-table-column>

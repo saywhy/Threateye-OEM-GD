@@ -103,7 +103,7 @@
                     style="width: 100%"
                     @selection-change="handleSelectionChange"
                     @row-click="alert_detail">
-            <el-table-column label="全选"
+            <el-table-column label=" "
                              prop=""
                              width="50">
             </el-table-column>

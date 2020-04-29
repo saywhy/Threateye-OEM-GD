@@ -218,16 +218,17 @@
             <p class="title">详细信息</p>
             <div class="time_right_info">
               <div class="time_right_info_top">
-                <!-- <li class="info_top_item">
+                <li class="info_top_item">
                   <span class="info_top_item_title">检测引擎</span>
                   <span class="info_top_item_content">{{item.detect_engine}}</span>
                 </li>
-                <li class="info_top_item">
+                <!-- <li class="info_top_item">
                   <span class="info_top_item_title">情报类型</span>
                   <span class="info_top_item_content">{{item.description_type}}</span>
                 </li> -->
                 <li class="info_top_item"
-                    v-for="value in item.info_list">
+                    v-for="value in item.info_list"
+                    v-if="value.name !='文件行为'&&value.name !='taskID'">
                   <span class="info_top_item_title">{{value.name}}</span>
                   <span v-if="value.name=='文件大小'">
                     {{value.value | filterType }}
@@ -236,8 +237,27 @@
                         v-if="value.name!='文件大小'"
                         :class="value.value=='点击下载'?'download_text':''"
                         @click="download(value,item)">{{value.value}}</span>
-
                 </li>
+                <!-- 沙箱检测下载 -->
+                <li class="info_top_item"
+                    v-for="value in item.info_list"
+                    v-if="value.name =='文件行为'">
+                  <span class="info_top_item_title">{{value.name}}</span>
+                  <span class="info_top_item_content"
+                        :class="value.value=='点击下载'?'download_text':''"
+                        @click="download_sandbox(value,item)">{{value.value}}</span>
+                </li>
+                <!-- 新添加 -->
+                <div class="info_top_item"
+                     v-for="value in item.sample_list"
+                     v-if="item.sample_list.length!=0">
+                  <span class="info_top_item_title">{{value.name}}</span>
+                  <div class="info_top_item_content">
+                    <p v-for="itemx in value.value"
+                       style="padding-bottom: 5px;">{{itemx}}</p>
+                  </div>
+                </div>
+                <!-- 新添加-->
               </div>
               <div class="time_right_info_bom"
                    v-if="item.whois_list.length !=0">
@@ -1774,25 +1794,43 @@ export default {
             item.event_list = [];
             if (item.alert_description.whois) {
               for (let key in item.alert_description.whois) {
-                var obj = {
+                item.whois_list.push({
                   name: key,
                   value: item.alert_description.whois[key],
-                }
-                item.whois_list.push(obj)
+                })
               }
             } else if (item.alert_description.ip_whois) {
               for (let key in item.alert_description.ip_whois) {
-                var obj = {
+                item.whois_list.push({
                   name: key,
                   value: item.alert_description.ip_whois[key],
-                }
-                item.whois_list.push(obj)
-
+                })
               }
             }
             // 情报类型匹配
             switch (item.description_type) {
               case 'BotnetCAndCURL':
+                item.sample_list = [];
+                if (item.alert_description.files) {
+                  item.files_md5_cn = [];
+                  item.alert_description.files.forEach(element => {
+                    item.files_md5_cn.push(element.MD5);
+                  });
+                  item.sample_list.push({
+                    name: "僵尸样本信息",
+                    value: item.files_md5_cn,
+                  });
+                }
+                if (item.alert_description.urls) {
+                  item.urls_list = [];
+                  item.alert_description.urls.forEach(element => {
+                    item.urls_list.push(element.url);
+                  });
+                  item.sample_list.push({
+                    name: "僵尸样本下载URL",
+                    value: item.urls_list,
+                  });
+                }
                 item.info_list = [
                   {
                     name: 'URL',
@@ -1820,6 +1858,27 @@ export default {
                   },
                 ];
               case 'RansomwareURL':
+                item.sample_list = [];
+                if (item.alert_description.files) {
+                  item.files_md5_cn = [];
+                  item.alert_description.files.forEach(element => {
+                    item.files_md5_cn.push(element.MD5);
+                  });
+                  item.sample_list.push({
+                    name: "僵尸样本信息",
+                    value: item.files_md5_cn,
+                  });
+                }
+                if (item.alert_description.urls) {
+                  item.urls_list = [];
+                  item.alert_description.urls.forEach(element => {
+                    item.urls_list.push(element.url);
+                  });
+                  item.sample_list.push({
+                    name: "僵尸样本下载URL",
+                    value: item.urls_list,
+                  });
+                }
                 item.info_list = [
                   {
                     name: 'URL',
@@ -1844,6 +1903,17 @@ export default {
                 ];
                 break;
               case 'IPReputation':
+                item.sample_list = [];
+                if (item.alert_description.files) {
+                  item.files_md5_cn = [];
+                  item.alert_description.files.forEach(element => {
+                    item.files_md5_cn.push(element.MD5);
+                  });
+                  item.sample_list.push({
+                    name: "相关联恶意文件",
+                    value: item.files_md5_cn,
+                  });
+                }
                 item.info_list = [
                   {
                     name: 'IP',
@@ -1872,6 +1942,18 @@ export default {
                 ];
                 break;
               case 'MaliciousHash':
+                item.sample_list = [];
+                if (item.alert_description.urls) {
+                  item.urls_cn = [];
+                  item.alert_description.files.forEach(element => {
+                    item.urls_cn.push(element.url);
+                  });
+                  item.sample_list.push({
+                    name: "样本下载URL",
+                    value: item.urls_cn,
+                  });
+                }
+
                 item.info_list = [
                   {
                     name: 'MD5',
@@ -2034,6 +2116,14 @@ export default {
                     value: item.alert_description.threat
                   },
                 ];
+
+                if (item.alert_description.category == '恶意程序') {
+                  item.info_list.push({
+                    name: "文件下载",
+                    value: '点击下载',
+                    md5: item.alert_description.md5
+                  })
+                }
                 break;
               case 'sandbox':
                 item.info_list = [
@@ -2070,6 +2160,24 @@ export default {
                     value: item.alert_description.taskID
                   },
                 ];
+                item.info_list.forEach(element => {
+                  if (element.name == 'taskID' && element.value) {
+                    item.info_list.push({
+                      name: '文件行为',
+                      value: '点击下载',
+                      taskID: element.value,
+                      MD5: item.alert_description.md5
+                    })
+                  }
+                });
+
+                if (item.alert_description.category == '恶意程序') {
+                  item.info_list.push({
+                    name: "文件下载",
+                    value: '点击下载',
+                    md5: item.alert_description.md5
+                  })
+                }
                 break;
               case 'yara':
                 item.info_list = [
@@ -2090,6 +2198,13 @@ export default {
                     value: item.alert_description.rule_name,
                   },
                 ];
+                if (item.alert_description.category == '恶意程序') {
+                  item.info_list.push({
+                    name: "文件下载",
+                    value: '点击下载',
+                    md5: item.alert_description.md5
+                  })
+                }
                 break;
               case 'IDS':
                 item.info_list = [
@@ -2459,6 +2574,8 @@ export default {
         })
           .then(response => {
             var window_open = ''
+            console.log(item);
+            console.log(value);
             // horizontalthreat  横向威胁告警  lateral
             // externalthreat  外部威胁告警  outside
             // outreachthreat  外联威胁告警  outreath
@@ -2487,6 +2604,46 @@ export default {
             console.log(error);
           })
       }
+    },
+    download_sandbox (value, item) {
+      console.log(value);
+      console.log(item);
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'yararule/download',
+        }
+      })
+        .then(response => {
+          var window_open = ''
+          console.log(item);
+          console.log(value);
+          // horizontalthreat  横向威胁告警  lateral
+          // externalthreat  外部威胁告警  outside
+          // outreachthreat  外联威胁告警  outreath
+          switch (this.$route.query.type) {
+            case 'alert':
+              window_open = '/yiiapi/alert/get-signature?md5='
+              break;
+            case 'asset':
+              window_open = '/yiiapi/asset/get-signature?md5='
+              break;
+            case 'lateral':
+              window_open = '/yiiapi/horizontalthreat/get-signature?md5='
+              break;
+            case 'outside':
+              window_open = '/yiiapi/externalthreat/get-signature?md5='
+              break;
+            case 'outreath':
+              window_open = '/yiiapi/outreachthreat/get-signature?md5='
+              break;
+            default:
+              break;
+          }
+          window.open(window_open + value.MD5 + '&id=' + value.taskID);
+        })
+        .catch(error => {
+          console.log(error);
+        })
     },
     // 当前受威胁资产
     new_list () {

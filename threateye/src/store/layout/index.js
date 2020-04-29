@@ -39,7 +39,7 @@ export default {
       state.token = args;
     },
 
-    SET_SANDBOX:(state, args) => {
+    SET_SANDBOX: (state, args) => {
       state.sandbox = args;
     },
 
@@ -61,7 +61,9 @@ export default {
   },
   actions: {
     //登录
-    LoginByUsername({commit}, userInfo) {
+    LoginByUsername({
+      commit
+    }, userInfo) {
       return new Promise((resolve, reject) => {
         //只要登录就删除token
         removeToken();
@@ -75,16 +77,20 @@ export default {
 
           let datas = resp.data;
 
-          let {status, msg, data} = datas;
+          let {
+            status,
+            msg,
+            data
+          } = datas;
 
           let tips = '输入用户名或密码错误';
           if (msg.username) {
             tips = msg.username[0];
           } else if (msg.password) {
             tips = msg.password[0];
-          } else if(msg.allow_ip) {
+          } else if (msg.allow_ip) {
             tips = msg.allow_ip;
-          }else {
+          } else {
             tips = msg;
           }
           //用户名密码正确
@@ -114,44 +120,55 @@ export default {
 
         let roles = forRoleList(resp);
 
-       // console.log(roles);
+        // console.log(roles);
 
-        roles.push('995');
+        // roles.push('995');
 
-        if(!roles.includes('117')){
+        if (!roles.includes('117')) {
           roles.push('117');
-          commit('SET_SANDBOX',false);
-        }else {
-          commit('SET_SANDBOX',true);
+          commit('SET_SANDBOX', false);
+        } else {
+          commit('SET_SANDBOX', true);
         }
         commit('SET_ROLES', roles);
 
         return roles;
 
-      }catch (err) {
+      } catch (err) {
         console.log(err);
       }
     },
 
-    async LogOut({commit, dispatch}) {
-      try{
+    async LogOut({
+      commit,
+      dispatch
+    }) {
+      try {
         let resp = await axios('/yiiapi/site/logout');
-        let {status,msg,data} = resp.data;
+        let {
+          status,
+          msg,
+          data
+        } = resp.data;
 
-        if(status == 0){
+        if (status == 0) {
           commit('SET_ROLES', []);
           commit('SET_TOKEN', data);
           removeToken();
         }
-      }catch (err) {
+      } catch (err) {
         console.log(err);
       }
     },
 
-    async GenerateRoutes({commit}, data) {
+    async GenerateRoutes({
+      commit
+    }, data) {
 
       return new Promise(resolve => {
-        const {roles} = data;
+        const {
+          roles
+        } = data;
 
         const accessedRouters = formatList(asyncRouterMap, roles);
         commit('SET_ROUTERS', accessedRouters);

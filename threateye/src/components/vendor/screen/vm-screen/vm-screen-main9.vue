@@ -1,5 +1,5 @@
 <template>
-    <div class="vm-screen-right4">
+    <div class="vm-screen-main9">
       <el-table :data="tableData" class="screen-table">
         <el-table-column prop="type" label="告警时间" show-overflow-tooltip></el-table-column>
         <el-table-column prop="data" label="告警类型" show-overflow-tooltip></el-table-column>
@@ -12,7 +12,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-right4",
+      name: "vm-screen-main9",
       data(){
           return{
             tableData: [{
@@ -125,7 +125,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-right4{
+.vm-screen-main9{
   padding: 0 16px 16px;
   /deep/
   .screen-table{

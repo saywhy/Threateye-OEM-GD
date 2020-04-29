@@ -1,5 +1,5 @@
 <template>
-    <div class="vm-screen-right1">
+    <div class="vm-screen-main3">
       <div class="state-top">
         <span class="t-info">
           <i class="t-arrow"></i><span class="t-name">攻击源：124</span>
@@ -37,7 +37,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-right1",
+      name: "vm-screen-main3",
       data(){
           return{
             data:[
@@ -58,7 +58,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-right1{
+.vm-screen-main3{
   padding: 0 16px 16px;
   .state-top{
     width: 100%;

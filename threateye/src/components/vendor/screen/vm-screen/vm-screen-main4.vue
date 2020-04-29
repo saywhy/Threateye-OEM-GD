@@ -1,12 +1,12 @@
 <template>
-    <div class="vm-screen-left2">
+    <div class="vm-screen-main4">
       <div id="branch"></div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-left2",
+      name: "vm-screen-main4",
       data(){
           return{
             data:[
@@ -89,7 +89,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-left2{
+.vm-screen-main4{
   padding: 0 16px 16px;
   #branch{
     height: 240px;

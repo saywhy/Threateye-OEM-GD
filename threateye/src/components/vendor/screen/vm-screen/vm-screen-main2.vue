@@ -1,5 +1,5 @@
 <template>
-    <ul class="vm-screen-left1">
+    <ul class="vm-screen-main2">
       <li v-for="(item,index) in data" :key="index" class="item">
         <i class="t-arrow"></i><span>{{item.content}}</span>
         <span class="t-time">{{item.time}}</span>
@@ -9,7 +9,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-left1",
+      name: "vm-screen-main2",
       data(){
           return{
             data:[
@@ -24,7 +24,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-left1{
+.vm-screen-main2{
   padding: 0 16px 16px;
   .item{
     height: 56px;

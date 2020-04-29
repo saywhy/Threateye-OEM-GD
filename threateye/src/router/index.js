@@ -132,6 +132,32 @@ export const constantRouterMap = [{
     component: () => import('@/components/vendor/screen/screen-set/screen-set'),
     children:[
       {
+        path: '/screen/set/base',
+        name: 'screen_set_base',
+        meta: {
+          title: '基础设置',
+          auth: '996',
+          icon: 'e-aside-none',
+          parentAuth: '995',
+          rootAuth: '1',
+          deep: 2
+        },
+        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-base.vue')
+      },
+      {
+        path: '/screen/set/aside',
+        name: 'screen_set_aside',
+        meta: {
+          title: '顶部设置',
+          auth: '996',
+          icon: 'e-aside-none',
+          parentAuth: '995',
+          rootAuth: '1',
+          deep: 2
+        },
+        component: () => import('@/components/vendor/screen/Screen')
+      },
+      {
         path: '/screen/set/top',
         name: 'screen_set_top',
         meta: {

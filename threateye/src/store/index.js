@@ -7,11 +7,13 @@ const debug = process.env.NODE_ENV !== 'production';
 
 import layout from './layout/index';
 import invest from './invest/index';
+import screen from './screen/index';
 
 const store = new Vuex.Store({
   modules:{
     layout,
-    invest
+    invest,
+    screen
   },
   strict: debug, //是否开启严格模式
 })

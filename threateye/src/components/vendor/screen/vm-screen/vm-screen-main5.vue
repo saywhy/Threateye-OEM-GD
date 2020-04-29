@@ -1,5 +1,5 @@
 <template>
-    <div class="vm-screen-right2">
+    <div class="vm-screen-main5">
       <div class="state-top">
         <span class="t-info t-info_0">
           <i class="t-arrow"></i><span class="t-name">预警：10</span>
@@ -49,7 +49,7 @@
 <script type="text/ecmascript-6">
   import VmScreenProgress from '../vm-screen-sup/vm-screen-progress';
   export default {
-      name: "vm-screen-right2",
+      name: "vm-screen-main5",
       components: {VmScreenProgress},
       data(){
           return{
@@ -156,7 +156,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-right2{
+.vm-screen-main5{
   padding: 0 16px 16px;
   .state-top{
     width: 100%;

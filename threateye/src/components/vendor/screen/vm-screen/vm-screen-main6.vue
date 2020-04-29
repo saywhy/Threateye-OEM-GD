@@ -1,5 +1,5 @@
 <template>
-    <div class="vm-screen-left3">
+    <div class="vm-screen-main6">
       <div class="attention">
         <div class="item">
           <div class="name">数据泄露</div>
@@ -30,7 +30,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-left3",
+      name: "vm-screen-main6",
       data(){
           return{
             data:[],
@@ -163,7 +163,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-left3{
+.vm-screen-main6{
   padding: 0 16px 16px;
   .attention{
     .item{

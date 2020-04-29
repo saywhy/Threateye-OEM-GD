@@ -10,10 +10,6 @@
   import geoCoordData from "../../../../../static/data/geoCoordData.json";
   // 引入北上广和其他城市相关联的数据
   import BJData from "../../../../../static/data/BJData.json";
-  import SHData from "../../../../../static/data/SHData.json";
-  import GZData from "../../../../../static/data/BJData.json";
-  // 引入地图样式
-  import MapStyle from "../../../../../static/data/MapStyle.json";
   export default {
     name: "Ddos",
     data() {

@@ -1,12 +1,12 @@
 <template>
-    <div class="vm-screen-right0">
+    <div class="vm-screen-main1">
       <div id="heat"></div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-right0",
+      name: "vm-screen-main0",
       data(){
           return{
             data:[]
@@ -112,7 +112,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-right0{
+.vm-screen-main1{
   padding: 0 16px 16px;
   #heat{
     width: 100%;

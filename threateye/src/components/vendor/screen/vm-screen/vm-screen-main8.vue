@@ -1,12 +1,12 @@
 <template>
-    <div class="vm-screen-left4">
+    <div class="vm-screen-main8">
       <div id="trend"></div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-left4",
+      name: "vm-screen-main8",
       data(){
           return{
             data:[]
@@ -87,7 +87,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-left4{
+.vm-screen-main8{
   padding: 0 16px 16px;
   #trend{
     height: 240px;

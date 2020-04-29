@@ -1,5 +1,5 @@
 <template>
-    <div class="vm-screen-right3">
+    <div class="vm-screen-main7">
       <div class="vm-progress-list">
         <div class="item" v-for="(item,index) in progress_data_list">
       <span class="vam-progress-title">
@@ -16,7 +16,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-right3",
+      name: "vm-screen-main7",
       data(){
           return{
             progress_data_list:[{img:'progress0',name:'英国',num:2431,count:70},
@@ -27,81 +27,16 @@
           }
       },
       mounted() {
-        this.drawGraph();
+        //this.drawGraph();
       },
       methods:{
-        drawGraph(){
 
-          let myChart = this.$echarts.init(document.getElementById('trend'))
-          let option = {
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-              }
-            },
-            legend: {
-              show:false
-            },
-            grid: {
-              top:'5%',
-              left: '0',
-              right: '3%',
-              bottom: '0',
-              containLabel: true
-            },
-            xAxis: {
-              type: 'category',
-              boundaryGap: false,
-              axisLabel:{
-                color:'#ffffff'
-              },
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            },
-            yAxis: {
-              type: 'value',
-              axisLabel:{
-                color:'#ffffff'
-              },
-              splitLine:{
-                show:false
-              }
-            },
-            series: [{
-              data: [820, 932, 901, 934, 990, 330, 320],
-              type: 'line',
-              itemStyle:{
-                /*opacity : 0*/
-              },
-              lineStyle:{
-                opacity : 0
-              },
-              areaStyle: {
-                color:{
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: '#007AFF' // 0% 处的颜色
-                  }, {
-                    offset: 1, color: '#ffffff' // 100% 处的颜色
-                  }],
-                  global: false // 缺省为 false
-                }
-              }
-            }]
-          };
-
-          myChart.setOption(option);
-        }
       }
     }
 </script>
 
 <style scoped lang="less">
-.vm-screen-right3{
+.vm-screen-main7{
   padding: 0 16px 16px;
   .vm-progress-list{
     height: auto;

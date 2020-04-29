@@ -1,5 +1,5 @@
 <template>
-    <div class="vm-screen-left0">
+    <div class="vm-screen-main0">
       <div id="threat-rank"></div>
       <div id="threat-scat"></div>
     </div>
@@ -7,7 +7,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-left0",
+      name: "vm-screen-main0",
       data(){
           return{
             data:[]
@@ -215,7 +215,7 @@
 </script>
 
 <style scoped lang="less">
-.vm-screen-left0{
+.vm-screen-main0{
   padding: 0 16px 16px;
   display: flex;
 

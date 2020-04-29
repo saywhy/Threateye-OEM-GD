@@ -12,6 +12,7 @@
                  style="display: inline-block;"
                  :http-request="uploadSectionFile"
                  action="sdsdsdsa"
+                 accept=".key"
                  :on-preview="handlePreview"
                  :on-remove="handleRemove"
                  :before-remove="beforeRemove"
@@ -328,6 +329,13 @@ export default {
               );
               this.licence_pop.add = false;
               this.get_data();
+            } else {
+              this.$message(
+                {
+                  message: response.data.message,
+                  type: 'error',
+                }
+              );
             }
 
           })

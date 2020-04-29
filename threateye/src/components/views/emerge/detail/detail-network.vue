@@ -235,8 +235,9 @@
                   </span>
                   <span class="info_top_item_content"
                         v-if="value.name!='文件大小'"
-                        :class="value.value=='点击下载'?'download_text':''"
-                        @click="download(value,item)">{{value.value}}</span>
+                        :class="value.value=='点击下载'?'download_text':''">
+                    <span @click="download(value,item)">{{value.value}}</span>
+                  </span>
                 </li>
                 <!-- 沙箱检测下载 -->
                 <li class="info_top_item"
@@ -244,8 +245,9 @@
                     v-if="value.name =='文件行为'">
                   <span class="info_top_item_title">{{value.name}}</span>
                   <span class="info_top_item_content"
-                        :class="value.value=='点击下载'?'download_text':''"
-                        @click="download_sandbox(value,item)">{{value.value}}</span>
+                        :class="value.value=='点击下载'?'download_text':''">
+                    <span @click="download_sandbox(value,item)"> {{value.value}}</span>
+                  </span>
                 </li>
                 <!-- 新添加 -->
                 <div class="info_top_item"

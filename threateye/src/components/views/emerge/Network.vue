@@ -130,11 +130,13 @@
                     :data="table.tableData"
                     :row-style="{cursor:'pointer'}"
                     tooltip-effect="dark"
+                    @mousedown.native="mousedown"
+                    @mouseup.native="mouseup"
                     @selection-change="handleSelChange"
                     @row-click="detail_click">
             <el-table-column label=" "
                              prop="type"
-                             width="50">
+                             width="20">
               <template slot-scope="scope">
                 <div class="new_dot"
                      v-show="scope.row.new_alert=='1'"></div>
@@ -667,6 +669,8 @@ export default {
         loading: true,
         multipleSelection: []
       },
+      detail_click_val: {},
+      detail_click_column: {},
       add_params: {
         name: "",
         level: "",
@@ -675,6 +679,14 @@ export default {
         remarks: "",
         multiple: [],
         old_as: [],
+      },
+      oldPositon: {
+        x: '',
+        y: ''
+      },
+      newPositon: {
+        x: '',
+        y: ''
       }
     };
   },
@@ -791,8 +803,35 @@ export default {
     },
 
     //进入详情页面
-    detail_click (val) {
-      this.$router.push({ path: "/detail/network", query: { detail: val.id, type: 'alert' } });
+    detail_click (val, column, cell) {
+      this.detail_click_val = val
+      this.detail_click_column = column
+    },
+    mousedown (event) {
+      this.oldPositon = {
+        x: '',
+        y: ''
+      }
+      this.newPositon = {
+        x: '',
+        y: ''
+      }
+      this.oldPositon.x = event.clientX;
+      this.oldPositon.y = event.clientY;
+    },
+    mouseup (event) {
+      this.newPositon.x = event.clientX;
+      this.newPositon.y = event.clientY;
+      if (this.oldPositon.x == this.newPositon.x) {
+        setTimeout(() => {
+          console.log(this.detail_click_column);
+          if (Object.keys(this.detail_click_column).length != 0 && this.detail_click_column.type != 'selection') {
+            this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+          }
+        }, 10);
+      } else {
+        console.log('复制');
+      }
     },
 
     /***********************************以下是弹窗部分****************************************/

@@ -30,7 +30,7 @@
         </div>
         <div class="list-item list-item-middle">
           <header class="title">外连分布<i class="t_img"></i></header>
-          <!--<vm-screen-middle1></vm-screen-middle1>-->
+          <vm-screen-middle1></vm-screen-middle1>
         </div>
         <div class="list-item list-item-bottom">
 

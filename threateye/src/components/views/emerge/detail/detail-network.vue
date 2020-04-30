@@ -1947,7 +1947,7 @@ export default {
                 item.sample_list = [];
                 if (item.alert_description.urls) {
                   item.urls_cn = [];
-                  item.alert_description.files.forEach(element => {
+                  item.alert_description.urls.forEach(element => {
                     item.urls_cn.push(element.url);
                   });
                   item.sample_list.push({

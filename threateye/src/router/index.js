@@ -132,8 +132,11 @@ export const constantRouterMap = [{
     component: () => import('@/components/vendor/screen/screen-set/screen-set'),
     children:[
       {
-        path: '/screen/set/base',
+        path: '/screen/set_screen',
         name: 'screen_set_base',
+        query:{
+          num: '0'
+        },
         meta: {
           title: '基础设置',
           auth: '996',
@@ -145,8 +148,11 @@ export const constantRouterMap = [{
         component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-base.vue')
       },
       {
-        path: '/screen/set/aside',
+        path: '/screen/set_screen',
         name: 'screen_set_aside',
+        query:{
+          num: '1'
+        },
         meta: {
           title: '顶部设置',
           auth: '996',
@@ -158,8 +164,11 @@ export const constantRouterMap = [{
         component: () => import('@/components/vendor/screen/Screen')
       },
       {
-        path: '/screen/set/top',
+        path: '/screen/set_screen',
         name: 'screen_set_top',
+        query:{
+          num: '2'
+        },
         meta: {
           title: '基础设置',
           auth: '996',

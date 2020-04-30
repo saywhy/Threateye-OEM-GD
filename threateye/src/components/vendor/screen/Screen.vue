@@ -90,9 +90,12 @@
         return this.lists.filter(item => { return item.flag == true; });
       }
     },
+    created(){
+      console.log(this.totalLists)
+    },
     methods: {
       set_screen() {
-        this.$router.push({path: '/screen/set/base', query: {num: '0'}});
+        this.$router.push({path: '/screen/set_screen', query: {num: '0'}});
       }
     }
   }

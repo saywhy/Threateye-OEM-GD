@@ -81,7 +81,7 @@
     data() {
       return {
         defaultIndex: "0",
-        oldAsideLists: [],
+        setAsideLists: [],
         topList: [{name: '风险资产数', flag: true},
           {name: '外连资产数', flag: true},
           {name: '告警数', flag: true},
@@ -98,13 +98,16 @@
       let num = this.$route.query.num;
       this.defaultIndex = num;
 
+
+
       //拷贝
       let asideLists = this.asideLists;
       this.setAsideLists = asideLists;
 
     },
     updated() {
-      console.log(this.setAsideLists);
+      console.log(this.setAsideLists)
+      this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
     },
     components: {vuedraggable},
     methods: {
@@ -132,22 +135,21 @@
       //侧边栏tabs切换
       change_router(index) {
         if (index == '0') {
-          this.$router.push({path: '/screen/set/base', query: {num: index}});
+          this.$router.push({path: '/screen/set_screen', query: {num: index}});
         } else if (index == '1') {
-          this.$router.push({path: '/screen/set/aside', query: {num: index}});
+          this.$router.push({path: '/screen/set_screen', query: {num: index}});
         } else if (index == '2') {
-          this.$router.push({path: '/screen/set/top', query: {num: index}});
+          this.$router.push({path: '/screen/set_screen', query: {num: index}});
         }
       },
 
       //取消按钮点击
       click_screen_cancel() {
-        this.$store.commit('SCREEN_ASIDE_LISTS', this.oldAsideLists);
-        this.setAsideLists = this.oldAsideLists;
+
       },
       //确认按钮点击
       click_screen_ok() {
-        this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
+        //this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
         this.$router.push({path: '/screen'});
       }
     }
@@ -266,6 +268,7 @@
             border: 1px solid #ECECEC;
             padding: 10px 8px;
             line-height: 1;
+            cursor: move;
 
             .title {
               float: left;

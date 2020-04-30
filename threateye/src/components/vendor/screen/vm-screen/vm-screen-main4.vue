@@ -13,8 +13,7 @@
               {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
               {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
               {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'}
-            ]
+              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'}]
           }
       },
       mounted() {
@@ -31,6 +30,7 @@
                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
               }
             },
+            color: [' #D44361','#D0A13F', '#60C160'],
             legend: {
               show:false
             },
@@ -46,7 +46,16 @@
             },
             yAxis: {
               type: 'category',
-              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+              axisLine:{
+                show: false
+              },
+              axisTick:{
+                show: false
+              },
+              axisLabel:{
+                color:'#fff'
+              },
+              data: ['福建 5233', '天津 4178', '上海 5233', '北京 5233', '大连 5233', '黑龙江 5233', '深证 324']
             },
             series: [
               {

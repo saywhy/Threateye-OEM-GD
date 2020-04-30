@@ -49,6 +49,7 @@
         drawGraph(){
           let attent1 = this.$echarts.init(document.getElementById('attent1'))
           let option1 = {
+            backgroundColor:'rgba(0,122,255,0.1)',
             legend: {
               show:false
             },
@@ -68,17 +69,35 @@
               show:false
             },
             series: [{
-              data: [820, 932, 901, 934, 1290, 1330, 1320],
+              data: [820, 932, 901, 934, 1290, 1330, 320,820, 932, 901, 934, 290, 1330, 1320],
               type: 'line',
               smooth: true,
               itemStyle:{
                 opacity :0
               },
               lineStyle:{
-                color:'#007AFF'
+                color:'#007AFF',
+                width: 1
               },
               areaStyle: {
-                color:'#007AFF'
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(0,122,255,0.5)" // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(0,122,255,0.2)" // 100% 处的颜色
+                    },
+                  ],
+                  global: false
+                }
               }
             }]
           };
@@ -86,6 +105,7 @@
 
           let attent2 = this.$echarts.init(document.getElementById('attent2'))
           let option2 = {
+            backgroundColor:'rgba(255,0,201,0.1)',
             legend: {
               show:false
             },
@@ -105,17 +125,30 @@
               show:false
             },
             series: [{
-              data: [820, 932, 901, 934, 1290, 1330, 1320],
+              data: [1020, 932, 901, 534, 1290, 1030, 320, 120, 1932, 901, 134, 290, 1030, 320],
               type: 'line',
               smooth: true,
               itemStyle:{
-                opacity :0
+                opacity: 0
               },
               lineStyle:{
-                color:'#FF00C9'
+                color:'#FF00C9',
+                width: 1
               },
               areaStyle: {
-                color:'#FF00C9'
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: 'rgba(255,0,201,0.5)'
+                  }, {
+                    offset: 1, color: 'rgba(255,0,201,0.2)'
+                  }],
+                  global: false // 缺省为 false
+                }
               }
             }]
           };
@@ -123,6 +156,7 @@
 
           let attent3 = this.$echarts.init(document.getElementById('attent3'))
           let option3 = {
+            backgroundColor:'rgba(243,171,21,0.1)',
             legend: {
               show:false
             },
@@ -142,17 +176,30 @@
               show:false
             },
             series: [{
-              data: [820, 932, 901, 934, 1290, 1330, 1320],
+              data: [820, 932, 901, 934, 290, 330, 320,1820, 932, 1901, 934, 1290, 330, 1320],
               type: 'line',
               smooth: true,
               itemStyle:{
-                opacity :0
+                opacity:0
               },
               lineStyle:{
-                color:'#F3AB15'
+                color:'#F3AB15',
+                width: 1
               },
               areaStyle: {
-                color:'#F3AB15'
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: 'rgba(243,171,21,0.5)'
+                  }, {
+                    offset: 1, color: 'rgba(243,171,21,0.2)'
+                  }],
+                  global: false // 缺省为 false
+                }
               }
             }]
           };
@@ -175,6 +222,7 @@
       .name{
         flex: 1;
         color: #fff;
+        text-align: left;
       }
       #attent1{
         width: 310px;
@@ -186,8 +234,10 @@
         width: 310px;
       }
       .num{
-        flex: 1;
+        width: 80px;
         color: #fff;
+        text-align: left;
+        padding: 10px;
       }
     }
   }

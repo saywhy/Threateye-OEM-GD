@@ -2,10 +2,24 @@
     <div class="vm-screen-main7">
       <div class="vm-progress-list">
         <div class="item" v-for="(item,index) in progress_data_list">
-      <span class="vam-progress-title">
-        <!--<img class="progress-img" src="../../../../assets/images/screen/outer/{{item.img}}.png">-->
-        <span class="progress-title">{{item.name}}&nbsp;&nbsp;{{item.num}}</span>
-      </span>
+          <div class="vam-progress-item" v-if="item.pid == 0">
+            <img class="progress-img" src="../../../../assets/images/screen/outer/pro0.png">
+          </div>
+          <div class="vam-progress-item" v-if="item.pid == 1">
+            <img class="progress-img" src="../../../../assets/images/screen/outer/pro1.png">
+          </div>
+          <div class="vam-progress-item" v-if="item.pid == 2">
+            <img class="progress-img" src="../../../../assets/images/screen/outer/pro2.png">
+          </div>
+          <div class="vam-progress-item" v-if="item.pid == 3">
+            <img class="progress-img" src="../../../../assets/images/screen/outer/pro3.png">
+          </div>
+          <div class="vam-progress-item" v-if="item.pid == 4">
+            <img class="progress-img" src="../../../../assets/images/screen/outer/pro4.png">
+          </div>
+          <span class="vam-progress-title">
+            {{item.name}}&nbsp;&nbsp;{{item.num}}
+          </span>
           <el-progress :color="item.color" :show-text="false" :text-inside="true"
                        :stroke-width="20" :percentage="item.count">
           </el-progress>
@@ -19,11 +33,11 @@
       name: "vm-screen-main7",
       data(){
           return{
-            progress_data_list:[{img:'progress0',name:'英国',num:2431,count:70},
-              {img:'progress0',name:'美国',num:1687,count:60},
-              {img:'progress0',name:'法国',num:1496,count:50},
-              {img:'progress0',name:'德国',num:1069,count:30},
-              {img:'progress0',name:'意大利',num:998,count:20}]
+            progress_data_list:[{pid:0,name:'英国',num:2431,count:70},
+              {pid:1,name:'美国',num:1687,count:60},
+              {pid:2,name:'法国',num:1496,count:50},
+              {pid:3,name:'德国',num:1069,count:30},
+              {pid:4,name:'意大利',num:998,count:20}]
           }
       },
       mounted() {
@@ -43,21 +57,24 @@
     .item{
       display: flex;
       line-height: 45px;
+      .vam-progress-item{
+        width: 40px;
+        margin-right: 10px;
+        .progress-img{
+          vertical-align: middle;
+          width: 32px;
+        }
+      }
       .vam-progress-title{
-        width: 140px;
+        width: 120px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         text-align: left;
         cursor: default;
-        .progress-title{
-          display: inline-block;
-          font-family: PingFang;
-          font-size: 14px;
-          color: #ffffff;
-          margin: 0 20px 0 0;
-
-        }
+        font-family: PingFang;
+        font-size: 14px;
+        color: #fff;
       }
       /deep/
       .el-progress{

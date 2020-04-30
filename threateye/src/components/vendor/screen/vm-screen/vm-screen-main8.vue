@@ -9,7 +9,7 @@
       name: "vm-screen-main8",
       data(){
           return{
-            data:[]
+            data: []
           }
       },
       mounted() {
@@ -17,8 +17,7 @@
       },
       methods:{
         drawGraph(){
-
-          let myChart = this.$echarts.init(document.getElementById('trend'))
+          let myChart = this.$echarts.init(document.getElementById('trend'));
           let option = {
             tooltip: {
               trigger: 'axis',
@@ -27,7 +26,7 @@
               }
             },
             legend: {
-              show:false
+              show: false
             },
             grid: {
               top:'5%',
@@ -42,25 +41,46 @@
               axisLabel:{
                 color:'#ffffff'
               },
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+              axisLine:{
+                lineStyle:{
+                  color:'#00D7E9'
+                }
+              },
+              axisTick:{
+                show:false
+              },
+              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','Min','Max']
             },
             yAxis: {
               type: 'value',
+              axisLabel: {
+                color: '#ffffff'
+              },
               axisLabel:{
                 color:'#ffffff'
               },
-              splitLine:{
+              axisLine:{
+                lineStyle:{
+                  color:'#00D7E9'
+                }
+              },
+              axisTick:{
                 show:false
+              },
+              splitLine:{
+                lineStyle:{
+                  color:'rgba(0,215,233,.12)'
+                }
               }
             },
             series: [{
-              data: [820, 932, 901, 934, 990, 330, 320],
               type: 'line',
               itemStyle:{
-                /*opacity : 0*/
+                opacity: 0
               },
               lineStyle:{
-                opacity : 0
+                color:'#007AFF',
+                width: 1
               },
               areaStyle: {
                 color:{
@@ -70,13 +90,14 @@
                   x2: 0,
                   y2: 1,
                   colorStops: [{
-                    offset: 0, color: '#007AFF' // 0% 处的颜色
+                    offset: 0, color: 'rgba(0,122,255,0.7)'
                   }, {
-                    offset: 1, color: '#ffffff' // 100% 处的颜色
+                    offset: 1, color: 'rgba(0,122,255,0.1)'
                   }],
-                  global: false // 缺省为 false
+                  global: false
                 }
-              }
+              },
+              data: [320, 932, 901, 934, 990, 1330, 320, 1330, 320]
             }]
           };
 

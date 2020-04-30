@@ -73,7 +73,7 @@
         height: 14px;
         margin-right: 8px;
         background-size: 14px;
-        vertical-align: text-top;
+        vertical-align: inherit;
         background-image: url("../../../../assets/images/screen/aside-arrow.png");
       }
       .t-name{
@@ -90,7 +90,7 @@
     .disk{
       width: 162px;
       height: 162px;
-      margin: 14px 0;
+      margin: 10px 0;
       background-image: url("../../../../assets/images/screen/state/disk.png");
       background-repeat: no-repeat;
       background-size: 162px;
@@ -108,7 +108,7 @@
     }
     .state-list{
       position: absolute;
-      top:14px;
+      top: 10px;
       left: 136px;
       color: #fff;
       .item{

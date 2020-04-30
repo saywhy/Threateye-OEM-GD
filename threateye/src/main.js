@@ -18,6 +18,7 @@ import '@/assets/js/common'
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
+
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;

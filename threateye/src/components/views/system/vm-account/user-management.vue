@@ -21,10 +21,6 @@
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
                 @row-click="alert_detail">
-        <el-table-column label=" "
-                         prop="type"
-                         width="50">
-        </el-table-column>
         <el-table-column type="selection"
                          width="50">
         </el-table-column>

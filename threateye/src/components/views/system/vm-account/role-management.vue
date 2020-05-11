@@ -17,10 +17,6 @@
                 tooltip-effect="dark"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
-        <el-table-column label=" "
-                         prop="type"
-                         width="50">
-        </el-table-column>
         <el-table-column type="selection"
                          :selectable="checkSelectable"
                          width="50">

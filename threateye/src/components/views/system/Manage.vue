@@ -2,9 +2,7 @@
   <div id="equipment">
     <div class="container">
       <div class="top">
-        <div class="item"
-             :class="{'left_active':activeDiv=='1'}"
-             @click="chooseDiv('1')">
+        <div class="item">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/yq.png"
@@ -22,9 +20,7 @@
             </p>
           </div>
         </div>
-        <div class="mid item "
-             :class="{'left_active':activeDiv=='2'}"
-             @click="chooseDiv('2')">
+        <div class="mid item ">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/yt.png"
@@ -42,9 +38,7 @@
             </p>
           </div>
         </div>
-        <div class="mid item "
-             :class="{'left_active':activeDiv=='3'}"
-             @click="chooseDiv('3')">
+        <div class="mid item ">
           <div class="item_left">
             <img class="img_box"
                  src="@/assets/images/setting/tz.png"
@@ -63,8 +57,6 @@
           </div>
         </div>
         <div class="right item "
-             :class="{'left_active':activeDiv=='4'}"
-             @click="chooseDiv('4')"
              v-if="sandbox_show">
           <div class="item_left">
             <img class="img_box"
@@ -103,10 +95,6 @@
                     style="width: 100%"
                     @selection-change="handleSelectionChange"
                     @row-click="alert_detail">
-            <el-table-column label=" "
-                             prop=""
-                             width="50">
-            </el-table-column>
             <el-table-column type="selection"
                              width="50">
             </el-table-column>
@@ -125,31 +113,31 @@
             <el-table-column prop="type"
                              label="设备类型"
                              show-overflow-tooltip>
-              <template slot-scope="scope">
-                <span v-if="scope.row.type=='1'">探针</span>
-                <span v-if="scope.row.type=='2'">引擎</span>
-                <span v-if="scope.row.type=='3'">引擎/探针</span>
-                <span v-if="scope.row.type=='4'">沙箱</span>
-              </template>
+<template slot-scope="scope">
+  <span v-if="scope.row.type=='1'">探针</span>
+  <span v-if="scope.row.type=='2'">引擎</span>
+  <span v-if="scope.row.type=='3'">引擎/探针</span>
+  <span v-if="scope.row.type=='4'">沙箱</span>
+</template>
             </el-table-column>
             <el-table-column label='设备IP'>
-              <template slot-scope="scope">
-                <span class="color_span"
-                      @click.stop='alert_detail(scope.row)'>{{scope.row.ip}}</span>
-              </template>
+<template slot-scope="scope">
+  <span class="color_span"
+        @click.stop='alert_detail(scope.row)'>{{scope.row.ip}}</span>
+</template>
             </el-table-column>
             <el-table-column label="设备状态">
-              <template slot-scope="scope">
-                <span :class="scope.row.status=='offline'?'red_s':'green'"></span>
-                <span v-if="scope.row.status!='offline'">正常</span>
-                <el-popover placement="top"
-                            width="50"
-                            :content="scope.row.status"
-                            trigger="hover"
-                            v-if="scope.row.status=='offline'">
-                  <span slot="reference">异常</span>
-                </el-popover>
-              </template>
+<template slot-scope="scope">
+  <span :class="scope.row.status=='offline'?'red_s':'green'"></span>
+  <span v-if="scope.row.status!='offline'">正常</span>
+  <el-popover placement="top"
+              width="50"
+              :content="scope.row.status"
+              trigger="hover"
+              v-if="scope.row.status=='offline'">
+    <span slot="reference">异常</span>
+  </el-popover>
+</template>
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"
@@ -258,14 +246,14 @@
     </el-dialog>
   </div>
 </template>
+
 <script type="text/ecmascript-6">
 export default {
   name: "system_control_orient",
   data () {
     return {
       activeDiv: '1',
-      equipment_list: {
-      },
+      equipment_list: {},
       equipment_data: {
         page: 1,
         rows: 10
@@ -281,9 +269,10 @@ export default {
         type: '4',
         label: '沙箱',
         name: '',
-        type_list: [
-          { label: '沙箱', value: '4' },
-        ],
+        type_list: [{
+          label: '沙箱',
+          value: '4'
+        },],
         ip: '',
       },
       equipment_detail: {
@@ -337,7 +326,10 @@ export default {
     get_version () {
       this.$axios.get('/yiiapi/site/license-version')
         .then(response => {
-          let { status, data } = response.data;
+          let {
+            status,
+            data
+          } = response.data;
           console.log(data.edition);
           if (data.edition == 2) {
             this.sandbox_show = true
@@ -370,30 +362,24 @@ export default {
       console.log(1212);
       console.log(this.equipment_pop);
       if (this.equipment_pop.name == '') {
-        this.$message(
-          {
-            message: '请输入设备名称',
-            type: 'warning',
-          }
-        );
+        this.$message({
+          message: '请输入设备名称',
+          type: 'warning',
+        });
         return false
       }
       if (this.equipment_pop.type == '') {
-        this.$message(
-          {
-            message: '请选择设备类型！',
-            type: 'warning',
-          }
-        );
+        this.$message({
+          message: '请选择设备类型！',
+          type: 'warning',
+        });
         return false
       }
       if (this.equipment_pop.ip == '') {
-        this.$message(
-          {
-            message: '请输入设备IP',
-            type: 'warning',
-          }
-        );
+        this.$message({
+          message: '请输入设备IP',
+          type: 'warning',
+        });
         return false
       }
       this.$axios.post('/yiiapi/dev/add', {
@@ -406,19 +392,15 @@ export default {
           if (response.data.status == 0) {
             this.get_data()
             this.equipment_pop.show = false
-            this.$message(
-              {
-                message: '添加设备成功！',
-                type: 'success',
-              }
-            );
+            this.$message({
+              message: '添加设备成功！',
+              type: 'success',
+            });
           } else {
-            this.$message(
-              {
-                message: response.data.msg,
-                type: 'error',
-              }
-            );
+            this.$message({
+              message: response.data.msg,
+              type: 'error',
+            });
           }
         })
         .catch(error => {
@@ -428,12 +410,10 @@ export default {
     // 删除
     del_equipment () {
       if (this.select_list.length == 0) {
-        this.$message(
-          {
-            message: '请先选中要删除的信息',
-            type: 'warning',
-          }
-        );
+        this.$message({
+          message: '请先选中要删除的信息',
+          type: 'warning',
+        });
         return false
       }
       this.$confirm('此操作删除信息, 是否继续?', '提示', {
@@ -454,19 +434,15 @@ export default {
             console.log(response);
             if (response.data.status == 0) {
               this.get_data();
-              this.$message(
-                {
-                  message: '删除成功！',
-                  type: 'success',
-                }
-              );
+              this.$message({
+                message: '删除成功！',
+                type: 'success',
+              });
             } else {
-              this.$message(
-                {
-                  message: '删除失败！',
-                  type: 'error',
-                }
-              );
+              this.$message({
+                message: '删除失败！',
+                type: 'error',
+              });
             }
           })
           .catch(error => {
@@ -648,97 +624,93 @@ export default {
           }
         },
         color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
-        series: [
-          {
-            name: "CPU",
-            type: "line",
-            symbol: "none",
-            cursor: "pointer",
-            smooth: true,
-            data: this.equipment_detail.cpu,
-            lineStyle: {
-              color: "rgba(2,136,209,0.9)"
-            },
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(2,136,209,0.3)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(2,136,209,0.1)" // 100% 处的颜色
-                  }
-                ]
-              }
-            }
+        series: [{
+          name: "CPU",
+          type: "line",
+          symbol: "none",
+          cursor: "pointer",
+          smooth: true,
+          data: this.equipment_detail.cpu,
+          lineStyle: {
+            color: "rgba(2,136,209,0.9)"
           },
-          {
-            name: "内存",
-            type: "line",
-            symbol: "none",
-            cursor: "pointer",
-            smooth: true,
-            data: this.equipment_detail.mem,
-            lineStyle: {
-              color: "rgba(205,220,57,0.9)"
-            },
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(205,220,57,0.3)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(205,220,57,0.1)" // 100% 处的颜色
-                  }
-                ]
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0,
+                color: "rgba(2,136,209,0.3)" // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(2,136,209,0.1)" // 100% 处的颜色
               }
+              ]
             }
+          }
+        },
+        {
+          name: "内存",
+          type: "line",
+          symbol: "none",
+          cursor: "pointer",
+          smooth: true,
+          data: this.equipment_detail.mem,
+          lineStyle: {
+            color: "rgba(205,220,57,0.9)"
           },
-          {
-            name: "硬盘",
-            type: "line",
-            symbol: "none",
-            cursor: "pointer",
-            smooth: true,
-            data: this.equipment_detail.disk,
-            lineStyle: {
-              color: "rgba(76,175,80,0.9)"
-            },
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(76,175,80,0.3)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(76,175,80,0.1)" // 100% 处的颜色
-                  }
-                ]
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0,
+                color: "rgba(205,220,57,0.3)" // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(205,220,57,0.1)" // 100% 处的颜色
               }
+              ]
             }
+          }
+        },
+        {
+          name: "硬盘",
+          type: "line",
+          symbol: "none",
+          cursor: "pointer",
+          smooth: true,
+          data: this.equipment_detail.disk,
+          lineStyle: {
+            color: "rgba(76,175,80,0.9)"
           },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0,
+                color: "rgba(76,175,80,0.3)" // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(76,175,80,0.1)" // 100% 处的颜色
+              }
+              ]
+            }
+          }
+        },
         ]
       });
       window.addEventListener("resize", () => {
@@ -836,38 +808,35 @@ export default {
             show: false
           }
         },
-        series: [
-          {
-            name: "流量",
-            type: "line",
-            symbol: "none",
-            cursor: "pointer",
-            smooth: true,
-            data: this.equipment_detail.flow,
-            lineStyle: {
-              color: "rgba(187,120,247,0.9)"
-            },
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(187,120,247,0.3)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(187,120,247,0.1)" // 100% 处的颜色
-                  }
-                ]
+        series: [{
+          name: "流量",
+          type: "line",
+          symbol: "none",
+          cursor: "pointer",
+          smooth: true,
+          data: this.equipment_detail.flow,
+          lineStyle: {
+            color: "rgba(187,120,247,0.9)"
+          },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0,
+                color: "rgba(187,120,247,0.3)" // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(187,120,247,0.1)" // 100% 处的颜色
               }
+              ]
             }
           }
-        ]
+        }]
       });
       window.addEventListener("resize", () => {
         myChart.resize();
@@ -905,14 +874,14 @@ export default {
       border-radius: 8px;
     }
     .color_span {
-      color: #0070ff;
-      cursor: pointer;
+      // color: #0070ff;
+      // cursor: pointer;
     }
     .top {
       display: flex;
       margin-bottom: 24px;
       .item {
-        cursor: pointer;
+        // cursor: pointer;
         width: 324px;
         height: 108px;
         background: #ffffff;

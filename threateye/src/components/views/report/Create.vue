@@ -757,7 +757,7 @@ export default {
           }
           .r_btn_group {
             position: absolute;
-            right: 0;
+            left: 0;
             bottom: 24px;
             text-align: right;
             height: 42px;

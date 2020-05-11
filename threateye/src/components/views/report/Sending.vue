@@ -252,7 +252,7 @@ export default {
         }
       }
       .r_btn_group {
-        text-align: right;
+        text-align: left;
         // height: 42px;
         z-index: 999;
         font-size: 0;

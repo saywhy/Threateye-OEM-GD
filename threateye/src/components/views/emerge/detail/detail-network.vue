@@ -4113,10 +4113,11 @@ export default {
             }
             .tag_btn {
               height: 20px;
-              font-size: 10px;
+              font-size: 14px;
               line-height: 20px;
               font-family: PingFang;
-              transform: scale(0.8);
+              padding: 0 3px;
+              // transform: scale(0.8);
               display: block;
             }
           }

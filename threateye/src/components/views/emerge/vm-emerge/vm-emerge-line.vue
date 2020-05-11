@@ -39,6 +39,20 @@ export default {
           bottom: "18%",
           containLabel: true
         },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            lineStyle: {
+              color: "#ddd",
+            },
+          },
+          backgroundColor: "rgba(255,255,255,1)",
+          padding: [5, 10],
+          textStyle: {
+            color: "#7588E4",
+          },
+          extraCssText: "box-shadow: 0 0 5px rgba(0,0,0,0.3)",
+        },
         xAxis: {
           //网格样式
           axisLine: {
@@ -95,28 +109,6 @@ export default {
             show: false
           },
         },
-        /* dataZoom: [
-           {
-             startValue: data[0].statistics_time
-           },
-           {
-             type: "inside",
-           },
-           {
-             type: 'slider',
-             backgroundColor:'#fff',
-             fillerColor:'rgba(0,112,255,.1)',
-             handleStyle:{
-               color: '#0070ff'
-             },
-             dataBackground:{
-               areaStyle:{
-                 shadowColor: 'rgba(0, 0, 0, 0.5)',
-                 shadowBlur: 10
-               }
-             }
-           }
-         ],*/
         dataZoom: [
           {
             show: true,
@@ -141,12 +133,20 @@ export default {
           }
         ],
         series: {
-          name: "Beijing AQI",
+          name: "告警",
           type: "line",
+          smooth: true,
+          showSymbol: false,
+          symbolSize: 3,
+          animation: true,
           lineStyle: {
-            color: "#DC5F5F",
-            opacity: 0.5
+            normal: {
+              width: 3,
+              color: "#DC5F5F",
+              opacity: 0.5
+            },
           },
+          symbol: "circle",
           areaStyle: {
             color: "#DC5F5F",
             opacity: 0.12

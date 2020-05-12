@@ -132,7 +132,7 @@
               @row-click="detail_click">
       <el-table-column label=" "
                        prop="type"
-                       width="50">
+                       width="20">
         <template slot-scope="scope">
           <div class="new_dot"
                v-show="scope.row.if_new == '1'"></div>

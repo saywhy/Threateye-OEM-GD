@@ -17,8 +17,14 @@ import '@/assets/js/common'
 // 引入echarts
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
-
-
+//省市区三级联动选择器
+// import {
+//   pca,
+//   pcaa
+// } from 'area-data';
+// import 'vue-area-linkage/dist/index.css';
+// import VueAreaLinkage from 'vue-area-linkage';
+// Vue.use(VueAreaLinkage)
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;

@@ -137,7 +137,7 @@ export default {
           type: "line",
           smooth: true,
           showSymbol: false,
-          symbolSize: 3,
+          symbolSize: 0,
           animation: true,
           lineStyle: {
             normal: {

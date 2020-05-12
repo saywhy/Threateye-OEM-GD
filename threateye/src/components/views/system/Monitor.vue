@@ -192,6 +192,21 @@
             </div>
             <div class="content_item">
               <p>
+                <span class="title">地理位置</span>
+              </p>
+              <div class="select_box">
+                <el-cascader placeholder="请选择地理位置"
+                             ref="cascader_add"
+                             v-if="cascader_add_if"
+                             v-model="monitor_add.selected_cascader_add"
+                             @change="change_cascader_add"
+                             :options="area_array"
+                             filterable
+                             clearable></el-cascader>
+              </div>
+            </div>
+            <div class="content_item">
+              <p>
                 <span class="title">责任人</span>
               </p>
               <el-input class="select_box"
@@ -200,6 +215,7 @@
                         clearable>
               </el-input>
             </div>
+
           </div>
         </div>
         <div class="btn_box">
@@ -309,6 +325,19 @@
             </div>
             <div class="content_item">
               <p>
+                <span class="title">地理位置</span>
+              </p>
+              <div class="select_box">
+                <el-cascader placeholder="请选择地理位置"
+                             v-model="monitor_edit.selected_cascader_edit"
+                             v-if="cascader_edit_if"
+                             :options="area_array"
+                             filterable
+                             clearable></el-cascader>
+              </div>
+            </div>
+            <div class="content_item">
+              <p>
                 <span class="title">责任人</span>
               </p>
               <el-input class="select_box"
@@ -381,11 +410,15 @@
 </template>
 <script type="text/ecmascript-6">
 import moment from 'moment'
+import { pca, pcaa } from "area-data";
 export default {
   name: "system_control_monitor",
   data () {
     return {
+      area_array: [],
       monitor_data: {},
+      cascader_add_if: false,
+      cascader_edit_if: false,
       monitor_page: {
         page: 1,
         rows: 10,
@@ -404,6 +437,7 @@ export default {
         type_list: ["static", 'dhcp', 'public'],
         person: "",
         tag: [],
+        selected_cascader_add: [],
         tag_list: [{ name: '', icon: true }]
       },
       monitor_edit: {
@@ -416,6 +450,7 @@ export default {
         type_list: ["static", 'dhcp', 'public'],
         ip_segment: [],
         ip_segment_list: [],
+        selected_cascader_edit: [],
       },
       select_list: [],
       fileList: []
@@ -423,8 +458,58 @@ export default {
   },
   mounted () {
     this.get_data()
+    var options = []
+    // 遍历省级
+    Object.keys(pca[86]).forEach(function (key) {
+      var obj = {}
+      obj.id = key
+      obj.value = pca[86][key]
+      obj.label = pca[86][key]
+      obj.children = []
+      options.push(obj)
+    });
+    // 添加市级
+    options.forEach(element => {
+      Object.keys(pca).forEach(function (key) {
+        if (element.id == key) {
+          Object.keys(pca[key]).forEach(function (item) {
+            var obj = {}
+            obj.value = pca[key][item]
+            obj.label = pca[key][item]
+            element.children.push(obj)
+          })
+        }
+      });
+    });
+    this.area_array = options
   },
   methods: {
+    init () {
+      var options = []
+      // 遍历省级
+      Object.keys(pca[86]).forEach(function (key) {
+        var obj = {}
+        obj.id = key
+        obj.value = pca[86][key]
+        obj.label = pca[86][key]
+        obj.children = []
+        options.push(obj)
+      });
+      // 添加市级
+      options.forEach(element => {
+        Object.keys(pca).forEach(function (key) {
+          if (element.id == key) {
+            Object.keys(pca[key]).forEach(function (item) {
+              var obj = {}
+              obj.value = pca[key][item]
+              obj.label = pca[key][item]
+              element.children.push(obj)
+            })
+          }
+        });
+      });
+      return options
+    },
     isRepeat (arr) {
       var hash = {};
       for (var i in arr) {
@@ -453,6 +538,9 @@ export default {
           console.log(error);
         })
     },
+    change_cascader_add (value) {
+      console.log(value);
+    },
     // 添加IP
     add_box () {
       this.monitor_state.add = true;
@@ -461,8 +549,11 @@ export default {
       this.monitor_add.person = '';
       this.monitor_add.tag = [];
       this.monitor_add.ip_segment = [];
+      this.monitor_add.selected_cascader_add = [];
       this.monitor_add.tag_list = [{ name: '', icon: true }]
       this.monitor_add.ip_segment_list = [{ name: '', icon: true }]
+      this.cascader_add_if = true;
+      console.log(this.monitor_add.selected_cascader_add);
     },
     add_data () {
       this.monitor_add.tag = [];
@@ -512,6 +603,16 @@ export default {
       }
       tag_test_str = JSON.stringify(tag_test)
       console.log(tag_test_str.indexOf("终端") != -1);
+      if (tag_test_str.indexOf("总部") != -1 && (tag_test_str.indexOf("分支") != -1)) {
+        this.$message(
+          {
+            message: '“总部”和“分支”标签只能设置其中的一种，请重新设置！',
+            type: 'warning',
+          }
+        );
+        return false
+      }
+
       if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
@@ -557,6 +658,7 @@ export default {
         network_type: this.monitor_add.type,
         person: this.monitor_add.person,
         label: this.monitor_add.tag,
+        location: this.monitor_add.selected_cascader_add,
       })
         .then(response => {
           console.log(response);
@@ -625,6 +727,7 @@ export default {
     alert_detail () { },
     edit_box (row) {
       this.monitor_state.edit = true;
+      this.cascader_edit_if = true;
       console.log(row);
       var item_str = JSON.stringify(row);
       var obj_edit = JSON.parse(item_str);
@@ -636,6 +739,7 @@ export default {
       this.monitor_edit.tag = [];
       this.monitor_edit.ip_segment = [];
       this.monitor_edit.ip_segment_list = [];
+      this.monitor_edit.selected_cascader_edit = obj_edit.location
       if (obj_edit.label.length == 0) {
         this.monitor_edit.label_list.push({
           name: '',
@@ -650,7 +754,6 @@ export default {
         });
         this.monitor_edit.label_list[this.monitor_edit.label_list.length - 1].icon = true
       }
-
       if (obj_edit.ip_segment.length == 0) {
         this.monitor_edit.ip_segment_list.push({
           name: '',
@@ -689,6 +792,15 @@ export default {
       });
       tag_test_str = JSON.stringify(tag_test)
       console.log(tag_test_str.indexOf("终端") != -1);
+      if (tag_test_str.indexOf("总部") != -1 && (tag_test_str.indexOf("分支") != -1)) {
+        this.$message(
+          {
+            message: '“总部”和“分支”标签只能设置其中的一种，请重新设置！',
+            type: 'warning',
+          }
+        );
+        return false
+      }
       if (tag_test_str.indexOf("终端") != -1 && (tag_test_str.indexOf("服务器") != -1 || tag_test_str.indexOf("网络设备") != -1)) {
         this.$message(
           {
@@ -756,6 +868,7 @@ export default {
         network_type: this.monitor_edit.network_type,
         person: this.monitor_edit.person,
         label: this.monitor_edit.tag,
+        location: this.monitor_edit.selected_cascader_edit,
       })
         .then(response => {
           console.log(response);
@@ -854,9 +967,12 @@ export default {
     },
     closed_add_box () {
       this.monitor_state.add = false;
+      this.cascader_add_if = false;
+
     },
     closed_edit_box () {
       this.monitor_state.edit = false;
+      this.cascader_edit_if = false;
     },
     closed_import_box () {
       this.monitor_state.import = false;
@@ -972,9 +1088,9 @@ export default {
 #system_control_monitor {
   .add_box {
     .el-dialog {
-      width: 840px;
+      width: 900px;
       .el-dialog__body {
-        width: 840px;
+        width: 900px;
         .content {
           padding: 24px 10px;
           display: flex;
@@ -1025,6 +1141,9 @@ export default {
                   background: #f8f8f8;
                   border: 0;
                 }
+              }
+              .el-cascader {
+                width: 100%;
               }
             }
           }

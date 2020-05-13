@@ -148,6 +148,20 @@ Vue.filter('priority', function (args) {
   }
   return str;
 });
+//优先级
+Vue.filter('priorityColor', function (args) {
+  let str = '';
+  if (args == 'highest') {
+    str = '#dc5f5f';
+  } else if (args == 'high') {
+    str = '#e0c840';
+  } else if (args == 'medium') {
+    str = '#5389e0';
+  } else if (args == 'low') {
+    str = '#47cad9';
+  }
+  return str;
+});
 
 Vue.filter('filterType', function (args) {
   if (args == '') return;

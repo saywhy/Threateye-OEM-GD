@@ -164,7 +164,10 @@
       </el-table-column>
       <el-table-column label="优先级"
                        align="center">
-        <template slot-scope="scope">{{ scope.row.priority | priority }}</template>
+        <template slot-scope="scope">
+          <span class="priority_box"
+                :class="scope.row.priority+'_priority'"> {{ scope.row.priority | priority }}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="new_perator"
                        align="center"
@@ -2008,6 +2011,31 @@ export default {
 <style scoped lang="less">
 @import '../../../../assets/css/less/common-tabs-pattern.less';
 @import '../../../../assets/css/less/common-table-pattern.less';
+.priority_box {
+  width: 72px;
+  /*height: 30px;*/
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  line-height: normal;
+  border-radius: 2px;
+}
+.highest_priority {
+  background: #dc5f5f;
+  color: #fff;
+}
+.high_priority {
+  background: #e0c840;
+  color: #fff;
+}
+.medium_priority {
+  background: #5389e0;
+  color: #fff;
+}
+.low_priority {
+  background: #47cad9;
+  color: #fff;
+}
 .common-pattern {
   .common_btn {
     .common_box {

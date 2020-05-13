@@ -136,7 +136,7 @@
                     @mouseup.native="mouseup"
                     @selection-change="handleSelChange"
                     @header-click="header_click"
-                    @row-click="">
+                    @row-click="detail_click">
             <el-table-column label=" "
                              align="center"
                              prop="type"

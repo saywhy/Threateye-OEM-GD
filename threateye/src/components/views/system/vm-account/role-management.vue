@@ -13,15 +13,18 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="role_list.data"
                 tooltip-effect="dark"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
         <el-table-column type="selection"
+                         align="center"
                          :selectable="checkSelectable"
                          width="50">
         </el-table-column>
         <el-table-column prop="index"
+                         align="center"
                          label="序号"
                          width="50"
                          show-overflow-tooltip>
@@ -30,28 +33,31 @@
           </template>
         </el-table-column>
         <el-table-column prop="name"
+                         align="center"
                          label="角色名称"
                          width="180"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="description"
+                         align="center"
                          label="角色描述"
                          show-overflow-tooltip>
         </el-table-column>
-
         <el-table-column label="创建时间"
+                         align="center"
                          width="220"
                          show-overflow-tooltip>
           <template slot-scope="scope">{{ scope.row.created_at*1000 |formatDate }}</template>
         </el-table-column>
         <el-table-column prop="creatorname"
+                         align="center"
                          label="创建人"
                          width="180"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作"
+                         align="center"
                          width="150">
-
           <template slot-scope="scope">
             <el-button type="primary"
                        v-if="scope.row.creatorname!= 'SYSTEM' "

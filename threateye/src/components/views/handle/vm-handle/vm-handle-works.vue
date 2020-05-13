@@ -123,6 +123,8 @@
       </el-form>
     </div>
     <el-table ref="multipleTable"
+              align="center"
+              border
               class="common-table"
               v-loading="table.loading"
               :data="table.tableData"
@@ -132,6 +134,7 @@
               @row-click="detail_click">
       <el-table-column label=" "
                        prop="type"
+                       align="center"
                        width="20">
         <template slot-scope="scope">
           <div class="new_dot"
@@ -139,39 +142,48 @@
         </template>
       </el-table-column>
       <el-table-column type="selection"
+                       align="center"
                        width="50">
       </el-table-column>
       <el-table-column prop="name"
+                       align="center"
                        label="工单名称"
                        show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="creator"
+                       align="center"
                        label="创建人"
                        width="100"
                        show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="创建时间"
+                       align="center"
                        width="180"
                        show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.created_at | time }}</template>
       </el-table-column>
-      <el-table-column label="优先级">
+      <el-table-column label="优先级"
+                       align="center">
         <template slot-scope="scope">{{ scope.row.priority | priority }}</template>
       </el-table-column>
       <el-table-column prop="new_perator"
+                       align="center"
                        label="经办人"
                        show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="更新时间"
+                       align="center"
                        width="180"
                        show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
       </el-table-column>
       <el-table-column prop="remarks"
+                       align="center"
                        label="备注"
                        show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="状态"
+                       align="center"
                        width="80"
                        show-overflow-tooltip>
         <template slot-scope="scope">{{ scope.row.status | work_status }}</template>
@@ -322,12 +334,17 @@
           </div>
           <div class="content_table">
             <el-table :data="table_operator.tableData"
+                      align="center"
+                      border
                       style="width: 100%">
               <el-table-column prop="username"
+                               align="center"
                                label="经办人"></el-table-column>
               <el-table-column prop="department"
+                               align="center"
                                label="部门"></el-table-column>
               <el-table-column prop="email_addr"
+                               align="center"
                                label="邮箱"></el-table-column>
             </el-table>
           </div>
@@ -356,6 +373,7 @@
               <div v-show="handle.active == 0">
                 <div class="tb_tolling">
                   <el-table align="center"
+                            border
                             class="common-table"
                             :data="table_assets.tableData"
                             tooltip-effect="dark"
@@ -363,20 +381,21 @@
                             ref="assetTableName"
                             :row-key="getRowKeys_assets"
                             @selection-change="handle_sel_table_assets">
-                    <el-table-column label=" "
-                                     width="50"></el-table-column>
-                    <el-table-column align='left'
+                    <el-table-column align="center"
                                      type="selection"
                                      width="50"
                                      :reserve-selection="true"></el-table-column>
                     <el-table-column prop="asset_ip"
+                                     align="center"
                                      label="资产"
                                      width="180"
                                      show-overflow-tooltip></el-table-column>
                     <el-table-column prop="label_group"
+                                     align="center"
                                      label="资产组"
                                      show-overflow-tooltip></el-table-column>
                     <el-table-column label="威胁等级"
+                                     align="center"
                                      width="140">
                       <template slot-scope="scope">
                         <span class="btn_alert_background"
@@ -385,6 +404,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column label="状态"
+                                     align="center"
                                      width="80">
                       <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
                     </el-table-column>
@@ -402,6 +422,7 @@
               <div v-show="handle.active == 1">
                 <div class="tb_tolling">
                   <el-table align="center"
+                            border
                             class="common-table"
                             :data="table_alerts.tableData"
                             tooltip-effect="dark"
@@ -409,31 +430,28 @@
                             style="width: 100%"
                             :row-key="getRowKeys_alerts"
                             @selection-change="handle_sel_table_alerts">
-                    <el-table-column label=" "
-                                     prop="type"
-                                     width="50">
-                    </el-table-column>
                     <el-table-column type="selection"
+                                     align="center"
                                      width="50"
                                      :reserve-selection="true">
                     </el-table-column>
                     <el-table-column prop="category"
+                                     align="center"
                                      label="告警类型"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="indicator"
+                                     align="center"
                                      label="威胁指标"
                                      show-overflow-tooltip>
                     </el-table-column>
-                    <!--<el-table-column prop="src_ip" label="源地址" show-overflow-tooltip>
-                     </el-table-column>
-                     <el-table-column prop="dest_ip" label="目的地址" show-overflow-tooltip>
-                     </el-table-column>-->
                     <el-table-column prop="application"
+                                     align="center"
                                      label="应用"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="威胁等级"
+                                     align="center"
                                      width="120"
                                      show-overflow-tooltip>
                       <template slot-scope="scope">
@@ -443,6 +461,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column label="状态"
+                                     align="center"
                                      width="80">
                       <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                     </el-table-column>
@@ -577,12 +596,17 @@
           </div>
           <div class="content_table">
             <el-table :data="edit.table_operator"
+                      align="center"
+                      border
                       style="width: 100%">
               <el-table-column prop="username"
+                               align="center"
                                label="经办人"></el-table-column>
               <el-table-column prop="department"
+                               align="center"
                                label="部门"></el-table-column>
               <el-table-column prop="email_addr"
+                               align="center"
                                label="邮箱"></el-table-column>
             </el-table>
           </div>
@@ -609,26 +633,28 @@
               <!-- 资产列表 -->
               <div v-if="edit.data.type == 'asset'">
                 <div class="tb_tolling">
-                  <el-table align="center"
-                            class="common-table"
+                  <el-table class="common-table"
+                            align="center"
+                            border
                             :data="edit.asset_list.data"
                             tooltip-effect="dark"
                             :row-key="getRowKeys"
                             ref="assetTable"
                             style="width: 100%"
                             @selection-change="handle_sel_assets">
-                    <el-table-column label=" "
-                                     width="50"></el-table-column>
-                    <el-table-column align='left'
+                    <el-table-column align="center"
                                      :reserve-selection="true"
                                      type="selection"
                                      width="50"></el-table-column>
                     <el-table-column prop="asset_ip"
+                                     align="center"
                                      label="资产"></el-table-column>
                     <el-table-column prop="label_group"
+                                     align="center"
                                      label="资产组"
                                      show-overflow-tooltip></el-table-column>
                     <el-table-column label="威胁等级"
+                                     align="center"
                                      width="100">
                       <template slot-scope="scope">
                         <span class="btn_alert_background"
@@ -637,6 +663,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column label="状态"
+                                     align="center"
                                      width="80">
                       <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
                     </el-table-column>
@@ -654,41 +681,45 @@
               <!-- 告警列表 -->
               <div v-if="edit.data.type == 'alert'">
                 <div class="tb_tolling">
-                  <el-table align="center"
-                            class="common-table"
+                  <el-table class="common-table"
+                            align="center"
+                            border
                             :data="edit.alert_list.data"
                             tooltip-effect="dark"
                             ref="alertTable"
                             style="width: 100%"
                             @selection-change="handle_sel_alert">
-                    <el-table-column label=" "
-                                     prop="type"
-                                     width="50">
-                    </el-table-column>
                     <el-table-column type="selection"
+                                     align="center"
                                      width="50">
                     </el-table-column>
                     <el-table-column prop="category"
+                                     align="center"
                                      label="告警类型"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="indicator"
+                                     align="center"
                                      label="威胁指标"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="src_ip"
+                                     align="center"
                                      label="源地址"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="dest_ip"
+                                     align="center"
                                      label="目的地址"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="application"
+                                     align="center"
                                      label="应用"
                                      show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="威胁等级"
+                                     align="center"
                                      width="100"
                                      show-overflow-tooltip>
                       <template slot-scope="scope">
@@ -698,6 +729,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column label="状态"
+                                     align="center"
                                      width="80">
                       <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                     </el-table-column>

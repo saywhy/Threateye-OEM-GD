@@ -9,34 +9,41 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="syslog_list.data"
                 tooltip-effect="dark"
                 style="width: 100%">
         <el-table-column label="序号"
+                         align="center"
                          width="80">
           <template slot-scope="scope">
             {{(syslog_data.page-1)*(syslog_data.rows) + scope.row.index_cn}}
           </template>
         </el-table-column>
         <el-table-column prop="server_ip"
+                         align="center"
                          label="SYSLOG服务器IP"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="server_port"
+                         align="center"
                          label="端口"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="protocol"
+                         align="center"
                          label='传输协议'
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label='状态'>
+        <el-table-column label='状态'
+                         align="center">
           <template slot-scope="scope">
             <span>{{scope.row.status == '1'?'启用':'未启用'}}</span>
           </template>
 
         </el-table-column>
-        <el-table-column label='操作'>
+        <el-table-column label='操作'
+                         align="center">
           <template slot-scope="scope">
             <el-button type="primary"
                        class="btn_edit"

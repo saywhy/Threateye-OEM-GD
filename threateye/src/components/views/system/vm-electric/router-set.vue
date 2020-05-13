@@ -16,19 +16,18 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="router_list.data"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
                 @row-click="alert_detail">
-        <el-table-column label=" "
-                         prop="type"
-                         width="50">
-        </el-table-column>
         <el-table-column type="selection"
+                         align="center"
                          width="50">
         </el-table-column>
         <el-table-column label="序号"
+                         align="center"
                          width="50"
                          show-overflow-tooltip>
           <template slot-scope="scope">
@@ -36,18 +35,22 @@
           </template>
         </el-table-column>
         <el-table-column prop="ip"
+                         align="center"
                          label="目的地址"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="net_mask"
+                         align="center"
                          label="子网掩码"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="next_step"
+                         align="center"
                          label="下跳地址"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作"
+                         align="center">
           <template slot-scope="scope">
             <el-button type="primary"
                        class="btn_edit"
@@ -59,7 +62,7 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="router_list.pageNow"
-                      :page-sizes="[10,20,50,100]"
+                     :page-sizes="[10,20,50,100]"
                      :page-size="10"
                      layout="total, sizes, prev, pager, next"
                      :total="router_list.count">

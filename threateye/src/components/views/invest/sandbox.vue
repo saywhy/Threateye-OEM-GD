@@ -32,10 +32,12 @@
               <el-table ref="multipleTable"
                         class="reset_table"
                         align="center"
+                        border
                         :data="sandbox_list.data"
                         tooltip-effect="dark"
                         style="width: 100%">
                 <el-table-column label="结果"
+                                 align="center"
                                  width='160'
                                  show-overflow-tooltip>
                   <template slot-scope="scope">
@@ -43,6 +45,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="创建时间"
+                                 align="center"
                                  width='180'
                                  show-overflow-tooltip>
                   <template slot-scope="scope">
@@ -50,6 +53,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="扫描状态"
+                                 align="center"
                                  width='150'
                                  show-overflow-tooltip>
                   <template slot-scope="scope">
@@ -57,10 +61,12 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="upload_name"
+                                 align="center"
                                  label='文件名'
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label='扫描详情'
+                                 align="center"
                                  width='100'>
                   <template slot-scope="scope">
                     <img src="@/assets/images/common/download.png"
@@ -71,6 +77,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="操作"
+                                 align="center"
                                  width='100'>
                   <template slot-scope="scope">
                     <img src="@/assets/images/common/delete.png"

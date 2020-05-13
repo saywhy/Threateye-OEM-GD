@@ -2,7 +2,10 @@
   <el-col class="vm-move-threat">
     <el-table class="common-table"
               ref="multipleTable"
+              align="center"
+              border
               @row-click="detail_click"
+              @header-click="header_click"
               :row-style="{cursor:'pointer'}"
               @mousedown.native="mousedown"
               @mouseup.native="mouseup"
@@ -14,9 +17,11 @@
                        show-overflow-tooltip></el-table-column>
       <el-table-column prop="indicator"
                        label="威胁指标"
+                       align="center"
                        show-overflow-tooltip></el-table-column>
       <el-table-column prop="category"
                        label="告警类型"
+                       align="center"
                        show-overflow-tooltip></el-table-column>
     </el-table>
   </el-col>
@@ -60,6 +65,9 @@ export default {
     detail_click (val) {
       this.detail_click_val = val
     },
+    header_click (val) {
+      this.detail_click_val = {}
+    },
     mousedown (event) {
       this.oldPositon = {
         x: '',
@@ -77,7 +85,12 @@ export default {
       this.newPositon.y = event.clientY;
       if (this.oldPositon.x == this.newPositon.x) {
         setTimeout(() => {
-          this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+          if (this.detail_click_val.id) {
+            console.log('点击详情');
+            this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+          } else {
+            console.log('点击头部');
+          }
         }, 10);
       } else {
         console.log('复制');

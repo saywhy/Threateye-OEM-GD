@@ -13,23 +13,23 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="fault_list.data"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
                 @row-click="alert_detail">
-        <el-table-column label=" "
-                         prop="type"
-                         width="50">
-        </el-table-column>
         <el-table-column type="selection"
+                         align="center"
                          width="50">
         </el-table-column>
         <el-table-column label="时间"
+                         align="center"
                          show-overflow-tooltip>
           <template slot-scope="scope">{{ scope.row.time*1000 |formatDate }}</template>
         </el-table-column>
         <el-table-column prop="file"
+                         align="center"
                          label="日志文件"
                          show-overflow-tooltip>
         </el-table-column>

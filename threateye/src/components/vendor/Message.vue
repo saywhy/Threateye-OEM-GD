@@ -14,21 +14,24 @@
       <el-row class="message-bottom common-table-pattern">
         <el-col :span="24">
           <el-table class="common-table"
+                    align="center"
+                    border
                     ref="multipleTable"
                     :data="tableData"
                     @selection-change="handleSelectionChange">
-            <el-table-column label=" "
-                             width="50"></el-table-column>
-            <el-table-column align='left'
+            <el-table-column align="center"
                              type="selection"
-                             width="40"></el-table-column>
+                             width="50"></el-table-column>
             <el-table-column prop="time"
+                             align="center"
                              width="200"
                              label="时间"></el-table-column>
             <el-table-column prop="origin"
                              width="240"
+                             align="center"
                              label="消息来源"></el-table-column>
             <el-table-column prop="represent"
+                             align="center"
                              label="描述"></el-table-column>
           </el-table>
         </el-col>

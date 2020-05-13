@@ -70,17 +70,22 @@
           <!-- 资产 -->
           <div v-show="table.tabsFlag == 0">
             <el-table ref="multipleTable"
+                      align="center"
+                      border
                       class="common-table handle_table_detail"
                       tooltip-effect="dark"
                       :data="table.tableData">
               <el-table-column prop="asset_ip"
+                               align="center"
                                label="资产"
                                show-overflow-tooltip></el-table-column>
               <el-table-column prop="new_label"
                                min-width="120"
+                               align="center"
                                label="资产组"
                                show-overflow-tooltip></el-table-column>
               <el-table-column min-width="140"
+                               align="center"
                                label="关联威胁">
                 <template slot-scope="scope">
                   <span class="btn_tag_box"
@@ -94,6 +99,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="威胁等级"
+                               align="center"
                                min-width="100">
                 <template slot-scope="scope">
                   <span class="btn_alert_background"
@@ -102,6 +108,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="失陷确定性"
+                               align="center"
                                min-width="100">
                 <template slot-scope="scope">
                   <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -109,6 +116,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="状态"
+                               align="center"
                                width="80">
                 <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
               </el-table-column>
@@ -117,30 +125,39 @@
           <!-- 告警 -->
           <div v-show="table.tabsFlag == 1">
             <el-table ref="multipleTable"
+                      align="center"
+                      border
                       class="handle_table_detail"
                       :data="table.tableData"
                       tooltip-effect="dark">
               <el-table-column label="告警时间"
+                               align="center"
                                width="180"
                                show-overflow-tooltip>
                 <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
               </el-table-column>
               <el-table-column prop="category"
+                               align="center"
                                label="告警类型"
                                show-overflow-tooltip></el-table-column>
               <el-table-column prop="indicator"
+                               align="center"
                                label="威胁指标"
                                show-overflow-tooltip></el-table-column>
               <el-table-column prop="src_ip"
+                               align="center"
                                label="源地址"
                                show-overflow-tooltip></el-table-column>
               <el-table-column prop="dest_ip"
+                               align="center"
                                label="目的地址"
                                show-overflow-tooltip></el-table-column>
               <el-table-column prop="application"
+                               align="center"
                                label="应用"
                                show-overflow-tooltip></el-table-column>
               <el-table-column label="威胁等级"
+                               align="center"
                                width="100"
                                show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -150,6 +167,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="状态"
+                               align="center"
                                width="80">
                 <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
               </el-table-column>

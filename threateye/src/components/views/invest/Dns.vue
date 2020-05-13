@@ -42,41 +42,50 @@
             <el-table ref="multipleTable"
                       class="reset_table"
                       align="center"
+                      border
                       :data="dns_list.data"
                       tooltip-effect="dark"
                       style="width: 100%">
               <el-table-column label="序号"
+                               align="center"
                                width="60">
                 <template slot-scope="scope">
                   {{(dns_search.page-1)*(dns_search.rows) + scope.row.index_cn}}
                 </template>
               </el-table-column>
               <el-table-column prop="timestamp"
+                               align="center"
                                label="时间"
                                width="320"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="dns_ip"
+                               align="center"
                                label="DNS服务器IP"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="host_ip"
+                               align="center"
                                label="主机地址"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="type"
+                               align="center"
                                label="类型"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="rrname"
+                               align="center"
                                label="域名"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="rdata"
+                               align="center"
                                label="解析地址"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="ttl"
+                               align="center"
                                label="TTL"
                                show-overflow-tooltip>
               </el-table-column>

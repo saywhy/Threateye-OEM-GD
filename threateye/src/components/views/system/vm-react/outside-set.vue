@@ -30,20 +30,24 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="user_list.data"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
                 @row-click="alert_detail">
         <el-table-column prop="uname"
+                         align="center"
                          label="用户名"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="passwd"
+                         align="center"
                          label="密码"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label='操作'>
+        <el-table-column label='操作'
+                         align="center">
           <template slot-scope="scope">
             <el-button type="primary"
                        class="btn_edit"

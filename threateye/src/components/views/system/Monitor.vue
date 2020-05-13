@@ -20,15 +20,18 @@
         <el-table ref="multipleTable"
                   class="reset_table"
                   align="center"
+                  border
                   :data="monitor_data.data"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange"
                   @row-click="alert_detail">
           <el-table-column type="selection"
+                           align="center"
                            width="50">
           </el-table-column>
           <el-table-column label="序号"
+                           align="center"
                            width="50"
                            show-overflow-tooltip>
             <template slot-scope="scope">
@@ -36,12 +39,13 @@
             </template>
           </el-table-column>
           <el-table-column prop="name"
+                           align="center"
                            label="IP段名称"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="IP地址段"
+                           align="center"
                            show-overflow-tooltip>
-
             <template slot-scope="scope">
               <li v-for="item in scope.row.ip_segment"
                   class="btn_tag_box">
@@ -50,10 +54,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="network_type"
+                           align="center"
                            label="网段类型"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="标签"
+                           align="center"
                            width="400">
             <template slot-scope="scope">
               <span class="btn_tag_box"
@@ -66,16 +72,19 @@
             </template>
           </el-table-column>
           <el-table-column prop="person"
+                           align="center"
                            label="责任人"
                            width="100"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="更新时间"
+                           align="center"
                            width="180"
                            show-overflow-tooltip>
             <template slot-scope="scope">{{ scope.row.updated_at*1000 |formatDate }}</template>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作"
+                           align="center">
             <template slot-scope="scope">
               <el-button type="primary"
                          class="btn_edit"

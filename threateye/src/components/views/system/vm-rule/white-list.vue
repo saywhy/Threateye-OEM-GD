@@ -32,32 +32,34 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="white_list.data"
                 tooltip-effect="dark"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
-        <el-table-column label=" "
-                         prop=""
-                         width="50">
-        </el-table-column>
         <el-table-column type="selection"
+                         align="center"
                          width="50">
         </el-table-column>
         <el-table-column label="序号"
+                         align="center"
                          width="80">
           <template slot-scope="scope">
             {{(white_data.page-1)*(white_data.rows) + scope.row.index_cn}}
           </template>
         </el-table-column>
         <el-table-column prop="indicator"
+                         align="center"
                          label="指标"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="alert_type"
+                         align="center"
                          label="类型"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="create_time"
+                         align="center"
                          label='创建时间'
                          show-overflow-tooltip>
         </el-table-column>

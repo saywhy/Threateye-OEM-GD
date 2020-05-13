@@ -37,41 +37,50 @@
               <el-table ref="multipleTable"
                         class="reset_table"
                         align="center"
+                        border
                         :data="host_network_data.data"
                         tooltip-effect="dark"
                         style="width: 100%">
                 <el-table-column label="序号"
+                                 align="center"
                                  width="60">
                   <template slot-scope="scope">
                     {{(host_network_page.page-1)*(host_network_page.rows) + scope.row.index_cn}}
                   </template>
                 </el-table-column>
                 <el-table-column prop="timestamp"
+                                 align="center"
                                  width="320"
                                  label="时间"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="src_ip"
+                                 align="center"
                                  label="源地址"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="src_port"
+                                 align="center"
                                  label="源端口"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="dest_ip"
+                                 align="center"
                                  label="目的地址"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="dest_port"
+                                 align="center"
                                  label="目的端口"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="email"
+                                 align="center"
                                  label="Email地址"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="application"
+                                 align="center"
                                  label="应用"
                                  show-overflow-tooltip>
                 </el-table-column>
@@ -91,32 +100,39 @@
               <el-table ref="multipleTable"
                         class="reset_table"
                         align="center"
+                        border
                         :data="host_file_data.data"
                         tooltip-effect="dark"
                         style="width: 100%">
                 <el-table-column label="序号"
+                                 align="center"
                                  width="60">
                   <template slot-scope="scope">
                     {{(host_file_page.page-1)*(host_file_page.rows) + scope.row.index_cn}}
                   </template>
                 </el-table-column>
                 <el-table-column prop="file_name"
+                                 align="center"
                                  label="文件名"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="md5"
+                                 align="center"
                                  label="哈希值"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="source"
+                                 align="center"
                                  label="来源"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="host_ip"
+                                 align="center"
                                  label="主机地址"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="application"
+                                 align="center"
                                  label="应用"
                                  show-overflow-tooltip>
                 </el-table-column>
@@ -136,24 +152,29 @@
               <el-table ref="multipleTable"
                         class="reset_table"
                         align="center"
+                        border
                         :data="host_user_data.data"
                         tooltip-effect="dark"
                         style="width: 100%">
                 <el-table-column label="序号"
+                                 align="center"
                                  width="60">
                   <template slot-scope="scope">
                     {{(host_user_page.page-1)*(host_user_page.rows) + scope.row.index_cn}}
                   </template>
                 </el-table-column>
                 <el-table-column prop="user_name"
+                                 align="center"
                                  label="用户名"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="host_ip"
+                                 align="center"
                                  label="主机地址"
                                  show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="application"
+                                 align="center"
                                  label="应用"
                                  show-overflow-tooltip>
                 </el-table-column>

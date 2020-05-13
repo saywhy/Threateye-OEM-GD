@@ -1,8 +1,11 @@
 <template>
   <el-col class="vm-move-threat vm-move-threat-middle">
     <el-table class="common-table"
+              align="center"
+              border
               ref="multipleTable"
               @row-click="detail_click"
+              @header-click="header_click"
               :row-style="{cursor:'pointer'}"
               @mousedown.native="mousedown"
               @mouseup.native="mouseup"
@@ -12,9 +15,11 @@
                        width="60"
                        align="center"></el-table-column>
       <el-table-column prop="asset_ip"
+                       align="center"
                        label="风险资产"
                        show-overflow-tooltip></el-table-column>
-      <el-table-column label="风险指数">
+      <el-table-column label="风险指数"
+                       align="center">
         <template slot-scope="scope">
           <el-progress :show-text="false"
                        :percentage="scope.row.indicator"></el-progress>
@@ -65,6 +70,9 @@ export default {
     detail_click (val) {
       this.detail_click_val = val
     },
+    header_click (val) {
+      this.detail_click_val = {}
+    },
     mousedown (event) {
       this.oldPositon = {
         x: '',
@@ -82,8 +90,15 @@ export default {
       this.newPositon.y = event.clientY;
       if (this.oldPositon.x == this.newPositon.x) {
         setTimeout(() => {
-          this.$router.push({            path: '/detail/assets', name: 'detail_assets',
-            query: { id: this.detail_click_val.id, asset_ip: this.detail_click_val.asset_ip, status: this.detail_click_val.status }          });
+          if (this.detail_click_val.id) {
+            console.log('点击详情');
+            this.$router.push({
+              path: '/detail/assets', name: 'detail_assets',
+              query: { id: this.detail_click_val.id, asset_ip: this.detail_click_val.asset_ip, status: this.detail_click_val.status }
+            });
+          } else {
+            console.log('点击头部');
+          }
         }, 10);
       } else {
         console.log('复制');

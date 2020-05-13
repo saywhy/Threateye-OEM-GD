@@ -90,54 +90,61 @@
           <el-table ref="multipleTable"
                     class="reset_table"
                     align="center"
+                    border
                     :data="equipment_list.list"
                     tooltip-effect="dark"
                     style="width: 100%"
                     @selection-change="handleSelectionChange"
                     @row-click="alert_detail">
             <el-table-column type="selection"
+                             align="center"
                              width="50">
             </el-table-column>
             <el-table-column label="序号"
+                             align="center"
                              width="80">
               <template slot-scope="scope">
                 {{(equipment_data.page-1)*(equipment_data.rows) + scope.row.index_cn}}
               </template>
             </el-table-column>
-            <el-table-column label='设备名称'>
+            <el-table-column label='设备名称'
+                             align="center">
               <template slot-scope="scope">
                 <span class="color_span"
                       @click.stop='alert_detail(scope.row)'>{{scope.row.name}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="type"
+                             align="center"
                              label="设备类型"
                              show-overflow-tooltip>
-<template slot-scope="scope">
-  <span v-if="scope.row.type=='1'">探针</span>
-  <span v-if="scope.row.type=='2'">引擎</span>
-  <span v-if="scope.row.type=='3'">引擎/探针</span>
-  <span v-if="scope.row.type=='4'">沙箱</span>
-</template>
+              <template slot-scope="scope">
+                <span v-if="scope.row.type=='1'">探针</span>
+                <span v-if="scope.row.type=='2'">引擎</span>
+                <span v-if="scope.row.type=='3'">引擎/探针</span>
+                <span v-if="scope.row.type=='4'">沙箱</span>
+              </template>
             </el-table-column>
-            <el-table-column label='设备IP'>
-<template slot-scope="scope">
-  <span class="color_span"
-        @click.stop='alert_detail(scope.row)'>{{scope.row.ip}}</span>
-</template>
+            <el-table-column label='设备IP'
+                             align="center">
+              <template slot-scope="scope">
+                <span class="color_span"
+                      @click.stop='alert_detail(scope.row)'>{{scope.row.ip}}</span>
+              </template>
             </el-table-column>
-            <el-table-column label="设备状态">
-<template slot-scope="scope">
-  <span :class="scope.row.status=='offline'?'red_s':'green'"></span>
-  <span v-if="scope.row.status!='offline'">正常</span>
-  <el-popover placement="top"
-              width="50"
-              :content="scope.row.status"
-              trigger="hover"
-              v-if="scope.row.status=='offline'">
-    <span slot="reference">异常</span>
-  </el-popover>
-</template>
+            <el-table-column label="设备状态"
+                             align="center">
+              <template slot-scope="scope">
+                <span :class="scope.row.status=='offline'?'red_s':'green'"></span>
+                <span v-if="scope.row.status!='offline'">正常</span>
+                <el-popover placement="top"
+                            width="50"
+                            :content="scope.row.status"
+                            trigger="hover"
+                            v-if="scope.row.status=='offline'">
+                  <span slot="reference">异常</span>
+                </el-popover>
+              </template>
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"

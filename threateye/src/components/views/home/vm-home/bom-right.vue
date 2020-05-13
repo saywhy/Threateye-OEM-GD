@@ -2,18 +2,23 @@
   <el-col class="vm-move-threat">
     <el-table class="common-table"
               ref="multipleTable"
+              align="center"
+              border
               @row-click="detail_click"
+              @header-click="header_click"
               :row-style="{cursor:'pointer'}"
               @mousedown.native="mousedown"
               @mouseup.native="mouseup"
               :data="tableData">
       <el-table-column label="告警时间"
+                       align="center"
                        show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.alert_time | time}}
         </template>
       </el-table-column>
       <el-table-column prop="category"
+                       align="center"
                        label="告警类型"
                        show-overflow-tooltip>
         <template slot-scope="scope"
@@ -22,15 +27,19 @@
         </template>
       </el-table-column>
       <el-table-column prop="indicator"
+                       align="center"
                        label="威胁指标"
                        show-overflow-tooltip></el-table-column>
       <el-table-column prop="src_ip"
+                       align="center"
                        label="源地址"
                        show-overflow-tooltip></el-table-column>
       <el-table-column prop="dest_ip"
+                       align="center"
                        label="目的地址"
                        show-overflow-tooltip></el-table-column>
       <el-table-column label="威胁等级"
+                       align="center"
                        show-overflow-tooltip>
         <template slot-scope="scope">
           <span class="btn_alert_background"
@@ -77,6 +86,9 @@ export default {
     detail_click (val) {
       this.detail_click_val = val
     },
+    header_click (val) {
+      this.detail_click_val = {}
+    },
     mousedown (event) {
       this.oldPositon = {
         x: '',
@@ -94,7 +106,12 @@ export default {
       this.newPositon.y = event.clientY;
       if (this.oldPositon.x == this.newPositon.x) {
         setTimeout(() => {
-          this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+          if (this.detail_click_val.id) {
+            console.log('点击详情');
+            this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+          } else {
+            console.log('点击头部');
+          }
         }, 10);
       } else {
         console.log('复制');

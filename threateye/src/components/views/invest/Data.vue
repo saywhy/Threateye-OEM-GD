@@ -39,37 +39,44 @@
             <el-table ref="multipleTable"
                       class="reset_table"
                       align="center"
+                      border
                       :data="data_list_data.data"
                       tooltip-effect="dark"
                       style="width: 100%">
               <el-table-column label="序号"
+                               align="center"
                                width="60">
                 <template slot-scope="scope">
                   {{(data_search.page-1)*(data_search.rows) + scope.row.index_cn}}
                 </template>
               </el-table-column>
               <el-table-column prop="timestamp"
+                               align="center"
                                width="320"
                                label="时间"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="host_ip"
+                               align="center"
                                label="主机地址"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="流量"
+                               align="center"
                                show-overflow-tooltip>
                 <template slot-scope="scope">
                   <span>{{scope.row.flow_bytes| filterType }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="链接时长"
+                               align="center"
                                show-overflow-tooltip>
                 <template slot-scope="scope">
                   <span>{{scope.row.flow_duration +' S' }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="application"
+                               align="center"
                                label="应用"
                                show-overflow-tooltip>
               </el-table-column>

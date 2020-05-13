@@ -473,32 +473,39 @@
           <el-table class="emerge_table"
                     ref="multipleTable"
                     align="center"
+                    border
                     :data="emerge_list.now.data"
                     tooltip-effect="dark"
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
             <el-table-column prop="alert_time"
                              label="时间"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="category"
                              label="告警类型"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="indicator"
                              label="威胁指标"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="src_ip"
                              label="源地址"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="dest_ip"
                              label="目的地址"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="application"
                              label="应用"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="威胁等级">
@@ -525,35 +532,43 @@
           <el-table class="emerge_table"
                     ref="multipleTable"
                     align="center"
+                    border
                     :data="emerge_list.old.data"
                     tooltip-effect="dark"
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
             <el-table-column prop="alert_time"
                              label="时间"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="category"
                              label="告警类型"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="indicator"
                              label="威胁指标"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="src_ip"
                              label="源地址"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="dest_ip"
                              label="目的地址"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="application"
                              label="应用"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="威胁等级">
+            <el-table-column align="center"
+                             label="威胁等级">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
@@ -635,6 +650,7 @@
           <el-table ref="multipleTable"
                     class="reset_table"
                     align="center"
+                    border
                     :data="table_add_works.tableData"
                     tooltip-effect="dark"
                     @selection-change="handle_sel_table_add_works"
@@ -650,18 +666,23 @@
 
             </el-table-column>-->
             <el-table-column label="选择"
+                             align="center"
                              width="50"></el-table-column>
             <el-table-column type="selection"
+                             align="center"
                              width="50"></el-table-column>
             <el-table-column prop="name"
                              label="工单名称"
+                             align="center"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="creator"
+                             align="center"
                              label="创建人"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="优先级"
+                             align="center"
                              width="120">
               <template slot-scope="scope">{{ scope.row.priority | priority}}</template>
             </el-table-column>
@@ -670,10 +691,12 @@
                              show-overflow-tooltip>
             </el-table-column>-->
             <el-table-column prop="new_perator"
+                             align="center"
                              label="经办人"
                              show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="状态"
+                             align="center"
                              width="80"
                              show-overflow-tooltip>
               <template slot-scope="scope">{{ scope.row.status | work_status }}</template>
@@ -803,12 +826,17 @@
           </div>
           <div class="content_table">
             <el-table :data="new_worksheets_data.table_operator.tableData"
+                      align="center"
+                      border
                       style="width: 100%">
               <el-table-column prop="username"
+                               align="center"
                                label="经办人"></el-table-column>
               <el-table-column prop="department"
+                               align="center"
                                label="部门"></el-table-column>
               <el-table-column prop="email_addr"
+                               align="center"
                                label="邮箱"></el-table-column>
             </el-table>
           </div>
@@ -830,34 +858,38 @@
             <div>
               <div>
                 <el-table align="center"
+                          border
                           :data="new_worksheets_data.network_detail"
                           @selection-change="select_alert_new"
                           tooltip-effect="dark"
                           style="width: 100%">
-                  <!-- <el-table-column type="selection"
-                                 width="40">
-                </el-table-column> -->
                   <el-table-column prop="category"
+                                   align="center"
                                    label="告警类型"
                                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column prop="indicator"
+                                   align="center"
                                    label="威胁指标"
                                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column prop="src_ip"
+                                   align="center"
                                    label="源地址"
                                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column prop="dest_ip"
+                                   align="center"
                                    label="目的地址"
                                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column prop="application"
+                                   align="center"
                                    label="应用"
                                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column label="威胁等级"
+                                   align="center"
                                    width="100"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -867,6 +899,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性"
+                                   align="center"
                                    width="100"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -875,6 +908,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
+                                   align="center"
                                    width="80">
                     <template slot-scope="scope">{{ scope.row.status | work_status }}</template>
                   </el-table-column>

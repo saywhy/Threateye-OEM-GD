@@ -59,20 +59,26 @@
         <el-col :span="24">
           <el-table class="reset_table"
                     ref="multipleTable"
+                    align="center"
+                    border
                     :data="report_lsit.data"
                     style="width: 100%;"
                     @selection-change="handleSelectionChange">
             <el-table-column label="序号"
+                             align="center"
                              width="80">
               <template slot-scope="scope">
                 {{(report_data.page-1)*(report_data.rows) + scope.row.index_cn}}
               </template>
             </el-table-column>
             <el-table-column prop="create_time"
+                             align="center"
                              label="日期"></el-table-column>
             <el-table-column prop="report_name"
+                             align="center"
                              label="名称"></el-table-column>
-            <el-table-column label='时间范围'>
+            <el-table-column label='时间范围'
+                             align="center">
               <template slot-scope="scope">
                 <span>{{scope.row.stime}}</span>
                 <span>至</span>
@@ -80,8 +86,10 @@
               </template>
             </el-table-column>
             <el-table-column prop="report_type"
+                             align="center"
                              label="格式"></el-table-column>
-            <el-table-column label='操作'>
+            <el-table-column label='操作'
+                             align="center">
               <template slot-scope="scope">
                 <img src="@/assets/images/common/download.png"
                      class="img_icon"

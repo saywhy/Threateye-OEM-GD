@@ -173,12 +173,17 @@
           </div>
           <div class="content_table">
             <el-table :data="table_operator.tableData"
+                      align="center"
+                      border
                       style="width: 100%">
               <el-table-column prop="username"
+                               align="center"
                                label="经办人"></el-table-column>
               <el-table-column prop="department"
+                               align="center"
                                label="部门"></el-table-column>
               <el-table-column prop="email_addr"
+                               align="center"
                                label="邮箱"></el-table-column>
             </el-table>
           </div>
@@ -202,16 +207,19 @@
             <div>
               <div v-show="handle.cagetory == 0">
                 <el-table :data="table.tableData"
+                          align="center"
+                          border
                           tooltip-effect="dark"
                           @selection-change="handle_sel_table_mul">
-                  <el-table-column label=" "
-                                   width="50"></el-table-column>
                   <el-table-column align='left'
+                                   align="center"
                                    type="selection"
-                                   width="40"></el-table-column>
+                                   width="50"></el-table-column>
                   <el-table-column prop="asset_ip"
+                                   align="center"
                                    label="资产"></el-table-column>
                   <el-table-column label="资产组"
+                                   align="center"
                                    min-width="120"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -223,18 +231,21 @@
                     </template>
                   </el-table-column>
                   <el-table-column prop="category_group"
+                                   align="center"
                                    label="关联威胁"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column width="100">
                     <template slot-scope="scope">{{ scope.row.degree | degree }}</template>
                   </el-table-column>
-                  <el-table-column label="失陷确定性">
+                  <el-table-column label="失陷确定性"
+                                   align="center">
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                         {{ scope.row.fall_certainty | certainty }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
+                                   align="center"
                                    width="80">
                     <template slot-scope="scope">{{ scope.row.status | risk_status }}</template>
                   </el-table-column>
@@ -242,26 +253,29 @@
               </div>
               <div v-show="handle.cagetory == 1">
                 <el-table :data="table.tableData"
+                          align="center"
+                          border
                           class="common-table"
                           tooltip-effect="dark"
                           style="width: 100%"
                           @selection-change="handle_sel_table_mul">
-                  <el-table-column label=" "
-                                   prop="type"
-                                   width="50">
-                  </el-table-column>
                   <el-table-column type="selection"
-                                   width="40"></el-table-column>
+                                   align="center"
+                                   width="50"></el-table-column>
                   <el-table-column prop="category"
+                                   align="center"
                                    label="告警类型"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column prop="indicator"
+                                   align="center"
                                    label="威胁指标"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column prop="application"
+                                   align="center"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column label="威胁等级"
+                                   align="center"
                                    width="100">
                     <template slot-scope="scope">
                       <span :class="{'high':scope.row.degree =='高','mid':scope.row.degree =='中','low':scope.row.degree =='低'}">
@@ -269,6 +283,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性"
+                                   align="center"
                                    width="100">
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -276,6 +291,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
+                                   align="center"
                                    width="80">
                     <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                   </el-table-column>
@@ -323,36 +339,44 @@
         <el-row class="common-table-pattern">
           <el-col :span="24">
             <el-table class="common-table"
+                      align="center"
+                      border
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
                       @current-change="handle_sel_table_add_works">
               <el-table-column label="单选"
+                               align="center"
                                width="50">
                 <template slot-scope="scope">
                   <el-checkbox v-model="scope.row.checked"></el-checkbox>
                 </template>
               </el-table-column>
               <el-table-column prop="name"
+                               align="center"
                                label="工单名称"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="creator"
+                               align="center"
                                label="创建人"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="优先级"
+                               align="center"
                                width="120">
                 <template slot-scope="scope">
                   {{ scope.row.priority | priority }}
                 </template>
               </el-table-column>
               <el-table-column prop="new_perator"
+                               align="center"
                                label="经办人"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="状态"
                                width="80"
+                               align="center"
                                show-overflow-tooltip>
                 <template slot-scope="scope">
                   {{ scope.row.status | work_status }}</template>

@@ -89,25 +89,30 @@
             <el-table ref="multipleTable"
                       class="reset_table"
                       align="center"
+                      border
                       :data="ioc_list.data"
                       tooltip-effect="dark"
                       @selection-change="handleSelectionChange"
                       style="width: 100%">
               <el-table-column type="selection"
+                               align="center"
                                :selectable="checkSelectable"
                                width="50">
               </el-table-column>
               <el-table-column label="序号"
+                               align="center"
                                width="60">
                 <template slot-scope="scope">
                   {{(ioc_data.page-1)*(ioc_data.rows) + scope.row.index_cn}}
                 </template>
               </el-table-column>
               <el-table-column prop="upload_file_name"
+                               align="center"
                                label="文件名"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="进度"
+                               align="center"
                                width="100"
                                show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -115,6 +120,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="状态"
+                               align="center"
                                width="100"
                                show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -122,6 +128,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="create_time"
+                               align="center"
                                width="180"
                                label="创建时间"
                                show-overflow-tooltip>

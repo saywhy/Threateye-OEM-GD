@@ -1,239 +1,250 @@
 <template>
-    <div class="vm-screen-main6">
-      <div class="attention">
-        <div class="item">
-          <div class="name">数据泄露</div>
-          <div id="attent1"></div>
-          <div class="num">123</div>
-        </div>
-        <div class="item">
-          <div class="name">勒索软件</div>
-          <div id="attent2"></div>
-          <div class="num">2332</div>
-        </div>
-        <div class="item">
-          <div class="name">高危漏洞</div>
-          <div id="attent3"></div>
-          <div class="num">12213</div>
-        </div>
+  <div class="vm-screen-main6">
+    <div class="attention">
+      <div class="item">
+        <div class="name">数据泄露</div>
+        <div id="attent1"></div>
+        <div class="num">123</div>
       </div>
-      <div class="attention-table">
-        <el-table :data="tableData" class="screen-table">
-          <el-table-column prop="type" label="告警类型"></el-table-column>
-          <el-table-column prop="data" label="数据泄露"></el-table-column>
-          <el-table-column prop="ware" label="勒索软件"></el-table-column>
-          <el-table-column prop="rank" label="高危漏洞"></el-table-column>
-        </el-table>
+      <div class="item">
+        <div class="name">勒索软件</div>
+        <div id="attent2"></div>
+        <div class="num">2332</div>
+      </div>
+      <div class="item">
+        <div class="name">高危漏洞</div>
+        <div id="attent3"></div>
+        <div class="num">12213</div>
       </div>
     </div>
+    <div class="attention-table">
+      <el-table :data="tableData"
+                align="center"
+                border
+                class="screen-table">
+        <el-table-column prop="type"
+                         align="center"
+                         label="告警类型"></el-table-column>
+        <el-table-column prop="data"
+                         label="数据泄露"
+                         align="center"></el-table-column>
+        <el-table-column prop="ware"
+                         label="勒索软件"
+                         align="center"></el-table-column>
+        <el-table-column prop="rank"
+                         label="高危漏洞"
+                         align="center"></el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
-    export default {
-      name: "vm-screen-main6",
-      data(){
-          return{
-            data:[],
-            tableData: [{
-              type: '影响资产数',
-              data: '123',
-              ware: '2332',
-              rank: '12312'
-            }]
-          }
-      },
-      mounted() {
-        this.drawGraph();
-      },
-      methods:{
-        drawGraph(){
-          let attent1 = this.$echarts.init(document.getElementById('attent1'))
-          let option1 = {
-            backgroundColor:'rgba(0,122,255,0.1)',
-            legend: {
-              show:false
-            },
-            grid: {
-              top:'0',
-              left: '0',
-              right: '0',
-              bottom: '0',
-              containLabel: false
-            },
-            xAxis: {
-              show: false,
-              type: 'category',
-              boundaryGap: false
-            },
-            yAxis: {
-              show:false
-            },
-            series: [{
-              data: [820, 932, 901, 934, 1290, 1330, 320,820, 932, 901, 934, 290, 1330, 1320],
-              type: 'line',
-              smooth: true,
-              itemStyle:{
-                opacity :0
-              },
-              lineStyle:{
-                color:'#007AFF',
-                width: 1
-              },
-              areaStyle: {
-                color: {
-                  type: "linear",
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [
-                    {
-                      offset: 0,
-                      color: "rgba(0,122,255,0.5)" // 0% 处的颜色
-                    },
-                    {
-                      offset: 1,
-                      color: "rgba(0,122,255,0.2)" // 100% 处的颜色
-                    },
-                  ],
-                  global: false
-                }
-              }
-            }]
-          };
-          attent1.setOption(option1);
-
-          let attent2 = this.$echarts.init(document.getElementById('attent2'))
-          let option2 = {
-            backgroundColor:'rgba(255,0,201,0.1)',
-            legend: {
-              show:false
-            },
-            grid: {
-              top:'0',
-              left: '0',
-              right: '0',
-              bottom: '0',
-              containLabel: false
-            },
-            xAxis: {
-              show: false,
-              type: 'category',
-              boundaryGap: false
-            },
-            yAxis: {
-              show:false
-            },
-            series: [{
-              data: [1020, 932, 901, 534, 1290, 1030, 320, 120, 1932, 901, 134, 290, 1030, 320],
-              type: 'line',
-              smooth: true,
-              itemStyle:{
-                opacity: 0
-              },
-              lineStyle:{
-                color:'#FF00C9',
-                width: 1
-              },
-              areaStyle: {
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: 'rgba(255,0,201,0.5)'
-                  }, {
-                    offset: 1, color: 'rgba(255,0,201,0.2)'
-                  }],
-                  global: false // 缺省为 false
-                }
-              }
-            }]
-          };
-          attent2.setOption(option2);
-
-          let attent3 = this.$echarts.init(document.getElementById('attent3'))
-          let option3 = {
-            backgroundColor:'rgba(243,171,21,0.1)',
-            legend: {
-              show:false
-            },
-            grid: {
-              top:'0',
-              left: '0',
-              right: '0',
-              bottom: '0',
-              containLabel: false
-            },
-            xAxis: {
-              show: false,
-              type: 'category',
-              boundaryGap: false
-            },
-            yAxis: {
-              show:false
-            },
-            series: [{
-              data: [820, 932, 901, 934, 290, 330, 320,1820, 932, 1901, 934, 1290, 330, 1320],
-              type: 'line',
-              smooth: true,
-              itemStyle:{
-                opacity:0
-              },
-              lineStyle:{
-                color:'#F3AB15',
-                width: 1
-              },
-              areaStyle: {
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: 'rgba(243,171,21,0.5)'
-                  }, {
-                    offset: 1, color: 'rgba(243,171,21,0.2)'
-                  }],
-                  global: false // 缺省为 false
-                }
-              }
-            }]
-          };
-          attent3.setOption(option3);
-        }
-      }
+export default {
+  name: "vm-screen-main6",
+  data () {
+    return {
+      data: [],
+      tableData: [{
+        type: '影响资产数',
+        data: '123',
+        ware: '2332',
+        rank: '12312'
+      }]
     }
+  },
+  mounted () {
+    this.drawGraph();
+  },
+  methods: {
+    drawGraph () {
+      let attent1 = this.$echarts.init(document.getElementById('attent1'))
+      let option1 = {
+        backgroundColor: 'rgba(0,122,255,0.1)',
+        legend: {
+          show: false
+        },
+        grid: {
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          containLabel: false
+        },
+        xAxis: {
+          show: false,
+          type: 'category',
+          boundaryGap: false
+        },
+        yAxis: {
+          show: false
+        },
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 320, 820, 932, 901, 934, 290, 1330, 1320],
+          type: 'line',
+          smooth: true,
+          itemStyle: {
+            opacity: 0
+          },
+          lineStyle: {
+            color: '#007AFF',
+            width: 1
+          },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                {
+                  offset: 0,
+                  color: "rgba(0,122,255,0.5)" // 0% 处的颜色
+                },
+                {
+                  offset: 1,
+                  color: "rgba(0,122,255,0.2)" // 100% 处的颜色
+                },
+              ],
+              global: false
+            }
+          }
+        }]
+      };
+      attent1.setOption(option1);
+
+      let attent2 = this.$echarts.init(document.getElementById('attent2'))
+      let option2 = {
+        backgroundColor: 'rgba(255,0,201,0.1)',
+        legend: {
+          show: false
+        },
+        grid: {
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          containLabel: false
+        },
+        xAxis: {
+          show: false,
+          type: 'category',
+          boundaryGap: false
+        },
+        yAxis: {
+          show: false
+        },
+        series: [{
+          data: [1020, 932, 901, 534, 1290, 1030, 320, 120, 1932, 901, 134, 290, 1030, 320],
+          type: 'line',
+          smooth: true,
+          itemStyle: {
+            opacity: 0
+          },
+          lineStyle: {
+            color: '#FF00C9',
+            width: 1
+          },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: 'rgba(255,0,201,0.5)'
+              }, {
+                offset: 1, color: 'rgba(255,0,201,0.2)'
+              }],
+              global: false // 缺省为 false
+            }
+          }
+        }]
+      };
+      attent2.setOption(option2);
+
+      let attent3 = this.$echarts.init(document.getElementById('attent3'))
+      let option3 = {
+        backgroundColor: 'rgba(243,171,21,0.1)',
+        legend: {
+          show: false
+        },
+        grid: {
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          containLabel: false
+        },
+        xAxis: {
+          show: false,
+          type: 'category',
+          boundaryGap: false
+        },
+        yAxis: {
+          show: false
+        },
+        series: [{
+          data: [820, 932, 901, 934, 290, 330, 320, 1820, 932, 1901, 934, 1290, 330, 1320],
+          type: 'line',
+          smooth: true,
+          itemStyle: {
+            opacity: 0
+          },
+          lineStyle: {
+            color: '#F3AB15',
+            width: 1
+          },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: 'rgba(243,171,21,0.5)'
+              }, {
+                offset: 1, color: 'rgba(243,171,21,0.2)'
+              }],
+              global: false // 缺省为 false
+            }
+          }
+        }]
+      };
+      attent3.setOption(option3);
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">
-.vm-screen-main6{
+.vm-screen-main6 {
   padding: 0 16px 16px;
-  .attention{
-    .item{
+  .attention {
+    .item {
       display: flex;
       width: 100%;
       height: 50px;
       line-height: 50px;
       margin-bottom: 9px;
-      .name{
+      .name {
         flex: 1;
         color: #fff;
         text-align: left;
       }
-      #attent1{
+      #attent1 {
         width: 310px;
       }
-      #attent2{
+      #attent2 {
         width: 310px;
       }
-      #attent3{
+      #attent3 {
         width: 310px;
       }
-      .num{
+      .num {
         width: 80px;
         color: #fff;
         text-align: left;
@@ -241,33 +252,31 @@
       }
     }
   }
-  /deep/
-  .screen-table{
-    &:before{
+  /deep/ .screen-table {
+    &:before {
       height: 0;
     }
-    .el-table__header{
-
-      th{
+    .el-table__header {
+      th {
         /*background: rgba(0,215,233,0.24);*/
         border-width: 0;
         padding: 0;
         height: 28px;
         line-height: 28px;
         background: #034061;
-        .cell{
+        .cell {
           color: #fff;
         }
       }
     }
-    .el-table__body{
-      td{
+    .el-table__body {
+      td {
         border-width: 0;
         padding: 0;
         height: 32px;
         line-height: 32px;
-        background: #00134A;
-        .cell{
+        background: #00134a;
+        .cell {
           color: #fff;
         }
       }

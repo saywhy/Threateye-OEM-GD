@@ -125,6 +125,8 @@
       <el-row class="common-table-pattern">
         <el-col :span="24">
           <el-table ref="multipleTable"
+                    align="center"
+                    border
                     class="common-table"
                     v-loading="table.loading"
                     :data="table.tableData"
@@ -133,8 +135,10 @@
                     @mousedown.native="mousedown"
                     @mouseup.native="mouseup"
                     @selection-change="handleSelChange"
-                    @row-click="detail_click">
+                    @header-click="header_click"
+                    @row-click="">
             <el-table-column label=" "
+                             align="center"
                              prop="type"
                              width="20">
               <template slot-scope="scope">
@@ -143,31 +147,39 @@
               </template>
             </el-table-column>
             <el-table-column type="selection"
+                             align="center"
                              width="50"></el-table-column>
             <el-table-column label="告警时间"
+                             align="center"
                              width="180"
                              show-overflow-tooltip>
               <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
             </el-table-column>
             <el-table-column prop="category"
+                             align="center"
                              label="告警类型"
                              width="100"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="indicator"
+                             align="center"
                              label="威胁指标"
                              min-width="120"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="src_ip"
+                             align="center"
                              label="源地址"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="dest_ip"
+                             align="center"
                              label="目的地址"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="application"
+                             align="center"
                              label="应用"
                              width="60"
                              show-overflow-tooltip></el-table-column>
             <el-table-column label="威胁等级"
+                             align="center"
                              width="100">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
@@ -176,6 +188,7 @@
               </template>
             </el-table-column>
             <el-table-column label="失陷确定性"
+                             align="center"
                              width="100">
               <template slot-scope="scope">
                 <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -183,6 +196,7 @@
               </template>
             </el-table-column>
             <el-table-column label="状态"
+                             align="center"
                              width="80">
               <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
             </el-table-column>
@@ -334,12 +348,17 @@
           </div>
           <div class="content_table">
             <el-table :data="table_operator.tableData"
+                      align="center"
+                      border
                       style="width: 100%">
               <el-table-column prop="username"
+                               align="center"
                                label="经办人"></el-table-column>
               <el-table-column prop="department"
+                               align="center"
                                label="部门"></el-table-column>
               <el-table-column prop="email_addr"
+                               align="center"
                                label="邮箱"></el-table-column>
             </el-table>
           </div>
@@ -368,25 +387,28 @@
             <div>
               <div v-show="handle.active == 0">
                 <el-table class="common-table"
+                          align="center"
+                          border
                           :data="table_alerts.tableData_new"
                           tooltip-effect="dark"
                           @selection-change="handle_sel_table_alerts">
-                  <el-table-column label=" "
-                                   prop="type"
-                                   width="50">
-                  </el-table-column>
                   <el-table-column type="selection"
+                                   align="center"
                                    width="50"></el-table-column>
                   <el-table-column prop="category"
+                                   align="center"
                                    label="告警类型"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column prop="indicator"
+                                   align="center"
                                    label="威胁指标"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column prop="application"
+                                   align="center"
                                    label="应用"
                                    show-overflow-tooltip></el-table-column>
                   <el-table-column label="威胁等级"
+                                   align="center"
                                    width="100">
                     <template slot-scope="scope">
                       <span class="btn_alert_background"
@@ -395,6 +417,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性"
+                                   align="center"
                                    width="100">
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -402,6 +425,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="状态"
+                                   align="center"
                                    width="80">
                     <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
                   </el-table-column>
@@ -449,31 +473,37 @@
         <el-row class="common-table-pattern">
           <el-col :span="24">
             <el-table class="common-table"
+                      align="center"
+                      border
                       highlight-current-row
                       v-loading="table_add_works.loading"
                       :data="table_add_works.tableData"
                       @selection-change="handle_sel_table_add_works">
-              <el-table-column label="选择"
-                               width="50"></el-table-column>
               <el-table-column type="selection"
+                               align="center"
                                width="50"></el-table-column>
               <el-table-column prop="name"
+                               align="center"
                                label="工单名称"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="creator"
+                               align="center"
                                label="创建人"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="优先级"
+                               align="center"
                                width="120">
                 <template slot-scope="scope">{{ scope.row.priority | priority }}</template>
               </el-table-column>
               <el-table-column prop="new_perator"
+                               align="center"
                                label="经办人"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column label="状态"
+                               align="center"
                                width="80"
                                show-overflow-tooltip>
                 <template slot-scope="scope">{{ scope.row.status | work_status }}</template>
@@ -807,6 +837,9 @@ export default {
       this.detail_click_val = val
       this.detail_click_column = column
     },
+    header_click (val) {
+      this.detail_click_val = {}
+    },
     mousedown (event) {
       this.oldPositon = {
         x: '',
@@ -824,9 +857,13 @@ export default {
       this.newPositon.y = event.clientY;
       if (this.oldPositon.x == this.newPositon.x) {
         setTimeout(() => {
-          console.log(this.detail_click_column);
-          if (Object.keys(this.detail_click_column).length != 0 && this.detail_click_column.type != 'selection') {
-            this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+          if (this.detail_click_val.id) {
+            console.log('点击详情');
+            if (Object.keys(this.detail_click_column).length != 0 && this.detail_click_column.type != 'selection') {
+              this.$router.push({ path: "/detail/network", query: { detail: this.detail_click_val.id, type: 'alert' } });
+            }
+          } else {
+            console.log('点击头部');
           }
         }, 10);
       } else {

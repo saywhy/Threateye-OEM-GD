@@ -33,12 +33,14 @@
         <el-table ref="multipleTable"
                   class="reset_table"
                   align="center"
+                  border
                   :data="license_list.list"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange"
                   @row-click="alert_detail">
           <el-table-column prop="index"
+                           align="center"
                            label="序号"
                            width="50"
                            show-overflow-tooltip>
@@ -47,23 +49,28 @@
             </template>
           </el-table-column>
           <el-table-column prop="SN"
+                           align="center"
                            width="300"
                            label="序列号"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="orgName"
+                           align="center"
                            label="受保护机构"
                            show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label='授权时间'>
+          <el-table-column label='授权时间'
+                           align="center">
             <template slot-scope="scope"
                       show-overflow-tooltip>{{ scope.row.startTime |formatDate }}</template>
           </el-table-column>
-          <el-table-column label='授权到期时间'>
+          <el-table-column label='授权到期时间'
+                           align="center">
             <template slot-scope="scope"
                       show-overflow-tooltip>{{ scope.row.endTime |formatDate }}</template>
           </el-table-column>
           <el-table-column label='威胁情报'
+                           align="center"
                            show-overflow-tooltip>
             <template slot-scope="scope"
                       show-overflow-tooltip>
@@ -71,6 +78,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="status"
+                           align="center"
                            label='许可证状态'
                            show-overflow-tooltip>
           </el-table-column>

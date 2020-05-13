@@ -42,6 +42,7 @@
             <el-table ref="multipleTable"
                       class="reset_table"
                       align="center"
+                      border
                       :data="url_list_data.data"
                       tooltip-effect="dark"
                       style="width: 100%">
@@ -52,27 +53,33 @@
                 </template>
               </el-table-column>
               <el-table-column prop="timestamp"
+                               align="center"
                                width="320"
                                label="时间"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="src_ip"
+                               align="center"
                                label="源地址"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="src_port"
+                               align="center"
                                label="源端口"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="dest_ip"
+                               align="center"
                                label="目的地址"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="dest_port"
+                               align="center"
                                label="目的端口"
                                show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="application"
+                               align="center"
                                label="应用"
                                show-overflow-tooltip>
               </el-table-column>

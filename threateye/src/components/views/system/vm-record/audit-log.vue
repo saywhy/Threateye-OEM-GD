@@ -23,28 +23,34 @@
       <el-table ref="multipleTable"
                 class="reset_table"
                 align="center"
+                border
                 :data="audit_log.data"
                 tooltip-effect="dark"
                 style="width: 100%">
         <el-table-column label="序号"
+                         align="center"
                          width="80">
           <template slot-scope="scope">
             {{(audit_data.page-1)*(audit_data.rows) + scope.row.index_cn}}
           </template>
         </el-table-column>
         <el-table-column prop="created_at"
+                         align="center"
                          label="时间"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="username"
+                         align="center"
                          label="用户标识"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="info"
+                         align="center"
                          label='描述'
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="userip"
+                         align="center"
                          label='主机地址'
                          show-overflow-tooltip>
         </el-table-column>

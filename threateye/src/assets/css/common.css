@@ -216,3 +216,43 @@ textarea {
 .cursor_text {
   cursor: text !important;
 }
+
+.el-table td {
+  text-align: center;
+  border: none;
+}
+
+.el-table__header {
+  text-align: center;
+}
+
+.el-table thead {
+  text-align: center;
+  border: 1px solid #EBEEF5 !important;
+}
+
+.el-table thead .el-table tr {
+  border: 1px solid #EBEEF5;
+}
+
+
+.el-table--border th {
+  border-right: 1px solid #EBEEF5;
+}
+
+.el-table--border th:nth-child(1) {
+  border-left: 1px solid #EBEEF5;
+}
+
+.el-table::before {
+  height: 0;
+}
+
+
+.el-table--border {
+  border-left: none;
+}
+
+.el-table--border::after {
+  width: 0;
+}

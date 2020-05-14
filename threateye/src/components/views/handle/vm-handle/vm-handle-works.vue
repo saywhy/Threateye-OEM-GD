@@ -98,11 +98,26 @@
                                   class="select_item">已取消</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button type="primary"
+
+            <el-dropdown @command="add_new_task"
+                         placement='bottom-start'
+                         trigger="click">
+              <el-button type="primary"
+                         class="change_btn">
+                <span>新增工单</span>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown"
+                                class="dropdown_ul_box">
+                <el-dropdown-item command="告警工单">告警工单</el-dropdown-item>
+                <el-dropdown-item command="资产工单">资产工单</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <!-- <el-button type="primary"
                        class="bw_btn bw_btn_add"
                        @click="open_task_new();">
               <span>新增</span>
-            </el-button>
+            </el-button> -->
             <el-button type="primary"
                        class="bw_btn bw_btn_edit"
                        @click="edit_task_pop();">
@@ -373,7 +388,7 @@
               </li>
             </ul>
             <div>
-              <div v-show="handle.active == 0">
+              <div v-show="handle.table_title =='资产'">
                 <div class="tb_tolling">
                   <el-table align="center"
                             border
@@ -422,7 +437,7 @@
                                layout="total, prev, pager, next">
                 </el-pagination>
               </div>
-              <div v-show="handle.active == 1">
+              <div v-show="handle.table_title =='告警'">
                 <div class="tb_tolling">
                   <el-table align="center"
                             border
@@ -1224,6 +1239,22 @@ export default {
       this.open_state();
     },
 
+    // 新增工单
+    add_new_task (command) {
+      console.log(command);
+      switch (command) {
+        case '告警工单':
+          this.open_task_new('alert')
+          this.handle.table_title = ["告警"]
+          break;
+        case '资产工单':
+          this.open_task_new('asset')
+          this.handle.table_title = ["资产"]
+          break;
+        default:
+          break;
+      }
+    },
     /***************状态变更*****************/
     //打开状态变更弹窗
     open_state () {
@@ -1376,7 +1407,11 @@ export default {
     /************************************************新增*****************************************************/
 
     //新增
-    open_task_new () {
+    open_task_new (type) {
+      //  this.open_task_new('alert')
+      // break;
+      // case '资产工单':
+      // this.open_task_new('assets')
       //新增
       this.task_params = {
         name: "",
@@ -1385,7 +1420,7 @@ export default {
         new_operator: [],
         notice: ['email'],
         textarea: "",
-        type: 'asset'
+        type: type
       };
       this.table_operator.tableData = [];
       this.open_task();
@@ -1442,6 +1477,9 @@ export default {
         this.handle.active = 0;
 
         console.log('下一步')
+        // if(){
+
+        // }
         this.get_list_assets_info();
         this.get_list_alerts_info();
       }

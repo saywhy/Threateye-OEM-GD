@@ -111,6 +111,20 @@
         <el-switch v-model="mail.send">
         </el-switch>
       </p>
+      <div class="mid_item">
+        <p>
+          威胁等级
+        </p>
+        <p style="margin-top: 10px;">
+          <el-checkbox-group v-model="checkList"
+                             @change="handleCheckedCitiesChange">
+            <el-checkbox label="高危"></el-checkbox>
+            <el-checkbox label="中危"></el-checkbox>
+            <el-checkbox label="低危"></el-checkbox>
+          </el-checkbox-group>
+        </p>
+      </div>
+
     </div>
     <div class="right"></div>
   </div>
@@ -121,6 +135,7 @@ export default {
   name: "mail-notic",
   data () {
     return {
+      checkList: ['高危'],
       mail: {
         alertEmail_list: [{
           name: "",
@@ -146,6 +161,7 @@ export default {
   },
   mounted () {
     this.get_data();
+
   },
 
   methods: {
@@ -187,6 +203,17 @@ export default {
         .catch(error => {
           console.log(error);
         })
+    },
+    handleCheckedCitiesChange (value) {
+      console.log(value);
+      if (value.length == 0) {
+        this.$message(
+          {
+            message: '请至少选择一种威胁等级设置告警邮件通知！',
+            type: 'warning',
+          }
+        );
+      }
     },
     // 发送测试
     send_test () {

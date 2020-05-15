@@ -1,282 +1,340 @@
 <template>
-  <div class="vm-screen-main6">
-    <div class="attention">
-      <div class="item">
-        <div class="name">数据泄露</div>
-        <div id="attent1"></div>
-        <div class="num">123</div>
+    <div class="vm-screen-main6">
+      <div class="attention" v-if="dataInfo.length">
+        <div class="item">
+          <div class="name">{{dataInfo[0].name}}</div>
+          <div id="attent1"></div>
+          <div class="num">{{dataInfo[0].value.alert_count}}</div>
+        </div>
+        <div class="item">
+          <div class="name">{{dataInfo[1].name}}</div>
+          <div id="attent2"></div>
+          <div class="num">{{dataInfo[1].value.alert_count}}</div>
+        </div>
+        <div class="item">
+          <div class="name">{{dataInfo[2].name}}</div>
+          <div id="attent3"></div>
+          <div class="num">{{dataInfo[2].value.alert_count}}</div>
+        </div>
       </div>
-      <div class="item">
-        <div class="name">勒索软件</div>
-        <div id="attent2"></div>
-        <div class="num">2332</div>
-      </div>
-      <div class="item">
-        <div class="name">高危漏洞</div>
-        <div id="attent3"></div>
-        <div class="num">12213</div>
+      <div class="attention-table" v-if="dataInfo.length">
+        <el-table :data="tableData" class="screen-table">
+          <el-table-column prop="type" label="告警类型"></el-table-column>
+          <el-table-column prop="data0" :label="dataInfo[0].name" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="data1" :label="dataInfo[1].name" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="data2" :label="dataInfo[2].name" show-overflow-tooltip></el-table-column>
+        </el-table>
       </div>
     </div>
-    <div class="attention-table">
-      <el-table :data="tableData"
-                align="center"
-                border
-                class="screen-table">
-        <el-table-column prop="type"
-                         align="center"
-                         label="告警类型"></el-table-column>
-        <el-table-column prop="data"
-                         label="数据泄露"
-                         align="center"></el-table-column>
-        <el-table-column prop="ware"
-                         label="勒索软件"
-                         align="center"></el-table-column>
-        <el-table-column prop="rank"
-                         label="高危漏洞"
-                         align="center"></el-table-column>
-      </el-table>
-    </div>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  name: "vm-screen-main6",
-  data () {
-    return {
-      data: [],
-      tableData: [{
-        type: '影响资产数',
-        data: '123',
-        ware: '2332',
-        rank: '12312'
-      }]
-    }
-  },
-  mounted () {
-    this.drawGraph();
-  },
-  methods: {
-    drawGraph () {
-      let attent1 = this.$echarts.init(document.getElementById('attent1'))
-      let option1 = {
-        backgroundColor: 'rgba(0,122,255,0.1)',
-        legend: {
-          show: false
-        },
-        grid: {
-          top: '0',
-          left: '0',
-          right: '0',
-          bottom: '0',
-          containLabel: false
-        },
-        xAxis: {
-          show: false,
-          type: 'category',
-          boundaryGap: false
-        },
-        yAxis: {
-          show: false
-        },
-        series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 320, 820, 932, 901, 934, 290, 1330, 1320],
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            opacity: 0
-          },
-          lineStyle: {
-            color: '#007AFF',
-            width: 1
-          },
-          areaStyle: {
-            color: {
-              type: "linear",
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [
-                {
-                  offset: 0,
-                  color: "rgba(0,122,255,0.5)" // 0% 处的颜色
-                },
-                {
-                  offset: 1,
-                  color: "rgba(0,122,255,0.2)" // 100% 处的颜色
-                },
-              ],
-              global: false
-            }
+    export default {
+      name: "vm-screen-main6",
+      data(){
+          return{
+            dataInfo:[],
+            tableData: [{
+              type: '影响资产数',
+              data0: '',
+              data1: '',
+              data2: ''
+            }]
           }
-        }]
-      };
-      attent1.setOption(option1);
+      },
+      created() {
+        this.getData();
+      },
+      methods:{
+        //获取数据
+        getData(){
+          this.$axios
+            .get('/yiiapi/demonstration/attention-alarm')
 
-      let attent2 = this.$echarts.init(document.getElementById('attent2'))
-      let option2 = {
-        backgroundColor: 'rgba(255,0,201,0.1)',
-        legend: {
-          show: false
-        },
-        grid: {
-          top: '0',
-          left: '0',
-          right: '0',
-          bottom: '0',
-          containLabel: false
-        },
-        xAxis: {
-          show: false,
-          type: 'category',
-          boundaryGap: false
-        },
-        yAxis: {
-          show: false
-        },
-        series: [{
-          data: [1020, 932, 901, 534, 1290, 1030, 320, 120, 1932, 901, 134, 290, 1030, 320],
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            opacity: 0
-          },
-          lineStyle: {
-            color: '#FF00C9',
-            width: 1
-          },
-          areaStyle: {
-            color: {
-              type: 'linear',
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [{
-                offset: 0, color: 'rgba(255,0,201,0.5)'
-              }, {
-                offset: 1, color: 'rgba(255,0,201,0.2)'
-              }],
-              global: false // 缺省为 false
-            }
-          }
-        }]
-      };
-      attent2.setOption(option2);
+            .then((resp) => {
 
-      let attent3 = this.$echarts.init(document.getElementById('attent3'))
-      let option3 = {
-        backgroundColor: 'rgba(243,171,21,0.1)',
-        legend: {
-          show: false
+              let {status, data} = resp.data;
+
+              if(status == 0){
+                Object.keys(data).forEach((key) => {
+                  this.dataInfo.push({name:key,value:data[key]});
+                });
+                this.$nextTick(function() {
+                  this.drawGraph();
+                });
+              }
+            })
+            .catch((error) => {
+
+              console.log(error);
+
+            });
         },
-        grid: {
-          top: '0',
-          left: '0',
-          right: '0',
-          bottom: '0',
-          containLabel: false
-        },
-        xAxis: {
-          show: false,
-          type: 'category',
-          boundaryGap: false
-        },
-        yAxis: {
-          show: false
-        },
-        series: [{
-          data: [820, 932, 901, 934, 290, 330, 320, 1820, 932, 1901, 934, 1290, 330, 1320],
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            opacity: 0
-          },
-          lineStyle: {
-            color: '#F3AB15',
-            width: 1
-          },
-          areaStyle: {
-            color: {
-              type: 'linear',
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [{
-                offset: 0, color: 'rgba(243,171,21,0.5)'
-              }, {
-                offset: 1, color: 'rgba(243,171,21,0.2)'
-              }],
-              global: false // 缺省为 false
-            }
-          }
-        }]
-      };
-      attent3.setOption(option3);
+        drawGraph(){
+          let dataInfo = this.dataInfo;
+
+          //console.table(dataInfo)
+
+          let alert0 = dataInfo[0].value.alert_distribution;
+          let alert1 = dataInfo[1].value.alert_distribution;
+          let alert2 = dataInfo[2].value.alert_distribution;
+
+          this.tableData[0].data0 = dataInfo[0].value.effect_assets;
+          this.tableData[0].data1 = dataInfo[1].value.effect_assets;
+          this.tableData[0].data2 = dataInfo[2].value.effect_assets;
+
+          let alert0Data = []; let alert1Data = []; let alert2Data = [];
+
+          Object.values(alert0).forEach((key) => {
+            alert0Data.push(key);
+          });
+          Object.values(alert1).forEach((key) => {
+            alert1Data.push(key);
+          });
+          Object.values(alert2).forEach((key) => {
+            alert2Data.push(key);
+          });
+
+          let attent1 = this.$echarts.init(document.getElementById('attent1'));
+          attent1.showLoading({ text: '正在加载数据...' });
+          attent1.clear();
+          let option1 = {
+            backgroundColor:'rgba(0,122,255,0.1)',
+            legend: {
+              show:false
+            },
+            grid: {
+              top:'0',
+              left: '0',
+              right: '0',
+              bottom: '0',
+              containLabel: false
+            },
+            xAxis: {
+              show: false,
+              type: 'category',
+              boundaryGap: false
+            },
+            yAxis: {
+              show:false
+            },
+            series: [{
+              data: alert0Data,
+              type: 'line',
+              smooth: true,
+              itemStyle:{
+                opacity :0
+              },
+              lineStyle:{
+                color:'#007AFF',
+                width: 1
+              },
+              areaStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(0,122,255,0.5)" // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(0,122,255,0.2)" // 100% 处的颜色
+                    },
+                  ],
+                  global: false
+                }
+              }
+            }]
+          };
+          attent1.setOption(option1);
+
+          attent1.hideLoading();
+          window.addEventListener("resize", () => {
+            attent1.resize();
+          });
+
+          let attent2 = this.$echarts.init(document.getElementById('attent2'));
+          attent2.showLoading({ text: '正在加载数据...' });
+          attent2.clear();
+          let option2 = {
+            backgroundColor:'rgba(255,0,201,0.1)',
+            legend: {
+              show:false
+            },
+            grid: {
+              top:'0',
+              left: '0',
+              right: '0',
+              bottom: '0',
+              containLabel: false
+            },
+            xAxis: {
+              show: false,
+              type: 'category',
+              boundaryGap: false
+            },
+            yAxis: {
+              show:false
+            },
+            series: [{
+              data: alert1Data,
+              type: 'line',
+              smooth: true,
+              itemStyle:{
+                opacity: 0
+              },
+              lineStyle:{
+                color:'#FF00C9',
+                width: 1
+              },
+              areaStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: 'rgba(255,0,201,0.5)'
+                  }, {
+                    offset: 1, color: 'rgba(255,0,201,0.2)'
+                  }],
+                  global: false // 缺省为 false
+                }
+              }
+            }]
+          };
+          attent2.setOption(option2);
+          attent2.hideLoading();
+          window.addEventListener("resize", () => {
+            attent2.resize();
+          });
+
+          let attent3 = this.$echarts.init(document.getElementById('attent3'));
+          attent3.showLoading({ text: '正在加载数据...' });
+          attent3.clear();
+          let option3 = {
+            backgroundColor:'rgba(243,171,21,0.1)',
+            legend: {
+              show:false
+            },
+            grid: {
+              top:'0',
+              left: '0',
+              right: '0',
+              bottom: '0',
+              containLabel: false
+            },
+            xAxis: {
+              show: false,
+              type: 'category',
+              boundaryGap: false
+            },
+            yAxis: {
+              show:false
+            },
+            series: [{
+              data: alert2Data,
+              type: 'line',
+              smooth: true,
+              itemStyle:{
+                opacity:0
+              },
+              lineStyle:{
+                color:'#F3AB15',
+                width: 1
+              },
+              areaStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: 'rgba(243,171,21,0.5)'
+                  }, {
+                    offset: 1, color: 'rgba(243,171,21,0.2)'
+                  }],
+                  global: false // 缺省为 false
+                }
+              }
+            }]
+          };
+          attent3.setOption(option3);
+          attent3.hideLoading();
+          window.addEventListener("resize", () => {
+            attent3.resize();
+          });
+        }
+      }
     }
-  }
-}
 </script>
 
 <style scoped lang="less">
-.vm-screen-main6 {
+.vm-screen-main6{
   padding: 0 16px 16px;
-  .attention {
-    .item {
+  .attention{
+    .item{
       display: flex;
       width: 100%;
       height: 50px;
       line-height: 50px;
       margin-bottom: 9px;
-      .name {
+      .name{
         flex: 1;
         color: #fff;
         text-align: left;
       }
-      #attent1 {
-        width: 310px;
+      #attent1{
+        width: 320px;
       }
-      #attent2 {
-        width: 310px;
+      #attent2{
+        width: 320px;
       }
-      #attent3 {
-        width: 310px;
+      #attent3{
+        width: 320px;
       }
-      .num {
-        width: 80px;
+      .num{
+        width: 70px;
         color: #fff;
         text-align: left;
         padding: 10px;
       }
     }
   }
-  /deep/ .screen-table {
-    &:before {
+  /deep/
+  .screen-table{
+    background-color: transparent!important;
+    &:before{
       height: 0;
     }
-    .el-table__header {
-      th {
+    .el-table__header{
+      th{
         /*background: rgba(0,215,233,0.24);*/
         border-width: 0;
         padding: 0;
         height: 28px;
         line-height: 28px;
         background: #034061;
-        .cell {
+        .cell{
           color: #fff;
         }
       }
     }
-    .el-table__body {
-      td {
+    .el-table__body{
+      td{
         border-width: 0;
         padding: 0;
         height: 32px;
         line-height: 32px;
-        background: #00134a;
-        .cell {
+        background: #00134A;
+        .cell{
           color: #fff;
         }
       }

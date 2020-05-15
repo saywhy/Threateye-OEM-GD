@@ -508,12 +508,19 @@
                              align="center"
                              show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="威胁等级">
+            <el-table-column label="威胁等级"
+                             align="center">
               <template slot-scope="scope">
                 <span class="btn_alert_background"
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
+            </el-table-column>
+            <el-table-column label="状态"
+                             align="center"
+                             width="80"
+                             show-overflow-tooltip>
+              <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"
@@ -574,6 +581,12 @@
                       :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
                   {{ scope.row.degree | degree_sino }}</span>
               </template>
+            </el-table-column>
+            <el-table-column label="状态"
+                             align="center"
+                             width="80"
+                             show-overflow-tooltip>
+              <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
             </el-table-column>
           </el-table>
           <el-pagination class="pagination_box"

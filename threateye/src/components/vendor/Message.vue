@@ -54,6 +54,7 @@ import backTitle from "@/components/common/back-title";
 export default {
   name: 'message-container',
   data () {
+
     return {
       title_name: "通知消息",
       tableData: [{
@@ -73,7 +74,24 @@ export default {
     }
   },
   components: { backTitle },
+  created () {
+    this.get_news()
+  },
   methods: {
+    // 获取新消息
+    get_news () {
+      // /news/list
+      this.$axios.get('/yiiapi/news/list')
+        .then((resp) => {
+          let { status, data } = resp.data;
+          let datas = data;
+          console.log(resp);
+          console.log(datas);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {

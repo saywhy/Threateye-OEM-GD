@@ -32,9 +32,10 @@
               style="width:38.3%;">
         <div class="header-basic"
              align="right">
-          <el-badge is-dot
-                    class="item"
-                    v-show="false">
+          <el-badge class="item"
+                    :value="131"
+                    :max="99"
+                    v-show="true">
             <img :src="messageSrc"
                  class="va-image"
                  @click.once="messageClick();">
@@ -515,7 +516,7 @@ export default {
         }
       }
       .avatar-container {
-        min-width: 140px;
+        min-width: 120px;
         margin: 14px 0 14px 14px;
         .avatar-wrapper {
           line-height: 32px;

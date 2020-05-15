@@ -7,7 +7,6 @@
       <el-progress :color="item.color" :show-text="true"
                    :text-inside="false" :percentage="item.count">
       </el-progress>
-      <!--<el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>-->
     </div>
   </div>
 </template>
@@ -27,22 +26,6 @@
           {name:'内存',count:41,color:'#fff'},
           {name:'硬盘',count:35,color:'#fff'}]
       }
-    },
-    computed:{
-     /* progress_data_list(){
-        let progress_data = this.progress_data;
-        let that = this;
-         progress_data.filter(function (v,k) {
-          if(k == 0){
-            that.$set(v,'color','#0288D1');
-          }else if(k == 1){
-            that.$set(v,'color','#CDDC39');
-          }else if(k == 2){
-            that.$set(v,'color','#4CAF50');
-          }
-        });
-        return progress_data;
-      }*/
     }
   }
 </script>
@@ -50,7 +33,7 @@
 <style scoped lang="less">
   .vm-screen-progress{
     height: auto;
-    padding: 0 5px;
+   /* padding: 0 5px;*/
     .item{
       display: flex;
       line-height: 28px;

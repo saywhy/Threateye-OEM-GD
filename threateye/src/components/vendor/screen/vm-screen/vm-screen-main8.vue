@@ -13,11 +13,16 @@
           }
       },
       mounted() {
-        this.drawGraph();
+        setTimeout(() => {
+          this.drawGraph();
+        },200)
       },
       methods:{
         drawGraph(){
           let myChart = this.$echarts.init(document.getElementById('trend'));
+          myChart.showLoading({ text: '正在加载数据...' });
+          myChart.clear();
+
           let option = {
             tooltip: {
               trigger: 'axis',
@@ -102,6 +107,12 @@
           };
 
           myChart.setOption(option);
+
+          myChart.hideLoading();
+
+          window.addEventListener("resize", () => {
+            myChart.resize();
+          });
         }
       }
     }

@@ -9,54 +9,20 @@
       name: "vm-screen-main4",
       data(){
           return{
-            myEcharts:null,
-            branch:{
-              branchName:[],
-              branchCount:[],
-              highLists:[],
-              mediumLists:[],
-              lowLists:[]
-            }
+            data:[
+              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
+              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
+              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
+              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'}]
           }
       },
-      created(){
-        this.getData();
+      mounted() {
+        this.drawGraph();
       },
-      methods: {
-
-        //获取数据
-        getData(){
-          this.$axios
-            .get('/yiiapi/demonstration/branch-safe')
-            .then((resp) => {
-              let {status, data} = resp.data;
-
-              if(status == 0){
-
-                data = data.reverse();
-
-                this.branch.branchName = data.map(item => {return item.branch_name});
-                this.branch.branchCount = data.map(item => {return item.count});
-                this.branch.highLists = data.map(item => {return item.high});
-                this.branch.mediumLists = data.map(item => {return item.medium});
-                this.branch.lowLists = data.map(item => {return item.medium});
-
-                this.$nextTick(() => {
-                  this.drawGraph();
-                })
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        },
-
+      methods:{
         drawGraph(){
 
-          this.myEcharts = this.$echarts.init(document.getElementById('branch'))
-          this.myEcharts.showLoading({ text: '正在加载数据...' });
-          this.myEcharts.clear();
-
+          let myChart = this.$echarts.init(document.getElementById('branch'))
           let option = {
             tooltip: {
               trigger: 'axis',
@@ -64,143 +30,78 @@
                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
               }
             },
-            color: ['#D44361','#D0A13F', '#60C160'],
+            color: [' #D44361','#D0A13F', '#60C160'],
             legend: {
               show:false
             },
             grid: {
               top:'0',
-              left: '0%',
+              left: '0',
               right: '0',
-              bottom: '-8%',
+              bottom: '-10%',
               containLabel: true
             },
             xAxis: {
-              type: 'value',
               show: false
             },
-            yAxis: [
-              {
-                type: 'category',
-                axisLine:{
-                  show: false
-                },
-                axisTick:{
-                  show: false
-                },
-                axisLabel:{
-                  color:'#fff',
-                  fontSize:12,
-                  fontFamily:'PingFangSC-Regular',
-                  margin: 10
-                },
-                position:'left',
-                data:this.branch.branchCount,
-                showBackground: true,
-                backgroundStyle: {
-                  color: 'rgba(220, 220, 220, 0.9)'
-                }
+            yAxis: {
+              type: 'category',
+              axisLine:{
+                show: false
               },
-              {
-                type: 'category',
-                axisLine:{
-                  show: false
-                },
-                axisTick:{
-                  show: false
-                },
-                axisLabel:{
-                  color:'#fff',
-                  fontSize:12,
-                  fontFamily:'PingFangSC-Regular',
-                  margin: 40,
-                  formatter: function (value) {
-                    return (value.length > 5 ? (value.slice(0,5)+"...") : value )
-                  },
-                },
-                position:'left',
-                data: this.branch.branchName,
-                triggerEvent: true
-              }
-            ],
+              axisTick:{
+                show: false
+              },
+              axisLabel:{
+                color:'#fff'
+              },
+              data: ['福建 5233', '天津 4178', '上海 5233', '北京 5233', '大连 5233', '黑龙江 5233', '深证 324']
+            },
             series: [
               {
-                name: '高危',
+                name: '直接访问',
                 type: 'bar',
-                stack: '分支安全',
-                barWidth: '50%',
-                data: this.branch.highLists
-              },
-              {
-                name: '中危',
-                type: 'bar',
-                stack: '分支安全',
-                barWidth: '50%',
-                data: this.branch.mediumLists
-              },
-              {
-                name: '低危',
-                type: 'bar',
-                stack: '分支安全',
-                barWidth: '50%',
-                showBackground: true,
-                backgroundStyle: {
-                  color: 'rgba(0,215,233,.12)'
+                stack: '总量',
+                barWidth:'50%',
+                label: {
+                  show: false
                 },
-                data: this.branch.lowLists
+                data: [320, 302, 301, 334, 390, 330, 320]
+              },
+              {
+                name: '邮件营销',
+                type: 'bar',
+                stack: '总量',
+                barWidth:'50%',
+                label: {
+                  show: false
+                },
+                data: [120, 132, 101, 134, 90, 230, 210]
+              },
+              {
+                name: '搜索引擎',
+                type: 'bar',
+                stack: '总量',
+                barWidth:'50%',
+                label: {
+                  show: false
+                },
+                data: [820, 832, 901, 934, 1290, 1330, 1320]
               }
             ]
           };
-          this.myEcharts.setOption(option);
-          this.myEcharts.hideLoading();
 
-          window.addEventListener("resize", () => {
-            this.myEcharts.resize();
-          });
-
-          var id = document.getElementById("extension");
-          if(!id) {
-            var div = "<div id = 'extension' sytle=\"display:block\"></div>";
-            $("html").append(div);
-          }
-
-          this.myEcharts.on('mouseover', function(params) {
-            //注意这里，我是以Y轴显示内容过长为例，如果是x轴的话，需要改为xAxis
-            if(params.componentType == "yAxis") {
-              //设置悬浮文本的位置以及样式
-              $('#extension').css({
-                "position": "absolute",
-                "color": "#fff",
-                "background":"rgba(0,0,0,.5)",
-                "font-family": "PingFangSC-Regular",
-                "font-size": "12px",
-                "padding": "5px",
-                "display": "inline"
-              }).text(params.value);
-              $("html").mousemove(function(event) {
-                var xx = event.pageX - 10;
-                var yy = event.pageY + 15;
-                $('#extension').css('top', yy).css('left', xx);
-              });
-            }
-          });
-
-          this.myEcharts.on('mouseout', function(params) {
-            //注意这里，我是以Y轴显示内容过长为例，如果是x轴的话，需要改为xAxis
-            if(params.componentType == "yAxis") {
-              $('#extension').css('display', 'none');
-            }
-          });
-        },
+          myChart.setOption(option);
+        }
       }
     }
 </script>
+
 <style scoped lang="less">
 .vm-screen-main4{
   padding: 0 16px 16px;
   #branch{
     height: 240px;
-    width: 100%;
   }
 }
 </style>

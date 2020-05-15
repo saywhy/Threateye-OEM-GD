@@ -12,7 +12,7 @@
   "dependencies": {
     "area-data": "^5.0.6",
     "axios": "^0.19.2",
-    "echarts": "^4.7.0",
+    "echarts": "^4.6.0",
     "element-ui": "^2.13.1",
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",

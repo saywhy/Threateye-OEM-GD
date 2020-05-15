@@ -16,12 +16,10 @@
       return {};
     },
     mounted() {
-      setTimeout(() => {
-        this.drawGraph();
-      },200);
+      this.options();
     },
     methods: {
-      drawGraph() {
+      options() {
         let geoCoorddata = geoCoordData;
 
         let citys = [];
@@ -29,6 +27,7 @@
         for (let prop in geoCoorddata) {
           citys.push({ name: prop, coord: geoCoorddata[prop] });
         }
+
 
         var datas = [];
         // 注意：foreach只能遍历数组，三个参数位置不能颠倒
@@ -137,6 +136,7 @@
 
 
 
+        console.log(series)
 
         let options = {
           //设置标题文本
@@ -191,17 +191,7 @@
         };
        // options.series[0].data = datas;
         let myChart = this.$echarts.init(document.getElementById("map"));
-
-        myChart.showLoading({ text: '正在加载数据...' });
-        myChart.clear();
-
         myChart.setOption(options);
-
-        myChart.hideLoading();
-
-        window.addEventListener("resize", () => {
-          myChart.resize();
-        });
 
       }
     }
@@ -210,10 +200,10 @@
 
 <style lang="less" scoped>
   #ddos{
-    width: 770px;
+    width: 100%;
     #map {
-      width: 770px;
-      height: 490px;
+      width: 100%;
+      height: 460px;
     }
   }
 

@@ -1,9 +1,6 @@
 <template>
     <div class="vm-screen-all">
       <header class="title">{{data.name}}<i class="t_img"></i></header>
-
-      <i class="close" v-show="!close" @click="closeAsides(data.aside_id);"></i>
-
       <div v-if="data.aside_id == 0">
         <vm-screen-main0></vm-screen-main0>
       </div>
@@ -50,7 +47,7 @@
   import VmScreenMain9 from './vm-screen-main9';
   export default {
     name: "vm-screen-all",
-    props:['data','close'],
+    props:['data'],
     components: {
       VmScreenMain0,
       VmScreenMain1,
@@ -63,28 +60,14 @@
       VmScreenMain8,
       VmScreenMain9
     },
-    methods:{
-      closeAsides(id){
-        this.$store.commit('SCREEN_ASIDE_ID_FALSE', id);
-      }
+    created() {
+
     }
   }
 </script>
 
 <style scoped lang="less">
 .vm-screen-all{
-  position: relative;
-  .close{
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    width: 20px;
-    height: 20px;
-    background-image: url("../../../../assets/images/screen/head-close.png");
-    background-repeat: no-repeat;
-    background-size: 20px;
-    cursor: pointer;
-  }
   .title {
     font-size: 18px;
     color: #00D7E9;

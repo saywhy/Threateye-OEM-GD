@@ -1,85 +1,29 @@
 <template>
     <div class="vm-screen-main0">
-      <div class="main0-item">
-        <div id="threat-rank"></div>
-        <h3 class="name">威胁等级分布</h3>
-      </div>
-      <div class="main0-item">
-        <div id="threat-scat"></div>
-        <h3 class="name">威胁类型分布</h3>
-      </div>
-
+      <div id="threat-rank"></div>
+      <div id="threat-scat"></div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     export default {
       name: "vm-screen-main0",
-      data() {
-          return {
-            degree:[],
-            category:[]
+      data(){
+          return{
+            data:[]
           }
       },
-      created() {
-        this.getData();
+      mounted() {
+        this.drawRank();
+        this.drawScat();
       },
       methods:{
-        //获取数据
-        getData(){
-          this.$axios
-            .get('/yiiapi/demonstration/threat-distribution')
-
-            .then((resp) => {
-
-              let {status, data} = resp.data;
-
-              if(status == 0){
-                let {category,degree} = data;
-
-                this.degree = degree;
-                this.category = category;
-
-                this.$nextTick(function() {
-                  this.drawRank();
-                  this.drawScat();
-                });
-              }
-          })
-            .catch((error) => {
-
-            console.log(error);
-
-          });
-        },
         drawRank(){
-
-          let degrees = this.degree;
-
-          if(degrees){
-
-            degrees.filter(item => {
-             let name = '';let value = 0;
-             if(item.degree == 'high'){
-               name = '高危预警';
-               value = item.count;
-             }else if(item.degree == 'medium'){
-               name = '中危预警';
-               value = item.count;
-             }else if(item.degree == 'low'){
-               name = '低危预警';
-               value = item.count;
-             }
-
-             Object.assign(item,{value,name});
-            });
-          }else {
-            return false;
-          }
 
           let index = 0;
           // 基于准备好的dom，初始化echarts实例
           let rank = this.$echarts.init(document.getElementById("threat-rank"));
+
           rank.showLoading({ text: '正在加载数据...' });
 
           rank.clear();
@@ -92,13 +36,12 @@
               bottom: "5%",
               containLabel: true
             },
-            color: ["#D44361", "#D0A13F", "#60C160"],
+            color: ["#DC5F5F", "#E0C840", "#47CAD9"],
             series: [
               {
                 name: "预警",
                 type: "pie",
-                center: ['50%', '42%'],
-                radius: ["45%", "70%"],
+                radius: ["45%", "80%"],
                 avoidLabelOverlap: false,
                 hoverAnimation: "false",
                 legendHoverLink: false,
@@ -117,11 +60,10 @@
                     rich: {
                       d: {
                         fontSize: 20,
-                        lineHeight: 40,
-                        color: '#fff'
+                        lineHeight: 40
                       },
                       b: {
-                        color: "#fff"
+                        color: "#999"
                       }
                     }
                   }
@@ -131,7 +73,11 @@
                     show: false
                   }
                 },
-                data: degrees
+                data: [
+                  { value: 30, name: "高危预警", selected: true },
+                  { value: 45, name: "中危预警" },
+                  { value: 25, name: "低危预警" }
+                ]
               }
             ]
           });
@@ -169,24 +115,7 @@
         },
         drawScat(){
 
-          let categories = this.category;
-
-         // console.log(categories);
-
-          if(categories){
-
-            categories.filter(item => {
-              let name = ''; let value = 0;
-              name = item.category;
-              value = item.count;
-              Object.assign(item,{value,name});
-            });
-          }else {
-            return false;
-          }
-
           let index = 0;
-
           // 基于准备好的dom，初始化echarts实例
           let rank = this.$echarts.init(document.getElementById("threat-scat"));
 
@@ -207,8 +136,7 @@
               {
                 name: "威胁类型分布",
                 type: "pie",
-                center: ['50%', '42%'],
-                radius: ["45%", "70%"],
+                radius: ["45%", "80%"],
                 avoidLabelOverlap: false,
                 hoverAnimation: "false",
                 legendHoverLink: false,
@@ -227,11 +155,10 @@
                     rich: {
                       d: {
                         fontSize: 20,
-                        lineHeight: 40,
-                        color: '#fff'
+                        lineHeight: 40
                       },
                       b: {
-                        color: "#fff"
+                        color: "#999"
                       }
                     }
                   }
@@ -241,7 +168,13 @@
                     show: false
                   }
                 },
-                data: categories
+                data: [
+                  { value: 30, name: "僵尸网络", selected: true },
+                  { value: 45, name: "恶意程序" },
+                  { value: 25, name: "垃圾邮件" },
+                  { value: 25, name: "恶意地址" },
+                  { value: 10, name: "其他" }
+                ]
               }
             ]
           });
@@ -285,25 +218,14 @@
 .vm-screen-main0{
   padding: 0 16px 16px;
   display: flex;
-  .main0-item{
+
+  #threat-rank{
     flex: 1;
-    position: relative;
-    .name {
-      font-family: PingFangSC-Regular;
-      font-size: 14px;
-      color: #00D7E9;
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-    }
-    #threat-rank{
-      height: 240px;
-    }
-    #threat-scat{
-      height: 240px;
-    }
+    height: 240px;
   }
-
-
+  #threat-scat{
+    flex: 1;
+    height: 240px;
+  }
 }
 </style>

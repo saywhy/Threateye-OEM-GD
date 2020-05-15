@@ -73,8 +73,6 @@
         drawGraph(){
           let dataInfo = this.dataInfo;
 
-          //console.table(dataInfo)
-
           let alert0 = dataInfo[0].value.alert_distribution;
           let alert1 = dataInfo[1].value.alert_distribution;
           let alert2 = dataInfo[2].value.alert_distribution;

@@ -1,18 +1,30 @@
 <template>
   <div class="vm-screen-main5">
-    <div class="state-top">
+    <div class="state-top" >
         <span class="t-info t-info_0">
-          <i class="t-arrow"></i><span class="t-name">预警：10</span>
+          <i class="t-arrow"></i><span class="t-name">预警：{{sysData.warning_count}}</span>
         </span>
       <span class="t-info t-info_1">
-          <i class="t-arrow"></i><span class="t-name">健康：24</span>
+          <i class="t-arrow"></i><span class="t-name">健康：{{sysData.healthy_count}}</span>
         </span>
       <span class="t-info t-info_2">
-          <i class="t-arrow"></i><span class="t-name">离线：0</span>
+          <i class="t-arrow"></i><span class="t-name">离线：{{sysData.offline_count}}</span>
         </span>
     </div>
-    <div class="state-content">
-      <div class="item item0">
+    <div class="state-content" v-if="loading">
+      <div class="item item0" v-for="(item,$index) in sysData.status_per_dev">
+        <h3 class="item_fs0">探针引擎设备</h3>
+        <div class="item_fs1">
+          <i class="t_fork"></i>
+          <span class="t_name">{{item.dev_ip}}</span>
+        </div>
+        <vm-screen-progress></vm-screen-progress>
+        <div class="item_fs2">
+          <i class="t_aw t-aw_1"></i><span class="t-name">{{item.flow}}B</span>
+          <i class="t_aw t-aw_2"></i><span class="t-name">0MB</span>
+        </div>
+      </div>
+      <!--<div class="item item1">
         <h3 class="item_fs0">引擎/探针</h3>
         <div class="item_fs1">
           <i class="t_fork"></i>
@@ -23,19 +35,7 @@
           <i class="t_aw t-aw_1"></i><span class="t-name">42B</span>
           <i class="t_aw t-aw_2"></i><span class="t-name">12.52MB</span>
         </div>
-      </div>
-      <div class="item item1">
-        <h3 class="item_fs0">引擎/探针</h3>
-        <div class="item_fs1">
-          <i class="t_fork"></i>
-          <span class="t_name">192.168.191.24</span>
-        </div>
-        <vm-screen-progress></vm-screen-progress>
-        <div class="item_fs2">
-          <i class="t_aw t-aw_1"></i><span class="t-name">42B</span>
-          <i class="t_aw t-aw_2"></i><span class="t-name">12.52MB</span>
-        </div>
-      </div>
+      </div>-->
       <div class="item item3">
         <img class="t_disabled" src="../../../../assets/images/screen/system/disabled.png">
       </div>
@@ -50,14 +50,36 @@
     components: {VmScreenProgress},
     data(){
       return{
-        data:[]
+        loading:false,
+        sysData: {}
       }
     },
     mounted() {
-      //this.drawGraph();
+      this.getData();
     },
     methods:{
+      //获取数据
+      getData(){
+        this.loading = false;
+        this.$axios
+          .get('/yiiapi/demonstration/system-status')
 
+          .then((resp) => {
+            this.loading = true;
+            let {status, data} = resp.data;
+
+            if(status == 0){
+              console.log(data)
+
+              //this.sysData = data;
+            }
+          })
+          .catch((error) => {
+
+            console.log(error);
+
+          });
+      },
     }
   }
 </script>

@@ -2,25 +2,13 @@
     <div class="vm-screen-main7">
       <div class="vm-progress-list">
         <div class="item" v-for="(item,index) in progress_data_list">
-          <div class="vam-progress-item" v-if="item.pid == 0">
-            <img class="progress-img" src="../../../../assets/images/screen/outer/pro0.png">
-          </div>
-          <div class="vam-progress-item" v-if="item.pid == 1">
-            <img class="progress-img" src="../../../../assets/images/screen/outer/pro1.png">
-          </div>
-          <div class="vam-progress-item" v-if="item.pid == 2">
-            <img class="progress-img" src="../../../../assets/images/screen/outer/pro2.png">
-          </div>
-          <div class="vam-progress-item" v-if="item.pid == 3">
-            <img class="progress-img" src="../../../../assets/images/screen/outer/pro3.png">
-          </div>
-          <div class="vam-progress-item" v-if="item.pid == 4">
-            <img class="progress-img" src="../../../../assets/images/screen/outer/pro4.png">
+          <div class="vam-progress-item">
+            <span class="flag-icon" :class="calculate(item.alias)"></span>
           </div>
           <span class="vam-progress-title">
-            {{item.name}}&nbsp;&nbsp;{{item.num}}
+            {{item.country}}&nbsp;&nbsp;{{item.count}}
           </span>
-          <el-progress :color="item.color" :show-text="false" :text-inside="true"
+          <el-progress :show-text="false" :text-inside="true"
                        :stroke-width="20" :percentage="item.count">
           </el-progress>
         </div>
@@ -40,11 +28,44 @@
               {pid:4,name:'意大利',num:998,count:20}]
           }
       },
-      mounted() {
-        //this.drawGraph();
+      created() {
+        this.getData();
       },
       methods:{
+        //获取数据
+        getData() {
+          this.$axios
+            .get('/yiiapi/demonstration/external-country-top5')
 
+            .then((resp) => {
+
+              let {status, data} = resp.data;
+
+              if(status == 0){
+                data.map(item => {
+
+                  let alias = item.country.toLowerCase();
+
+                  item.count = Number(item.count);
+
+                  Object.assign(item,{alias:alias});
+
+                });
+                //console.log(data)
+                this.progress_data_list = data;
+              }
+            })
+            .catch((error) => {
+
+              console.log(error);
+
+            });
+        },
+
+        //获取国旗类名
+        calculate(alias) {
+          return "flag-icon-"+alias;
+        }
       }
     }
 </script>
@@ -54,6 +75,7 @@
   padding: 0 16px 16px;
   .vm-progress-list{
     height: auto;
+    margin-top: 6px;
     .item{
       display: flex;
       line-height: 45px;
@@ -66,7 +88,7 @@
         }
       }
       .vam-progress-title{
-        width: 120px;
+        width: 80px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

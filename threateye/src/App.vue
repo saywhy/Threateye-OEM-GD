@@ -1,7 +1,7 @@
 <template>
   <div id="App">
     <transition :name="transitionName">
-      <router-view :key="key" />
+      <router-view :key="key"/>
     </transition>
   </div>
 </template>

@@ -20,11 +20,12 @@
         <div class="aside-item">
           <el-menu-item index="0" @click="change_router('0')">基本内容设置</el-menu-item>
         </div>
-        <div class="aside-item">
-          <el-menu-item index="1" @click="change_router('1')">两侧内容设置</el-menu-item>
+        <div class="aside-item" >
+          <i class="tog" :class="{'active':defaultIndex == '1'}"></i>
+          <el-menu-item index="1" @click="change_router('1')" lazy>两侧内容设置</el-menu-item>
           <vuedraggable class="menu-list" v-model="setAsideLists" v-show="defaultIndex == 1">
             <transition-group>
-              <div v-for="(item,$index) in setAsideLists" :key="item.aside_id" class="item">
+              <div class="item" v-for="(item,$index) in setAsideLists" :key="item.aside_id">
                 <span class="title">{{item.name}}</span>
                 <button class="bt" :class="{'active':item.flag}" @click="click_aside(item.aside_id);">
                   <span v-show="!item.flag">添加</span>
@@ -34,38 +35,37 @@
             </transition-group>
           </vuedraggable>
         </div>
-        <div class="aside-item">
-          <el-menu-item index="2" @click="change_router('2')">顶部指标设置</el-menu-item>
-          <ul class="menu-list" v-show="defaultIndex == 2">
-            <li class="item" v-for="(item,$index) in topList">
+        <div class="aside-item" >
+          <i class="tog" :class="{'active':defaultIndex == '2'}"></i>
+          <el-menu-item index="2" @click="change_router('2')" lazy>顶部指标设置</el-menu-item>
+          <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == 2">
+            <transition-group>
+              <div class="item" v-for="(item,$index) in setTopLists" :key="item.top_id">
+                <span class="title">{{item.name}}</span>
+                <button class="bt" :class="{'active':item.flag}" @click="click_top(item.top_id);">
+                  <span v-show="!item.flag">添加</span>
+                  <span v-show="item.flag">已添加</span>
+                </button>
+              </div>
+            </transition-group>
+          </vuedraggable>
+          <!--<ul class="menu-list" v-show="defaultIndex == 2">
+            <li class="item" v-for="(item,$index) in topLists">
               <span class="title">{{item.name}}</span>
               <button class="bt" :class="{'active':!item.flag}">已添加</button>
             </li>
-          </ul>
+          </ul>-->
         </div>
       </el-menu>
     </el-aside>
 
     <el-container class="set-container">
-      <el-header class="set-header">
-        <h3 class="title">两侧内容设置</h3>
-        <div class="btn-group">
-          <el-button class="btn btn_cacel" @click="click_screen_cancel();">取消</el-button>
-          <el-button class="btn btn_ok" @click="click_screen_ok();">确认</el-button>
-        </div>
-      </el-header>
       <el-main class="set-main">
-        <div class="set-main-list">
-          <!--<transition name="slider">
-            <keep-alive>
-              <router-view/>
-            </keep-alive>
-          </transition>-->
-          {{asideLists}}
-          <br/>
-          {{setAsideLists}}
-          <br/>
-        </div>
+        <transition name="slider">
+          <keep-alive exclude="home-screen">
+            <router-view :key="key"/>
+          </keep-alive>
+        </transition>
       </el-main>
     </el-container>
     <el-footer class="set-footer">©虎特信息科技（上海）有限公司 版权所有</el-footer>
@@ -81,33 +81,32 @@
     data() {
       return {
         defaultIndex: "0",
+        default1Flag:true,
+        default2Flag:true,
         setAsideLists: [],
-        topList: [{name: '风险资产数', flag: true},
-          {name: '外连资产数', flag: true},
-          {name: '告警数', flag: true},
-          {name: '未处理告警数', flag: false},
-          {name: '风险服务器数', flag: false},
-          {name: '风险终端数', flag: false},
-          {name: '风险网络设备数', flag: false}]
+        setTopLists:[]
       }
     },
     computed: {
-      ...mapGetters(['asideLists'])
+      ...mapGetters(['asideLists','topLists']),
+      key () {
+        return this.$route.path + Math.random();
+      }
     },
     created() {
       let num = this.$route.query.num;
       this.defaultIndex = num;
-
-
-
       //拷贝
       let asideLists = this.asideLists;
       this.setAsideLists = asideLists;
-
+      //顶部数据拷贝
+      let topLists = this.topLists;
+      this.setTopLists = topLists;
     },
     updated() {
-      console.log(this.setAsideLists)
       this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
+     //this.$store.commit('SCREEN_TOP_LISTS', this.setTopLists);
+     //console.log(this.setTopLists)
     },
     components: {vuedraggable},
     methods: {
@@ -121,21 +120,11 @@
       back_router() {
         this.$router.push({path: '/screen'});
       },
-      //两侧内容添加点击
-      click_aside(id) {
-        let attr = this.setAsideLists
-          .filter(item => {return item.flag == true});
 
-        if (attr.length < 6) {
-          this.$store.commit('SCREEN_ASIDE_FLAG', id);
-        } else {
-          this.$message.warning('两侧内容最多只能添加6条.');
-        }
-      },
       //侧边栏tabs切换
       change_router(index) {
         if (index == '0') {
-          this.$router.push({path: '/screen/set_screen', query: {num: index}});
+          this.$router.push({path: '/screen/set/base', query: {num: index}});
         } else if (index == '1') {
           this.$router.push({path: '/screen/set_screen', query: {num: index}});
         } else if (index == '2') {
@@ -143,15 +132,27 @@
         }
       },
 
-      //取消按钮点击
-      click_screen_cancel() {
+      //两侧内容添加点击
+      click_aside(id) {
+        let attr = this.setAsideLists
+          .filter(item => {return item.flag == true});
 
+        if (attr.length < 6) {
+          this.$store.commit('SCREEN_ASIDE_ID_TRUE', id);
+        } else {
+          this.$message.warning('两侧内容最多只能添加6条.');
+        }
       },
-      //确认按钮点击
-      click_screen_ok() {
-        //this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
-        this.$router.push({path: '/screen'});
-      }
+      //顶部内容添加点击
+      click_top(id) {
+        let attr = this.setTopLists
+          .filter(item => {return item.flag == true});
+        if (attr.length < 4) {
+          this.$store.commit('SCREEN_TOP_ID_TRUE', id);
+        } else {
+          this.$message.warning('顶部内容最多只能添加4条.');
+        }
+      },
     }
   }
 </script>
@@ -167,32 +168,28 @@
       z-index: 999;
       .set-aside-top {
         width: 100%;
-        height: 56px;
-        line-height: 56px;
+        /*height: 56px!important;*/
+        line-height: 56px!important;
         text-align: left;
         font-family: PingFangSC-Regular;
         font-size: 14px;
         color: #999999;
         font-weight: bold;
-        padding: 0 16px;
-
+        padding: 0 10px;
         /deep/
         .el-link {
           &.el-link--default {
             font-family: PingFangSC-Regular;
             font-size: 14px;
             color: #999999;
-
             &:hover {
               color: #999999;
               border-width: 0;
             }
-
             &:after {
               border-width: 0;
             }
           }
-
           .back {
             margin-left: 0;
           }
@@ -202,13 +199,11 @@
       .set-aside-menu {
         position: inherit;
         border-width: 0;
-
         .el-submenu {
           .el-submenu__title {
             padding: 0 16px !important;
             text-align: left;
             overflow: hidden;
-
             .e-aside-screen-set {
               width: 18px;
               height: 18px;
@@ -218,65 +213,78 @@
               background-size: 16px;
               background-image: url("../../../../assets/images/layout/aside/default/big.png");
             }
-
             .el-icon-arrow-down {
               display: none;
             }
           }
         }
-
-        .el-menu-item {
-          height: 56px;
-          font-size: 14px;
-          color: #333;
-          display: block;
-          text-align: left;
-          padding: 0 16px 0 44px;
-          cursor: pointer;
-          width: 250px;
+        .aside-item{
           position: relative;
+          .tog{
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            top: 20px;
+            right: 20px;
+            padding: 8px;
+            background-image: url("../../../../assets/images/screen/aside-right.png");
+            background-repeat: no-repeat;
+            background-size: 12px;
+            background-position: 3px;
+            z-index: 1000;
+            cursor: pointer;
+            &.active{
+              background-image: url("../../../../assets/images/screen/aside-down.png");
+            }
+          }
+          .el-menu-item {
+            height: 56px;
+            font-size: 14px;
+            color: #333;
+            display: block;
+            text-align: left;
+            padding: 0 16px 0 44px;
+            cursor: pointer;
+            width: 250px;
+            position: relative;
 
-          &.is-active {
-            color: #fff;
-            background-color: #0070ff;
-            -webkit-transition: 0s height, 0s padding-top, 0s padding-bottom;
-            transition: 0s height, 0s padding-top, 0s padding-bottom;
+            &.is-active {
+              color: #fff;
+              background-color: #0070ff;
+              -webkit-transition: 0s height, 0s padding-top, 0s padding-bottom;
+              transition: 0s height, 0s padding-top, 0s padding-bottom;
 
-            &:after {
-              content: "";
-              display: block;
-              width: 0px;
-              height: 0px;
-              border-top: 8px solid transparent;
-              border-bottom: 8px solid transparent;
-              border-left: 8px solid #0070FF;
-              position: absolute;
-              top: 20px;
-              right: -8px;
-              z-index: 999;
+              &:after {
+                content: "";
+                display: block;
+                width: 0px;
+                height: 0px;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                border-left: 8px solid #0070FF;
+                position: absolute;
+                top: 20px;
+                right: -8px;
+                z-index: 999;
+              }
             }
           }
         }
-
         .menu-list {
           padding: 6px 16px;
-
           .item {
             margin: 6px 0;
             width: 218px;
             height: 44px;
             border: 1px solid #ECECEC;
             padding: 10px 8px;
-            line-height: 1;
             cursor: move;
-
             .title {
               float: left;
               font-family: PingFangSC-Regular;
               font-size: 12px;
               color: #333333;
             }
-
             .bt {
               float: right;
               width: 64px;
@@ -302,74 +310,17 @@
         }
       }
     }
-
     /deep/
     .set-container {
       margin-left: 250px;
-      margin-top: 56px;
       width: calc(100vw - 250px);
-      height: calc(100vh - 120px);
-
-      .set-header {
-        height: 56px !important;
-        line-height: 56px !important;
-        padding: 0 56px 0 16px;
-        position: fixed;
-        top: 0;
-        left: 250px;
-        z-index: 1000;
-        background-color: #fff;
-        width: calc(100vw - 250px);
-
-        .title {
-          font-family: PingFangSC-Medium;
-          font-size: 16px;
-          color: #333333;
-          text-align: left;
-          float: left;
-        }
-
-        .btn-group {
-          float: right;
-
-          /deep/
-          .btn {
-            margin: 9px 0;
-            border: 1px solid #0070FF;
-            width: 136px;
-            height: 38px;
-            line-height: initial;
-            border-radius: 0;
-            font-size: 16px;
-            padding: 0;
-            font-family: PingFangSC-Regular;
-
-            &.btn_cacel {
-              background: #fff;
-              color: #0070FF;
-            }
-
-            &.btn_ok {
-              background: #0070FF;
-              color: #FFFFFF;
-            }
-          }
-        }
-      }
-
-      .set-main {
-        /*height: calc(100vh - 120px);*/
-       /* background: #00113c;*/
-        padding: 0;
-        /*height: calc(100vh + 220px);*/
-        overflow-y: auto;
-
-        .set-main-list {
-          zoom: 0.86;
-        }
-      }
+      height: calc(100vh - 64px);
     }
-
+    /deep/
+    .set-main{
+      padding: 0!important;
+      background: #f4f4f4;
+    }
     /deep/
     .set-footer {
       background-color: #ececec;

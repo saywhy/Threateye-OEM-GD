@@ -1,10 +1,12 @@
 <template>
-    <ul class="vm-screen-main2">
-      <li v-for="(item,index) in data" :key="index" class="item">
-        <i class="t-arrow"></i><span>{{item.content}}</span>
-        <span class="t-time">{{item.time}}</span>
+  <div class="vm-screen-main2" id="box">
+    <ul class="box-list" :class="{anim:animate == true}">
+      <li v-for="(item,index) in items" :key="item.id" class="item">
+        <i class="t-arrow"></i><span class="t-content" :title="item.title">{{item.title}}</span>
+        <span class="t-time">{{item.updated_at}}</span>
       </li>
     </ul>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -12,13 +14,37 @@
       name: "vm-screen-main2",
       data(){
           return{
-            data:[
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'}
-            ]
+            animate:false,
+            items:[]
           }
+      },
+      created(){
+        this.getData();
+      },
+      methods: {
+        //获取数据
+        getData(){
+          this.$axios
+            .get('/yiiapi/demonstration/threat-dynamics')
+            .then((resp) => {
+              let {status, data} = resp.data;
+              if(status == 0){
+                this.items = data;
+                setInterval(this.scroll,2000);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+        scroll(){
+          this.animate= true;
+          setTimeout(()=>{
+            this.items.push(this.items[0]);
+            this.items.shift();               //删除数组的第一个元素
+            this.animate=false;               // margin-top:0的时候取消过渡动画，实现无缝滚动
+          },1000)
+        }
       }
     }
 </script>
@@ -26,32 +52,56 @@
 <style scoped lang="less">
 .vm-screen-main2{
   padding: 0 16px 16px;
-  .item{
-    height: 56px;
-    border: 1px solid #007AFF;
-    margin-bottom: 6px;
-    background-image:
-      linear-gradient(90deg, rgba(0,122,255,0.36) 0%,
-      rgba(0,122,255,0.00) 100%);
-    text-align: left;
-    font-family: PingFangSC-Regular;
-    font-size: 14px;
-    color: #FFFFFF;
-    padding: 5px 16px;
-    .t-arrow{
-      display: inline-block;
-      background-image: url("../../../../assets/images/screen/aside-arrow.png");
-      width: 14px;
-      height: 14px;
-      margin-right: 8px;
-      background-size: 14px;
+  height: 248px;
+  overflow: hidden;
+  .box-list{
+    &.anim{
+      transition: all 0.5s;
+      margin-top: -62px;
     }
-    .t-time{
-      display: block;
-      opacity: 0.36;
+    .item{
+      height: 56px!important;
+      line-height: 30px;
+      border: 1px solid #007AFF;
+      margin-bottom: 6px;
+      background-image:
+        linear-gradient(90deg, rgba(0,122,255,0.36) 0%,
+        rgba(0,122,255,0.00) 100%);
+      text-align: left;
       font-family: PingFangSC-Regular;
-      font-size: 12px;
+      font-size: 14px;
       color: #FFFFFF;
+      /*padding: 0 16px;*/
+      position: relative;
+
+      .t-arrow{
+        position: absolute;
+        left: 16px;
+        top: 8px;
+        width: 14px;
+        height: 14px;
+        background-image: url("../../../../assets/images/screen/aside-arrow.png");
+        background-size: 14px;
+      }
+      .t-content{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        position: absolute;
+        left: 40px;
+        width: 425px;
+      }
+
+      .t-time{
+        position: absolute;
+        left: 16px;
+        top: 24px;
+        opacity: 0.36;
+        font-family: PingFangSC-Regular;
+        font-size: 12px;
+        color: #FFFFFF;
+      }
     }
   }
 }

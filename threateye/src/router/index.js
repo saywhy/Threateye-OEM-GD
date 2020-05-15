@@ -121,6 +121,11 @@ export const constantRouterMap = [{
     ]
   },
   {
+    path: '/text',
+    name:'text',
+    component: () => import('@/components/vendor/screen/text')
+  },
+  {
     path: '/screen',
     name:'screen',
     component: () => import('@/components/vendor/screen/Screen')
@@ -132,7 +137,7 @@ export const constantRouterMap = [{
     component: () => import('@/components/vendor/screen/screen-set/screen-set'),
     children:[
       {
-        path: '/screen/set_screen',
+        path: '/screen/set/base',
         name: 'screen_set_base',
         query:{
           num: '0'
@@ -161,7 +166,7 @@ export const constantRouterMap = [{
           rootAuth: '1',
           deep: 2
         },
-        component: () => import('@/components/vendor/screen/Screen')
+        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-screen.vue')
       },
       {
         path: '/screen/set_screen',
@@ -177,7 +182,7 @@ export const constantRouterMap = [{
           rootAuth: '1',
           deep: 2
         },
-        component: () => import('@/components/vendor/screen/Screen')
+        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-screen.vue')
       }
     ]
   },

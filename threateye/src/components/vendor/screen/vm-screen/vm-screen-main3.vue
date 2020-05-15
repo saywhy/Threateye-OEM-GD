@@ -14,21 +14,10 @@
           <h5 class="disk-times">威胁次数</h5>
         </div>
         <ul class="state-list">
-          <li class="item it0">
-            <i class="t-arrow"></i><span class="t-name">漏洞风险</span>
-            <span class="t-num">87</span>
-          </li>
-          <li class="item it1">
-            <i class="t-arrow"></i><span class="t-name">弱密码</span>
-            <span class="t-num">11</span>
-          </li>
-          <li class="item it2 active">
-            <i class="t-arrow"></i><span class="t-name">Web文明传输</span>
-            <span class="t-num">812</span>
-          </li>
-          <li class="item it3">
-            <i class="t-arrow"></i><span class="t-name">配置风险</span>
-            <span class="t-num">124</span>
+          <li class="item" :class="{'active':stateIndex == $index}"
+              v-for="(item,$index) in dataState" :key="$index" @click="state_click($index);">
+            <i class="t-arrow"></i><span class="t-name">{{item.name}}</span>
+            <span class="t-num">{{item.count}}</span>
           </li>
         </ul>
       </div>
@@ -39,20 +28,49 @@
     export default {
       name: "vm-screen-main3",
       data(){
-          return{
-            data:[
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'},
-              {content:'所有英特尔处理器面临新的Spoiler攻击',time:'7小时前'}
-            ]
+          return {
+            stateIndex: 2,
+            dataState:[{name:'漏洞风险',count:87},
+              {name:'弱密码',count:11},
+              {name:'Web文明传输',count:812},
+              {name:'配置风险',count:124}]
           }
       },
       mounted() {
-
+        this.getData();
       },
       methods:{
+        //获取数据
+        getData(){
+          this.$axios
+            .get('/yiiapi/demonstration/horizontal-threat-situation')
+            .then((resp) => {
+              let {status, data} = resp.data;
 
+              if(status == 0){
+
+               // console.log(data)
+
+                /*data = data.reverse();
+
+                this.branch.branchName = data.map(item => {return item.branch_name});
+                this.branch.branchCount = data.map(item => {return item.count});
+                this.branch.highLists = data.map(item => {return item.high});
+                this.branch.mediumLists = data.map(item => {return item.medium});
+                this.branch.lowLists = data.map(item => {return item.medium});
+
+                this.$nextTick(() => {
+                  this.drawGraph();
+                })*/
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+        state_click(index){
+          this.stateIndex = index;
+        }
       }
     }
 </script>
@@ -86,7 +104,7 @@
   .state-content{
     height: 190px;
     position: relative;
-    border: 1px solid #000f40;
+    border: 1px solid transparent;
     .disk{
       width: 162px;
       height: 162px;
@@ -111,7 +129,7 @@
       top: 10px;
       left: 136px;
       color: #fff;
-      .item{
+      .item {
         text-align: left;
         width: 328px;
         height: 39px;
@@ -127,7 +145,7 @@
           height: 14px;
           margin-right: 8px;
           background-size: 14px;
-          vertical-align: text-top;
+          vertical-align: inherit;
           background-image: url("../../../../assets/images/screen/aside-arrow.png");
         }
         .t-name{
@@ -137,30 +155,30 @@
         }
         .t-num{
           position: absolute;
-          top: 3px;
+          top: 2px;
         }
-        &.it0{
+        &:nth-child(1){
           padding-left: 40px;
           background-image: url("../../../../assets/images/screen/state/st0.png");
           .t-num{
             right: 56px;
           }
         }
-        &.it1{
-          padding-left: 50px;
+        &:nth-child(2){
+          padding-left: 60px;
           background-image: url("../../../../assets/images/screen/state/st1.png");
           .t-num{
             right: 30px;
           }
         }
-        &.it2{
-          padding-left: 50px;
+        &:nth-child(3){
+          padding-left: 60px;
           background-image: url("../../../../assets/images/screen/state/st2.png");
           .t-num{
             right: 30px;
           }
         }
-        &.it3{
+        &:nth-child(4){
           padding-left: 40px;
           background-image: url("../../../../assets/images/screen/state/st3.png");
           .t-num{
@@ -168,20 +186,20 @@
           }
         }
         &.active{
-          &.it0{
-            background-image: url("../../../../assets/images/screen/state/st0_a.png");
+          &:nth-child(1){
+            background-image: url("../../../../assets/images/screen/state/st0_a.png")!important;
           }
-          &.it1{
-            background-image: url("../../../../assets/images/screen/state/st1_a.png");
+          &:nth-child(2){
+            background-image: url("../../../../assets/images/screen/state/st1_a.png")!important;
           }
-          &.it2{
-            background-image: url("../../../../assets/images/screen/state/st2_a.png");
+          &:nth-child(3){
+            background-image: url("../../../../assets/images/screen/state/st2_a.png")!important;
           }
-          &.it3{
-            background-image: url("../../../../assets/images/screen/state/st3_a.png");
+          &:nth-child(4){
+            background-image: url("../../../../assets/images/screen/state/st3_a.png")!important;
           }
           .t-arrow{
-            background-image: url("../../../../assets/images/screen/aside-arrow.png");
+            background-image: url("../../../../assets/images/screen/aside-write.png")!important;
           }
         }
       }

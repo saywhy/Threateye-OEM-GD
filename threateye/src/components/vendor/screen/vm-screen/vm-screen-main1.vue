@@ -6,7 +6,7 @@
 
 <script type="text/ecmascript-6">
     export default {
-      name: "vm-screen-main0",
+      name: "vm-screen-main1",
       data(){
           return{
             data:[]

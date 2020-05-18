@@ -2651,8 +2651,13 @@ export default {
     },
     //下一步时候验证工单名称，优先级、经办人等参数
     next_task () {
+      var pattern = new RegExp("[`~!#%$^&*()=|{}':;',\\[\\]<>《》/?~！#￥……&*（）|{}【】‘；：”“'。，、？]");
       if (this.new_worksheets_list.name == '') {
         this.$message.error('工单名称不能为空');
+        return false
+      }
+      if (pattern.test(this.new_worksheets_list.name)) {
+        this.$message.error('工单名称不能包含特殊字符');
         return false
       }
       if (this.new_worksheets_list.level == '') {

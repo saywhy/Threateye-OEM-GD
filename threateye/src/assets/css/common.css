@@ -235,6 +235,10 @@ textarea {
   border: 1px solid #EBEEF5;
 }
 
+/* .el-table thead th {
+  background: #f8f8f8
+} */
+
 
 .el-table--border th {
   border-right: 1px solid #EBEEF5;

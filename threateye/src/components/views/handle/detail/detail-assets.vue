@@ -1506,9 +1506,17 @@ export default {
     //下一步时候验证工单名称，优先级、经办人等参数
     next_task_new () {
 
+      var pattern = new RegExp("[`~!#%$^&*()=|{}':;',\\[\\]<>《》/?~！#￥……&*（）|{}【】‘；：”“'。，、？]");
       if (this.task_params.name == '') {
         this.$message.error('工单名称不能为空');
-      } else if (this.task_params.level == '') {
+        return false
+      }
+      if (pattern.test(this.task_params.name)) {
+        console.log(true);
+        this.$message.error('工单名称不能包含特殊字符');
+        return false
+      }
+      if (this.task_params.level == '') {
         this.$message.error('优先级未选择');
       } else if (this.task_params.operator == '') {
         this.$message.error('经办人未选择');

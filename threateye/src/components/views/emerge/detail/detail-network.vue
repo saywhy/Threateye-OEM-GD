@@ -470,7 +470,7 @@
         <el-tab-pane label="当前受威胁资产"
                      class="tabs-item"
                      name="first">
-          <el-table class="emerge_table"
+          <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
                     border
@@ -536,7 +536,7 @@
         <el-tab-pane label="历史受威胁资产"
                      class="tabs-item"
                      name="second">
-          <el-table class="emerge_table"
+          <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
                     border
@@ -839,6 +839,7 @@
           </div>
           <div class="content_table">
             <el-table :data="new_worksheets_data.table_operator.tableData"
+                      class="reset_table"
                       align="center"
                       border
                       style="width: 100%">
@@ -871,6 +872,7 @@
             <div>
               <div>
                 <el-table align="center"
+                          class="reset_table"
                           border
                           :data="new_worksheets_data.network_detail"
                           @selection-change="select_alert_new"
@@ -3378,8 +3380,14 @@ export default {
     },
     //下一步时候验证工单名称，优先级、经办人等参数
     next_task () {
+      var pattern = new RegExp("[`~!#%$^&*()=|{}':;',\\[\\]<>《》/?~！#￥……&*（）|{}【】‘；：”“'。，、？]");
       if (this.new_worksheets_list.name == '') {
         this.$message.error('工单名称不能为空');
+        return false
+      }
+      if (pattern.test(this.new_worksheets_list.name)) {
+        console.log(true);
+        this.$message.error('工单名称不能包含特殊字符');
         return false
       }
       if (this.new_worksheets_list.level == '') {
@@ -3549,24 +3557,25 @@ export default {
 <style lang="less">
 @import '../../../../assets/css/less/reset_css/reset_tab.less';
 @import '../../../../assets/css/less/reset_css/reset_pop.less';
-
+@import '../../../../assets/css/less/common-table-pattern.less';
 @import '../../../../assets/css/less/common-dropdown.less';
-.reset_table {
-  .el-table__header-wrapper {
-    .el-table__header {
-      thead.has-gutter {
-        th {
-          background: #f8f8f8;
-          .cell {
-            font-family: PingFangMedium;
-            color: #333;
-            font-size: 14px;
-          }
-        }
-      }
-    }
-  }
-}
+@import '../../../../assets/css/less/reset_css/reset_table.less';
+// .reset_table {
+//   .el-table__header-wrapper {
+//     .el-table__header {
+//       thead.has-gutter {
+//         th {
+//           background: #f8f8f8 !important;
+//           .cell {
+//             font-family: PingFangMedium;
+//             color: #333;
+//             font-size: 14px;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 .el-input__inner {
   background: #f8f8f8;
   border: 0;
@@ -3579,22 +3588,22 @@ export default {
   }
 }
 // tab栏
-.emerge_table {
-  th {
-    .cell {
-      font-family: PingFangMedium;
-      font-size: 14px;
-      color: #333333;
-    }
-  }
-  td {
-    .cell {
-      font-family: PingFang;
-      font-size: 14px;
-      color: #666;
-    }
-  }
-}
+// .emerge_table {
+//   th {
+//     .cell {
+//       font-family: PingFangMedium;
+//       font-size: 14px;
+//       color: #333333;
+//     }
+//   }
+//   td {
+//     .cell {
+//       font-family: PingFang;
+//       font-size: 14px;
+//       color: #666;
+//     }
+//   }
+// }
 .detail-network {
   .pagination_box {
     margin: 24px 0;

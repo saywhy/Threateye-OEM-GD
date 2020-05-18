@@ -72,7 +72,7 @@
             <el-table ref="multipleTable"
                       align="center"
                       border
-                      class="common-table handle_table_detail"
+                      class="reset_table"
                       tooltip-effect="dark"
                       :data="table.tableData">
               <el-table-column prop="asset_ip"
@@ -127,7 +127,7 @@
             <el-table ref="multipleTable"
                       align="center"
                       border
-                      class="handle_table_detail"
+                      class="reset_table"
                       :data="table.tableData"
                       tooltip-effect="dark">
               <el-table-column label="告警时间"
@@ -882,4 +882,7 @@ export default {
     }
   }
 }
+</style>
+<style lang="less">
+@import '../../../../assets/css/less/reset_css/reset_table.less';
 </style>

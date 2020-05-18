@@ -295,132 +295,84 @@
       </div>
       <div class="attack_stage_bom">
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[0].count>1">
-            {{attack_stage_list[0].count}}
-          </span>
-          <span :class="attack_stage_list[0].count>0?'count_color':''">初始访问</span>
+          <span :class="network_times_active.attack_stage_cn =='初始访问'?'count_color':''">初始访问</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[1].count>1">
-            {{attack_stage_list[1].count}}
-          </span>
-          <span :class="attack_stage_list[1].count>0?'count_color':''">执行</span>
+          <span :class="network_times_active.attack_stage_cn =='执行'?'count_color':''">执行</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[2].count>1">
-            {{attack_stage_list[2].count}}
-          </span>
-          <span :class="attack_stage_list[2].count>0?'count_color':''">持久化</span>
+          <span :class="network_times_active.attack_stage_cn =='持久化'?'count_color':''">持久化</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[3].count>1">
-            {{attack_stage_list[3].count}}
-          </span>
-          <span :class="attack_stage_list[3].count>0?'count_color':''">提权</span>
+          <span :class="network_times_active.attack_stage_cn =='提权'?'count_color':''">提权</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[4].count>1">
-            {{attack_stage_list[4].count}}
-          </span>
-          <span :class="attack_stage_list[4].count>0?'count_color':''">防御逃逸</span>
+          <span :class="network_times_active.attack_stage_cn =='防御逃逸'?'count_color':''">防御逃逸</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[5].count>1">
-            {{attack_stage_list[5].count}}
-          </span>
-          <span :class="attack_stage_list[5].count>0?'count_color':''">凭证访问</span>
+          <span :class="network_times_active.attack_stage_cn =='凭证访问'?'count_color':''">凭证访问</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[6].count>1">
-            {{attack_stage_list[6].count}}
-          </span>
-          <span :class="attack_stage_list[6].count>0?'count_color':''">信息发现</span>
+          <span :class="network_times_active.attack_stage_cn =='信息发现'?'count_color':''">信息发现</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[7].count>1">
-            {{attack_stage_list[7].count}}
-          </span>
-          <span :class="attack_stage_list[7].count>0?'count_color':''">横向移动</span>
+          <span :class="network_times_active.attack_stage_cn =='横向移动'?'count_color':''">横向移动</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[8].count>1">
-            {{attack_stage_list[8].count}}
-          </span>
-          <span :class="attack_stage_list[8].count>0?'count_color':''">信息收集</span>
+          <span :class="network_times_active.attack_stage_cn =='信息收集'?'count_color':''">信息收集</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[9].count>1">
-            {{attack_stage_list[9].count}}
-          </span>
-          <span :class="attack_stage_list[9].count>0?'count_color':''">命令控制</span>
+          <span :class="network_times_active.attack_stage_cn =='命令控制'?'count_color':''">命令控制</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[10].count>1">
-            {{attack_stage_list[10].count}}
-          </span>
-          <span :class="attack_stage_list[10].count>0?'count_color':''">信息泄露</span>
+          <span :class="network_times_active.attack_stage_cn =='信息泄露'?'count_color':''">信息泄露</span>
         </div>
         <div class="stage_img_box">
           <img src="@/assets/images/emerge/detail_jiantou.png"
                alt="">
         </div>
         <div class="stage_item_box">
-          <span class="circle_box"
-                v-if="attack_stage_list[11].count>1">
-            {{attack_stage_list[11].count}}
-          </span>
-          <span :class="attack_stage_list[11].count>0?'count_color':''">毁坏</span>
+          <span :class="network_times_active.attack_stage_cn =='毁坏'?'count_color':''">毁坏</span>
         </div>
       </div>
     </div>
@@ -434,7 +386,7 @@
       </div>
       <div class="suggest_bom">
         <p class="suggest_bom_title">威胁描述</p>
-        <p class="suggest_bom_des">{{suggest_list[network_detail.safety_suggestion].des}}</p>
+        <p class="suggest_bom_des">{{suggest_list[network_times_active.safety_suggestion].des}}</p>
         <p class="suggest_bom_title">安全建议</p>
         <p class="suggest_bom_list">
           <img src="@/assets/images/emerge/detail_suggest.png"
@@ -444,7 +396,7 @@
         </p>
         <div>
           <p class="suggest_bom_li"
-             v-for="item in suggest_list[network_detail.safety_suggestion].handle">
+             v-for="item in suggest_list[network_times_active.safety_suggestion].handle">
             {{item}}
           </p>
         </div>
@@ -456,7 +408,7 @@
         </p>
         <div>
           <p class="suggest_bom_li"
-             v-for="item in suggest_list[network_detail.safety_suggestion].reinforce">
+             v-for="item in suggest_list[network_times_active.safety_suggestion].reinforce">
             {{item}}
           </p>
         </div>
@@ -959,6 +911,7 @@ export default {
         workorder_id: '',
         work_order_status: '',
       },
+      network_times_active: {},
       attack_stage_list: [
         {
           name: "Initial Access",
@@ -1837,7 +1790,7 @@ export default {
               this.network_times.push(item)
             });
           }
-          console.log(this.network_times);
+          // console.log(this.network_times);
           // 匹配告警类型
           this.network_times.forEach(item => {
             item.info_list = []
@@ -2540,6 +2493,8 @@ export default {
                 break;
             }
           });
+
+
           // 攻击阶段
           this.attack_stage_list.forEach(element => {
             element.count = 0;
@@ -2551,13 +2506,14 @@ export default {
             this.attack_stage_list.forEach(element => {
               if (item.attack_stage == element.name) {
                 item.attack_stage_cn = element.value
-                element.count = element.count + 1;
+                element.count = 0;
               }
             });
           });
-
-          this.new_list();
-          this.old_list();
+          this.network_times_active = this.network_times[0]
+          console.log(this.network_times_active);
+          this.new_list(this.network_times_active.indicator);
+          this.old_list(this.network_times_active.indicator);
           // this.network_times.push(item_obj)
         })
         .catch(error => {
@@ -2697,7 +2653,7 @@ export default {
         })
     },
     // 当前受威胁资产
-    new_list () {
+    new_list (indicator) {
       var new_list = ''
       // horizontalthreat  横向威胁告警  lateral
       // externalthreat  外部威胁告警  outside
@@ -2724,7 +2680,7 @@ export default {
 
       this.$axios.get(new_list, {
         params: {
-          indicator: this.network_detail.indicator,
+          indicator: indicator,
           is_deal: 0,
           page: this.emerge_list.now_data.page,
           rows: this.emerge_list.now_data.rows,
@@ -2748,7 +2704,7 @@ export default {
       this.new_list();
     },
     // 历史受威胁资产
-    old_list () {
+    old_list (indicator) {
       var new_list = ''
       // horizontalthreat  横向威胁告警  lateral
       // externalthreat  外部威胁告警  outside
@@ -2774,7 +2730,7 @@ export default {
       }
       this.$axios.get(new_list, {
         params: {
-          indicator: this.network_detail.indicator,
+          indicator: indicator,
           is_deal: 2,
           page: this.emerge_list.old_data.page,
           rows: this.emerge_list.old_data.rows
@@ -3123,8 +3079,12 @@ export default {
 
 
     time_active (index) {
-      console.log("111");
       this.time_choose = index;
+      console.log(this.network_times);
+      this.network_times_active = this.network_times[index]
+      console.log(this.network_times_active);
+      this.new_list(this.network_times_active.indicator);
+      this.old_list(this.network_times_active.indicator);
     },
     emerge_list_active (index) {
       this.emerge_list.choose = index;

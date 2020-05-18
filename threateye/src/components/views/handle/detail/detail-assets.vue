@@ -337,7 +337,7 @@
         <el-tab-pane label="告警列表"
                      class="tabs-item"
                      name="first">
-          <el-table class="handle_table_detail"
+          <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
                     border
@@ -553,6 +553,7 @@
           <div class="content_table">
             <el-table :data="table_operator.tableData"
                       align="center"
+                      class="reset_table"
                       border
                       style="width: 100%">
               <el-table-column prop="username"
@@ -588,7 +589,7 @@
               </li>
             </ul>
             <div v-show="handle.active == 0">
-              <el-table class="common-table"
+              <el-table class="reset_table"
                         align="center"
                         border
                         :data="table_assets.tableData_new"
@@ -684,7 +685,7 @@
       <div class="content">
         <el-row class="common-table-pattern">
           <el-col :span="24">
-            <el-table class="common-table"
+            <el-table class="reset_table"
                       align="center"
                       border
                       highlight-current-row
@@ -2696,6 +2697,7 @@ export default {
 }
 </style>
 <style lang="less">
+@import '../../../../assets/css/less/reset_css/reset_table.less';
 body {
   > ul.dropdown_ul_box_124 {
     width: 128px !important;

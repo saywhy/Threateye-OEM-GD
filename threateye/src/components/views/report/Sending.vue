@@ -278,13 +278,13 @@ export default {
   .item_addrs {
     // line-height: 38px;
     .select_box {
-      width: 340px;
+      width: 370px;
       height: 38px;
       line-height: 38px;
     }
     /deep/ .el-input__inner {
       height: 38px;
-      width: 340px;
+      width: 370px;
       background: #f8f8f8;
       border: 0;
     }

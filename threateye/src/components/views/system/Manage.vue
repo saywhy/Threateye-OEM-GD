@@ -88,7 +88,7 @@
         </div>
         <div class="equipment_table">
           <el-table ref="multipleTable"
-                    class=""
+                    class="reset_table"
                     align="center"
                     border
                     :data="equipment_list.list"

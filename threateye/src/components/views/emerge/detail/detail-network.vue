@@ -127,15 +127,15 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">告警时间:</span>
-              <span class="item_li_content">{{network_detail.alert_time}}</span>
+              <span class="item_li_content">{{network_times_active.alert_time}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">威胁指标:</span>
-              <span class="item_li_content">{{network_detail.indicator}}</span>
+              <span class="item_li_content">{{network_times_active.indicator}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">告警类型:</span>
-              <span class="item_li_content">{{network_detail.category}}</span>
+              <span class="item_li_content">{{network_times_active.alert_description.category}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">状态:</span>
@@ -147,16 +147,16 @@
           <ul>
             <li class="item_li">
               <span class="item_li_title">应用:</span>
-              <span class="item_li_content">{{network_detail.application}}</span>
+              <span class="item_li_content">{{network_times_active.application}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">检测引擎:</span>
-              <span class="item_li_content">{{network_detail.detect_engine}}</span>
+              <span class="item_li_content">{{network_times_active.detect_engine}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">失陷确定性:</span>
-              <span :class="network_detail.fall_certainty == '0'?'':'fall_certainty'">
-                {{network_detail.fall_certainty == '0'?'':'已失陷'}}</span>
+              <span :class="network_times_active.fall_certainty == '0'?'':'fall_certainty'">
+                {{network_times_active.fall_certainty == '0'?'':'已失陷'}}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">标签:</span>
@@ -171,7 +171,7 @@
             </li>
             <li class="item_li">
               <span class="item_li_title">攻击阶段:</span>
-              <span class="item_li_content">{{network_detail.attack_stage_cn }}</span>
+              <span class="item_li_content">{{network_times_active.attack_stage_cn }}</span>
             </li>
             <li class="item_li">
               <span class="item_li_title">工单名称:</span>
@@ -208,6 +208,7 @@
               </div>
               <div class="time_item_right">
                 <p>{{item.alert_time}} </p>
+                <p>{{item.detect_engine}}</p>
               </div>
             </li>
           </ul>
@@ -1705,12 +1706,15 @@ export default {
           console.log('*************************************')
           this.network_detail = response.data.data
           this.network_detail.attack_stage_cn = ''
-          this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
-          this.network_detail.dest_label_obj = JSON.parse(this.network_detail.dest_label)
-          if (!this.network_detail.label) {
-            this.network_detail.label_obj = []
+          if (JSON.parse(this.network_detail.src_label).length == 0) {
+            this.network_detail.src_label_obj = []
           } else {
-            this.network_detail.label_obj = JSON.parse(this.network_detail.label)
+            this.network_detail.src_label_obj = JSON.parse(this.network_detail.src_label)
+          }
+          if (JSON.parse(this.network_detail.dest_label).length == 0) {
+            this.network_detail.dest_label_obj = []
+          } else {
+            this.network_detail.dest_label_obj = JSON.parse(this.network_detail.dest_label)
           }
           var workorders = ''
           // horizontalthreat  横向威胁告警  lateral
@@ -1793,6 +1797,12 @@ export default {
           // console.log(this.network_times);
           // 匹配告警类型
           this.network_times.forEach(item => {
+            console.log(item);
+            if (!item.label) {
+              item.label_obj = []
+            } else {
+              item.label_obj = JSON.parse(item.label)
+            }
             item.info_list = []
             item.whois_list = [];
             item.event_list = [];
@@ -4203,14 +4213,14 @@ export default {
         }
         .time_item {
           z-index: 999;
-          height: 60px;
+          height: 80px;
           width: 95%;
           display: flex;
           position: relative;
           cursor: pointer;
           .time_item_left {
             width: 52px;
-            padding: 20px 0;
+            padding: 28px 0;
           }
           .time_item_right {
             flex: 1;
@@ -4231,7 +4241,7 @@ export default {
           border-bottom: 8px solid transparent;
           border-left: 8px solid #0070ff;
           position: absolute;
-          top: 20px;
+          top: 32px;
           right: -8px;
           z-index: 999;
         }

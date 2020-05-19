@@ -12,33 +12,21 @@
         </span>
     </div>
     <div class="state-content" v-if="loading">
-      <div class="item item0" v-for="(item,$index) in sysData.status_per_dev">
+      <div class="item" :class="calculate($index)" v-for="(item,$index) in sysData.status_per_dev">
         <h3 class="item_fs0">探针引擎设备</h3>
         <div class="item_fs1">
           <i class="t_fork"></i>
           <span class="t_name">{{item.dev_ip}}</span>
         </div>
-        <vm-screen-progress></vm-screen-progress>
+        <vm-screen-progress :pg_data="item"></vm-screen-progress>
         <div class="item_fs2">
           <i class="t_aw t-aw_1"></i><span class="t-name">{{item.flow}}B</span>
           <i class="t_aw t-aw_2"></i><span class="t-name">0MB</span>
         </div>
       </div>
-      <!--<div class="item item1">
-        <h3 class="item_fs0">引擎/探针</h3>
-        <div class="item_fs1">
-          <i class="t_fork"></i>
-          <span class="t_name">192.168.191.24</span>
-        </div>
-        <vm-screen-progress></vm-screen-progress>
-        <div class="item_fs2">
-          <i class="t_aw t-aw_1"></i><span class="t-name">42B</span>
-          <i class="t_aw t-aw_2"></i><span class="t-name">12.52MB</span>
-        </div>
-      </div>-->
-      <div class="item item3">
+      <!--<div class="item item3">
         <img class="t_disabled" src="../../../../assets/images/screen/system/disabled.png">
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -69,9 +57,9 @@
             let {status, data} = resp.data;
 
             if(status == 0){
-              console.log(data)
+              //console.log(data)
+              this.sysData = data;
 
-              //this.sysData = data;
             }
           })
           .catch((error) => {
@@ -80,6 +68,11 @@
 
           });
       },
+
+      //获取类名
+      calculate(alias) {
+        return "item"+alias;
+      }
     }
   }
 </script>
@@ -134,7 +127,6 @@
     }
     .state-content{
       height: 200px;
-      display: flex;
       margin: 4px 0;
       justify-content:space-between;
       .item{
@@ -143,6 +135,7 @@
         padding: 0 5px;
         background-repeat: no-repeat;
         background-size: 156px 198px;
+        float: left;
         &.item0{
           background-image: url("../../../../assets/images/screen/system/bg0.png");
         }
@@ -169,6 +162,8 @@
         }
         .item_fs1{
           height: 30px;
+          padding: 0 5px;
+          text-align: left;
           .t_fork{
             width: 18px;
             height: 18px;
@@ -176,7 +171,7 @@
             background-image: url("../../../../assets/images/screen/system/fs.png");
             background-repeat: no-repeat;
             background-size: 18px;
-            vertical-align: bottom;
+            vertical-align: text-top;
           }
           .t_name{
             ont-family: PingFangSC-Regular;
@@ -186,14 +181,15 @@
           }
         }
         .item_fs2{
-          margin: 5px 0;
+          margin: 8px 0;
           .t_aw{
             width: 12px;
-            height: 24px;
+            height: 16px;
             display: inline-block;
             background-repeat: no-repeat;
-            vertical-align: bottom;
-            background-size: 12px 24px;
+            vertical-align: text-top;
+            background-size: 12px 16px;
+            margin-top: 1px;
             &.t-aw_1{
               background-image: url("../../../../assets/images/screen/system/aw1.png");
             }

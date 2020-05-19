@@ -9,15 +9,40 @@
       name: "vm-screen-main8",
       data(){
           return{
-            data: []
+            trendData: {
+              xAxisData:[],
+              yAxisData:[]
+            }
           }
       },
-      mounted() {
-        setTimeout(() => {
-          this.drawGraph();
-        },200)
+      created() {
+        console.log('我来了')
+        this.getData();
       },
       methods:{
+        //获取数据
+        getData() {
+          this.$axios
+            .get('/yiiapi/demonstration/risk-trend')
+            .then((resp) => {
+
+              let {status, data} = resp.data;
+
+              if(status == 0){
+
+                this.trendData.xAxisData = Object.keys(data);
+                this.trendData.yAxisData = Object.values(data);
+
+                this.$nextTick(() => {
+                  this.drawGraph();
+                })
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+
         drawGraph(){
           let myChart = this.$echarts.init(document.getElementById('trend'));
           myChart.showLoading({ text: '正在加载数据...' });
@@ -54,7 +79,7 @@
               axisTick:{
                 show:false
               },
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','Min','Max']
+              data: this.trendData.xAxisData
             },
             yAxis: {
               type: 'value',
@@ -102,7 +127,7 @@
                   global: false
                 }
               },
-              data: [320, 932, 901, 934, 990, 1330, 320, 1330, 320]
+              data: this.trendData.yAxisData
             }]
           };
 

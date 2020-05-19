@@ -2,7 +2,7 @@
     <div class="vm-screen-all">
       <header class="title">{{data.name}}<i class="t_img"></i></header>
 
-      <i class="close" v-show="!close" @click="closeAsides(data.aside_id);"></i>
+      <i class="close" v-show="!close" @click="asideDelClick(data.aside_id);"></i>
 
       <div v-if="data.aside_id == 0">
         <vm-screen-main0></vm-screen-main0>
@@ -64,9 +64,10 @@
       VmScreenMain9
     },
     methods:{
-      closeAsides(id){
-        this.$store.commit('SCREEN_ASIDE_ID_FALSE', id);
-      }
+      //两侧内容点击删除
+      asideDelClick(id) {
+        this.$store.commit('SET_ASIDE_LISTS_ID', {id,id,flag:false});
+      },
     }
   }
 </script>

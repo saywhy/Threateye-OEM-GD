@@ -42,8 +42,13 @@
 
                 this.$nextTick(function() {
                   this.drawRank();
+
+                });
+                this.$nextTick(function() {
                   this.drawScat();
                 });
+
+
               }
           })
             .catch((error) => {

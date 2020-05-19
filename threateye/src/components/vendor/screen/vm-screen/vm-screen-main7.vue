@@ -21,11 +21,11 @@
       name: "vm-screen-main7",
       data(){
           return{
-            progress_data_list:[{pid:0,name:'英国',num:2431,count:70},
-              {pid:1,name:'美国',num:1687,count:60},
-              {pid:2,name:'法国',num:1496,count:50},
-              {pid:3,name:'德国',num:1069,count:30},
-              {pid:4,name:'意大利',num:998,count:20}]
+            progress_data_list:[{pid:0,name:'英国',num:0,count:0},
+              {pid:1,name:'美国',num:0,count:0},
+              {pid:2,name:'法国',num:0,count:0},
+              {pid:3,name:'德国',num:0,count:0},
+              {pid:4,name:'意大利',num:0,count:0}]
           }
       },
       created() {
@@ -49,9 +49,7 @@
                   item.count = Number(item.count);
 
                   Object.assign(item,{alias:alias});
-
                 });
-                //console.log(data)
                 this.progress_data_list = data;
               }
             })

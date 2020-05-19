@@ -2,21 +2,6 @@ import Vue from 'vue'
 
 import moment from "moment"
 
-/*Vue.filter('time',function(date){
-  date = Number(date)
-  if(date.length == 10){
-    date = date * 1000;
-  }
-  date = new Date(date);
-  var YYYY = date.getFullYear() + '-';
-  var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-  var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
-  var hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-  var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-  var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
-  return YYYY + MM + DD +" "+hh + mm + ss;
-});*/
-
 Vue.filter('time', function (value) {
   if (value) {
     value = value.toString();
@@ -171,4 +156,18 @@ Vue.filter('filterType', function (args) {
   var size = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
     i = Math.floor(Math.log(args) / Math.log(k));
   return (args / Math.pow(k, i)).toPrecision(3) + ' ' + size[i]
+});
+
+///////////大屏设置
+//状态
+Vue.filter('sys', function (args) {
+  let str = '';
+  if (args == 'cpu') {
+    str = 'CPU';
+  } else if (args == 'disk') {
+    str = '硬盘';
+  } else if (args == 'mem') {
+    str = '内存';
+  }
+  return str;
 });

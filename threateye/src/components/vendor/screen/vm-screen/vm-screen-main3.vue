@@ -1,22 +1,22 @@
 <template>
     <div class="vm-screen-main3">
-      <div class="state-top">
+      <div class="state-top" v-if="loading">
         <span class="t-info">
-          <i class="t-arrow"></i><span class="t-name">攻击源：124</span>
+          <i class="t-arrow"></i><span class="t-name">攻击源：{{stateData.sourse_count}}</span>
         </span>
         <span class="t-info">
-          <i class="t-arrow"></i><span class="t-name">攻击目标：124</span>
+          <i class="t-arrow"></i><span class="t-name">攻击目标：{{stateData.destination_count}}</span>
         </span>
       </div>
       <div class="state-content">
         <div class="disk">
-          <h2 class="disk-num">3248</h2>
+          <h2 class="disk-num">{{stateData.threat_count}}</h2>
           <h5 class="disk-times">威胁次数</h5>
         </div>
         <ul class="state-list">
           <li class="item" :class="{'active':stateIndex == $index}"
-              v-for="(item,$index) in dataState" :key="$index" @click="state_click($index);">
-            <i class="t-arrow"></i><span class="t-name">{{item.name}}</span>
+              v-for="(item,$index) in stateData.category" :key="$index" @click="state_click($index);">
+            <i class="t-arrow"></i><span class="t-name">{{item.category}}</span>
             <span class="t-num">{{item.count}}</span>
           </li>
         </ul>
@@ -29,11 +29,9 @@
       name: "vm-screen-main3",
       data(){
           return {
-            stateIndex: 2,
-            dataState:[{name:'漏洞风险',count:87},
-              {name:'弱密码',count:11},
-              {name:'Web文明传输',count:812},
-              {name:'配置风险',count:124}]
+            loading:false,
+            stateIndex: 0,
+            stateData: {}
           }
       },
       mounted() {
@@ -42,26 +40,18 @@
       methods:{
         //获取数据
         getData(){
+          this.loading = false;
           this.$axios
             .get('/yiiapi/demonstration/horizontal-threat-situation')
             .then((resp) => {
+              this.loading = true;
               let {status, data} = resp.data;
 
               if(status == 0){
 
-               // console.log(data)
+                //console.log(data)
+                this.stateData = data;
 
-                /*data = data.reverse();
-
-                this.branch.branchName = data.map(item => {return item.branch_name});
-                this.branch.branchCount = data.map(item => {return item.count});
-                this.branch.highLists = data.map(item => {return item.high});
-                this.branch.mediumLists = data.map(item => {return item.medium});
-                this.branch.lowLists = data.map(item => {return item.medium});
-
-                this.$nextTick(() => {
-                  this.drawGraph();
-                })*/
               }
             })
             .catch((error) => {

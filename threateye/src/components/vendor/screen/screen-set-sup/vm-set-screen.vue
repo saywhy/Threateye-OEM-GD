@@ -17,18 +17,27 @@
 
 <script type="text/ecmascript-6">
   import screen from '../Screen.vue'
+  import {mapGetters} from 'vuex'
   export default {
     name: "vm_set_screen_1",
     components:{screen},
+    computed:{
+      ...mapGetters(['asideLists','topLists']),
+    },
+    created(){
+      //console.log(this.asideLists)
+    },
     methods:{
       //取消按钮点击
       click_screen_cancel() {
-
+        this.$store.dispatch('getScreenAside');
       },
       //确认按钮点击
       click_screen_ok() {
-        //this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
-        this.$router.push({path: '/screen'});
+        this.$store.dispatch('setScreenAside')
+          .then(resp => {
+            if(resp){this.$router.push({path: '/screen'});}
+          });
       }
     }
   }

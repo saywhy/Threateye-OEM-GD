@@ -1,17 +1,23 @@
 import axios from "axios";
 export default {
   state: {
+    //基础信息
+    baseInfo:{
+      ScreenName:'',
+      ExtraneousDistributionType:'',
+      ExtraneousDistribution: [{name: "", cascader: []}]
+    },
     //两侧数据
-    asideLists:[{name: '威胁分布', flag: false, aside_id: 0},
-      {name: '威胁指标热力图', flag: false, aside_id: 1},
-      {name: '全球安全动态', flag: false, aside_id: 2},
-      {name: '横向态势威胁', flag: true, aside_id: 3},
-      {name: '分支安全', flag: true, aside_id: 4},
-      {name: '系统状态监控', flag: true, aside_id: 5},
-      {name: '关注告警', flag: true, aside_id: 6},
-      {name: '外连国家TOP5', flag: true, aside_id: 7},
-      {name: '风险趋势', flag: true, aside_id: 8},
-      {name: '威胁排行', flag: false, aside_id: 9}],
+    asideLists:[{name:'威胁分布',alias:'threatDistribution', flag: true, aside_id: 0},
+      {name: '威胁指标热力图',alias:'threatIndicators', flag: false, aside_id: 1},
+      {name: '全球安全动态',alias:'threatDynamics', flag: true, aside_id: 2},
+      {name: '横向态势威胁',alias:'horizontalThreatSituation', flag: false, aside_id: 3},
+      {name: '分支安全',alias:'branchSafe', flag: true, aside_id: 4},
+      {name: '系统状态监控',alias:'systemStatus', flag: false, aside_id: 5},
+      {name: '关注告警',alias:'attentionAlarm', flag: true, aside_id: 6},
+      {name: '外连国家TOP5',alias:'ExternalCountryTop5', flag: true, aside_id: 7},
+      {name: '风险趋势',alias:'riskTrend', flag: false, aside_id: 8},
+      {name: '威胁排行',alias:'threatRange', flag: true, aside_id: 9}],
     //顶部数据
     topLists: [{name:'风险资产数',alias:'risk_asset_count', flag: false, top_id: 0,count:'00000'},
       {name: '外连资产数',alias:'outreachthreat_assets_count', flag: false, top_id: 1,count:'00000'},
@@ -26,29 +32,6 @@ export default {
     topLists: state => state.topLists,
   },
   mutations: {
-    SCREEN_ASIDE_LISTS: (state, args) => {
-      state.asideLists = args;
-    },
-    //两侧
-    SCREEN_ASIDE_ID_FALSE: (state, args) => {
-      let lists = state.asideLists;
-      lists.forEach(function (value, key) {
-        if (value.aside_id == args) {
-          value.flag = false;
-        }
-      });
-      state.asideLists = lists;
-    },
-    SCREEN_ASIDE_ID_TRUE:(state,args) => {
-      let lists = state.asideLists;
-      lists.forEach(function (value, key) {
-        if (value.aside_id == args) {
-          value.flag = true;
-        }
-      });
-      state.asideLists = lists;
-    },
-
     //顶部
     SCREEN_TOP_ID_FALSE: (state, args) => {
       let lists = state.topLists;
@@ -68,6 +51,7 @@ export default {
       });
       state.topLists = lists;
     },
+
     //修改大屏中顶部数据
     SET_SCREEN_TOP:(state,args) => {
       state.topLists.filter(item => {
@@ -80,19 +64,66 @@ export default {
           }
         }
       });
-    }
+    },
+
+    /**
+    *大屏两侧处理
+    * */
+    //更新大屏两侧数据
+    SET_ASIDE_LISTS: (state, args) => {
+      state.asideLists = args;
+    },
+    //通过id修改大屏两侧数据
+    SET_ASIDE_LISTS_ID:(state,args) => {
+      let lists = state.asideLists;
+      lists.forEach(function (value, key) {
+        if (value.aside_id == args.id) {
+          value.flag = args.flag;
+        }
+      });
+      state.asideLists = lists;
+    },
   },
   actions: {
-    //大屏中顶部数据
+    //获取大屏基础信息
+    async getScreenBase({commit,dispatch},context){
+      let resp = await axios('/yiiapi/demonstration/get-base-config',{params:context});
+      let {status, data} = resp.data;
+      //console.log(data)
+
+      /*if(status == 0){
+        commit('SET_ASIDE_LISTS',data);
+        return true;
+      }*/
+    },
+    //获取大屏两侧数据
+    async getScreenAside({commit,dispatch},context){
+      let resp = await axios('/yiiapi/demonstration/get-both-side',{params:context});
+      let {status, data} = resp.data;
+      //console.log(data)
+      if(status == 0){
+        commit('SET_ASIDE_LISTS',data);
+        return true;
+      }
+    },
+    //设置大屏两侧数据
+    async setScreenAside({commit,dispatch},context){
+      let asideLists = this.state.screen.asideLists;
+      let resp = await axios.put('/yiiapi/demonstration/set-both-side',{param:asideLists});
+      let {status, data} = resp.data;
+      if(status == 0){
+        return true;
+      }
+    },
+    //获取大屏顶部数据
     async getScreenTop({commit,dispatch},context){
       let resp = await axios('/yiiapi/demonstration/top-count',{params:context});
-
       let {status, data} = resp.data;
 
+      console.log(data)
       if(status == 0){
         commit('SET_SCREEN_TOP',data);
         return true;
-
       }
     },
   }

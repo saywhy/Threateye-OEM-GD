@@ -8,9 +8,7 @@
         </el-link>
       </div>
       <el-menu :default-active="defaultIndex"
-               class="set-aside-menu"
-               @open="handleOpen"
-               @close="handleClose">
+               class="set-aside-menu">
         <el-submenu index="-1">
           <template slot="title">
             <i class="e-aside-screen-set"></i>
@@ -23,11 +21,11 @@
         <div class="aside-item" >
           <i class="tog" :class="{'active':defaultIndex == '1'}"></i>
           <el-menu-item index="1" @click="change_router('1')" lazy>两侧内容设置</el-menu-item>
-          <vuedraggable class="menu-list" v-model="setAsideLists" v-show="defaultIndex == 1">
+          <vuedraggable class="menu-list" v-model="setAsideLists" v-show="defaultIndex == '1'">
             <transition-group>
               <div class="item" v-for="(item,$index) in setAsideLists" :key="item.aside_id">
                 <span class="title">{{item.name}}</span>
-                <button class="bt" :class="{'active':item.flag}" @click="click_aside(item.aside_id);">
+                <button class="bt" :class="{'active':item.flag}" @click="asideAddClick(item.aside_id);">
                   <span v-show="!item.flag">添加</span>
                   <span v-show="item.flag">已添加</span>
                 </button>
@@ -35,14 +33,14 @@
             </transition-group>
           </vuedraggable>
         </div>
-        <div class="aside-item" >
+        <div class="aside-item">
           <i class="tog" :class="{'active':defaultIndex == '2'}"></i>
           <el-menu-item index="2" @click="change_router('2')" lazy>顶部指标设置</el-menu-item>
           <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == 2">
             <transition-group>
               <div class="item" v-for="(item,$index) in setTopLists" :key="item.top_id">
                 <span class="title">{{item.name}}</span>
-                <button class="bt" :class="{'active':item.flag}" @click="click_top(item.top_id);">
+                <button class="bt" :class="{'active':item.flag}" @click="topAddClick(item.top_id);">
                   <span v-show="!item.flag">添加</span>
                   <span v-show="item.flag">已添加</span>
                 </button>
@@ -98,29 +96,31 @@
       this.defaultIndex = num;
       //拷贝
       let asideLists = this.asideLists;
+
       this.setAsideLists = asideLists;
       //顶部数据拷贝
       let topLists = this.topLists;
       this.setTopLists = topLists;
     },
+    watch: {
+      asideLists: {
+        handler:function(newVal,oldVal){
+          this.setAsideLists = newVal;
+        },
+        //深度监听
+        deep:true
+      },
+    },
     updated() {
-      this.$store.commit('SCREEN_ASIDE_LISTS', this.setAsideLists);
-     //this.$store.commit('SCREEN_TOP_LISTS', this.setTopLists);
-     //console.log(this.setTopLists)
+      //更新大屏两侧数据
+      this.$store.commit('SET_ASIDE_LISTS', this.setAsideLists);
     },
     components: {vuedraggable},
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
       //返回大屏
       back_router() {
         this.$router.push({path: '/screen'});
       },
-
       //侧边栏tabs切换
       change_router(index) {
         if (index == '0') {
@@ -131,20 +131,18 @@
           this.$router.push({path: '/screen/set_screen', query: {num: index}});
         }
       },
-
-      //两侧内容添加点击
-      click_aside(id) {
+      //两侧内容点击添加
+      asideAddClick(id) {
         let attr = this.setAsideLists
           .filter(item => {return item.flag == true});
-
         if (attr.length < 6) {
-          this.$store.commit('SCREEN_ASIDE_ID_TRUE', id);
+          this.$store.commit('SET_ASIDE_LISTS_ID', {id,id,flag:true});
         } else {
           this.$message.warning('两侧内容最多只能添加6条.');
         }
       },
       //顶部内容添加点击
-      click_top(id) {
+      topAddClick(id) {
         let attr = this.setTopLists
           .filter(item => {return item.flag == true});
         if (attr.length < 4) {
@@ -271,7 +269,7 @@
           }
         }
         .menu-list {
-          padding: 6px 16px;
+          padding: 0 16px;
           .item {
             margin: 6px 0;
             width: 218px;
@@ -336,12 +334,10 @@
       z-index: 999;
     }
   }
-
   .slider-enter {
     opacity: 0;
     transform: translateX(100px);
   }
-
   .slider-enter-active {
     transition: all 0.3s ease;
   }

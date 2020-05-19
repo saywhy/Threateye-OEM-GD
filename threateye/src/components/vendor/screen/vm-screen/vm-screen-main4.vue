@@ -23,7 +23,6 @@
         this.getData();
       },
       methods: {
-
         //获取数据
         getData(){
           this.$axios
@@ -95,7 +94,7 @@
                   margin: 10
                 },
                 position:'left',
-                data:this.branch.branchCount,
+                data: this.branch.branchCount,
                 showBackground: true,
                 backgroundStyle: {
                   color: 'rgba(220, 220, 220, 0.9)'

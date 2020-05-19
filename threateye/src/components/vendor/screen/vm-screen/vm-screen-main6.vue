@@ -19,10 +19,10 @@
       </div>
       <div class="attention-table" v-if="dataInfo.length">
         <el-table :data="tableData" class="screen-table">
-          <el-table-column prop="type" label="告警类型"></el-table-column>
-          <el-table-column prop="data0" :label="dataInfo[0].name" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="data1" :label="dataInfo[1].name" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="data2" :label="dataInfo[2].name" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="type" align="center" label="告警类型"></el-table-column>
+          <el-table-column prop="data0" align="center" :label="dataInfo[0].name" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="data1" align="center" :label="dataInfo[1].name" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="data2" align="center" :label="dataInfo[2].name" show-overflow-tooltip></el-table-column>
         </el-table>
       </div>
     </div>
@@ -55,10 +55,15 @@
 
               let {status, data} = resp.data;
 
+              //console.log(data)
+
               if(status == 0){
                 Object.keys(data).forEach((key) => {
                   this.dataInfo.push({name:key,value:data[key]});
                 });
+
+                //console.log(this.dataInfo);
+
                 this.$nextTick(function() {
                   this.drawGraph();
                 });
@@ -212,7 +217,6 @@
           window.addEventListener("resize", () => {
             attent2.resize();
           });
-
           let attent3 = this.$echarts.init(document.getElementById('attent3'));
           attent3.showLoading({ text: '正在加载数据...' });
           attent3.clear();
@@ -287,7 +291,8 @@
       .name{
         flex: 1;
         color: #fff;
-        text-align: left;
+        padding-right: 10px;
+        text-align: right;
       }
       #attent1{
         width: 320px;
@@ -302,7 +307,7 @@
         width: 70px;
         color: #fff;
         text-align: left;
-        padding: 10px;
+        padding-left: 10px;
       }
     }
   }

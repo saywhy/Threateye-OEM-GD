@@ -17,7 +17,7 @@
     <div class="home-content">
       <div class="screen-1">
         <div class="list-item" :class="{'active':!close}" v-if="totalLists.length>0">
-          <vm-screen-all :data="totalLists[0]" :close="close"></vm-screen-all>
+          <vm-screen-all :data="totalLists[0]" :close="close" ></vm-screen-all>
         </div>
         <div class="list-item" :class="{'active':!close}" v-if="totalLists.length>2">
           <vm-screen-all :data="totalLists[2]" :close="close"></vm-screen-all>
@@ -83,24 +83,56 @@
     data() {
       return {
         isFullscreen: false,
-        threatEyeName:''
+        threatEyeName:'',
+        totalLists:[],
+        totalTopLists:[]
       }
     },
 
     computed:{
       ...mapGetters({
+        baseName:'baseName',
         lists:'asideLists',
-        topLists:'topLists'
+        topLists:'topLists',
       }),
-      totalLists(){
+      /*totalLists(){
         return this.lists.filter(item => { return item.flag == true; });
-      },
-      totalTopLists(){
-        return this.topLists.filter(item => { return item.flag == true; });
-      }
+      },*/
+      /* totalTopLists(){
+         return this.topLists.filter(item => { return item.flag == true; });
+       }*/
     },
     created() {
-      this.getName();
+      //大屏基础信息
+      this.$store.dispatch('getScreenBase')
+
+      //大屏两侧
+      this.$store.dispatch('getScreenAside')
+        .then((resp) => {
+          if(resp){
+            let lists = this.lists.filter(item => { return item.flag == true; });
+            this.totalLists = lists;
+          }
+        });
+
+      //大屏顶部
+      this.$store.dispatch('getScreenAside')
+        .then((resp) => {
+          if(resp){
+            let topLists = this.topLists.filter(item => { return item.flag == true; });
+            this.totalTopLists = topLists;
+          }
+        });
+    },
+    watch: {
+      lists: {
+        handler:function(newVal,oldVal){
+          let lists = newVal.filter(item => { return item.flag == true; });
+          this.totalLists = lists;
+        },
+        //深度监听
+        deep:true,
+      },
     },
     mounted() {
       window.onresize = () => {
@@ -160,7 +192,11 @@
           isFull = false
         }
         return isFull
-      }
+      },
+
+
+      /**********************************************/
+
     }
   }
 </script>

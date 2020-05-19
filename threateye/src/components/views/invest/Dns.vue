@@ -184,13 +184,13 @@ export default {
           this.dns_search.loading = false
           let { status, data } = response.data;
 
-          if (data.count > 10000) {
-            this.$message({
-              type: 'warning',
-              message: '数据超过一万条,请缩小搜索条件!'
-            });
-            return false
-          }
+          // if (data.count > 10000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '数据超过一万条,请缩小搜索条件!'
+          //   });
+          //   return false
+          // }
           this.dns_list = data
           this.dns_list.data.forEach((item, index) => {
             item.index_cn = index + 1
@@ -220,13 +220,13 @@ export default {
         });
         return false
       }
-      if (this.dns_list.count > 1000) {
-        this.$message({
-          type: 'warning',
-          message: '下载数据不能超出1000条！'
-        });
-        return false
-      }
+      // if (this.dns_list.count > 1000) {
+      //   this.$message({
+      //     type: 'warning',
+      //     message: '下载数据不能超出1000条！'
+      //   });
+      //   return false
+      // }
       this.$axios.get('/yiiapi/site/check-auth-exist', {
         params: {
           pathInfo: 'yararule/download',

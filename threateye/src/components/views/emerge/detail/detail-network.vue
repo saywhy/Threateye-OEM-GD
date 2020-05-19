@@ -912,7 +912,9 @@ export default {
         workorder_id: '',
         work_order_status: '',
       },
-      network_times_active: {},
+      network_times_active: {
+        alert_description: {}
+      },
       attack_stage_list: [
         {
           name: "Initial Access",

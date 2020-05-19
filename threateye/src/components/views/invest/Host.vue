@@ -280,13 +280,13 @@ export default {
           this.host_search.loading = false
           let { status, data } = response.data;
           console.log(data);
-          if (data.count > 10000) {
-            this.$message({
-              type: 'warning',
-              message: '数据超过一万条,请缩小搜索条件!'
-            });
-            return false
-          }
+          // if (data.count > 10000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '数据超过一万条,请缩小搜索条件!'
+          //   });
+          //   return false
+          // }
           this.host_network = data
           this.host_network_data = data.data
           this.host_network_data.data.forEach((item, index) => {
@@ -313,13 +313,13 @@ export default {
           this.host_search.loading = false
           let { status, data } = response.data;
           console.log(data);
-          if (data.count > 10000) {
-            this.$message({
-              type: 'warning',
-              message: '数据超过一万条,请缩小搜索条件!'
-            });
-            return false
-          }
+          // if (data.count > 10000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '数据超过一万条,请缩小搜索条件!'
+          //   });
+          //   return false
+          // }
           this.host_file = data
           this.host_file_data = data.data
           this.host_file_data.data.forEach((item, index) => {
@@ -345,13 +345,13 @@ export default {
         .then(response => {
           this.host_search.loading = false
           let { status, data } = response.data;
-          if (data.count > 10000) {
-            this.$message({
-              type: 'warning',
-              message: '数据超过一万条,请缩小搜索条件!'
-            });
-            return false
-          }
+          // if (data.count > 10000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '数据超过一万条,请缩小搜索条件!'
+          //   });
+          //   return false
+          // }
           console.log(data);
           this.host_user = data
           this.host_user_data = data.data
@@ -381,13 +381,13 @@ export default {
             });
             return false
           }
-          if (this.host_network.count > 1000) {
-            this.$message({
-              type: 'warning',
-              message: '下载数据不能超出1000条！'
-            });
-            return false
-          }
+          // if (this.host_network.count > 1000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '下载数据不能超出1000条！'
+          //   });
+          //   return false
+          // }
           this.$axios.get('/yiiapi/site/check-auth-exist', {
             params: {
               pathInfo: 'yararule/download',
@@ -410,13 +410,13 @@ export default {
             });
             return false
           }
-          if (this.host_file.count > 1000) {
-            this.$message({
-              type: 'warning',
-              message: '下载数据不能超出1000条！'
-            });
-            return false
-          }
+          // if (this.host_file.count > 1000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '下载数据不能超出1000条！'
+          //   });
+          //   return false
+          // }
           this.$axios.get('/yiiapi/site/check-auth-exist', {
             params: {
               pathInfo: 'yararule/download',
@@ -439,13 +439,13 @@ export default {
             });
             return false
           }
-          if (this.host_user.count > 1000) {
-            this.$message({
-              type: 'warning',
-              message: '下载数据不能超出1000条！'
-            });
-            return false
-          }
+          // if (this.host_user.count > 1000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '下载数据不能超出1000条！'
+          //   });
+          //   return false
+          // }
 
           this.$axios.get('/yiiapi/site/check-auth-exist', {
             params: {

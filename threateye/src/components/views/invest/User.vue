@@ -131,13 +131,13 @@ export default {
         .then(response => {
           this.user_search.loading = false
           let { status, data } = response.data;
-          if (data.count > 10000) {
-            this.$message({
-              type: 'warning',
-              message: '数据超过一万条,请缩小搜索条件!'
-            });
-            return false
-          }
+          // if (data.count > 10000) {
+          //   this.$message({
+          //     type: 'warning',
+          //     message: '数据超过一万条,请缩小搜索条件!'
+          //   });
+          //   return false
+          // }
           this.user_list = data
           this.user_list_data = data.data
           this.user_list_data.data.forEach((item, index) => {
@@ -165,13 +165,13 @@ export default {
         });
         return false
       }
-      if (this.user_list.count > 1000) {
-        this.$message({
-          type: 'warning',
-          message: '下载数据不能超出1000条！'
-        });
-        return false
-      }
+      // if (this.user_list.count > 1000) {
+      //   this.$message({
+      //     type: 'warning',
+      //     message: '下载数据不能超出1000条！'
+      //   });
+      //   return false
+      // }
       this.$axios.get('/yiiapi/site/check-auth-exist', {
         params: {
           pathInfo: 'yararule/download',

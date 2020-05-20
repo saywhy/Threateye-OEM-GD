@@ -79,7 +79,7 @@ export default {
     async getScreenBase({commit,dispatch},context){
       let resp = await axios('/yiiapi/demonstration/get-base-config',{params:context});
       let {status, data} = resp.data;
-      console.log(data)
+     // console.log(data)
 
       if(status == 0){
         commit('SET_BASE_INFO',data);

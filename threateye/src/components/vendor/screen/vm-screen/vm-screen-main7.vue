@@ -6,7 +6,8 @@
             <span class="flag-icon" :class="calculate(item.alias)"></span>
           </div>
           <span class="vam-progress-title">
-            {{item.country}}&nbsp;&nbsp;{{item.count}}
+            <span class="country_name" :title="item.country_name">{{item.country_name}}</span>
+            <span class="country_count">{{item.count}}</span>
           </span>
           <el-progress :show-text="false" :text-inside="true"
                        :stroke-width="20" :percentage="item.count">
@@ -21,11 +22,11 @@
       name: "vm-screen-main7",
       data(){
           return{
-            progress_data_list:[{pid:0,name:'英国',num:0,count:0},
-              {pid:1,name:'美国',num:0,count:0},
-              {pid:2,name:'法国',num:0,count:0},
-              {pid:3,name:'德国',num:0,count:0},
-              {pid:4,name:'意大利',num:0,count:0}]
+            progress_data_list:[{pid:0,name:'CN',country_name:'中国', num:0, count:0},
+              {pid:1,name:'CN',country_name:'中国', num:0,count:0},
+              {pid:2,name:'CN',country_name:'中国', num:0,count:0},
+              {pid:3,name:'CN',country_name:'中国', num:0,count:0},
+              {pid:4,name:'CN',country_name:'中国', num:0,count:0}]
           }
       },
       created() {
@@ -42,6 +43,7 @@
               let {status, data} = resp.data;
 
               if(status == 0){
+
                 data.map(item => {
 
                   let alias = item.country.toLowerCase();
@@ -74,27 +76,41 @@
   .vm-progress-list{
     height: auto;
     margin-top: 6px;
+    margin-right: 10px;
     .item{
       display: flex;
       line-height: 45px;
       .vam-progress-item{
         width: 40px;
-        margin-right: 10px;
         .progress-img{
           vertical-align: middle;
           width: 32px;
         }
       }
       .vam-progress-title{
-        width: 80px;
+        width: 90px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         text-align: left;
         cursor: default;
         font-family: PingFang;
-        font-size: 14px;
         color: #fff;
+
+        .country_name{
+          width: 54px;
+          float: left;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          font-size: 14px;
+        }
+        .country_count{
+          display: inline-block;
+          font-size: 14px;
+          width: 32px;
+          float: right;
+        }
       }
       /deep/
       .el-progress{

@@ -1,7 +1,7 @@
 <template>
     <div class="vm_set_screen_1">
       <el-header class="set-header">
-        <h3 class="title">两侧内容设置</h3>
+        <h3 class="title">{{pageHeaderName}}</h3>
         <div class="btn-group">
           <el-button class="btn btn_cacel" @click="click_screen_cancel();">取消</el-button>
           <el-button class="btn btn_ok" @click="click_screen_ok();">确认</el-button>
@@ -23,7 +23,8 @@
     components:{screen},
     data() {
       return {
-        defaultIndex: "0"
+        defaultIndex: "0",
+        pageHeaderName:'两侧内容设置'
       }
     },
     computed:{
@@ -32,6 +33,11 @@
     created(){
       let num = this.$route.query.num;
       this.defaultIndex = num;
+      if(num == 1){
+        this.pageHeaderName = '两侧内容设置';
+      }else if(num == 2){
+        this.pageHeaderName = '顶部内容设置';
+      }
     },
     methods:{
       //取消按钮点击

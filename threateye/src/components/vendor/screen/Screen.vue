@@ -6,10 +6,12 @@
       </div>
       <div class="home_c">{{baseInfo.ScreenName}}</div>
       <div class="home_r">
-        <button type="primary" class="e_btn e_btn_set" @click="set_screen();">
+        <el-button type="primary" class="e_btn e_btn_set" icon="el-icon-setting" @click="setScreen();">设置</el-button>
+        <el-button type="primary" class="e_btn e_btn_full" icon="el-icon-full-screen" @click="fullScreen();">全屏</el-button>
+        <!--<button type="primary" class="e_btn e_btn_set" @click="setScreen();">
           <i class="h_img h_setting"></i><span class="t_title">设置</span></button>
-        <button type="primary" class="e_btn e_btn_full" @click="full_screen();">
-          <i class="h_img h_all"></i><span class="t_title">全屏</span></button>
+        <button type="primary" class="e_btn e_btn_full" @click="fullScreen();">
+          <i class="h_img h_all"></i><span class="t_title">全屏</span></button>-->
       </div>
     </div>
     <div class="home-content">
@@ -93,13 +95,7 @@
         baseInfo:'baseInfo',
         lists:'asideLists',
         topLists:'topLists',
-      }),
-      /*totalLists(){
-        return this.lists.filter(item => { return item.flag == true; });
-      },*/
-      /* totalTopLists(){
-         return this.topLists.filter(item => { return item.flag == true; });
-       }*/
+      })
     },
     created() {
       //大屏基础信息
@@ -130,16 +126,15 @@
           this.totalLists = lists;
         },
         //深度监听
-        deep:true,
+        deep:true
       },
       topLists: {
         handler:function(newVal,oldVal){
           let topLists = newVal.filter(item => { return item.flag == true; });
           this.totalTopLists = topLists;
-          //console.log(topLists)
         },
         //深度监听
-        deep:true,
+        deep:true
       },
     },
     mounted() {
@@ -147,7 +142,7 @@
         // 全屏下监控是否按键了ESC
         if (!this.checkFull()) {
           // 全屏下按键esc后要执行的动作
-          this.isFullscreen = false
+          this.isFullscreen = false;
         }
       }
     },
@@ -171,26 +166,16 @@
 
           });
       },
-
       //设置
-      set_screen() {
+      setScreen() {
         this.$router.push({path: '/screen/set/base', query: {num: '0'}});
       },
       //全屏
-      full_screen() {
-     /*   if (screenfull.enabled) {
-          this.$message({
-            message: 'Your browser does not work',
-            type: 'warning'
-          })
-          return false
-        }*/
-        screenfull.toggle()
-        this.isFullscreen = true
+      fullScreen() {
+        screenfull.toggle();
+        this.isFullscreen = true;
       },
-      /**
-       * 是否全屏并按键ESC键的方法
-       */
+      //ESC键
       checkFull() {
         var isFull = document.fullscreenEnabled ||
           window.fullScreen || document.webkitIsFullScreen ||
@@ -201,10 +186,7 @@
         }
         return isFull
       },
-
-
       /**********************************************/
-
     }
   }
 </script>
@@ -264,13 +246,14 @@
           border-width: 0;
           line-height: inherit;
           color: #fff;
+          padding: 0;
           outline: none;
           background-color: transparent;
           background-repeat: no-repeat;
           font-family: PingFangSC-Regular;
-          font-size: 12.47px;
+          font-size: 14px;
           cursor: pointer;
-          vertical-align: text-top;
+          border-radius: 0;
           /*box-shadow: inset 0 0 11px 5px rgba(0,122,255,0.36);*/
           & + .el-button {
             margin-left: 0;
@@ -284,13 +267,13 @@
             margin-top: 5px;
             background-image: url("../../../assets/images/screen/head-full.png");
           }
-          .h_img{
+          /*.h_img{
             margin-top: 3px;
             margin-right: 4px;
-            width: 16px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background-repeat: no-repeat;
-            background-size: 16px;
+            background-size: 14px 14px;
             background-position: 0;
             display: inline-block;
             vertical-align: text-top;
@@ -302,8 +285,10 @@
             }
           }
           .t_title{
-
-          }
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #FFFFFF;
+          }*/
         }
       }
     }

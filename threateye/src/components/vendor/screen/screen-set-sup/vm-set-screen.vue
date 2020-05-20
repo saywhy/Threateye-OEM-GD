@@ -21,11 +21,17 @@
   export default {
     name: "vm_set_screen_1",
     components:{screen},
+    data() {
+      return {
+        defaultIndex: "0"
+      }
+    },
     computed:{
       ...mapGetters(['asideLists','topLists']),
     },
     created(){
-      //console.log(this.asideLists)
+      let num = this.$route.query.num;
+      this.defaultIndex = num;
     },
     methods:{
       //取消按钮点击
@@ -34,10 +40,20 @@
       },
       //确认按钮点击
       click_screen_ok() {
-        this.$store.dispatch('setScreenAside')
-          .then(resp => {
-            if(resp){this.$router.push({path: '/screen'});}
-          });
+        let defaultIndex = this.defaultIndex;
+        if(defaultIndex == 1){
+          //修改两侧
+          this.$store.dispatch('setScreenAside')
+            .then(resp => {
+              if(resp){this.$router.push({path: '/screen'});}
+            });
+        }else if(defaultIndex == 2){
+          //修改顶部
+          this.$store.dispatch('setScreenTop')
+            .then(resp => {
+              if(resp){this.$router.push({path: '/screen'});}
+            });;
+        }
       }
     }
   }
@@ -78,7 +94,6 @@
         font-size: 16px;
         padding: 0;
         font-family: PingFangSC-Regular;
-
         &.btn_cacel {
           background: #fff;
           color: #0070FF;

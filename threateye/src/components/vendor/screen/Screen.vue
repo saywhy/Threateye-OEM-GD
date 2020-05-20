@@ -4,9 +4,7 @@
       <div class="home_l">
         <label class="e_label"></label>
       </div>
-      <div class="home_c">
-        {{threatEyeName}}
-      </div>
+      <div class="home_c">{{baseInfo.ScreenName}}</div>
       <div class="home_r">
         <button type="primary" class="e_btn e_btn_set" @click="set_screen();">
           <i class="h_img h_setting"></i><span class="t_title">设置</span></button>
@@ -28,7 +26,8 @@
       </div>
       <div class="screen-2">
         <div class="list-item list-item-top" :class="{'active':!close}">
-          <vm-screen-middle0 :data="totalTopLists" :close="topClose"></vm-screen-middle0>
+          <vm-screen-middle0 :topData="totalTopLists" :close="topClose" v-if="totalTopLists.length>0">
+          </vm-screen-middle0>
         </div>
         <div class="list-item list-item-middle" :class="{'active':!close}">
           <header class="title">外连分支<i class="t_img"></i></header>
@@ -91,7 +90,7 @@
 
     computed:{
       ...mapGetters({
-        baseName:'baseName',
+        baseInfo:'baseInfo',
         lists:'asideLists',
         topLists:'topLists',
       }),
@@ -104,7 +103,7 @@
     },
     created() {
       //大屏基础信息
-      this.$store.dispatch('getScreenBase')
+      this.$store.dispatch('getScreenBase');
 
       //大屏两侧
       this.$store.dispatch('getScreenAside')
@@ -116,7 +115,7 @@
         });
 
       //大屏顶部
-      this.$store.dispatch('getScreenAside')
+      this.$store.dispatch('getScreenTop')
         .then((resp) => {
           if(resp){
             let topLists = this.topLists.filter(item => { return item.flag == true; });
@@ -129,6 +128,15 @@
         handler:function(newVal,oldVal){
           let lists = newVal.filter(item => { return item.flag == true; });
           this.totalLists = lists;
+        },
+        //深度监听
+        deep:true,
+      },
+      topLists: {
+        handler:function(newVal,oldVal){
+          let topLists = newVal.filter(item => { return item.flag == true; });
+          this.totalTopLists = topLists;
+          //console.log(topLists)
         },
         //深度监听
         deep:true,
@@ -261,6 +269,7 @@
           background-repeat: no-repeat;
           font-family: PingFangSC-Regular;
           font-size: 12.47px;
+          cursor: pointer;
           vertical-align: text-top;
           /*box-shadow: inset 0 0 11px 5px rgba(0,122,255,0.36);*/
           & + .el-button {

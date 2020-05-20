@@ -6,14 +6,32 @@
           <div class="form-item">
             <label class="title">大屏名称</label>
             <el-form-item>
-              <el-input v-model="baseInfo.ScreenName" placeholder="请输入大屏名称"></el-input>
+              <el-input v-model="baseInfo.screenName" placeholder="请输入大屏名称"></el-input>
             </el-form-item>
             <el-divider></el-divider>
           </div>
           <div class="form-item">
+            <label class="title">总部</label>
+            <el-form-item>
+              <div class="item">
+                <span class="title_sub">显示名称</span>
+                <el-input v-model="baseInfo.base_general.name" placeholder="上汽荣威" class="input_special"></el-input>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <span class="title_sub">所在城市</span>
+                <el-cascader placeholder="请选择地理位置"
+                             v-model="baseInfo.base_general.cascader"
+                             :options="area_array"
+                             filterable
+                             clearable>
+                </el-cascader>
+              </div>
+            </el-form-item>
+          </div>
+          <div class="form-item">
             <label class="title">分支</label>
-            <el-form-item class="e-form-item_branch" :key="$index"
-                          v-for="(item,$index) in baseInfo.ExtraneousDistribution">
+            <el-form-item class="e-form-item_branch" v-for="(item,$index) in baseInfo.base_branch" :key="$index">
               <div class="item">
                 <span class="title_sub">显示名称</span>
                 <el-input v-model="item.name" placeholder="上汽荣威" class="input_special"></el-input>
@@ -60,9 +78,12 @@
         return {
           area_array:[],
           baseInfo:{
-            ScreenName:'',
-            ExtraneousDistributionType:'',
-            ExtraneousDistribution: [{name: "", cascader: []},
+            screenName:'',
+            base_general: {
+              name: "",
+              cascader: []
+            },
+            base_branch: [{name: "", cascader: []},
               {name: "", cascader: []},
               {name: "", cascader: []}
             ]
@@ -230,11 +251,13 @@
         font-size: 16px;
         padding: 0;
         font-family: PingFangSC-Regular;
+
         &.btn_cacel {
           background: #fff;
           color: #0070FF;
           margin-right: 10px;
         }
+
         &.btn_ok {
           background: #0070FF;
           color: #FFFFFF;

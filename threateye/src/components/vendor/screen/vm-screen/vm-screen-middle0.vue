@@ -6,7 +6,7 @@
           <dd class="content">
             <span class="item" v-for="(it,idx) in item.num" :key="idx">{{it}}</span>
           </dd>
-          <i class="close" v-show="!close" @click="closeTops(item.top_id);"></i>
+          <i class="close" v-show="!close" @click="topdelClick(item.top_id);"></i>
         </dl>
       </div>
     </div>
@@ -15,25 +15,67 @@
 <script type="text/ecmascript-6">
     export default {
       name: "vm-screen-middle0",
-      props:['data','close'],
+      props:['topData','close'],
       data(){
-          return {}
-      },
-      computed:{
-        riskData(){
-          let riskData = this.data;
-          riskData.map(item => {
-            Object.assign(item,{num:item.count.toString().split('')});
-          });
-          return riskData;
-        }
+          return {
+            topFlag: true,
+            riskData: []
+          }
       },
       created(){
-        this.$store.dispatch('getScreenTop');
+        this.getData();
+      },
+      watch:{
+        topData: {
+          handler:function(newVal,oldVal){
+            if(!this.topFlag){this.getData();}
+          },
+          //深度监听
+          deep:true,
+        },
       },
       methods:{
-        closeTops(id){
-          this.$store.commit('SCREEN_TOP_ID_FALSE', id);
+        //获取数据
+        getData() {
+          this.$axios
+            .get('/yiiapi/demonstration/top-count')
+
+            .then((resp) => {
+
+              this.topFlag = false;
+
+              let {status, data} = resp.data;
+
+              if (status == 0) {
+
+                let riskData = this.topData;
+
+                riskData.map(item => {
+
+                  for (let key in data) {
+
+                    if(item.alias == key){
+
+                      let count = String(data[key]).padStart(5,'0');
+                      if(!item.num){
+                        Object.assign(item,{num:count.toString().split('')});
+                      }
+                      //item.num = count.toString().split('');
+
+                    }
+                  }
+                });
+
+                this.riskData = riskData;
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+        //顶部内容点击删除
+        topdelClick(id){
+          this.$store.commit('SET_TOP_LISTS_ID', {id,id,flag:false});
         },
       }
     }

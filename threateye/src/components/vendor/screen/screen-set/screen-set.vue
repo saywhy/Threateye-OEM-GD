@@ -36,7 +36,7 @@
         <div class="aside-item">
           <i class="tog" :class="{'active':defaultIndex == '2'}"></i>
           <el-menu-item index="2" @click="change_router('2')" lazy>顶部指标设置</el-menu-item>
-          <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == 2">
+          <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == '2'">
             <transition-group>
               <div class="item" v-for="(item,$index) in setTopLists" :key="item.top_id">
                 <span class="title">{{item.name}}</span>
@@ -96,8 +96,8 @@
       this.defaultIndex = num;
       //拷贝
       let asideLists = this.asideLists;
-
       this.setAsideLists = asideLists;
+
       //顶部数据拷贝
       let topLists = this.topLists;
       this.setTopLists = topLists;
@@ -110,10 +110,24 @@
         //深度监听
         deep:true
       },
+      topLists: {
+        handler:function(newVal,oldVal){
+          //console.log(newVal)
+          this.setTopLists = newVal;
+        },
+        //深度监听
+        deep:true
+      },
     },
     updated() {
-      //更新大屏两侧数据
-      this.$store.commit('SET_ASIDE_LISTS', this.setAsideLists);
+      let defaultIndex = this.defaultIndex;
+      if(defaultIndex == 1){
+        //更新大屏两侧数据
+        this.$store.commit('SET_ASIDE_LISTS', this.setAsideLists);
+      }else if(defaultIndex == 2){
+        //更新大屏顶部数据
+        this.$store.commit('SET_TOP_LISTS', this.setTopLists);
+      }
     },
     components: {vuedraggable},
     methods: {
@@ -146,7 +160,7 @@
         let attr = this.setTopLists
           .filter(item => {return item.flag == true});
         if (attr.length < 4) {
-          this.$store.commit('SCREEN_TOP_ID_TRUE', id);
+          this.$store.commit('SET_TOP_LISTS_ID', {id,id,flag:true});
         } else {
           this.$message.warning('顶部内容最多只能添加4条.');
         }

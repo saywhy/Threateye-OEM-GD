@@ -973,6 +973,7 @@ export default {
     },
     import_box () {
       this.monitor_state.import = true;
+      this.$refs.uploadExcel.clearFiles();
     },
     closed_add_box () {
       this.monitor_state.add = false;
@@ -1045,6 +1046,7 @@ export default {
           }
         );
       }
+      this.$refs.uploadExcel.clearFiles();
     },
     // 文件上传失败时的钩子
     handleError (err, file, fileList) {
@@ -1054,6 +1056,7 @@ export default {
           type: 'error',
         }
       );
+      this.$refs.uploadExcel.clearFiles();
     },
     uploadFile () {
       this.$axios.get('/yiiapi/site/check-auth-exist', {

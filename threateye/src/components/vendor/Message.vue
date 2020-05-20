@@ -46,6 +46,14 @@
         </el-col>
       </el-row>
     </div>
+    <!-- 测试 -->
+    <div class="box_fa">
+      <div id="file"></div>
+      <div class="box">
+        <div class="line"></div>
+      </div>
+    </div>
+    <!-- 测试 -->
   </div>
 </template>
 
@@ -75,7 +83,10 @@ export default {
   },
   components: { backTitle },
   created () {
-    this.get_news()
+    this.get_news();
+  },
+  mounted () {
+    this.graph();
   },
   methods: {
     // 获取新消息
@@ -110,6 +121,131 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`);
     },
+    graph () {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("file"));
+      myChart.showLoading({ text: '正在加载数据...' });
+      myChart.clear();
+      // 绘制图表
+      myChart.setOption({
+        grid: {
+          top: "8%",
+          left: 36,
+          right: "4%",
+          bottom: 24
+        },
+        tooltip: {
+          trigger: "axis",
+          borderColor: "rgba(2,136,209,0.3)",
+          borderWidth: 2,
+          backgroundColor: "#fff",
+          textStyle: {
+            color: "#ccc"
+          },
+          axisPointer: {
+            lineStyle: {
+              color: "#ccc"
+            }
+          }
+        },
+        color: ["#0288D1"],
+        xAxis: {
+          boundaryGap: false,
+          //网格样式
+          splitLine: {
+            show: true,
+            interval: 'auto', //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+            maxInterval: 3600 * 24 * 1000,
+            lineStyle: {
+              color: ["#F4F4F4"],
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        },
+        yAxis: {
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#F4F4F4",
+              width: 1,
+              type: "solid"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#ECECEC",
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#666666"
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [
+          {
+            name: "文件",
+            type: "line",
+            symbol: "none",
+            cursor: "pointer",
+            smooth: true,
+            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            lineStyle: {
+              color: "#0288D1"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(2,136,209,0.3)" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "rgba(2,136,209,0.1)" // 100% 处的颜色
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      });
+
+      myChart.hideLoading();
+      window.addEventListener("resize", () => {
+        myChart.resize();
+      });
+    },
+    settime () {
+      setInterval(() => {
+
+      }, 100);
+    }
   },
 }
 </script>
@@ -145,6 +281,49 @@ export default {
     .message-bottom {
       min-height: 658px;
     }
+  }
+}
+// 测试
+#file {
+  width: 800px;
+  height: 200px;
+}
+.box_fa {
+  position: relative;
+  width: 800px;
+  height: 200px;
+}
+.box {
+  position: absolute;
+  right: 22px;
+  top: 0;
+  width: 100px;
+  height: 200px;
+  border: 1px solid #0070ff;
+}
+.line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 4px;
+  background: red;
+  animation: moveHover 5s ease-in-out 0.2s;
+  animation-iteration-count: infinite;
+  opacity: 0.6;
+}
+@keyframes moveHover {
+  0% {
+    height: 4px;
+    background: #cd4a48;
+  }
+  50% {
+    height: 200px;
+    background: #a48992;
+  }
+  100% {
+    height: 4px;
+    background: #ffb89a;
   }
 }
 </style>

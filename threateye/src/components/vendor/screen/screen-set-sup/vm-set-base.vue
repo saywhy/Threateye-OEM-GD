@@ -155,7 +155,6 @@
         font-size: 16px;
         color: #333333;
         text-align: left;
-        font-weight: bold;
       }
       .form-item{
         text-align: left;

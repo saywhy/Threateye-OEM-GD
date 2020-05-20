@@ -120,11 +120,11 @@ export const constantRouterMap = [{
       },
     ]
   },
-  {
+  /*{
     path: '/text',
     name:'text',
     component: () => import('@/components/vendor/screen/text')
-  },
+  },*/
   {
     path: '/screen',
     name:'screen',

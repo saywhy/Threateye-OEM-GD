@@ -42,7 +42,12 @@
     methods:{
       //取消按钮点击
       click_screen_cancel() {
-        this.$store.dispatch('getScreenAside');
+        let defaultIndex = this.defaultIndex;
+        if(defaultIndex == 1){
+          this.$store.dispatch('getScreenAside');
+        }else if(defaultIndex == 2){
+          this.$store.dispatch('getScreenTop');
+        }
       },
       //确认按钮点击
       click_screen_ok() {

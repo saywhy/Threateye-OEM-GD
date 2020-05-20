@@ -76,7 +76,7 @@
   .vm-progress-list{
     height: auto;
     margin-top: 6px;
-    margin-right: 10px;
+    margin-right: 6px;
     .item{
       display: flex;
       line-height: 45px;

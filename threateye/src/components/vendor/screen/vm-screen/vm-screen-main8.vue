@@ -16,7 +16,6 @@
           }
       },
       created() {
-        console.log('我来了')
         this.getData();
       },
       methods:{

@@ -244,8 +244,8 @@
               data: alert2Data,
               type: 'line',
               smooth: true,
-              itemStyle:{
-                opacity:0
+              itemStyle: {
+                opacity: 0
               },
               lineStyle:{
                 color:'#F3AB15',

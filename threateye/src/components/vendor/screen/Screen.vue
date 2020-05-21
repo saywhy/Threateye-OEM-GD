@@ -6,8 +6,10 @@
       </div>
       <div class="home_c">{{baseInfo.ScreenName}}</div>
       <div class="home_r">
-        <el-button type="primary" class="e_btn e_btn_set" icon="el-icon-setting" @click="setScreen();">设置</el-button>
-        <el-button type="primary" class="e_btn e_btn_full" icon="el-icon-full-screen" @click="fullScreen();">全屏</el-button>
+        <el-button type="primary" class="e_btn e_btn_set"
+                   icon="el-icon-setting" @click="setScreen();">设置</el-button>
+        <el-button type="primary" class="e_btn e_btn_full"
+                   icon="el-icon-full-screen" @click="fullScreen();">全屏</el-button>
         <!--<button type="primary" class="e_btn e_btn_set" @click="setScreen();">
           <i class="h_img h_setting"></i><span class="t_title">设置</span></button>
         <button type="primary" class="e_btn e_btn_full" @click="fullScreen();">
@@ -37,6 +39,7 @@
         </div>
         <div class="list-item list-item-bottom" :class="{'active':!close}">
           <header class="title">实时流量统计<i class="t_img"></i></header>
+          <vm-screen-middle2></vm-screen-middle2>
         </div>
       </div>
       <div class="screen-3">
@@ -62,6 +65,7 @@
   import VmScreenAll from './vm-screen/vm-screen-all';
   import VmScreenMiddle0 from './vm-screen/vm-screen-middle0';
   import VmScreenMiddle1 from './vm-screen/vm-screen-middle1';
+  import VmScreenMiddle2 from './vm-screen/vm-screen-middle2';
   import { mapGetters } from 'vuex'
   export default {
     name: "home-screen",
@@ -79,7 +83,8 @@
       draggable,
       VmScreenAll,
       VmScreenMiddle0,
-      VmScreenMiddle1
+      VmScreenMiddle1,
+      VmScreenMiddle2
     },
     data() {
       return {

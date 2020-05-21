@@ -48,10 +48,7 @@
               let {status, data} = resp.data;
 
               if(status == 0){
-
-                //console.log(data)
                 this.stateData = data;
-
               }
             })
             .catch((error) => {

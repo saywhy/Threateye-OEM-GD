@@ -19,9 +19,9 @@
           <el-menu-item index="0" @click="change_router('0')">基本内容设置</el-menu-item>
         </div>
         <div class="aside-item" >
-          <i class="tog" :class="{'active':defaultIndex == '1'}"></i>
+          <i class="tog" :class="{'active':defaultIndex == '1','rotate':!rotate1Active}" @click="rotateClick();"></i>
           <el-menu-item index="1" @click="change_router('1')" lazy>两侧内容设置</el-menu-item>
-          <vuedraggable class="menu-list" v-model="setAsideLists" v-show="defaultIndex == '1'">
+          <vuedraggable class="menu-list" v-model="setAsideLists" v-show="defaultIndex == '1' && rotate1Active">
             <transition-group>
               <div class="item" v-for="(item,$index) in setAsideLists" :key="item.aside_id">
                 <span class="title">{{item.name}}</span>
@@ -34,9 +34,9 @@
           </vuedraggable>
         </div>
         <div class="aside-item">
-          <i class="tog" :class="{'active':defaultIndex == '2'}"></i>
+          <i class="tog" :class="{'active':defaultIndex == '2','rotate':!rotate2Active}" @click="rotateClick();"></i>
           <el-menu-item index="2" @click="change_router('2')" lazy>顶部指标设置</el-menu-item>
-          <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == '2'">
+          <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == '2' && rotate2Active">
             <transition-group>
               <div class="item" v-for="(item,$index) in setTopLists" :key="item.top_id">
                 <span class="title">{{item.name}}</span>
@@ -78,9 +78,9 @@
     name: "screen-set",
     data() {
       return {
+        rotate1Active:true,
+        rotate2Active:true,
         defaultIndex: "0",
-        default1Flag:true,
-        default2Flag:true,
         setAsideLists: [],
         setTopLists:[]
       }
@@ -143,6 +143,14 @@
           this.$router.push({path: '/screen/set_screen', query: {num: index}});
         } else if (index == '2') {
           this.$router.push({path: '/screen/set_screen', query: {num: index}});
+        }
+      },
+      rotateClick(){
+        let defaultIndex = this.defaultIndex;
+        if(defaultIndex == 1){
+          this.rotate1Active = !this.rotate1Active;
+        }else if(defaultIndex == 2){
+          this.rotate2Active = !this.rotate2Active;
         }
       },
       //两侧内容点击添加
@@ -242,11 +250,14 @@
             background-image: url("../../../../assets/images/screen/aside-right.png");
             background-repeat: no-repeat;
             background-size: 12px;
-            background-position: 3px;
+            background-position: 2px 3px;
             z-index: 1000;
             cursor: pointer;
-            &.active{
+            &.active {
               background-image: url("../../../../assets/images/screen/aside-down.png");
+            }
+            &.rotate{
+              transform: rotate(-90deg);
             }
           }
           .el-menu-item {

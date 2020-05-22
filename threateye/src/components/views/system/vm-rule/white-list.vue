@@ -266,6 +266,7 @@ export default {
         );
       }
     },
+
     onsuccess (params) {
       console.log(params);
       this.$axios.get('/yiiapi/site/check-auth-exist', {

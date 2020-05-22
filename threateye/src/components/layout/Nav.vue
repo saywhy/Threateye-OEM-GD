@@ -33,7 +33,7 @@
         <div class="header-basic"
              align="right">
           <el-badge class="item"
-                    :value="131"
+                    :value="news_count"
                     :max="99"
                     v-show="true">
             <img :src="messageSrc"
@@ -171,6 +171,7 @@
 import { mapState, mapGetters } from 'vuex';
 
 import { getToken, setToken, removeToken } from "@/store/layout/cookie";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: 'Nav',
   data () {
@@ -196,6 +197,7 @@ export default {
         id: "",
         allow_ip: ''
       },
+      news_count: 0
     };
   },
   computed: {
@@ -205,6 +207,15 @@ export default {
     ...mapGetters([
       'addRouters'
     ])
+  },
+  mounted () {
+    this.get_news();
+    setInterval(() => {
+      this.get_news();
+    }, 2000);
+    eventBus.$on('reset', () => {
+      this.modifyPassword()
+    })
   },
   methods: {
     /*login(){
@@ -425,7 +436,20 @@ export default {
       } else {
         this.$router.push('/message')
       }
-    }
+    },
+    // 获取新消息
+    get_news () {
+      this.$axios.get('/yiiapi/news/count')
+        .then((resp) => {
+          let { status, data } = resp.data;
+          let datas = data;
+          this.news_count = datas.count
+          console.log(this.news_count);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
   }
 }
 </script>

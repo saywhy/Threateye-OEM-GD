@@ -234,9 +234,10 @@ export default {
         file.ignored = true
       }
     },
-
     onFileSuccess (rootFile, file, params_response, chunk) {
       console.log(rootFile);
+      console.log(file);
+
       console.log(params_response);
       console.log(chunk);
       this.$axios.get('/yiiapi/site/check-auth-exist', {
@@ -246,6 +247,8 @@ export default {
       })
         .then(response => {
           if (JSON.parse(params_response).status == 1) {
+            // rootFile.ignored = true
+            file.cancel()
             this.$message(
               {
                 message: JSON.parse(params_response).msg,
@@ -270,8 +273,10 @@ export default {
         })
       console.log(chunk);
     },
-    onFileError (params) {
+    onFileError (params, file) {
       console.log(params);
+      console.log(file);
+      file.ignored = true
       this.$axios.get('/yiiapi/site/check-auth-exist', {
         params: {
           pathInfo: 'yararule/download',

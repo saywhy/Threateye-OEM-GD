@@ -444,7 +444,6 @@ export default {
           let { status, data } = resp.data;
           let datas = data;
           this.news_count = datas.count
-          console.log(this.news_count);
         })
         .catch(error => {
           console.log(error);

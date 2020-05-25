@@ -53,6 +53,9 @@
               <el-radio v-model="send_config.report_type"
                         label="excel"
                         class="r_radio_item">Excel</el-radio>
+              <el-radio v-model="send_config.report_type"
+                        label="pdf"
+                        class="r_radio_item">PDF</el-radio>
             </div>
           </el-col>
         </el-row>

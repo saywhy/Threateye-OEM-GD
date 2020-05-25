@@ -30,6 +30,9 @@
               <el-radio v-model="report.type"
                         label="csv"
                         class="r_radio_item">Excel</el-radio>
+              <el-radio v-model="report.type"
+                        label="pdf"
+                        class="r_radio_item">PDF</el-radio>
             </div>
           </el-col>
         </el-row>

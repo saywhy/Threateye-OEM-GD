@@ -209,7 +209,7 @@ export default {
       if (value.length == 0) {
         this.$message(
           {
-            message: '请至少选择一种威胁等级设置告警邮件通知！',
+            message: '请至少选择一种威胁等级设置告警邮件通知',
             type: 'warning',
           }
         );
@@ -217,6 +217,16 @@ export default {
     },
     // 发送测试
     send_test () {
+      console.log(this.checkList);
+      if (this.checkList.length == 0) {
+        this.$message(
+          {
+            message: '请至少选择一种威胁等级设置告警邮件通知',
+            type: 'warning',
+          }
+        );
+        return false
+      }
       var encryption = ''
       var alertEmail = []
       this.mail.alertEmail_list.forEach(element => {
@@ -247,6 +257,23 @@ export default {
       } else {
         encryption = ''
       }
+      var degree_list = []
+      this.checkList.forEach(element => {
+        switch (element) {
+          case '高危':
+            degree_list.push('high')
+            break;
+          case '中危':
+            degree_list.push('midium')
+            break;
+          case '低危':
+            degree_list.push('low')
+            break;
+
+          default:
+            break;
+        }
+      });
       this.$axios.post('/yiiapi/email/test', {
         encryption: encryption,
         host: this.mail.host,
@@ -256,6 +283,7 @@ export default {
         send: this.mail.send,
         content: this.mail.content,
         alertEmail: alertEmail,
+        degree: degree_list
       })
         .then(response => {
           let { status, data } = response.data;
@@ -286,6 +314,15 @@ export default {
     },
     // 保存配置
     send_save () {
+      if (this.checkList.length == 0) {
+        this.$message(
+          {
+            message: '请至少选择一种威胁等级设置告警邮件通知',
+            type: 'warning',
+          }
+        );
+        return false
+      }
       var encryption = ''
       var alertEmail = []
       console.log(this.mail.alertEmail_list);
@@ -317,6 +354,23 @@ export default {
       } else {
         encryption = ''
       }
+      var degree_list = []
+      this.checkList.forEach(element => {
+        switch (element) {
+          case '高危':
+            degree_list.push('high')
+            break;
+          case '中危':
+            degree_list.push('midium')
+            break;
+          case '低危':
+            degree_list.push('low')
+            break;
+
+          default:
+            break;
+        }
+      });
       this.$axios.post('/yiiapi/email/save', {
         encryption: encryption,
         host: this.mail.host,
@@ -326,6 +380,7 @@ export default {
         send: this.mail.send,
         content: this.mail.content,
         alertEmail: alertEmail,
+        degree: degree_list
       })
         .then(response => {
           let { status, data } = response.data;
@@ -340,7 +395,6 @@ export default {
               }
             );
           }
-
         })
         .catch(error => {
           console.log(error);
@@ -367,7 +421,6 @@ export default {
     del_addr (item, index) {
       this.mail.alertEmail_list.splice(index, 1);
     },
-
   }
 };
 </script>

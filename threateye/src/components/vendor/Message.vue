@@ -74,6 +74,18 @@
         <div class="line"></div>
       </div>
     </div>
+    <div class="reli_box">
+      <ul>
+        <li class="reli_item"
+            v-for="item in reli_list"
+            :style="item.style">
+          <span class="reli_item_span"
+                :class="item.change?'changed':''">
+            {{item.name}}
+          </span>
+        </li>
+      </ul>
+    </div>
     <!-- 测试 -->
   </div>
 </template>
@@ -86,25 +98,65 @@ export default {
   data () {
     return {
       title_name: "通知消息",
-      tableData: [{
-        time: '2019.11.08 15:33:24',
-        origin: '王小虎',
-        represent: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        time: '2019.11.08 15:33:24',
-        origin: '王小虎',
-        represent: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        time: '2019.11.08 15:33:24',
-        origin: '王小虎',
-        represent: '上海市普陀区金沙江路 1518 弄'
-      }],
       multipleSelection: [],
       news_data: {
         page: 1,
         rows: 10,
         data: []
-      }
+      },
+      // 测试
+      reli_list: [
+        {
+          name: '192.168.1.230',
+          change: false
+        },
+        {
+          name: '47.12.1.197',
+          change: false
+        },
+        {
+          name: '34.21.1.256',
+          change: false
+        },
+        {
+          name: '48.11.1.24',
+          change: false
+        },
+        {
+          name: '197.22.1.222',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+        {
+          name: '123.33.1.123',
+          change: false
+        },
+      ],
+      count: 0
+
     }
   },
   components: { backTitle },
@@ -113,8 +165,34 @@ export default {
   },
   mounted () {
     this.graph();
+    this.reli_list.forEach(element => {
+      element.style = {
+        top: this.random(20, 220) + 'px',
+        left: this.random(10, 350) + 'px'
+      }
+    });
+
+    setInterval((count) => {
+      console.log(1111);
+      console.log(this.count);
+      console.log(2222);
+      console.log(this.reli_list.length);
+      if (this.reli_list.length == this.count) {
+        this.count = 0
+      }
+      console.log(this.count);
+
+      this.reli_list.forEach(element => {
+        element.change = false
+      });
+      this.reli_list[this.count].change = true
+      this.count++
+    }, 10000);
   },
   methods: {
+    random (lower, upper) {
+      return Math.floor(Math.random() * (upper - lower + 1)) + lower;
+    },
     // 获取新消息
     get_news () {
       // /news/list
@@ -480,7 +558,7 @@ export default {
   width: 100px;
   height: 4px;
   background: red;
-  animation: moveHover 5s ease-in-out 0.2s;
+  animation: moveHover 2s ease-in-out 0.2s;
   animation-iteration-count: infinite;
   opacity: 0.6;
 }
@@ -496,6 +574,82 @@ export default {
   100% {
     height: 4px;
     background: #ffb89a;
+  }
+}
+.reli_box {
+  width: 502px;
+  height: 310px;
+  border: 1px solid red;
+  position: relative;
+}
+.changed {
+  animation: reli 2s ease-in-out 0.2s;
+  animation-iteration-count: 1;
+  z-index: 999;
+  opacity: 1;
+  animation-fill-mode: forwards;
+}
+.reli_item {
+  width: 150px;
+  height: 38px;
+  line-height: 38px;
+  overflow: hidden;
+  position: absolute;
+}
+.reli_item_span {
+  display: block;
+  opacity: 0.48;
+  background: rgba(232, 57, 93, 0.2);
+  border: 1px solid rgba(232, 57, 93, 0.42);
+  font-size: 16px;
+  color: #e8395d;
+  overflow: hidden;
+  width: 150px;
+  height: 38px;
+  margin: 0 auto; /*从中间向两边扩开*/
+}
+
+@keyframes reli {
+  0% {
+    color: #e8395d;
+    background: rgba(232, 57, 93, 0.2);
+    border: 1px solid rgba(232, 57, 93, 0.42);
+    width: 0;
+    height: 38px;
+    line-height: 38px;
+    margin: 0 auto; /*从中间向两边扩开*/
+    z-index: 999;
+    opacity: 1;
+  }
+  70% {
+    width: 150px;
+    height: 38px;
+    line-height: 38px;
+    color: #ffffff;
+    background: rgba(232, 57, 93, 1);
+    border: 1px solid #e8395d;
+    margin: 0 auto; /*从中间向两边扩开*/
+    opacity: 1;
+  }
+  90% {
+    width: 120px;
+    height: 38px;
+    line-height: 38px;
+    color: #ffffff;
+    background: rgba(232, 57, 93, 1);
+    border: 1px solid #e8395d;
+    margin: 0 auto; /*从中间向两边扩开*/
+    opacity: 1;
+  }
+  100% {
+    width: 150px;
+    height: 38px;
+    line-height: 38px;
+    color: #ffffff;
+    background: rgba(232, 57, 93, 1);
+    border: 1px solid #e8395d;
+    margin: 0 auto; /*从中间向两边扩开*/
+    opacity: 1;
   }
 }
 </style>

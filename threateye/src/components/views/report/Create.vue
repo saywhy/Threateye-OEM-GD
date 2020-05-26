@@ -25,11 +25,11 @@
           <el-col :span="21">
             <div class="r_radio">
               <el-radio v-model="report.type"
-                        label="doc"
-                        class="r_radio_item">Word</el-radio>
-              <el-radio v-model="report.type"
                         label="csv"
                         class="r_radio_item">Excel</el-radio>
+              <el-radio v-model="report.type"
+                        label="doc"
+                        class="r_radio_item">Word</el-radio>
               <el-radio v-model="report.type"
                         label="pdf"
                         class="r_radio_item">PDF</el-radio>
@@ -140,7 +140,7 @@ export default {
     return {
       report: {
         name: '',
-        type: 'doc',
+        type: 'csv',
         start_time: '',
         end_time: '',
         loading: false
@@ -235,6 +235,68 @@ export default {
                 etime: this.report.end_time,
                 report_name: this.report.name,
                 report_type: 'doc',
+                threat_level: this.untreatedAlarm_data.base64,
+                threat_protocol: this.application_protocol_data.base64,
+                alert_type: this.alert_type_data.base64,
+                alert_trend: this.alert_trend_data.base64,
+              })
+                .then(response => {
+                  let { status, data } = response.data;
+                  if (status == 0) {
+                    this.report.loading = false
+                    this.get_data();
+                    this.$message(
+                      {
+                        message: '报表生成成功',
+                        type: 'success',
+                      }
+                    );
+                  }
+
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+            }, 100);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }
+      if (this.report.type == 'pdf') {
+        this.$axios.get('/yiiapi/report/create-echarts-img', {
+          params: {
+            stime: this.report.start_time,
+            etime: this.report.end_time,
+            report_name: this.report.name,
+            report_type: 'pdf',
+          }
+        })
+          .then(response => {
+            let { status, data } = response.data;
+            console.log(data);
+            // 未处理告警
+            if (data.threat_level) {
+              this.untreatedAlarm(data.threat_level);
+            }
+            //威胁使用应用协议
+            if (data.threat_protocol) {
+              this.application_protocol(data.threat_protocol);
+            }
+            //告警趋势
+            if (data.alert_trend) {
+              this.alert_trend(data.alert_trend);
+            }
+            //告警类型
+            if (data.alert_type) {
+              this.alert_type(data.alert_type);
+            }
+            setTimeout(() => {
+              this.$axios.post('/yiiapi/report/create-report', {
+                stime: this.report.start_time,
+                etime: this.report.end_time,
+                report_name: this.report.name,
+                report_type: 'pdf',
                 threat_level: this.untreatedAlarm_data.base64,
                 threat_protocol: this.application_protocol_data.base64,
                 alert_type: this.alert_type_data.base64,

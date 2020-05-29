@@ -131,9 +131,9 @@
           width: 14px;
           height: 14px;
           margin-right: 8px;
-          background-size: 14px;
           vertical-align: inherit;
           background-image: url("../../../../assets/images/screen/aside-arrow.png");
+          background-size: 14px 14px;
         }
         .t-name{
           font-family: PingFangSC-Regular;
@@ -186,6 +186,7 @@
             background-image: url("../../../../assets/images/screen/state/st3_a.png")!important;
           }
           .t-arrow{
+            vertical-align: middle;
             background-image: url("../../../../assets/images/screen/aside-write.png")!important;
           }
         }

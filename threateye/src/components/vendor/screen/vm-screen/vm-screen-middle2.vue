@@ -1,12 +1,18 @@
 <template>
     <div class="vm-screen-middle2">
-      <div class="block">
-        <div id="flow"></div>
-        <div class="box">
-          <div class="line"></div>
+      <div class="block-all">
+        <div class="block">
+          <div id="flow"></div>
+          <div class="box">
+            <div class="line"></div>
+          </div>
+          <div class="relation" id="relation"></div>
+        </div>
+        <div class="arrow"></div>
+        <div class="real">
+          <div id="info_relation"></div>
         </div>
       </div>
-
     </div>
 </template>
 
@@ -20,11 +26,13 @@
               xAxisData:[],
               yAxisData:[],
               series:[]
-            }
+            },
+            realData:[]
           }
       },
       created() {
         this.getData();
+        this.getReal();
       },
       methods:{
         //获取数据
@@ -34,6 +42,8 @@
             .then((resp) => {
 
               let {status, data} = resp.data;
+
+              //console.log(resp)
 
               if(status == 0){
 
@@ -46,23 +56,21 @@
                       return item.statistics_time;
                     });
                   }
-
-                  //console.log(this.flow.xAxisData)
-                  let colors = '#000';
+                  this.flow.xAxisData = this.flow.xAxisData.reverse();
                   let legendName = this.flow.legendData[key];
                   legendName = legendName.toLowerCase();
+
+
                   if(legendName == 'http'){
-                    colors = '#007AFF';
+                    var colors = '#007AFF';
                   }else if(legendName == 'https'){
-                    colors = '#7C00FF';
+                    var colors = '#7C00FF';
                   }else if(legendName == 'ssh'){
-                    colors = '#CC9D3B';
+                    var colors = '#CC9D3B';
                   }else if(legendName == 'dns'){
-                    colors = '#00C800';
+                    var colors = '#00C800';
                   }else if(legendName == 'ftp'){
-                    colors = '#FF00C9';
-                  }else {
-                    colors = '#000';
+                    var colors = '#FF00C9';
                   }
                   let flow = val.map(item => {
                     return item.flow;
@@ -72,44 +80,50 @@
                     data: flow,
                     type: 'line',
                     smooth:true,
+                    symbol:'none',
                     name: this.flow.legendData[key],
-                    itemStyle: {
-                      opacity: 0
-                    },
-                    lineStyle: {
-                      width: 1,
-                      opacity: .5,
-                      color:colors
-                    },
-                    areaStyle: {
-                      opacity: .12,
-                      color:colors
+                    itemStyle:{
+                      normal:{
+                        textStyle:{
+                          color: colors,
+                          opacity: .5,
+                        },
+                        lineStyle: {
+                          width: 1,
+                          opacity: .5,
+                          color: colors
+                        },
+                        areaStyle: {
+                          opacity: .2,
+                          color: colors
+                        }
+                      }
                     }
                   });
-
                 });
 
                 this.$nextTick(() => {
                   this.drawGraph();
-                })
+                });
+
               }
             })
             .catch((error) => {
               console.log(error);
             });
         },
-
-        drawGraph(){
+        drawGraph() {
           let myChart = this.$echarts.init(document.getElementById('flow'));
           myChart.showLoading({ text: '正在加载数据...' });
           myChart.clear();
           let option = {
-            tooltip: {
+            /*tooltip: {
               trigger: 'axis',
               axisPointer: {
                 type: 'shadow'
               }
-            },
+            },*/
+            color: ['#007AFF','#7C00FF', '#CC9D3B','#00C800','#FF00C9'],
             legend: {
               bottom: -5,
               left: 5,
@@ -120,14 +134,9 @@
                 color: '#fff',
                 fontSize: 10
               },
-              emphasis:{
-                selectorLabel:{
-                  color:'#999'
-                }
-              },
+              /*inactiveColor:'#ccc',*/
               data: this.flow.legendData
             },
-            color: ['#D44361','#D0A13F', '#60C160'],
             grid: {
               top:'5%',
               left: '0',
@@ -175,6 +184,9 @@
                 }
               }
             },
+            tooltip:{
+              show:false
+            },
             series: this.flow.series
           };
 
@@ -185,6 +197,202 @@
           window.addEventListener("resize", () => {
             myChart.resize();
           });
+        },
+        getReal() {
+          this.$axios
+            .get('/yiiapi/demonstration/realtime-alert')
+            .then((resp) => {
+
+              let {status, data} = resp.data;
+              //console.log(data)
+              if(status == 0){
+                //console.log(data)
+                this.realData = data;
+                this.$nextTick(() => {
+                  this.drawReal();
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+        drawReal(){
+          let datalist = [];
+          let linklist = [];
+
+          let relelist = [];
+
+          let realData = this.realData;
+
+          if(realData.length > 0){
+            realData.forEach(item => {
+              var obj = {}, linkobj = {};
+              obj.name = item.src_ip;
+
+              obj.symbolSize = 10;
+              datalist.push(item.src_ip,item.dest_ip);
+              linkobj.source = item.src_ip;
+              linkobj.target = item.dest_ip;
+              linkobj.value = item.category;
+              linkobj.lineStyle = {color:'#00D7E9',width: 2, curveness: 0.4};
+
+              linklist.push(linkobj);
+
+
+              relelist.push(item.category);
+            });
+          }
+          //去重
+          datalist = datalist.filter((x, index,self)=>self.indexOf(x)===index);
+          relelist = relelist.filter((x, index,self)=>self.indexOf(x)===index);
+
+          let newAttr = [];
+          datalist.forEach((item,index) => {
+            let col = '';
+            if(index == 0){
+              col = '#D44361';
+            }else if(index == 1){
+              col = '#D0A13F';
+            }else if(index == 2){
+              col = '#60C160';
+            }else if(index == 3){
+              col = '#FF00C9';
+            }
+            newAttr.push({name:item,label:{color:'#fff'},itemStyle:{color:col}});
+          });
+
+          //实时威胁检测
+          let releAttr = [];
+          relelist.forEach((item,index) => {
+            let col = '';
+            if(index == 0){
+              col = '#D44361';
+            }else if(index == 1){
+              col = '#D0A13F';
+            }else if(index == 2){
+              col = '#60C160';
+            }else if(index == 3){
+              col = '#FF00C9';
+            }
+            releAttr.push({name:item,itemStyle:{color:col}});
+          });
+
+          datalist = newAttr;
+
+          var mychart = this.$echarts.init(document.getElementById("info_relation"));
+
+          var option = {
+            tooltip: {},
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: "quinticInOut",
+            series: [
+              {
+                type: "graph",
+                layout: "force",
+                //focusNodeAdjacency: true,
+                force: {
+                  repulsion: 100,
+                  edgeLength: 50
+                },
+                symbolSize: 10,
+                roam: true,
+                label: {
+                  normal: {
+                    show: true, //显示
+                    fontSize: 8,
+                    position: "right" //相对于节点标签的位置，默认在节点中间
+                  }
+                },
+                edgeSymbol: ["circle","arrow"], //边两端的标记类型
+                //edgeSymbolSize: [4, 8],//边两端的标记大小
+                edgeSymbolSize: [2, 6],
+                edgeLabel: {
+                  normal: {
+                    show: true,
+                    textStyle: {
+                      fontSize: 8,
+                      color: "#fff"
+                    },
+                    formatter: "{c}"
+                  }
+                },
+                data: datalist,
+                links: linklist,
+                itemStyle: {
+                  normal: {
+                    borderColor: "#DBA500",
+                    borderWidth: 0,
+                    shadowBlur: 10,
+                    /*color: "#DBA500"*/
+                  }
+                },
+                lineStyle: {
+                  normal: {
+                    opacity: 0.31,
+                    width: 1,
+                    color: "#fff",
+                    curveness: 0.7
+                  }
+                }
+              }
+            ]
+          };
+          mychart.setOption(option, true);
+
+          var relation = this.$echarts.init(document.getElementById("relation"));
+
+          var option1 = {
+            tooltip: {},
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: "quinticInOut",
+            series: [
+              {
+                type: "graph",
+                layout: "force",
+                //focusNodeAdjacency: true,
+                force: {
+                  repulsion: 100,
+                  edgeLength: 50
+                },
+                symbolSize: 4,
+                roam: true,
+                label: {
+                  normal: {
+                    show: false
+                  }
+                },
+                edgeLabel: {
+                  normal: {
+                    show: true,
+                    textStyle: {
+                      fontSize: 8,
+                      color: "#fff"
+                    },
+                    formatter: "{c}"
+                  }
+                },
+                data: releAttr,
+                itemStyle: {
+                  normal: {
+                    borderColor: "#DBA500",
+                    borderWidth: 0,
+                    shadowBlur: 10,
+                    /*color: "#DBA500"*/
+                  }
+                },
+                lineStyle: {
+                  normal: {
+                    opacity: 0.31,
+                    width: 1,
+                    color: "#fff",
+                    curveness: 0.7
+                  }
+                }
+              }
+            ]
+          };
+          relation.setOption(option1, true);
         }
       }
     }
@@ -193,57 +401,84 @@
 <style scoped lang="less">
 .vm-screen-middle2{
   padding: 0 16px 16px;
-  .block{
-    position: relative;
-    height: 245px;
-    width: 520px;
-    #flow{
+  .block-all{
+    display: flex;
+    .block{
+      position: relative;
       height: 245px;
       width: 520px;
-    }
-    .box{
-      position: absolute;
-      right: 22px;
-      top: 5%;
-      bottom: 20%;
-      width: 100px;
-      height: 76%;
-      right: 3%;
-      background-image: url("../../../../assets/images/screen/content-flow.png");
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      .line {
+      #flow{
+        height: 245px;
+        width: 520px;
+      }
+      .box{
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 5%;
+        bottom: 20%;
         width: 100px;
-        height: 4px;
-        border-left-width: 0;
-        border-right-width: 0;
-        border-top-width: 0;
-        box-shadow: 0 -1px 5px 0 rgba(0,215,233,0.72),
-        0 1px 5px 0 rgba(0,215,233,0.72);
-        animation: moveHover 5s ease-in-out 0.2s;
-        animation-iteration-count: infinite;
-        opacity: 0.6;
+        height: 76%;
+        right: 3%;
+        background-image: url("../../../../assets/images/screen/content-flow.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        .line {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100px;
+          height: 4px;
+          border-left-width: 0;
+          border-right-width: 0;
+          border-top-width: 0;
+          box-shadow: 0 -1px 5px 0 rgba(0,215,233,0.72),
+          0 1px 5px 0 rgba(0,215,233,0.72);
+          animation: moveHover 5s ease-in-out 0.2s;
+          animation-iteration-count: infinite;
+          opacity: 0.6;
+          border-bottom: 3px solid #00D7E9;
+          background-image: linear-gradient(180deg, rgba(0,215,233,0.06) 0%, rgba(0,122,255,0.48) 100%);
+        }
+      }
+      .relation{
+        position: absolute;
+        top: 5%;
+        bottom: 20%;
+        width: 100px;
+        height: 45%;
+        right: 3%;
+      }
+    };
+    .arrow{
+      width: 40px;
+      height: 210px;
+      background-image: url("../../../../assets/images/screen/content-arrow.png");
+      background-repeat: no-repeat;
+      background-size: 40px 210px;
+    }
+    .real{
+      flex: 1;
+      height: 245px;
+      #info_relation{
+        width: 100%;
+        height: 220px;
       }
     }
   }
-
 }
 
 @keyframes moveHover {
   0% {
     height: 4px;
-    /*background: #cd4a48;*/
+   /* background: rgba(0,215,233,0.06);*/
   }
   50% {
     height: 100%;
-    /*background: #a48992;*/
+   /* background: rgba(0,122,255,0.48);*/
   }
   100% {
     height: 4px;
-    /*background: #ffb89a;*/
+   /* background: rgba(0,215,233,0.06);*/
   }
 }
 </style>

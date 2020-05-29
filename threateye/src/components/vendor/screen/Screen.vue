@@ -6,6 +6,8 @@
       </div>
       <div class="home_c">{{baseInfo.ScreenName}}</div>
       <div class="home_r">
+        <el-button type="primary" class="e_btn e_btn_quit"
+                   icon="el-icon-switch-button" @click="quitScreen();">退出</el-button>
         <el-button type="primary" class="e_btn e_btn_set"
                    icon="el-icon-setting" @click="setScreen();">设置</el-button>
         <el-button type="primary" class="e_btn e_btn_full"
@@ -34,11 +36,15 @@
           </vm-screen-middle0>
         </div>
         <div class="list-item list-item-middle" :class="{'active':!close}">
-          <header class="title">外连分支<i class="t_img"></i></header>
-         <!-- <vm-screen-middle1></vm-screen-middle1>-->
+          <header class="title">{{name}}<i class="t_img"></i></header>
+          <vm-screen-middle1 v-on:childByValue="childByValue"></vm-screen-middle1>
         </div>
         <div class="list-item list-item-bottom" :class="{'active':!close}">
-          <header class="title">实时流量统计<i class="t_img"></i></header>
+          <header class="title title-flow">
+            <span class="t1">实时流量统计<span class="t11">单位(P/s)</span></span>
+            <span class="t2">实时威胁检测</span>
+            <span class="t3">实时告警</span>
+          </header>
           <vm-screen-middle2></vm-screen-middle2>
         </div>
       </div>
@@ -91,7 +97,8 @@
         isFullscreen: false,
         threatEyeName:'',
         totalLists:[],
-        totalTopLists:[]
+        totalTopLists:[],
+        name: '外连分支'
       }
     },
 
@@ -171,6 +178,10 @@
 
           });
       },
+      //退出
+      quitScreen() {
+        this.$router.push({path: '/home/overview'});
+      },
       //设置
       setScreen() {
         this.$router.push({path: '/screen/set/base', query: {num: '0'}});
@@ -192,6 +203,13 @@
         return isFull
       },
       /**********************************************/
+      childByValue: function (flag) {
+        if(flag){
+          this.name = '分支态势';
+        }else {
+          this.name = '外连分支';
+        }
+      }
     }
   }
 </script>
@@ -233,10 +251,10 @@
         font-size: 24px;
         color: #FFFFFF;
         line-height: 60px;
-        width: 1320px;
+        width: 1080px;
         background-image: url("../../../assets/images/screen/head-center.png");
         background-repeat: no-repeat;
-        background-size: 1320px 50px;
+        background-size: 1080px 50px;
         background-position: 0 6px;
       }
       .home_r {
@@ -262,6 +280,11 @@
           /*box-shadow: inset 0 0 11px 5px rgba(0,122,255,0.36);*/
           & + .el-button {
             margin-left: 0;
+          }
+          &.e_btn_quit {
+            margin-top: 5px;
+            margin-right: -8px;
+            background-image: url("../../../assets/images/screen/head-quit.png");
           }
           &.e_btn_set {
             margin-top: 6px;
@@ -313,6 +336,7 @@
         flex: 1;
         .list-item {
           float: left;
+
         }
       }
       .screen-2 {
@@ -354,6 +378,25 @@
             background-image: url("../../../assets/images/screen/content-bt.png");
             background-repeat: no-repeat;
             background-size: 140px 24px;
+          }
+          &.title-flow{
+            position: relative;
+            color: #fff;
+            .t11{
+              opacity: 0.6;
+              font-family: PingFangSC-Regular;
+              font-size: 12px;
+              color: #FFFFFF;
+              margin-left: 12px;
+            }
+            .t2{
+              position: absolute;
+              left: 420px;
+            }
+            .t3{
+              position: absolute;
+              right: 80px;
+            }
           }
         }
       }

@@ -115,7 +115,7 @@
       /deep/
       .el-progress{
         flex: 1;
-        margin: 8px 0;
+        margin: 12px 0;
         .el-progress-bar{
           .el-progress-bar__outer{
             border-radius: 2px;

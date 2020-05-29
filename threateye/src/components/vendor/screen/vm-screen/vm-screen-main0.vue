@@ -303,9 +303,11 @@
     }
     #threat-rank{
       height: 240px;
+      width: 100%;
     }
     #threat-scat{
       height: 240px;
+      width: 100%;
     }
   }
 

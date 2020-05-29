@@ -9,7 +9,7 @@
       <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
       <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip></el-table-column>
       <el-table-column prop="asset_ip" label="风险资产" show-overflow-tooltip></el-table-column>
-      <!--<el-table-column prop="attack_stage" label="攻击阶段" show-overflow-tooltip></el-table-column>-->
+      <el-table-column prop="attack_stage" label="攻击阶段" show-overflow-tooltip></el-table-column>
     </el-table>
   </div>
 </template>

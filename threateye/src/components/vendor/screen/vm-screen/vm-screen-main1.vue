@@ -1,6 +1,17 @@
 <template>
     <div class="vm-screen-main1">
-      <div id="heat"></div>
+      <div class="reli_box">
+        <ul>
+          <li class="reli_item"
+              v-for="item in reli_list"
+              :style="item.style">
+          <span class="reli_item_span"
+                :class="item.change?'changed':''" :title="item.indicator">
+            {{item.indicator}}
+          </span>
+          </li>
+        </ul>
+      </div>
     </div>
 </template>
 
@@ -9,103 +20,57 @@
       name: "vm-screen-main1",
       data(){
           return{
-            data:[]
+            data:[],
+            count: 0,
+            reli_list: [],
           }
       },
-      mounted() {
-        this.drawGraph();
+      created(){
+        this.getData();
       },
       methods:{
-        drawGraph(){
+        random (lower, upper) {
+          return Math.floor(Math.random() * (upper - lower + 1)) + lower;
+        },
+        getData() {
+          this.$axios
+            .get('/yiiapi/demonstration/threat-indicators')
+            .then((resp) => {
+              let {status, data} = resp.data;
 
-          let index = 0;
-          // 基于准备好的dom，初始化echarts实例
-          let rank = this.$echarts.init(document.getElementById("heat"));
+              if(status == 0){
 
-          rank.showLoading({ text: '正在加载数据...' });
+                data.forEach(item => {
+                  item.style = {
+                    top: this.random(20, 200) + 'px',
+                    left: this.random(10, 300) + 'px'
+                  };
+                  item.change = false;
+                });
 
-          rank.clear();
-          // 绘制图表
-          rank.setOption({
-            grid: {
-              top: "10%",
-              left: "-10%",
-              right: "20%",
-              bottom: "-10%",
-              containLabel: true
-            },
-            xAxis: {
-              show:false
-            },
-            yAxis: {
-              show:false
-            },
-            series: [{
-              symbolSize: 20,
-              data: [
-                [7.0,4.0,'192.168.101.08'],
-                [8.0, 6.95,'192.168.101.08'],
-                [9.0, 8.81,'192.168.101.08'],
-                [8.0, 8.33,'192.168.101.08'],
-                [6.0, 7.24,'192.168.101.08'],
-                [5.0, 10.84,'192.168.101.08'],
-                [4.0, 5.0,'192.168.101.09']
-              ],
-              type: 'scatter',
-              symbol:'rect',
-              symbolSize:[90, 24],
-              datasetIndex:0,
-              label:{
-                show:true,
-                color: "rgba(232,57,93,0.48)",
-                /*backgroundColor:"rgba(232,57,93,0.48)",*/
-                formatter: (params) => {
-                  return params.data[2]
-                }
-              },
-              itemStyle:{
-                color: "rgba(232,57,93,0.20)",
-                borderColor:'rgba(232,57,93,0.42)',
-                borderWidth:'1'
-              },
-              emphasis:{
-                label:{
-                  color: "rgba(255,255,255,0.6)",
-                }
+                this.reli_list = data;
+
+                this.heatHandle();
+
+                setInterval(() => {
+                  this.heatHandle();
+                }, 5000);
+
               }
-            }]
-          });
-
-          rank.hideLoading();
-
-          rank.dispatchAction({
-            type: "highlight",
-            seriesIndex: 0,
-            dataIndex: 0
-          });
-
-          //设置默认选中高亮部分
-          rank.on("mouseover", function(e) {
-            if (e.dataIndex != index) {
-              rank.dispatchAction({
-                type: "downplay",
-                seriesIndex: 0,
-                dataIndex: index
-              });
-            }
-          });
-          rank.on("mouseout", function(e) {
-            index = e.dataIndex;
-            rank.dispatchAction({
-              type: "highlight",
-              seriesIndex: 0,
-              dataIndex: e.dataIndex
+            })
+            .catch((error) => {
+              console.log(error);
             });
+        },
+        heatHandle(){
+          if (this.reli_list.length == this.count) {
+            this.count = 0;
+          }
+          this.reli_list.forEach(item => {
+            item.change = false;
           });
-
-          window.addEventListener("resize", () => {
-            rank.resize();
-          });
+          this.reli_list[this.count].change = true;
+          this.count++;
         }
       }
     }
@@ -114,9 +79,81 @@
 <style scoped lang="less">
 .vm-screen-main1{
   padding: 0 16px 16px;
-  #heat{
+  .reli_box {
     width: 100%;
     height: 240px;
+    position: relative;
+    .reli_item {
+      width: 150px;
+      height: 32px;
+      line-height: 32px;
+      overflow: hidden;
+      position: absolute;
+      .reli_item_span {
+        display: block;
+        opacity: 0.48;
+        background: rgba(232, 57, 93, 0.2);
+        border: 1px solid rgba(232, 57, 93, 0.42);
+        font-size: 16px;
+        color: #e8395d;
+        width: 150px;
+        height: 32px;
+        margin: 0 auto; /*从中间向两边扩开*/
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        &.changed {
+          animation: reli 2s ease-in-out 0.2s;
+          animation-iteration-count: 1;
+          z-index: 999;
+          opacity: 1;
+          animation-fill-mode: forwards;
+        }
+      }
+    }
+  }
+}
+@keyframes reli {
+  0% {
+    color: #e8395d;
+    background: rgba(232, 57, 93, 0.2);
+    border: 1px solid rgba(232, 57, 93, 0.42);
+    width: 0;
+    height: 32px;
+    line-height: 32px;
+    margin: 0 auto; /*从中间向两边扩开*/
+    z-index: 999;
+    opacity: 1;
+  }
+  /*70% {
+    width: 120px;
+    height: 32px;
+    line-height: 32px;
+    color: #ffffff;
+    background: rgba(232, 57, 93, 1);
+    border: 1px solid #e8395d;
+    margin: 0 auto; !*从中间向两边扩开*!
+    opacity: 1;
+  }
+  90% {
+    width: 100px;
+    height: 32px;
+    line-height: 32px;
+    color: #ffffff;
+    background: rgba(232, 57, 93, 1);
+    border: 1px solid #e8395d;
+    margin: 0 auto; !*从中间向两边扩开*!
+    opacity: 1;
+  }*/
+  100% {
+    width: 150px;
+    height: 32px;
+    line-height: 32px;
+    color: #ffffff;
+    background: rgba(232, 57, 93, 1);
+    border: 1px solid #e8395d;
+    margin: 0 auto; /*从中间向两边扩开*/
+    opacity: 1;
   }
 }
 </style>

@@ -1,21 +1,16 @@
 <template>
     <div class="vm-screen-middle1">
-      <vm-screen-map v-show="tabIndex==0"></vm-screen-map>
-      <vm-screen-spread v-show="tabIndex==1"></vm-screen-spread>
-      <!--<div id="spreader">
-        <el-carousel trigger="click" :autoplay="false">
+      <div id="spreader">
+        <el-carousel trigger="click" :autoplay="true"
+                     :interval="10000" @change="changeCal">
           <el-carousel-item>
-            <vm-map></vm-map>
+            <vm-screen-map></vm-screen-map>
           </el-carousel-item>
           <el-carousel-item>
-            222222222222222222
+            <vm-screen-spread></vm-screen-spread>
           </el-carousel-item>
         </el-carousel>
-      </div>-->
-      <ul class="tab-list">
-        <li class="item" :class="{active:tabIndex==0}" @click="tabIndex=0"></li>
-        <li class="item" :class="{active:tabIndex==1}" @click="tabIndex=1"></li>
-      </ul>
+      </div>
     </div>
 </template>
 
@@ -26,7 +21,7 @@
       name: "vm-screen-middle1",
       data(){
           return{
-            tabIndex:0 ,
+            tabFlag:false,
             data:[]
           }
       },
@@ -34,13 +29,13 @@
         VmScreenMap,
         VmScreenSpread
       },
-      mounted() {
-
-      },
       methods:{
-
+        changeCal(){
+          this.tabFlag = !this.tabFlag;
+          this.$emit('childByValue', this.tabFlag)
+        }
       }
-    }
+  }
 </script>
 
 <style scoped lang="less">
@@ -48,25 +43,16 @@
   padding: 0 16px 16px;
   position: relative;
   height: 480px;
-  .tab-list{
-    width: calc(100% - 32px);
-    position: absolute;
-    bottom: 10px;
-    z-index: 9999;
-    .item{
-      width: 8px;
-      height: 4px;
-      opacity: 0.48;
-      background: #00D7E9;
-      border-radius: 2px;
-      cursor: pointer;
-      display: inline-block;
-      &.active{
-        width: 24px;
-        opacity: 1;
+  #spreader{
+    /deep/
+    .el-carousel{
+      .el-carousel__container{
+        height: 472px;
+        .el-carousel__arrow{
+          display: none!important;
+        }
       }
     }
-
   }
 }
 </style>

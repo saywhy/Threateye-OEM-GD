@@ -47,7 +47,7 @@
     },
     methods:{
       //获取数据
-      getData(){
+      getData() {
         this.loading = false;
         this.$axios
           .get('/yiiapi/demonstration/system-status')
@@ -56,10 +56,11 @@
             this.loading = true;
             let {status, data} = resp.data;
 
+            console.log(data)
+
             if(status == 0){
               //console.log(data)
               this.sysData = data;
-
             }
           })
           .catch((error) => {
@@ -181,7 +182,7 @@
           }
         }
         .item_fs2{
-          margin: 8px 0;
+          margin: 12px 0;
           .t_aw{
             width: 12px;
             height: 16px;

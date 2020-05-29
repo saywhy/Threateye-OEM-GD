@@ -8,7 +8,6 @@
       <vm-emerge-line :data='echarts_data'
                       v-if="e_line.data_show"></vm-emerge-line>
     </div>
-
     <!--告警-->
     <div class="alert_risk">
       <el-form class="common-pattern">
@@ -17,7 +16,6 @@
                 style="padding: 15px 0;">
           <el-col :span="24"
                   class="common_box_list">
-
             <!--搜索关键词-->
             <el-input class="s_key"
                       placeholder="搜索关键词"
@@ -26,10 +24,8 @@
               <i slot="prefix"
                  class="el-input__icon el-icon-search"></i>
             </el-input>
-
             <!--时间-->
             <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-
             <!--失陷确定性-->
             <el-select class="s_key s_key_types"
                        v-model="params.threat"
@@ -42,7 +38,6 @@
                          :value="item.value">
               </el-option>
             </el-select>
-
             <!--威胁等级-->
             <el-select class="s_key"
                        v-model="params.degree"
@@ -55,7 +50,6 @@
                          :value="item.value">
               </el-option>
             </el-select>
-
             <!--处理状态-->
             <el-select class="s_key"
                        v-model="params.status"
@@ -68,7 +62,6 @@
                          :value="item.value">
               </el-option>
             </el-select>
-
             <el-button class="s_btn"
                        @click="submitClick();">搜索</el-button>
             <el-link class="s_link"
@@ -78,7 +71,6 @@
                        @click="export_box">导出</el-button>
           </el-col>
         </el-row>
-
         <!--按钮组-->
         <el-row class="common_btn">
           <el-col :span="24"
@@ -151,7 +143,7 @@
                              width="50"></el-table-column>
             <el-table-column label="告警时间"
                              align="center"
-                             width="180"
+                             width="200"
                              show-overflow-tooltip>
               <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
             </el-table-column>

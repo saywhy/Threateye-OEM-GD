@@ -141,7 +141,7 @@ export default {
           animation: true,
           lineStyle: {
             normal: {
-              width: 3,
+              width: 2,
               color: "#DC5F5F",
               opacity: 0.5
             },

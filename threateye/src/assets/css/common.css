@@ -228,12 +228,9 @@ textarea {
 
 .el-table thead {
   text-align: center;
-  border: 1px solid #EBEEF5 !important;
+  border: 1px solid red !important;
 }
 
-.el-table thead .el-table tr {
-  border: 1px solid #EBEEF5;
-}
 
 /* .el-table thead th {
   background: #f8f8f8
@@ -244,9 +241,9 @@ textarea {
   border-right: 1px solid #EBEEF5;
 }
 
-.el-table--border th:nth-child(1) {
+/* .el-table--border th:nth-child(1) {
   border-left: 1px solid #EBEEF5;
-}
+} */
 
 .el-table::before {
   height: 0;

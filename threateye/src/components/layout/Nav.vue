@@ -51,18 +51,6 @@
             </div>
             <el-dropdown-menu slot="dropdown"
                               class="nav-dropdown-menu">
-              <!-- <router-link :to="{path: '/'}">-->
-              <!--<a target='_blank' @click="enter_home()">
-                <el-dropdown-item>
-                  home
-                </el-dropdown-item>
-              </a>-->
-              <!--</router-link>-->
-              <!--<a target='_blank' href="https://github.com/liyihoo/iView-Web">
-                <el-dropdown-item>
-                  github地址
-                </el-dropdown-item>
-              </a>-->
               <a target='_blank'
                  @click="modifyPassword()">
                 <el-dropdown-item>
@@ -210,9 +198,11 @@ export default {
   },
   mounted () {
     this.get_news();
-    setInterval(() => {
+
+    this.timer = setInterval(() => {
       this.get_news();
-    }, 2000);
+    }, 5000);
+
     eventBus.$on('reset', () => {
       this.modifyPassword()
     })
@@ -444,12 +434,20 @@ export default {
           let { status, data } = resp.data;
           let datas = data;
           this.news_count = datas.count
+          console.log('8888');
         })
         .catch(error => {
           console.log(error);
         });
     },
-  }
+  },
+  beforeDestroy () {
+    console.log('77777');
+    clearInterval(this.timer); //关闭
+  },
+  destroyed () {
+    console.log('33333');
+  },
 }
 </script>
 
@@ -539,15 +537,16 @@ export default {
         }
       }
       .avatar-container {
-        min-width: 120px;
-        margin: 14px 0 14px 14px;
+        padding: 0 15px;
+        // min-width: 120px;
+        // margin: 14px 0 14px 14px;
         .avatar-wrapper {
           line-height: 32px;
           color: #fff;
           cursor: pointer;
           outline: none;
           .user-avatar {
-            width: 32px;
+            padding: 0 5px;
             height: 32px;
           }
           .avatar-name {

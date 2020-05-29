@@ -20,11 +20,11 @@
     created(){
       this.getData();
     },
-    /*mounted() {
-      setTimeout(() => {
-        this.drawGraph();
-      },200);
-    },*/
+    mounted() {
+      setInterval(() => {
+        this.getData();
+      },5000);
+    },
     methods: {
       //获取数据
       getData(){
@@ -35,7 +35,6 @@
           .then((resp) => {
             this.loading = true;
             let {status, data} = resp.data;
-
            // console.log(resp)
             if(status == 0){
               this.mapData = data;
@@ -43,10 +42,6 @@
               this.$nextTick(() => {
                 this.drawGraph();
               });
-
-              setInterval(() => {
-                this.drawGraph();
-              },5000)
 
             }
           })

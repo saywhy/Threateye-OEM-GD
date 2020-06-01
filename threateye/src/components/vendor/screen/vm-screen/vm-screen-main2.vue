@@ -21,6 +21,11 @@
       created(){
         this.getData();
       },
+      mounted() {
+        setInterval(()=>{
+          this.getData();
+        },10000 * 6 * 5);
+      },
       methods: {
         //获取数据
         getData(){
@@ -41,8 +46,8 @@
           this.animate= true;
           setTimeout(()=>{
             this.items.push(this.items[0]);
-            this.items.shift();               //删除数组的第一个元素
-            this.animate=false;               // margin-top:0的时候取消过渡动画，实现无缝滚动
+            this.items.shift();
+            this.animate=false;
           },1000)
         }
       }

@@ -55,31 +55,26 @@ export default {
         that.flow_statistics.ssh.unshift(item.flow);
       })
     }
-
     if (chartData.ftp && chartData.ftp.length) {
       chartData.ftp.forEach(function (item, key) {
         that.flow_statistics.ftp.unshift(item.flow);
       })
     }
-
     if (chartData.dns && chartData.dns.length) {
       chartData.dns.forEach(function (item, key) {
         that.flow_statistics.dns.unshift(item.flow);
       })
     }
-
     if (chartData.imap && chartData.imap.length) {
       chartData.imap.forEach(function (item, key) {
         that.flow_statistics.imap.unshift(item.flow);
       })
     }
-
     if (chartData.smb && chartData.smb.length) {
       chartData.smb.forEach(function (item, key) {
         that.flow_statistics.smb.unshift(item.flow);
       })
     }
-
     if (chartData.pop3 && chartData.pop3.length) {
       chartData.pop3.forEach(function (item, key) {
         that.flow_statistics.pop3.unshift(item.flow);

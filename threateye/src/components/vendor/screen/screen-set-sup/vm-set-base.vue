@@ -6,7 +6,8 @@
           <div class="form-item">
             <label class="title">大屏名称</label>
             <el-form-item>
-              <el-input v-model="baseInfo.ScreenName" placeholder="请输入大屏名称"></el-input>
+              <el-input v-model="baseInfo.ScreenName" placeholder="请输入大屏名称"
+                        @input.enter.native="widthCheck($event.target, 28)"></el-input>
             </el-form-item>
             <el-divider></el-divider>
           </div>
@@ -53,7 +54,7 @@
         </div>
         <div class="btn-group">
           <el-button class="btn btn_cacel" @click="click_screen_cancel();">取消</el-button>
-          <el-button class="btn btn_ok" @click="click_screen_ok();">确认</el-button>
+          <el-button class="btn btn_ok" @click="click_screen_ok();">保存</el-button>
         </div>
       </el-form>
     </div>
@@ -68,7 +69,7 @@
           radio: '',
           area_array:[],
           baseInfo:{
-            ScreenName: '',
+            ScreenName: 'ThreatEye高级威胁检测系统',
             ExtraneousDistribution:[],
             ExtraneousDistributionType:'headquarters'
           },
@@ -110,14 +111,12 @@
       },
       methods:{
         //获取大屏名称
-        getData () {
+        getData (args) {
           this.$axios
             .get('/yiiapi/demonstration/get-base-config')
 
             .then((resp) => {
-
              // console.log(resp)
-
               let {status, data} = resp.data;
 
               if(status == 0){
@@ -126,6 +125,7 @@
                 this.baseInfo = data;
 
                 this.getBranch();
+                if(args){this.$router.push({path: '/screen'});}
               }
             })
             .catch((error) => {
@@ -169,9 +169,7 @@
         },
         //取消点击事件
         click_screen_cancel() {
-          this.getData();
-
-
+          this.getData(true);
         },
         click_screen_ok() {
 
@@ -218,6 +216,25 @@
             .catch((error) => {
               console.log(error);
             });
+        },
+        widthCheck (str, len) {
+          var temp = 0
+          for (var i = 0; i < str.value.length; i++) {
+            if (/[\u4e00-\u9fa5]/.test(str.value[i])) {
+              temp += 2
+            } else {
+              temp++
+            }
+            if (temp > len) {
+              str.value = str.value.substr(0, i)
+            }
+          }
+        }
+      },
+      watch:{
+        'baseInfo.ScreenName'(newValue, oldValue) {
+          this.baseInfo.ScreenName =  this.baseInfo.ScreenName.replace(/[^A-Za-z0-9\u4e00-\u9fa5]/g,'');
+          console.log(this.baseInfo.ScreenName)
         }
       }
     }

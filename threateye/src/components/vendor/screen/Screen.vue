@@ -41,7 +41,7 @@
         </div>
         <div class="list-item list-item-bottom" :class="{'active':!close}">
           <header class="title title-flow">
-            <span class="t1">实时流量统计<span class="t11">单位(P/s)</span></span>
+            <span class="t1">协议统计<span class="t11">单位(P/s)</span></span>
             <span class="t2">实时威胁检测</span>
             <span class="t3">实时告警</span>
           </header>

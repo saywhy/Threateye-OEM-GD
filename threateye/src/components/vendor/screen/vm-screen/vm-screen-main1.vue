@@ -28,6 +28,11 @@
       created(){
         this.getData();
       },
+      mounted() {
+        setInterval(()=>{
+          this.getData();
+        },10000 * 6 * 5);
+      },
       methods:{
         random (lower, upper) {
           return Math.floor(Math.random() * (upper - lower + 1)) + lower;

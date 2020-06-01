@@ -1,6 +1,6 @@
 <template>
     <div class="vm-screen-spread">
-      <el-carousel class="spread" direction="vertical">
+      <el-carousel class="spread" direction="vertical" :interval="10000">
         <el-carousel-item v-for="(item,$index) in speadData" :key="$index">
           <ul class="spread-list">
             <li class="item" v-for="(it,$idx) in item" :key="$idx">

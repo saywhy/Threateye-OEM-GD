@@ -24,6 +24,11 @@
       created() {
         this.getData();
       },
+      mounted() {
+        setInterval(()=>{
+          this.getData();
+        },10000 * 6 * 5);
+      },
       methods:{
         //获取数据
         getData(){
@@ -60,23 +65,25 @@
         drawRank(){
 
           let degrees = this.degree;
-
+          //degrees = [{degree: "medium", count: "2"}]
           if(degrees){
 
             degrees.filter(item => {
-             let name = '';let value = 0;
+             let name = '';let value = 0;let color = '';
              if(item.degree == 'high'){
                name = '高危预警';
                value = item.count;
+               color = '#D44361';
              }else if(item.degree == 'medium'){
                name = '中危预警';
                value = item.count;
+               color = '#D0A13F';
              }else if(item.degree == 'low'){
                name = '低危预警';
                value = item.count;
+               color = '#60C160';
              }
-
-             Object.assign(item,{value,name});
+             Object.assign(item,{value,name,itemStyle:{color:color}});
             });
           }else {
             return false;

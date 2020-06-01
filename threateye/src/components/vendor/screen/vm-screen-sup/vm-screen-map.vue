@@ -23,7 +23,7 @@
     mounted() {
       setInterval(() => {
         this.getData();
-      },5000);
+      },10000 * 3);
     },
     methods: {
       //获取数据
@@ -51,7 +51,7 @@
       },
       drawGraph() {
 
-        console.log('1212');
+        //console.log('1212');
         let series = []; //在地图上显示的数据
 
         let symbol1 = ['image://static/image/f0.png', 'image://static/image/f1.png'];
@@ -98,6 +98,7 @@
             },
             label:{
               show: false,
+              color:'#ccc',
               position:'end'
             },
             markPoint:{

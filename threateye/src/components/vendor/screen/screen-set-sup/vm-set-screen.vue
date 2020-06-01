@@ -4,7 +4,7 @@
         <h3 class="title">{{pageHeaderName}}</h3>
         <div class="btn-group">
           <el-button class="btn btn_cacel" @click="click_screen_cancel();">取消</el-button>
-          <el-button class="btn btn_ok" @click="click_screen_ok();">确认</el-button>
+          <el-button class="btn btn_ok" @click="click_screen_ok();">保存</el-button>
         </div>
       </el-header>
       <div class="set-mainer">
@@ -44,9 +44,13 @@
       click_screen_cancel() {
         let defaultIndex = this.defaultIndex;
         if(defaultIndex == 1){
-          this.$store.dispatch('getScreenAside');
+          this.$store.dispatch('getScreenAside').then(resp => {
+            if(resp){this.$router.push({path: '/screen'});}
+          });
         }else if(defaultIndex == 2){
-          this.$store.dispatch('getScreenTop');
+          this.$store.dispatch('getScreenTop').then(resp => {
+            if(resp){this.$router.push({path: '/screen'});}
+          });;
         }
       },
       //确认按钮点击
@@ -63,7 +67,7 @@
           this.$store.dispatch('setScreenTop')
             .then(resp => {
               if(resp){this.$router.push({path: '/screen'});}
-            });;
+            });
         }
       }
     }

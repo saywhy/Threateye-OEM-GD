@@ -34,6 +34,12 @@
         this.getData();
         this.getReal();
       },
+      mounted() {
+        setInterval(()=>{
+          this.getData();
+          this.getReal();
+        },10000 * 6 * 5);
+      },
       methods:{
         //获取数据
         getData() {

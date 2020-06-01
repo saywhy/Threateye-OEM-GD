@@ -18,6 +18,11 @@
       created() {
         this.getData();
       },
+      mounted() {
+        setInterval(()=>{
+          this.getData();
+        },10000 * 6 * 5);
+      },
       methods:{
         //获取数据
         getData() {

@@ -857,7 +857,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="失陷确定性"
-                                   width="100"
+                                   width="120"
                                    align="center"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -3515,6 +3515,7 @@ export default {
                 color: #333333;
               }
               .info_top_item_content {
+                word-break: break-all;
                 flex: 1;
                 font-family: PingFang;
                 font-size: 16px;

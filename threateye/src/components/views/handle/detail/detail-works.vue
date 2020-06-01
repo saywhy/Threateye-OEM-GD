@@ -109,7 +109,7 @@
               </el-table-column>
               <el-table-column label="失陷确定性"
                                align="center"
-                               min-width="100">
+                               min-width="120">
                 <template slot-scope="scope">
                   <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
                     {{ scope.row.fall_certainty | certainty }}</span>

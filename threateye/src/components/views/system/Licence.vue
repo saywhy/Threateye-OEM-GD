@@ -20,7 +20,6 @@
                  :before-upload="onBeforeUpload"
                  :on-change="onChange"
                  :data='file_data'
-                 multiple
                  :auto-upload='true'
                  :on-success='onsuccess'
                  :on-exceed="handleExceed"

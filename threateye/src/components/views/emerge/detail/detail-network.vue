@@ -868,7 +868,7 @@
                   </el-table-column>
                   <el-table-column label="失陷确定性"
                                    align="center"
-                                   width="100"
+                                   width="120"
                                    show-overflow-tooltip>
                     <template slot-scope="scope">
                       <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
@@ -4292,6 +4292,7 @@ export default {
                 color: #333333;
               }
               .info_top_item_content {
+                word-break: break-all;
                 flex: 1;
                 font-family: PingFang;
                 font-size: 16px;

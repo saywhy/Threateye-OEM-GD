@@ -77,7 +77,7 @@
             data: [{
               name: item.src_ip,
               toname: item.dest_ip,
-              coords: [item.src_location, item.dest_location]
+              coords: [item.src_location, [item.dest_location[1],item.dest_location[0]]]
             }],
             //线上面的动态特效
             effect: {

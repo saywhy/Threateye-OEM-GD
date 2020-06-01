@@ -335,7 +335,8 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <!--<el-checkbox label="news" value="news">消息中心通知</el-checkbox>-->
+                  <el-checkbox label="news"
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -597,7 +598,8 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <!--<el-checkbox label="news" value="news">消息中心通知</el-checkbox>-->
+                  <el-checkbox label="news"
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -1300,7 +1302,7 @@ export default {
         status: change_status
       })
         .then(resp => {
-          let { status, data, meg } = resp.data;
+          let { status, data, msg } = resp.data;
           if (status == 0) {
             this.$message.success('工单状态变更成功！');
             this.get_list_works();

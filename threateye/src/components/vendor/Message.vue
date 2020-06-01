@@ -159,7 +159,7 @@ export default {
     batch_marking () {
       console.log(this.multipleSelection);
       if (this.multipleSelection.length == 0) {
-        this.$message({ message: '请选择需要变更的信息', type: 'warning' });
+        this.$message({ message: '请选择需要标记的消息', type: 'warning' });
         return false
       }
       var id_list = []
@@ -195,7 +195,7 @@ export default {
     del () {
       console.log(this.multipleSelection);
       if (this.multipleSelection.length == 0) {
-        this.$message({ message: '请选择需要变更的信息', type: 'warning' });
+        this.$message({ message: '请选择需要删除的消息', type: 'warning' });
         return false
       }
       var id_list = []

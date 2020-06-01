@@ -774,8 +774,8 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <!-- <el-checkbox label="news"
-                             value="news">消息中心通知</el-checkbox> -->
+                  <el-checkbox label="news"
+                             value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>

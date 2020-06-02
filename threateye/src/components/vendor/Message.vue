@@ -198,40 +198,48 @@ export default {
         this.$message({ message: '请选择需要删除的消息', type: 'warning' });
         return false
       }
-      var id_list = []
-      this.multipleSelection.forEach(element => {
-        id_list.push(element.id * 1)
-      });
-      this.$axios.delete('/yiiapi/news/del', {
-        data: {
-          id: id_list,
-        }
-      })
-        .then((resp) => {
-          let { status, data, msg } = resp.data;
-          let datas = data;
-          console.log(status);
-          console.log(msg);
-          this.$refs.multipleTable.clearSelection();
-          switch (status) {
-            case 1:
-              this.$message({ message: msg, type: 'error' });
-              break;
-            case 0:
-              this.get_news()
-              this.$message({ message: '删除成功', type: 'success' });
-              break;
-            default:
-              this.$message({ message: msg, type: 'error' });
-              break;
+      this.$confirm('此操作删除信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var id_list = []
+        this.multipleSelection.forEach(element => {
+          id_list.push(element.id * 1)
+        });
+        this.$axios.delete('/yiiapi/news/del', {
+          data: {
+            id: id_list,
           }
         })
-        .catch(error => {
-          console.log(error);
+          .then((resp) => {
+            let { status, data, msg } = resp.data;
+            let datas = data;
+            console.log(status);
+            console.log(msg);
+            this.$refs.multipleTable.clearSelection();
+            switch (status) {
+              case 1:
+                this.$message({ message: msg, type: 'error' });
+                break;
+              case 0:
+                this.get_news()
+                this.$message({ message: '删除成功', type: 'success' });
+                break;
+              default:
+                this.$message({ message: msg, type: 'error' });
+                break;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
-
-
-
+      });
     },
     //  查看详情
     detail (row, column) {

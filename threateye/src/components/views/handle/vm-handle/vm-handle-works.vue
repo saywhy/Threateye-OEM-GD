@@ -658,7 +658,7 @@
                             border
                             :data="edit.asset_list.data"
                             tooltip-effect="dark"
-                            :row-key="getRowKeys"
+                            :row-key="getRowKeys_edit_assets"
                             ref="assetTable"
                             style="width: 100%"
                             @selection-change="handle_sel_assets">
@@ -706,10 +706,12 @@
                             border
                             :data="edit.alert_list.data"
                             tooltip-effect="dark"
+                            :row-key="getRowKeys_edit_alert"
                             ref="alertTable"
                             style="width: 100%"
                             @selection-change="handle_sel_alert">
                     <el-table-column type="selection"
+                                     :reserve-selection="true"
                                      align="center"
                                      width="50">
                     </el-table-column>
@@ -796,6 +798,7 @@ export default {
   },
   data () {
     return {
+      selected_list: [],
       options_priority: [
         {
           value: "highest",
@@ -1553,6 +1556,16 @@ export default {
     getRowKeys_alerts (row) {
       return row.id;
     },
+    //资产匹配
+    getRowKeys_edit_alert (row) {
+      // console.log(row)
+      return row.id;
+    },
+
+    //告警匹配
+    getRowKeys_edit_assets (row) {
+      return row.asset_ip;
+    },
 
     //tab下第一个table多选
     handle_sel_table_assets (val) {
@@ -1769,6 +1782,7 @@ export default {
         }
       })
         .then(resp => {
+          this.selected_list = []
           let { status, data } = resp.data;
           console.log(data);
           // 储存资产数组
@@ -1795,7 +1809,8 @@ export default {
                 var obj = {
                   id: item
                 }
-                this.edit.handle_sel.push(obj)
+                // this.edit.handle_sel.push(obj)
+                this.selected_list.push(obj)
               });
             });
           } else {
@@ -1879,8 +1894,9 @@ export default {
               v.label_group = '';
             }
           });
+          this.selected_list.concat(this.edit.handle_sel)
           // 显示选择
-          this.edit.handle_sel.forEach(element => {
+          this.selected_list.forEach(element => {
             this.edit.asset_list.data.forEach((item, index) => {
               if (element.id == item.id) {
                 this.$nextTick(() => {
@@ -1901,11 +1917,11 @@ export default {
         }
       })
         .then((resp) => {
-          console.log(this.edit.data.risk_alert_cn);
           let { status, data } = resp.data;
           this.edit.alert_list = data;
+          this.selected_list.concat(this.edit.handle_sel)
           // 显示选择
-          this.edit.handle_sel.forEach(element => {
+          this.selected_list.forEach(element => {
             this.edit.alert_list.data.forEach((item, index) => {
               if (element.id == item.id) {
                 this.$nextTick(() => {
@@ -1940,24 +1956,18 @@ export default {
     // 资产分页
     current_change_assets (val) {
       this.edit.page = val
-    },
-    // 封装数组去重
-    arr_repeat (arr1, arr2) {
-      //合并两个数组
-      arr1.push(...arr2)//或者arr1 = [...arr1,...arr2]
-      //去重
-      let arr3 = Array.from(new Set(arr1))//let arr3 = [...new Set(arr1)]
-      return arr3
+      this.get_list_assets();
     },
     // 告警分页
     current_change_alert (val) {
       this.edit.page = val
       this.get_list_alert();
     },
-
     //编辑工单保存
     prev_task_handle_save_edit () {
       console.log(this.edit.handle_sel);
+
+
       this.edit.table_operator.forEach(element => {
         this.edit.perator.push(element.username)
       });

@@ -199,9 +199,9 @@ export default {
   mounted () {
     this.get_news();
 
-    this.timer = setInterval(() => {
-      this.get_news();
-    }, 5000);
+    // this.timer = setInterval(() => {
+    //   this.get_news();
+    // }, 5000);
 
     eventBus.$on('reset', () => {
       this.modifyPassword()

@@ -107,7 +107,7 @@
                           opacity: .5,
                         },
                         lineStyle: {
-                          width: 1,
+                          width: 2,
                           opacity: .5,
                           color: colors
                         },
@@ -432,7 +432,7 @@
         top: 5%;
         bottom: 20%;
         width: 100px;
-        height: 76%;
+        height: 77%;
         right: 3%;
         background-image: url("../../../../assets/images/screen/content-flow.png");
         background-repeat: no-repeat;

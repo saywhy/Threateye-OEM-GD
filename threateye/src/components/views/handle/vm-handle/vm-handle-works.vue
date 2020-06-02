@@ -1793,7 +1793,8 @@ export default {
               var obj = {
                 id: item
               }
-              this.edit.handle_sel.push(obj)
+              // this.edit.handle_sel.push(obj)
+              this.selected_list.push(obj)
             })
           } else {
             this.edit.data.risk_asset_cn = []

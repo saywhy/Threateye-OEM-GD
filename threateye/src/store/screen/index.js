@@ -44,6 +44,11 @@ export default {
     * */
     //更新大屏两侧数据
     SET_ASIDE_LISTS: (state, args) => {
+      args.forEach(item => {
+        if(item.alias == 'ExternalCountryTop5'){
+          item.name = '外连国家和地区TOP5';
+        }
+      });
       state.asideLists = args;
     },
     //通过id修改大屏两侧数据

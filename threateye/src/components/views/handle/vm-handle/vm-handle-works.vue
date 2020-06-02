@@ -1895,16 +1895,18 @@ export default {
               v.label_group = '';
             }
           });
-          this.selected_list.concat(this.edit.handle_sel)
+          if (this.edit.handle_sel.length != 0) {
+            this.selected_list.concat(this.edit.handle_sel)
+          }
           // 显示选择
-          this.selected_list.forEach(element => {
-            this.edit.asset_list.data.forEach((item, index) => {
-              if (element.id == item.id) {
-                this.$nextTick(() => {
+          this.$nextTick(() => {
+            this.selected_list.forEach(element => {
+              this.edit.asset_list.data.forEach((item, index) => {
+                if (element.id == item.id) {
                   this.$refs.assetTable.toggleRowSelection(item, true);
-                })
-              }
-            });
+                }
+              });
+            })
           });
         });
     },
@@ -1920,16 +1922,18 @@ export default {
         .then((resp) => {
           let { status, data } = resp.data;
           this.edit.alert_list = data;
-          this.selected_list.concat(this.edit.handle_sel)
+          if (this.edit.handle_sel.length != 0) {
+            this.selected_list.concat(this.edit.handle_sel)
+          }
           // 显示选择
-          this.selected_list.forEach(element => {
-            this.edit.alert_list.data.forEach((item, index) => {
-              if (element.id == item.id) {
-                this.$nextTick(() => {
+          this.$nextTick(() => {
+            this.selected_list.forEach(element => {
+              this.edit.alert_list.data.forEach((item, index) => {
+                if (element.id == item.id) {
                   this.$refs.alertTable.toggleRowSelection(item, true);
-                })
-              }
-            });
+                }
+              });
+            })
           });
         });
     },
@@ -1977,6 +1981,8 @@ export default {
         handle_sel_list.push(element.id)
       });
 
+      handle_sel_list = handle_sel_list.concat(this.selected_list)
+      handle_sel_list = [...new Set(handle_sel_list)];
       let all_params = {
         workorder_edit: '1',
         id: this.edit.data.id,

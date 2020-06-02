@@ -111,7 +111,7 @@
       },
       methods:{
         //获取大屏名称
-        getData (args) {
+        getData () {
           this.$axios
             .get('/yiiapi/demonstration/get-base-config')
 
@@ -125,7 +125,6 @@
                 this.baseInfo = data;
 
                 this.getBranch();
-                if(args){this.$router.push({path: '/screen'});}
               }
             })
             .catch((error) => {
@@ -169,7 +168,7 @@
         },
         //取消点击事件
         click_screen_cancel() {
-          this.getData(true);
+          this.$router.push({path: '/screen'});
         },
         click_screen_ok() {
 

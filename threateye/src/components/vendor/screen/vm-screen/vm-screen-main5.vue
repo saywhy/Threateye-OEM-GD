@@ -92,6 +92,7 @@
 
           .then((resp) => {
             this.loading = true;
+
             let {status, data} = resp.data;
             //console.log(data);
             if(status == 0){

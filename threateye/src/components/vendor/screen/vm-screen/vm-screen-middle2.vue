@@ -25,7 +25,8 @@
               legendData:[],
               xAxisData:[],
               yAxisData:[],
-              series:[]
+              series:[],
+              legendColor:[]
             },
             realData:[]
           }
@@ -47,13 +48,21 @@
             .get('/yiiapi/demonstration/flow-statistics')
             .then((resp) => {
 
-              let {status, data} = resp.data;
+              this.flow = {
+                legendData:[],
+                xAxisData:[],
+                yAxisData:[],
+                series:[],
+                legendColor:[]
+              };
+              this.realData = [];
 
-              //console.log(resp)
+              let {status, data} = resp.data;
 
               if(status == 0){
 
                 this.flow.legendData = Object.keys(data);
+                this.flow.legendData = this.flow.legendData.map(item => {return item.toUpperCase();});
 
                 Object.values(data).forEach((val,key) => {
 
@@ -62,36 +71,39 @@
                       return item.statistics_time;
                     });
                   }
-                  this.flow.xAxisData = this.flow.xAxisData.reverse();
-                  let legendName = this.flow.legendData[key];
-                  legendName = legendName.toLowerCase();
 
-
-                  if(legendName == 'http'){
-                    var colors = '#007AFF';
-                  }else if(legendName == 'https'){
-                    var colors = '#7C00FF';
-                  }else if(legendName == 'ssh'){
-                    var colors = '#CC9D3B';
-                  }else if(legendName == 'dns'){
-                    var colors = '#00C800';
-                  }else if(legendName == 'ftp'){
-                    var colors = '#FF00C9';
-                  }
                   let flow = val.map(item => {
                     return item.flow;
                   });
+
+                  this.flow.xAxisData = this.flow.xAxisData.reverse();
+                  let legendName = this.flow.legendData[key];
+                  legendName = legendName.toUpperCase();
+
+                  if(legendName == 'http' || legendName == 'HTTP'){
+                    var colors = '#007AFF';
+                  }else if(legendName == 'https' || legendName == 'HTTPS'){
+                    var colors = '#7C00FF';
+                  }else if(legendName == 'ssh' || legendName == 'SSH'){
+                    var colors = '#CC9D3B';
+                  }else if(legendName == 'dns' || legendName == 'DNS'){
+                    var colors = '#00C800';
+                  }else if(legendName == 'ftp' || legendName == 'FTP'){
+                    var colors = '#FF00C9';
+                  }
+
+                  this.flow.legendColor.push(colors);
 
                   this.flow.series.push({
                     data: flow,
                     type: 'line',
                     smooth:true,
                     symbol:'none',
-                    name: this.flow.legendData[key],
+                    name: legendName,
                     itemStyle:{
                       normal:{
                         textStyle:{
-                          color: colors,
+                          color: 'red',
                           opacity: .5,
                         },
                         lineStyle: {
@@ -107,11 +119,9 @@
                     }
                   });
                 });
-
                 this.$nextTick(() => {
                   this.drawGraph();
                 });
-
               }
             })
             .catch((error) => {
@@ -129,7 +139,7 @@
                 type: 'shadow'
               }
             },*/
-            color: ['#007AFF','#7C00FF', '#CC9D3B','#00C800','#FF00C9'],
+            color: this.flow.legendColor,
             legend: {
               bottom: -5,
               left: 5,

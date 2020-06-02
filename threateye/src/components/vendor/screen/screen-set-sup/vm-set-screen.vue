@@ -43,15 +43,16 @@
       //取消按钮点击
       click_screen_cancel() {
         let defaultIndex = this.defaultIndex;
-        if(defaultIndex == 1){
+        this.$router.push({path: '/screen'});
+        /*if(defaultIndex == 1){
           this.$store.dispatch('getScreenAside').then(resp => {
             if(resp){this.$router.push({path: '/screen'});}
           });
         }else if(defaultIndex == 2){
           this.$store.dispatch('getScreenTop').then(resp => {
             if(resp){this.$router.push({path: '/screen'});}
-          });;
-        }
+          });
+        }*/
       },
       //确认按钮点击
       click_screen_ok() {

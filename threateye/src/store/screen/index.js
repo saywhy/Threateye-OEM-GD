@@ -15,7 +15,7 @@ export default {
       {name: '分支安全',alias:'branchSafe', flag: false, aside_id: 4},
       {name: '系统状态监控',alias:'systemStatus', flag: false, aside_id: 5},
       {name: '关注告警',alias:'attentionAlarm', flag: false, aside_id: 6},
-      {name: '外连国家TOP5',alias:'ExternalCountryTop5', flag: false, aside_id: 7},
+      {name: '外连国家和地区TOP5',alias:'ExternalCountryTop5', flag: false, aside_id: 7},
       {name: '风险趋势',alias:'riskTrend', flag: false, aside_id: 8},
       {name: '威胁排行',alias:'threatRange', flag: false, aside_id: 9}],
     //顶部数据

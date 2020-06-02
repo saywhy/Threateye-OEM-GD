@@ -30,6 +30,7 @@
             .get('/yiiapi/demonstration/risk-trend')
             .then((resp) => {
 
+
               let {status, data} = resp.data;
 
               if(status == 0){
@@ -46,6 +47,18 @@
               console.log(error);
             });
         },
+        //地图tooptip样式
+        tipFormatter(prams){
+          var name = prams.data.name;
+          var divWarp = $('<div class="div-tip-warp"/>') ;
+          var divContent = $('<div class = "tip-background">');
+          var span = $('<span>').text(name);
+          var divTriangle = $('<div class ="triangle-down hotel-triangle-position">');
+          var divFirst =divContent.append(span);
+          var div = divWarp.append(divFirst).append(divTriangle);
+          return div.html();
+        },
+
 
         drawGraph(){
           let myChart = this.$echarts.init(document.getElementById('trend'));
@@ -53,10 +66,25 @@
           myChart.clear();
 
           let option = {
+            /*tooltip : {
+              show: true,
+              backgroundColor: 'transparent',
+              trigger: 'item',
+              formatter: (prams) => {
+                console.log(prams)
+                this.tipFormatter(prams);
+              },
+              position: 'top',
+              padding: [1, 10],
+              textStyle: {
+                fontSize: 12
+              }
+            },*/
             tooltip: {
               trigger: 'axis',
-              axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              backgroundColor:'rgba(0,122,255,0.5)',
+              axisPointer: {
+                type: 'shadow'
               }
             },
             legend: {
@@ -65,7 +93,7 @@
             grid: {
               top:'5%',
               left: '0',
-              right: '3%',
+              right: '4%',
               bottom: '0',
               containLabel: true
             },
@@ -110,7 +138,8 @@
             series: [{
               type: 'line',
               itemStyle:{
-                opacity: 0
+                color:'#007AFF',
+                borderColor: '#007AFF'
               },
               lineStyle:{
                 color:'#007AFF',
@@ -130,6 +159,10 @@
                   }],
                   global: false
                 }
+              },
+              emphasis:{
+
+                show:false
               },
               data: this.trendData.yAxisData
             }]

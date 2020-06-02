@@ -60,6 +60,8 @@
 
               let {status, data} = resp.data;
 
+              this.dataInfo = [];
+
               //console.log(data)
 
               if(status == 0){

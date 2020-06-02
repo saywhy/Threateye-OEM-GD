@@ -66,7 +66,6 @@
                         Object.assign(item,{num:count.toString().split('')});
                       }
                       //item.num = count.toString().split('');
-
                     }
                   }
                 });

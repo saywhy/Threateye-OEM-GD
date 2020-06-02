@@ -113,12 +113,7 @@
           name: "北京",
           coordinateSystem: "geo",
           zlevel: 1,
-          data: [
-            {
-              name: "",
-              value: [116.3972,39.9075]
-            }
-          ],
+          data: [{name: "", value: [116.3972,39.9075]}],
           symbol:'image://static/image/f2.png',
           symbolSize: 8,
           /*itemStyle:{

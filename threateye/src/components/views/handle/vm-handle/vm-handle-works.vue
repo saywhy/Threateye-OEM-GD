@@ -2036,7 +2036,8 @@ export default {
       this.edit.handle_sel.forEach(element => {
         handle_sel_list.push(element.id)
       });
-
+      handle_sel_list = handle_sel_list.concat(this.selected_list)
+      handle_sel_list = [...new Set(handle_sel_list)];
       let all_params = {
         workorder_edit: '1',
         id: this.edit.data.id,

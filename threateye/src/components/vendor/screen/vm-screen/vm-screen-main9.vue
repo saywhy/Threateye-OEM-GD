@@ -3,13 +3,53 @@
     <el-table :data="tableData" class="screen-table">
       <el-table-column label="告警时间" show-overflow-tooltip>
         <template slot-scope="scope">
-          {{ scope.row.alert_time | time }}
+          <marquee direction="left" hspace="0" vspace="0"
+                   behavior="scroll" scrollamount="1" align="left"
+                   scrolldelay="0" loop="-1" width="100%">
+            {{ scope.row.alert_time | time }}
+          </marquee>
         </template>
       </el-table-column>
-      <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
+      <el-table-column label="告警类型" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <marquee direction="left"
+                   behavior="scroll" scrollamount="1"
+                   scrolldelay="0" loop="-1" width="100%">
+            {{ scope.row.category }}
+          </marquee>
+        </template>
+      </el-table-column>
+      <el-table-column label="威胁指标" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <marquee direction="left"
+                   behavior="scroll" scrollamount="1"
+                   scrolldelay="0" loop="-1" width="100%">
+            {{ scope.row.indicator }}
+          </marquee>
+        </template>
+      </el-table-column>
+      <el-table-column label="风险资产" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <marquee direction="left"
+                   behavior="scroll" scrollamount="1"
+                   scrolldelay="0" loop="-1" width="100%">
+            {{ scope.row.asset_ip }}
+          </marquee>
+        </template>
+      </el-table-column>
+      <el-table-column label="攻击阶段" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <marquee direction="left" hspace="0"
+                   behavior="scroll" scrollamount="1"
+                   scrolldelay="0" loop="-1" width="100%">
+            {{ scope.row.attack_stage }}
+          </marquee>
+        </template>
+      </el-table-column>
+     <!-- <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
       <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip></el-table-column>
       <el-table-column prop="asset_ip" label="风险资产" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="attack_stage" label="攻击阶段" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="attack_stage" label="攻击阶段" show-overflow-tooltip></el-table-column>-->
     </el-table>
   </div>
 </template>
@@ -65,6 +105,10 @@
 
       &:before {
         height: 0;
+      }
+
+      .el-table__body-wrapper{
+        overflow-x: inherit;
       }
 
       .el-table__header {

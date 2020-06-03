@@ -1,14 +1,19 @@
 <template>
     <div class="vm-screen-main7">
       <div class="vm-progress-list">
-        <div class="item" v-for="(item,index) in progress_data_list">
-          <div class="vam-progress-item">
+        <div class="item" v-for="(item,index) in progress_list">
+          <div class="pgress-item">
             <span class="flag-icon" :class="calculate(item.alias)"></span>
           </div>
-          <span class="vam-progress-title">
-            <span class="country_name" :title="item.country_name">{{item.country_name}}</span>
+          <div class="pgress-title">
+            <marquee v-if="item.country_name.length>3" class="country_name" direction="left"
+                     behavior="scroll" scrollamount="1"
+                     scrolldelay="0" loop="-1" width="50">
+              {{item.country_name}}
+            </marquee>
+            <span class="country_name" v-else>{{item.country_name}}</span>
             <span class="country_count">{{item.count}}</span>
-          </span>
+          </div>
           <el-progress :show-text="false" :text-inside="true"
                        :stroke-width="20" :percentage="item.count">
           </el-progress>
@@ -22,15 +27,16 @@
       name: "vm-screen-main7",
       data(){
           return{
-            progress_data_list:[{pid:0,name:'CN',country_name:'中国', num:0, count:0},
-              {pid:1,name:'CN',country_name:'中国', num:0,count:0},
-              {pid:2,name:'CN',country_name:'中国', num:0,count:0},
+            progress_list:[{pid:0,name:'CN',country_name:'英国', num:0, count:0},
+              {pid:1,name:'CN',country_name:'英国英国英国英国英国英国', num:0,count:0},
+              {pid:2,name:'CN',country_name:'英国', num:0,count:0},
               {pid:3,name:'CN',country_name:'中国', num:0,count:0},
               {pid:4,name:'CN',country_name:'中国', num:0,count:0}]
           }
       },
       created() {
         this.getData();
+
       },
       mounted() {
         setInterval(()=>{
@@ -47,6 +53,8 @@
 
               let {status, data} = resp.data;
 
+              console.log(data)
+
               if(status == 0){
 
                 data.map(item => {
@@ -57,7 +65,7 @@
 
                   Object.assign(item,{alias:alias});
                 });
-                this.progress_data_list = data;
+                this.progress_list = data;
               }
             })
             .catch((error) => {
@@ -85,30 +93,29 @@
     .item{
       display: flex;
       line-height: 45px;
-      .vam-progress-item{
+      .pgress-item{
         width: 40px;
         .progress-img{
           vertical-align: middle;
           width: 32px;
         }
       }
-      .vam-progress-title{
+      .pgress-title{
         width: 90px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
         text-align: left;
         cursor: default;
         font-family: PingFang;
+        border: 1px;
         color: #fff;
-
+        position: relative;
         .country_name{
-          width: 54px;
+          width: 45px;
           float: left;
+          text-align: left;
+          font-size: 14px;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
-          font-size: 14px;
         }
         .country_count{
           display: inline-block;

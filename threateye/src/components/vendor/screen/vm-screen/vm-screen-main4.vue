@@ -62,19 +62,19 @@
           this.myEcharts.clear();
 
           let option = {
-            tooltip: {
+            /*tooltip: {
               trigger: 'axis',
               axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
               }
-            },
-            color: ['#D44361','#D0A13F', '#60C160'],
+            },*/
+            color: ['#D44361','#D0A13F','#60C160'],
             legend: {
               show:false
             },
             grid: {
               top:'0',
-              left: '0%',
+              left: '-8%',
               right: '0',
               bottom: '-8%',
               containLabel: true
@@ -117,7 +117,7 @@
                   color:'#fff',
                   fontSize:12,
                   fontFamily:'PingFangSC-Regular',
-                  margin: 40,
+                  margin: 60,
                   formatter: function (value) {
                     return (value.length > 5 ? (value.slice(0,5)+"...") : value )
                   },
@@ -164,7 +164,7 @@
 
           var id = document.getElementById("extension");
           if(!id) {
-            var div = "<div id = 'extension' sytle=\"display:block\"></div>";
+            var div = "<marquee id='extension' behavior='scroll' direction='left' sytle='display:block'></marquee>";
             $("html").append(div);
           }
 

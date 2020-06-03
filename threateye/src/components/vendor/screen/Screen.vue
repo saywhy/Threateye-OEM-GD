@@ -95,7 +95,7 @@
     data() {
       return {
         isFullscreen: false,
-        threatEyeName:'',
+        threatEyeName:'ThreatEye高级威胁检测系统',
         totalLists:[],
         totalTopLists:[],
         name: '外连分支'

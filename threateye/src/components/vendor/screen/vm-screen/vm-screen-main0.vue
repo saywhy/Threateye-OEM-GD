@@ -37,6 +37,9 @@
 
             .then((resp) => {
 
+              this.degree = [];
+              this.category = [];
+
               let {status, data} = resp.data;
 
               if(status == 0){
@@ -47,7 +50,6 @@
 
                 this.$nextTick(function() {
                   this.drawRank();
-
                 });
                 this.$nextTick(function() {
                   this.drawScat();
@@ -66,8 +68,9 @@
 
           let degrees = this.degree;
           //degrees = [{degree: "medium", count: "2"}]
-          if(degrees){
 
+          let colorAttr = [];
+          if(degrees){
             degrees.filter(item => {
              let name = '';let value = 0;let color = '';
              if(item.degree == 'high'){
@@ -83,20 +86,20 @@
                value = item.count;
                color = '#60C160';
              }
+              colorAttr.push(color);
              Object.assign(item,{value,name,itemStyle:{color:color}});
             });
           }else {
             return false;
           }
 
-          let index = 0;
           // 基于准备好的dom，初始化echarts实例
-          let rank = this.$echarts.init(document.getElementById("threat-rank"));
-          rank.showLoading({ text: '正在加载数据...' });
+          let myEcharts = this.$echarts.init(document.getElementById("threat-rank"));
+          myEcharts.showLoading({ text: '正在加载数据...' });
 
-          rank.clear();
+          myEcharts.clear();
           // 绘制图表
-          rank.setOption({
+          let option = {
             grid: {
               top: "20%",
               left: "5%",
@@ -104,9 +107,8 @@
               bottom: "5%",
               containLabel: true
             },
-            color: ["#D44361", "#D0A13F", "#60C160"],
-            series: [
-              {
+            color: colorAttr,
+            series: [{
                 name: "预警",
                 type: "pie",
                 center: ['50%', '42%'],
@@ -146,18 +148,20 @@
                 data: degrees
               }
             ]
-          });
+          };
 
-          rank.hideLoading();
+          myEcharts.setOption(option);
 
-          rank.dispatchAction({
+          myEcharts.hideLoading();
+
+          /*myEcharts.dispatchAction({
             type: "highlight",
             seriesIndex: 0,
             dataIndex: 0
-          });
+          });*/
 
           //设置默认选中高亮部分
-          rank.on("mouseover", function(e) {
+          /*rank.on("mouseover", function(e) {
             if (e.dataIndex != index) {
               rank.dispatchAction({
                 type: "downplay",
@@ -173,20 +177,43 @@
               seriesIndex: 0,
               dataIndex: e.dataIndex
             });
-          });
+          });*/
+
+          //自动轮播
+          var app = {
+            currentIndex: -1
+          };
+          setInterval(function () {
+            var dataLen = option.series[0].data.length;
+            // 取消之前高亮的图形
+            myEcharts.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 0,
+              dataIndex: app.currentIndex
+            });
+            app.currentIndex = (app.currentIndex + 1) % dataLen;
+            // 高亮当前图形
+            myEcharts.dispatchAction({
+              type: 'highlight',
+              seriesIndex: 0,
+              dataIndex: app.currentIndex
+            });
+            // 显示 tooltip
+            myEcharts.dispatchAction({
+              type: 'showTip',
+              seriesIndex: 0,
+              dataIndex: app.currentIndex
+            });
+          }, 3000);
+
 
           window.addEventListener("resize", () => {
-            rank.resize();
+            myEcharts.resize();
           });
         },
         drawScat(){
-
           let categories = this.category;
-
-         // console.log(categories);
-
           if(categories){
-
             categories.filter(item => {
               let name = ''; let value = 0;
               name = item.category;
@@ -197,16 +224,14 @@
             return false;
           }
 
-          let index = 0;
-
           // 基于准备好的dom，初始化echarts实例
-          let rank = this.$echarts.init(document.getElementById("threat-scat"));
+          let myEcharts = this.$echarts.init(document.getElementById("threat-scat"));
 
-          rank.showLoading({ text: '正在加载数据...' });
+          myEcharts.showLoading({ text: '正在加载数据...' });
 
-          rank.clear();
+          myEcharts.clear();
           // 绘制图表
-          rank.setOption({
+          let option1 = {
             grid: {
               top: "20%",
               left: "5%",
@@ -256,18 +281,19 @@
                 data: categories
               }
             ]
-          });
+          }
+          myEcharts.setOption(option1);
 
-          rank.hideLoading();
+          myEcharts.hideLoading();
 
-          rank.dispatchAction({
+         /* myEcharts.dispatchAction({
             type: "highlight",
             seriesIndex: 0,
             dataIndex: 0
-          });
+          });*/
 
           //设置默认选中高亮部分
-          rank.on("mouseover", function(e) {
+         /* myEcharts.on("mouseover", function(e) {
             if (e.dataIndex != index) {
               rank.dispatchAction({
                 type: "downplay",
@@ -276,17 +302,44 @@
               });
             }
           });
-          rank.on("mouseout", function(e) {
+          myEcharts.on("mouseout", function(e) {
             index = e.dataIndex;
             rank.dispatchAction({
               type: "highlight",
               seriesIndex: 0,
               dataIndex: e.dataIndex
             });
-          });
+          });*/
+
+          //自动轮播
+          var app = {
+            currentIndex: -1
+          };
+          setInterval(function () {
+            var dataLen = option1.series[0].data.length;
+            // 取消之前高亮的图形
+            myEcharts.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 0,
+              dataIndex: app.currentIndex
+            });
+            app.currentIndex = (app.currentIndex + 1) % dataLen;
+            // 高亮当前图形
+            myEcharts.dispatchAction({
+              type: 'highlight',
+              seriesIndex: 0,
+              dataIndex: app.currentIndex
+            });
+            // 显示 tooltip
+            myEcharts.dispatchAction({
+              type: 'showTip',
+              seriesIndex: 0,
+              dataIndex: app.currentIndex
+            });
+          }, 3000);
 
           window.addEventListener("resize", () => {
-            rank.resize();
+            myEcharts.resize();
           });
         }
       }

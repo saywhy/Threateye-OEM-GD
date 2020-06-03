@@ -35,7 +35,7 @@
               let {status, data} = resp.data;
               if(status == 0){
                 this.items = data;
-                setInterval(this.scroll,2000);
+                setInterval(this.scroll,3000);
               }
             })
             .catch((error) => {

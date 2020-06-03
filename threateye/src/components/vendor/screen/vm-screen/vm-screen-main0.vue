@@ -19,8 +19,8 @@
           return {
             degree:[],
             category:[],
-            degreeIndex:-1,
-            categoryIndex:-1,
+            degreeIndex:0,
+            categoryIndex:0,
             timer:null,
             timer1:null
           }
@@ -43,8 +43,8 @@
 
               this.degree = [];
               this.category = [];
-              this.degreeIndex = -1;
-              this.categoryIndex = -1;
+              this.degreeIndex = 0;
+              this.categoryIndex = 0;
 
 
               clearInterval(this.timer);

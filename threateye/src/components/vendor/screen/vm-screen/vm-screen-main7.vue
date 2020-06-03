@@ -53,7 +53,7 @@
 
               let {status, data} = resp.data;
 
-              console.log(data)
+              //console.log(data)
 
               if(status == 0){
 

@@ -18,7 +18,11 @@
       data() {
           return {
             degree:[],
-            category:[]
+            category:[],
+            degreeIndex:-1,
+            categoryIndex:-1,
+            timer:null,
+            timer1:null
           }
       },
       created() {
@@ -39,6 +43,12 @@
 
               this.degree = [];
               this.category = [];
+              this.degreeIndex = -1;
+              this.categoryIndex = -1;
+
+
+              clearInterval(this.timer);
+              clearInterval(this.timer1);
 
               let {status, data} = resp.data;
 
@@ -54,7 +64,6 @@
                 this.$nextTick(function() {
                   this.drawScat();
                 });
-
 
               }
           })
@@ -180,29 +189,30 @@
           });*/
 
           //自动轮播
-          var app = {
-            currentIndex: -1
-          };
-          setInterval(function () {
+          let index = this.degreeIndex;
+          this.timer = setInterval(function () {
             var dataLen = option.series[0].data.length;
             // 取消之前高亮的图形
             myEcharts.dispatchAction({
               type: 'downplay',
               seriesIndex: 0,
-              dataIndex: app.currentIndex
+              dataIndex: index
             });
-            app.currentIndex = (app.currentIndex + 1) % dataLen;
+            index = (index + 1) % dataLen;
             // 高亮当前图形
             myEcharts.dispatchAction({
               type: 'highlight',
               seriesIndex: 0,
-              dataIndex: app.currentIndex
+              dataIndex: index
             });
+
+            //console.log(index);
+
             // 显示 tooltip
             myEcharts.dispatchAction({
               type: 'showTip',
               seriesIndex: 0,
-              dataIndex: app.currentIndex
+              dataIndex: index
             });
           }, 3000);
 
@@ -312,29 +322,27 @@
           });*/
 
           //自动轮播
-          var app = {
-            currentIndex: -1
-          };
-          setInterval(function () {
+          let index = this.categoryIndex;
+          this.timer1 = setInterval(function () {
             var dataLen = option1.series[0].data.length;
             // 取消之前高亮的图形
             myEcharts.dispatchAction({
               type: 'downplay',
               seriesIndex: 0,
-              dataIndex: app.currentIndex
+              dataIndex: index
             });
-            app.currentIndex = (app.currentIndex + 1) % dataLen;
+            index = (index + 1) % dataLen;
             // 高亮当前图形
             myEcharts.dispatchAction({
               type: 'highlight',
               seriesIndex: 0,
-              dataIndex: app.currentIndex
+              dataIndex: index
             });
             // 显示 tooltip
             myEcharts.dispatchAction({
               type: 'showTip',
               seriesIndex: 0,
-              dataIndex: app.currentIndex
+              dataIndex: index
             });
           }, 3000);
 

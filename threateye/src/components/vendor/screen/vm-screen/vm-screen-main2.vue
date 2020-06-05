@@ -15,7 +15,8 @@
       data(){
           return{
             animate:false,
-            items:[]
+            items:[],
+            timer:null
           }
       },
       created(){
@@ -33,9 +34,12 @@
             .get('/yiiapi/demonstration/threat-dynamics')
             .then((resp) => {
               let {status, data} = resp.data;
+
+              clearInterval(this.timer);
+
               if(status == 0){
                 this.items = data;
-                setInterval(this.scroll,3000);
+                this.timer = setInterval(this.scroll,3000);
               }
             })
             .catch((error) => {

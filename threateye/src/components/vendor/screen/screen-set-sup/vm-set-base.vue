@@ -2,7 +2,7 @@
     <div class="vm_set_base">
       <el-form class="content" ref="form">
         <div class="section">
-          <h3 class="name">我是基础设置</h3>
+          <h3 class="name">大屏基本设置</h3>
           <div class="form-item">
             <label class="title">大屏名称</label>
             <el-form-item>

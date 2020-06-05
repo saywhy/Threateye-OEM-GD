@@ -98,7 +98,7 @@
         threatEyeName:'ThreatEye高级威胁检测系统',
         totalLists:[],
         totalTopLists:[],
-        name: '外连分支'
+        name: '外连分布'
       }
     },
 
@@ -207,7 +207,7 @@
         if(flag){
           this.name = '分支态势';
         }else {
-          this.name = '外连分支';
+          this.name = '外连分布';
         }
       }
     }

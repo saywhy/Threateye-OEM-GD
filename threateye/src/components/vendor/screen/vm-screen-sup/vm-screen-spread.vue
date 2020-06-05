@@ -5,7 +5,7 @@
           <ul class="spread-list">
             <li class="item" v-for="(it,$idx) in item" :key="$idx">
               <div class="its it1">
-                <h4 class="s_name">资产名称</h4>
+                <h4 class="s_name">分支名称</h4>
                 <h2 class="s_content" :title="it.branch_name">{{it.branch_name}}</h2>
               </div>
               <div class="its it2">

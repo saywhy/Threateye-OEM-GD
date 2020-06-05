@@ -47,8 +47,8 @@
 
                 data.forEach(item => {
                   item.style = {
-                    top: this.random(20, 200) + 'px',
-                    left: this.random(10, 300) + 'px'
+                    top: this.random(5, 200) + 'px',
+                    left: this.random(5, 300) + 'px'
                   };
                   item.change = false;
                 });

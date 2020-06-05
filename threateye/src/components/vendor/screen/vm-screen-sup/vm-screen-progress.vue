@@ -1,6 +1,6 @@
 <template>
   <div class="vm-screen-progress">
-    <div class="item" v-for="(item,$index) in get_pg_data" :key="item.name">
+    <div class="item" v-for="(item,$index) in get_pg_data" :key="$index">
       <span class="vam-progress-title">
         <span class="progress-title" :title="item.name">{{item.name | sys}}</span>
       </span>

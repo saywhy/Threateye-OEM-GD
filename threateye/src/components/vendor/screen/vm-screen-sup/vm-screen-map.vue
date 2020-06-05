@@ -1,20 +1,20 @@
 <template>
-  <div id="ddos">
-    <div id="map"></div>
+  <div id="ddos" v-cloak>
+    <div id="screenMap"></div>
   </div>
 </template>
 
-<script>
-  import echarts from "echarts";
+<script type="text/ecmascript-6">
   export default {
     name: "Ddos",
     data() {
       return {
         loading:true,
         mapData:[{dest_ip:'202.106.40.115',dest_label:"[]",dest_location:[52.6953,6.9075],
-          dest_type:'remote',id:173,src_ip:'192.168.1.195',src_label:"['11234分支']",src_location:[117.417,39.945],src_type:'local'},
-          {dest_ip:'202.106.40.116',dest_label:"[]",dest_location:[106.3972,32.9075],
-            dest_type:'remote',id:172,src_ip:'192.168.1.198',src_label:"['11234分支11']",src_location:[51.945,16.417],src_type:'local'}]
+          dest_type:'remote',id:173,src_ip:'192.168.1.195',src_label:"['11234分支']",
+          src_location:[97.417,39.945],src_type:'local'},
+          /*{dest_ip:'202.106.40.116',dest_label:"[]",dest_location:[106.3972,32.9075],
+            dest_type:'remote',id:172,src_ip:'192.168.1.198',src_label:"['11234分支11']",src_location:[51.945,16.417],src_type:'local'}*/]
       }
     },
     created(){
@@ -35,8 +35,9 @@
           .then((resp) => {
             this.loading = true;
             let {status, data} = resp.data;
-           // console.log(resp)
+
             if(status == 0){
+
               this.mapData = data;
 
               this.$nextTick(() => {
@@ -51,22 +52,27 @@
       },
       drawGraph() {
 
-        //console.log('1212');
         let series = []; //在地图上显示的数据
 
         let symbol1 = ['image://static/image/f0.png', 'image://static/image/f1.png'];
 
         let symbol2 = ['image://static/image/f1.png', 'image://static/image/f0.png'];
 
+        var symbolSize1 = [12,16],symbolSize2 = [16,12];
+
         let mapData = this.mapData;
 
         mapData.forEach(item => {
 
           let symbol = [];
+          let symbolSize = [];
+
           if(item.src_type == 'local'){
             symbol = symbol1;
+            symbolSize = symbolSize1;
           }else {
             symbol = symbol2;
+            symbolSize = symbolSize2;
           }
 
           series.push({
@@ -89,7 +95,7 @@
               symbolSize: 2
             },
             symbol: symbol,
-            symbolSize: [6,12],
+            symbolSize: symbolSize,
             lineStyle: {
               normal: {
                 width: "",
@@ -97,13 +103,13 @@
               }
             },
             label:{
-              show: false,
+              show: true,
               color:'#ccc',
-              position:'end'
+              position:'end',
+              fontSize: 10
             },
-            markPoint:{
-              symbol:'pin'
-            }
+            animation:false,
+            animationThreshold: 0
           })
         });
 
@@ -126,6 +132,12 @@
           }*/
         });
 
+        let myChart = this.$echarts.init(document.getElementById("screenMap"));
+
+        myChart.showLoading({ text: '正在加载数据...' });
+
+        myChart.clear();
+
         let options = {
           //设置标题文本
           title: {
@@ -142,18 +154,17 @@
             map: 'world',
             roam: false,
             zoom: 1.2,
-            label: {
-              emphasis: {
-                show: false,
-              }
+            itemStyle:{
+              areaColor: 'rgba(9,102,232,0.12)',
+              borderColor: '#0966e8'
             },
-            selectedMode: false,
-            itemStyle: {
-              normal: {
+            emphasis:{
+              label:{
                 show: false,
-                areaColor: 'rgba(9,102,232,0.12)',
-                borderColor: '#0966e8'
               },
+              itemStyle:{
+                areaColor:'rgba(0,215,233,.12)'
+              }
             },
             silent: false
           },
@@ -169,11 +180,6 @@
           }],
           series: series
         };
-
-        let myChart = this.$echarts.init(document.getElementById("map"));
-
-        myChart.showLoading({ text: '正在加载数据...' });
-        myChart.clear();
 
         myChart.setOption(options);
 
@@ -192,7 +198,7 @@
   #ddos{
     width: 765px;
     height: 472px;
-    #map {
+    #screenMap {
       width: 765px;
       height: 472px;
     }

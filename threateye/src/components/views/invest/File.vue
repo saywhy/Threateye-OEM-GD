@@ -127,7 +127,24 @@ export default {
       }
     };
   },
+  mounted () {
+    this.test()
+  },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'investigate/file-investigation',
+        }
+      })
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     search () {
       this.file_search.page = 1
       this.file_list.pageNow = 1

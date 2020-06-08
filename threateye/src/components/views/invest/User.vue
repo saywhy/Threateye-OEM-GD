@@ -110,7 +110,24 @@ export default {
       }
     };
   },
+  mounted () {
+    this.test()
+  },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'investigate/user-investigation',
+        }
+      })
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     search () {
       this.user_search.page = 1
       this.user_list.pageNow = 1

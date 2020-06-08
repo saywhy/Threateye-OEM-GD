@@ -134,7 +134,24 @@ export default {
       }
     };
   },
+  mounted () {
+    this.test()
+  },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'investigate/flow-direction-investigation',
+        }
+      })
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     search () {
       this.flow_search.page = 1
       this.flow_list.pageNow = 1

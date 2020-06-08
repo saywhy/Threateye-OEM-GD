@@ -244,8 +244,24 @@ export default {
   components: {
     VmEmergePicker
   },
+  mounted () {
+    this.test()
+  },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'investigate/host-network-investigation',
+        }
+      })
+        .then(response => {
 
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     search_data () {
       switch (this.activeButGroup) {
         case '1':

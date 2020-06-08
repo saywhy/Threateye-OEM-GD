@@ -142,8 +142,23 @@ export default {
       this.url_search.dst_ip = this.$route.query.dest_ip;
       this.get_data();
     }
+    this.test()
   },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/site/check-auth-exist', {
+        params: {
+          pathInfo: 'investigate/ipurl-communication-investigation',
+        }
+      })
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
     search () {
       this.url_search.page = 1
       this.url_list.pageNow = 1

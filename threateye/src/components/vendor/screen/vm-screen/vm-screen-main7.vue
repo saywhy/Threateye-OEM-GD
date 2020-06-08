@@ -27,6 +27,7 @@
       name: "vm-screen-main7",
       data(){
           return{
+            timers:null,
             progress_list:[{pid:0,name:'CN',country_name:'英国', num:0, count:0},
               {pid:1,name:'CN',country_name:'英国英国英国英国英国英国', num:0,count:0},
               {pid:2,name:'CN',country_name:'英国', num:0,count:0},
@@ -36,12 +37,14 @@
       },
       created() {
         this.getData();
-
       },
       mounted() {
-        setInterval(()=>{
+        this.timers = setInterval(()=>{
           this.getData();
-        },10000 * 6 * 5);
+        },10000 * 30);
+      },
+      destroyed(){
+        clearInterval(this.timers);
       },
       methods:{
         //获取数据

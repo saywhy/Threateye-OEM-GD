@@ -72,16 +72,19 @@
         sysData: {},
         itemAttr:[],
         items:[],
-
+        timers:null
       }
     },
     created(){
       this.getData();
     },
     mounted() {
-      setInterval(()=>{
+      this.timers = setInterval(()=>{
         this.getData();
-      },10000  * 6 * 5);
+      },10000 * 30);
+    },
+    destroyed(){
+      clearInterval(this.timers);
     },
     methods:{
       //获取数据
@@ -104,7 +107,7 @@
               if(this.items.length > 3){
                 let newAttr = this.getNewArray(items,3);
                 this.itemAttr = newAttr;
-                console.log(this.itemAttr)
+                //console.log(this.itemAttr)
               }
             }
           })

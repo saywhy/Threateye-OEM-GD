@@ -23,15 +23,20 @@
             data:[],
             count: 0,
             reli_list: [],
+            timer:null,
+            timers:null
           }
       },
       created(){
         this.getData();
       },
       mounted() {
-        setInterval(()=>{
+        this.timers = setInterval(()=>{
           this.getData();
-        },10000 * 6 * 5);
+        },10000 * 30);
+      },
+      destroyed(){
+        clearInterval(this.timers);
       },
       methods:{
         random (lower, upper) {
@@ -42,6 +47,8 @@
             .get('/yiiapi/demonstration/threat-indicators')
             .then((resp) => {
               let {status, data} = resp.data;
+
+              clearInterval(this.timer);
 
               if(status == 0){
 
@@ -57,7 +64,7 @@
 
                 this.heatHandle();
 
-                setInterval(() => {
+                this.timer = setInterval(() => {
                   this.heatHandle();
                 }, 5000);
 

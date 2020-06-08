@@ -16,16 +16,20 @@
           return{
             animate:false,
             items:[],
-            timer:null
+            timer:null,
+            timers:null
           }
       },
       created(){
         this.getData();
       },
       mounted() {
-        setInterval(()=>{
+        this.timers = setInterval(()=>{
           this.getData();
-        },10000 * 6 * 5);
+        },10000 * 30);
+      },
+      destroyed(){
+        clearInterval(this.timers);
       },
       methods: {
         //获取数据

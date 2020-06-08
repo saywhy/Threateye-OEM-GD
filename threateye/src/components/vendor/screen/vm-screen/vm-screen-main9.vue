@@ -1,7 +1,7 @@
 <template>
   <div class="vm-screen-main9">
     <el-table :data="tableData" class="screen-table">
-      <el-table-column label="告警时间" show-overflow-tooltip>
+     <!-- <el-table-column label="告警时间" show-overflow-tooltip>
         <template slot-scope="scope">
           <marquee direction="left" hspace="0" vspace="0"
                    behavior="scroll" scrollamount="1" align="left"
@@ -45,11 +45,20 @@
             {{ scope.row.attack_stage }}
           </marquee>
         </template>
+      </el-table-column>-->
+      <el-table-column label="告警时间" show-overflow-tooltip>
+        <template slot-scope="scope">
+            {{ scope.row.alert_time | time }}
+        </template>
       </el-table-column>
-     <!-- <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="category" label="告警类型" show-overflow-tooltip></el-table-column>
       <el-table-column prop="indicator" label="威胁指标" show-overflow-tooltip></el-table-column>
       <el-table-column prop="asset_ip" label="风险资产" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="attack_stage" label="攻击阶段" show-overflow-tooltip></el-table-column>-->
+      <el-table-column label="攻击阶段" show-overflow-tooltip>
+        <template slot-scope="scope">
+          {{ scope.row.attack_stage | stage }}
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -59,6 +68,7 @@
     name: "vm-screen-main9",
     data() {
       return {
+        timers:null,
         tableData: []
       }
     },
@@ -66,9 +76,12 @@
       this.getData();
     },
     mounted() {
-      setInterval(()=>{
+      this.timers = setInterval(()=>{
         this.getData();
-      },10000 * 6 * 5);
+      },10000 * 30);
+    },
+    destroyed(){
+      clearInterval(this.timers);
     },
     methods: {
       //获取数据

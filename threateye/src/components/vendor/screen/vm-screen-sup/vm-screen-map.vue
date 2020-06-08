@@ -9,21 +9,26 @@
     name: "Ddos",
     data() {
       return {
+        timers: null,
         loading:true,
         mapData:[{dest_ip:'202.106.40.115',dest_label:"[]",dest_location:[52.6953,6.9075],
           dest_type:'remote',id:173,src_ip:'192.168.1.195',src_label:"['11234分支']",
           src_location:[97.417,39.945],src_type:'local'},
           /*{dest_ip:'202.106.40.116',dest_label:"[]",dest_location:[106.3972,32.9075],
-            dest_type:'remote',id:172,src_ip:'192.168.1.198',src_label:"['11234分支11']",src_location:[51.945,16.417],src_type:'local'}*/]
+            dest_type:'remote',id:172,src_ip:'192.168.1.198',src_label:"['11234分支11']",
+            src_location:[51.945,16.417],src_type:'local'}*/]
       }
     },
     created(){
       this.getData();
     },
     mounted() {
-      setInterval(() => {
+      this.timers = setInterval(() => {
         this.getData();
       },10000 * 3);
+    },
+    destroyed(){
+      clearInterval(this.timers);
     },
     methods: {
       //获取数据
@@ -36,6 +41,8 @@
             this.loading = true;
             let {status, data} = resp.data;
 
+            //clearInterval(this.timer);
+
             if(status == 0){
 
               this.mapData = data;
@@ -43,7 +50,6 @@
               this.$nextTick(() => {
                 this.drawGraph();
               });
-
             }
           })
           .catch((error) => {

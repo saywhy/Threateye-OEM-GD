@@ -171,3 +171,33 @@ Vue.filter('sys', function (args) {
   }
   return str;
 });
+
+Vue.filter('stage', function (args) {
+  let str = '';
+  if (args == 'Initial Access') {
+    str = '初始访问';
+  } else if (args == 'Execution') {
+    str = '执行';
+  } else if (args == 'Persistence') {
+    str = '持久化';
+  }else if (args == 'Privilege Escalation') {
+    str = '提权';
+  }else if (args == 'Defense Evasion') {
+    str = '防御逃逸';
+  }else if (args == 'Credential Access') {
+    str = '凭证访问';
+  }else if (args == 'Discovery') {
+    str = '信息发现';
+  }else if (args == 'Lateral Movement') {
+    str = '横向移动';
+  }else if (args == 'Collection') {
+    str = '信息收集';
+  }else if (args == 'Command and Control') {
+    str = '命令控制';
+  }else if (args == 'Exfiltration') {
+    str = '信息泄露';
+  }else if (args == 'Impact') {
+    str = '毁坏';
+  }
+  return str;
+});

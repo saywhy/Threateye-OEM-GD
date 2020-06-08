@@ -17,6 +17,7 @@
       name: "vm-screen-main0",
       data() {
           return {
+            timers:null,
             degree:[],
             category:[],
             degreeIndex:0,
@@ -29,9 +30,12 @@
         this.getData();
       },
       mounted() {
-        setInterval(()=>{
+        this.timers = setInterval(()=>{
           this.getData();
-        },10000 * 6 * 5);
+        },10000 * 30);
+      },
+      destroyed(){
+        clearInterval(this.timers);
       },
       methods:{
         //获取数据
@@ -45,7 +49,6 @@
               this.category = [];
               this.degreeIndex = 0;
               this.categoryIndex = 0;
-
 
               clearInterval(this.timer);
               clearInterval(this.timer1);

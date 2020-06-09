@@ -109,7 +109,7 @@
                 }
               },
               label:{
-                show: true,
+                show: false,
                 color:'#ccc',
                 position:'end',
                 fontSize: 10

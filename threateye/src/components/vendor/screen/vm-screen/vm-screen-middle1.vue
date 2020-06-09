@@ -52,6 +52,23 @@
           display: none!important;
         }
       }
+      .el-carousel__indicators{
+        .el-carousel__indicator{
+          .el-carousel__button{
+            width: 8px;
+            height: 4px;
+            border-radius: 2px;
+            opacity: 0.48;
+            background: #00D7E9;
+          }
+          &.is-active{
+            .el-carousel__button{
+              width: 24px;
+              opacity: 1;
+            }
+          }
+        }
+      }
     }
   }
 }

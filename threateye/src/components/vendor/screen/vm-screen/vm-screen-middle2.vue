@@ -28,7 +28,8 @@
               series:[],
               legendColor:[]
             },
-            realData:[]
+            realData:[],
+            timers:null
           }
       },
       created() {
@@ -36,10 +37,13 @@
         this.getReal();
       },
       mounted() {
-        setInterval(()=>{
+        this.timers = setInterval(()=>{
           this.getData();
           this.getReal();
-        },10000 * 6 * 5);
+        },10000 * 30);
+      },
+      destroyed(){
+        clearInterval(this.timers);
       },
       methods:{
         //获取数据
@@ -233,7 +237,7 @@
               console.log(error);
             });
         },
-        drawReal(){
+        drawReal() {
           let datalist = [];
           let linklist = [];
 

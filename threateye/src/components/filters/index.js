@@ -172,6 +172,7 @@ Vue.filter('sys', function (args) {
   return str;
 });
 
+//大屏攻击阶段
 Vue.filter('stage', function (args) {
   let str = '';
   if (args == 'Initial Access') {
@@ -201,3 +202,18 @@ Vue.filter('stage', function (args) {
   }
   return str;
 });
+
+//大屏关注告警
+Vue.filter('alarm', function (args) {
+  let str = '';
+  if (args == 'cnc') {
+    str = 'C&C';
+  } else if (args == 'exploit') {
+    str = '漏洞利用';
+  } else if (args == 'malware') {
+    str = '恶意程序';
+  }
+  return str;
+});
+
+

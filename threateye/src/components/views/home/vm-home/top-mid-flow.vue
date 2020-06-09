@@ -17,6 +17,11 @@ export default {
   methods: {
     graph () {
 
+      //console.log(this.top_mid)
+      if(!!!this.top_mid){
+        return false;
+      }
+
       let statistics_time = this.top_mid.statistics_time;
       let flow_diff = []
       this.top_mid.flow_diff.forEach(element => {

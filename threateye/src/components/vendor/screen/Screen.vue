@@ -1,5 +1,5 @@
 <template>
-  <div class="home-screen" :class="{'active':!close}">
+  <div class="home-screen" :class="{'active':!close}" v-cloak>
     <div class="home-top">
       <div class="home_l">
         <label class="e_label"></label>

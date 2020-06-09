@@ -70,7 +70,7 @@
 
         mapData.forEach(item => {
 
-          if(!!item.src_location){
+          if((!!item.src_location) && (!!item.dest_location)){
             let symbol = [];
             let symbolSize = [];
 

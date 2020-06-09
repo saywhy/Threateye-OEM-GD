@@ -7,7 +7,7 @@
             <label class="title">大屏名称</label>
             <el-form-item>
               <el-input v-model="baseInfo.ScreenName" placeholder="请输入大屏名称"
-                        @input.enter.native="widthCheck($event.target, 28)"></el-input>
+                        @input.enter.native="widthCheck($event.target, 28);"></el-input>
             </el-form-item>
             <el-divider></el-divider>
           </div>
@@ -25,7 +25,9 @@
                 <div class="item">
                   <span class="title_sub">总部名称</span>
                   <el-input v-model="base_general.name"
-                            placeholder="请输入总部名称" class="input_special"></el-input>
+                            placeholder="请输入总部名称"
+                            class="input_special">
+                  </el-input>
                 </div>
                 <div class="divider"></div>
                 <div class="item">
@@ -121,7 +123,14 @@
 
               if(status == 0){
                 this.radio = data.ExtraneousDistributionType;
-                //this.base_general.cascader = JSON.parse(data.ExtraneousDistribution);
+                let feedback = data.ExtraneousDistribution;
+
+                if (feedback != null || feedback != ''){
+                  var feedAttr = feedback.split('-');
+                  this.base_general.cascader = [feedAttr[0],feedAttr[1]];
+                } else {
+                  this.base_general.cascader = [];
+                }
                 this.baseInfo = data;
 
                 this.getBranch();

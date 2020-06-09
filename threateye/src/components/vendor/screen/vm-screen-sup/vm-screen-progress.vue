@@ -36,7 +36,6 @@
           }
         }
         return pg_attr;
-
       }
     },
     created() {

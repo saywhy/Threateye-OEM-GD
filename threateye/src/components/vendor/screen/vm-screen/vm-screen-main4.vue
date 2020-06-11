@@ -100,7 +100,7 @@
                   color:'#fff',
                   fontSize:12,
                   fontFamily:'PingFangSC-Regular',
-                  margin: 36
+                  margin: 24
                 },
                 position:'left',
                 data: this.branch.branchCount,

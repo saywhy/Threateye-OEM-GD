@@ -100,7 +100,7 @@
                   color:'#fff',
                   fontSize:12,
                   fontFamily:'PingFangSC-Regular',
-                  margin: 10
+                  margin: 36
                 },
                 position:'left',
                 data: this.branch.branchCount,
@@ -121,7 +121,7 @@
                   color:'#fff',
                   fontSize:12,
                   fontFamily:'PingFangSC-Regular',
-                  margin: 60,
+                  margin: 70,
                   formatter: function (value) {
                     return (value.length > 5 ? (value.slice(0,5)+"...") : value )
                   },
@@ -167,8 +167,12 @@
           });
 
           var id = document.getElementById("extension");
-          if(!id) {
+          /*if(!id) {
             var div = "<marquee id='extension' behavior='scroll' direction='left' sytle='display:block'></marquee>";
+            $("html").append(div);
+          }*/
+          if(!id) {
+            var div = "<span id='extension' sytle='display:block'></span>";
             $("html").append(div);
           }
 
@@ -206,6 +210,7 @@
 <style scoped lang="less">
 .vm-screen-main4{
   padding: 0 16px 16px;
+  margin-right: 10px;
   #branch{
     height: 240px;
     width: 100%;

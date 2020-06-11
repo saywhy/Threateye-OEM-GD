@@ -25,7 +25,7 @@
     mounted() {
       this.timers = setInterval(() => {
         this.getData();
-      }, 10000 * 6);
+      }, 10000 * 3);
     },
     destroyed(){
       clearInterval(this.timers);

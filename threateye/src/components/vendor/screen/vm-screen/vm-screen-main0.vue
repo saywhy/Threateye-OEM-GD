@@ -13,6 +13,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  require('../../../../../static/js/echarts-auto-tooltip');
     export default {
       name: "vm-screen-main0",
       data() {
@@ -77,10 +78,8 @@
           });
         },
         drawRank(){
-
           let degrees = this.degree;
           //degrees = [{degree: "medium", count: "2"}]
-
           let colorAttr = [];
           if(degrees){
             degrees.filter(item => {
@@ -98,13 +97,12 @@
                value = item.count;
                color = '#60C160';
              }
-              colorAttr.push(color);
+             colorAttr.push(color);
              Object.assign(item,{value,name,itemStyle:{color:color}});
             });
           }else {
             return false;
           }
-
           // 基于准备好的dom，初始化echarts实例
           let myEcharts = this.$echarts.init(document.getElementById("threat-rank"));
           myEcharts.showLoading({ text: '正在加载数据...' });
@@ -112,6 +110,15 @@
           myEcharts.clear();
           // 绘制图表
           let option = {
+            /*tooltip: {
+              show: true
+            },*/
+            /*tooltip: {
+              trigger: 'axis',
+              axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },*/
             grid: {
               top: "20%",
               left: "5%",
@@ -163,8 +170,10 @@
           };
 
           myEcharts.setOption(option);
-
           myEcharts.hideLoading();
+          tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
+
+          //tools.autoHover(myEcharts, option, 17, 3000); // 使用本插件
 
           /*myEcharts.dispatchAction({
             type: "highlight",
@@ -173,7 +182,7 @@
           });*/
 
           //自动轮播
-          let index = this.degreeIndex;
+/*          let index = this.degreeIndex;
           this.timer = setInterval(function () {
             var dataLen = option.series[0].data.length;
             // 取消之前高亮的图形
@@ -189,20 +198,20 @@
               seriesIndex: 0,
               dataIndex: index
             });
-          }, 3000);
+          }, 3000);*/
 
           //设置默认选中高亮部分
-          myEcharts.on("mouseover", function(e) {
+         /* myEcharts.on("mouseover", function(e) {
             console.log('mouseover')
             clearInterval(this.timer);
-            /*if (e.dataIndex != index) {
+            /!*if (e.dataIndex != index) {
               myEcharts.dispatchAction({
                 type: "downplay",
                 seriesIndex: 0,
                 dataIndex: index
               });
-            }*/
-          });
+            }*!/
+          });*/
           /*myEcharts.on("mouseout", function(e) {
             index = e.dataIndex;
             myEcharts.dispatchAction({
@@ -290,6 +299,8 @@
 
           myEcharts.hideLoading();
 
+          tools.loopShowTooltip(myEcharts, option1, {loopSeries: true});
+
          /* myEcharts.dispatchAction({
             type: "highlight",
             seriesIndex: 0,
@@ -316,7 +327,7 @@
           });*/
 
           //自动轮播
-          let index = this.categoryIndex;
+          /*let index = this.categoryIndex;
           this.timer1 = setInterval(function () {
             var dataLen = option1.series[0].data.length;
             // 取消之前高亮的图形
@@ -338,17 +349,12 @@
               seriesIndex: 0,
               dataIndex: index
             });
-          }, 3000);
+          }, 3000);*/
 
           window.addEventListener("resize", () => {
             myEcharts.resize();
           });
         },
-
-        setCousel() {
-
-        }
-
       }
     }
 </script>

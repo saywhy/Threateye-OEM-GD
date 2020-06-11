@@ -12,7 +12,7 @@
               {{item.country_name}}
             </marquee>
             <span class="country_name" v-else>{{item.country_name}}</span>
-            <span class="country_count">{{item.count}}</span>
+            <span class="country_count">{{item.num}}</span>
           </div>
           <el-progress :show-text="false" :text-inside="true"
                        :stroke-width="20" :percentage="item.count">
@@ -56,15 +56,22 @@
 
               let {status, data} = resp.data;
 
-              //console.log(data)
+              let allNum = 0;
 
               if(status == 0){
+                data.map(item => {
+                  allNum += Number(item.count);
+                });
 
                 data.map(item => {
 
                   let alias = item.country.toLowerCase();
 
-                  item.count = Number(item.count);
+                  item.num = Number(item.count);
+
+                  item.count = ((Number(item.count)/allNum)) * 100;
+
+                  //item.count = Number(/allNum)).toFixed(0) * 100);
 
                   Object.assign(item,{alias:alias});
                 });

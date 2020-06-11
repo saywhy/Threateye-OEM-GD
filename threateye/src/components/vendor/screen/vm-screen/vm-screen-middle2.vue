@@ -245,7 +245,7 @@
 
           let realData = this.realData;
 
-          console.log(realData)
+          //console.log(realData)
 
           if(realData.length > 0){
             realData.forEach(item => {

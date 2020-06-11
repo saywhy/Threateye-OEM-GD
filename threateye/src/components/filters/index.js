@@ -207,7 +207,7 @@ Vue.filter('stage', function (args) {
 Vue.filter('alarm', function (args) {
   let str = '';
   if (args == 'cnc') {
-    str = 'C&C';
+    str = '僵尸网络C&C';
   } else if (args == 'exploit') {
     str = '漏洞利用';
   } else if (args == 'malware') {

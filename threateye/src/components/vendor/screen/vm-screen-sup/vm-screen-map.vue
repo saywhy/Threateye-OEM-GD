@@ -25,7 +25,7 @@
     mounted() {
       this.timers = setInterval(() => {
         this.getData();
-      },5000 * 3);
+      }, 10000 * 6);
     },
     destroyed(){
       clearInterval(this.timers);
@@ -50,6 +50,7 @@
               this.$nextTick(() => {
                 this.drawGraph();
               });
+
             }
           })
           .catch((error) => {

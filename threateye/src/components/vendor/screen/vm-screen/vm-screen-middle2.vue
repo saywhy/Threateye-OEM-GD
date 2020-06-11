@@ -245,6 +245,8 @@
 
           let realData = this.realData;
 
+          console.log(realData)
+
           if(realData.length > 0){
             realData.forEach(item => {
               var obj = {}, linkobj = {};
@@ -258,7 +260,6 @@
               linkobj.lineStyle = {color:'#00D7E9',width: 2, curveness: 0.4};
 
               linklist.push(linkobj);
-
 
               relelist.push(item.category);
             });
@@ -284,6 +285,8 @@
 
           //实时威胁检测
           let releAttr = [];
+
+          //console.log(relelist)
           relelist.forEach((item,index) => {
             let col = '';
             if(index == 0){
@@ -295,7 +298,10 @@
             }else if(index == 3){
               col = '#FF00C9';
             }
-            releAttr.push({name:item,itemStyle:{color:col}});
+            releAttr.push({
+              name:item,
+              itemStyle:{color:col}
+            });
           });
 
           datalist = newAttr;
@@ -303,7 +309,12 @@
           var mychart = this.$echarts.init(document.getElementById("info_relation"));
 
           var option = {
-            tooltip: {},
+            tooltip:{
+              show: true,
+              formatter:function (params) {
+                return params.data.name;
+              }
+            },
             animationDurationUpdate: 1500,
             animationEasingUpdate: "quinticInOut",
             series: [
@@ -363,7 +374,9 @@
           var relation = this.$echarts.init(document.getElementById("relation"));
 
           var option1 = {
-            tooltip: {},
+            tooltip: {
+              show:  false
+            },
             animationDurationUpdate: 1500,
             animationEasingUpdate: "quinticInOut",
             series: [
@@ -384,7 +397,7 @@
                 },
                 edgeLabel: {
                   normal: {
-                    show: true,
+                    show: false,
                     textStyle: {
                       fontSize: 8,
                       color: "#fff"

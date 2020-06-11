@@ -80,9 +80,7 @@
               }
             })
             .catch((error) => {
-
               console.log(error);
-
             });
         },
         drawGraph(){
@@ -179,6 +177,7 @@
             legend: {
               show:false
             },
+
             grid: {
               top:'0',
               left: '0',
@@ -227,6 +226,7 @@
           window.addEventListener("resize", () => {
             attent2.resize();
           });
+
           let attent3 = this.$echarts.init(document.getElementById('attent3'));
           attent3.showLoading({ text: '正在加载数据...' });
           attent3.clear();
@@ -303,18 +303,19 @@
         color: #fff;
         padding-right: 10px;
         text-align: right;
+        font-size: 14px;
       }
       #attent1{
-        width: 320px;
+        width: 300px;
       }
       #attent2{
-        width: 320px;
+        width: 300px;
       }
       #attent3{
-        width: 320px;
+        width: 300px;
       }
       .num{
-        width: 70px;
+        width: 64px;
         color: #fff;
         text-align: left;
         padding-left: 10px;

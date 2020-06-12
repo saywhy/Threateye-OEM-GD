@@ -69,7 +69,7 @@
 
         let symbol2 = ['image://static/image/f1.png', 'image://static/image/f0.png'];
 
-        var symbolSize1 = [12,16],symbolSize2 = [16,12];
+        var symbolSize1 = [12,12],symbolSize2 = [12,12];
 
         let mapData = this.mapData;
 
@@ -101,7 +101,7 @@
               //线上面的动态特效
               effect: {
                 show: true,
-                period: 5, //特效动画的时间，单位为 s。
+                period: 3, //特效动画的时间，单位为 s。
                 //trailLength: .9,
                 color: "#00D7E9", //射线颜色
                 symbol:'triangle',

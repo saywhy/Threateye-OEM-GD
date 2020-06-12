@@ -26,7 +26,7 @@
                   <span class="title_sub">总部名称</span>
                   <el-input v-model="base_general.name"
                             placeholder="请输入总部名称"
-                            class="input_special">
+                            class="input_special" disabled>
                   </el-input>
                 </div>
                 <div class="divider"></div>

@@ -77,6 +77,28 @@ export default {
         }
       });
       state.topLists = lists;
+    },
+    SET_TOP_LISTS_NUM: (state,args) => {
+      state.topLists.map(item => {
+        for (let key in args) {
+
+          if(item.alias == key){
+
+            // console.log(data[key])
+            let count = String(args[key]).padStart(5,'0');
+
+             /*if(!item.num){
+               Object.assign(item,{num:count.toString().split('')});
+             }*/
+            //Object.assign(item,{num:count.toString().split('')});
+            /*if(!!!item.num){
+              item.num = count.toString().split('');
+            }*/
+
+            item.num = count.toString().split('');
+          }
+        }
+      });
     }
   },
   actions: {

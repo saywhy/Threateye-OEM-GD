@@ -1,7 +1,7 @@
 <template>
     <div class="vm-screen-middle0">
       <div class="risks">
-        <dl class="item-list" v-for="(item,index) in riskData" :key="index">
+        <dl class="item-list" v-for="(item,index) in topData" :key="index">
           <dt class="name">{{item.name}}</dt>
           <dd class="content">
             <span class="item" v-for="(it,idx) in item.num" :key="idx">{{it}}</span>
@@ -35,13 +35,13 @@
         clearInterval(this.timers);
       },
       watch:{
-        topData: {
+        /*topData: {
           handler:function(newVal,oldVal){
             if(!this.topFlag){this.getData();}
           },
           //深度监听
           deep:true,
-        },
+        },*/
       },
       methods:{
         //获取数据
@@ -57,24 +57,9 @@
 
               if (status == 0) {
 
-                let riskData = this.topData;
+                //console.log(data);
+                this.$store.commit('SET_TOP_LISTS_NUM', data);
 
-                riskData.map(item => {
-
-                  for (let key in data) {
-
-                    if(item.alias == key){
-
-                      let count = String(data[key]).padStart(5,'0');
-                      if(!item.num){
-                        Object.assign(item,{num:count.toString().split('')});
-                      }
-                      //item.num = count.toString().split('');
-                    }
-                  }
-                });
-
-                this.riskData = riskData;
               }
             })
             .catch((error) => {

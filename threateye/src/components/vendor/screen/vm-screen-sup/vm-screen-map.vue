@@ -11,9 +11,9 @@
       return {
         timers: null,
         loading:true,
-        mapData:[{dest_ip:'202.106.40.115',dest_label:"[]",dest_location:[52.6953,6.9075],
+        mapData:[{dest_ip:'202.106.40.115',dest_label:"[]",dest_location:[116.29845, 39.95933],
           dest_type:'remote',id:173,src_ip:'192.168.1.195',src_label:"['11234分支']",
-          src_location:[97.417,39.945],src_type:'local'},
+          src_location:[116.29845, 39.95933],src_type:'local'},
           {dest_ip:'202.106.46.151',dest_label:"[]",dest_location:[39.907501220703,116.39723205566],
             dest_type:'remote',id:66201,src_ip:'192.168.1.185',src_label:"['11234分支','小美女分支']",
             src_location:null,src_type:'local'}]
@@ -24,7 +24,7 @@
     },
     mounted() {
       this.timers = setInterval(() => {
-        this.getData();
+       this.getData();
       }, 10000 * 3);
     },
     destroyed(){
@@ -34,11 +34,15 @@
       //获取数据
       getData(){
         this.loading = false;
+        /*this.$nextTick(() => {
+          this.drawGraph();
+        });*/
         this.$axios
           .get('/yiiapi/demonstration/external-distribution')
 
           .then((resp) => {
             this.loading = true;
+
             let {status, data} = resp.data;
 
             //clearInterval(this.timer);
@@ -82,6 +86,7 @@
               symbol = symbol2;
               symbolSize = symbolSize2;
             }
+
             series.push({
               type: "lines",
               coordinateSystem: "geo",
@@ -90,13 +95,14 @@
               data: [{
                 name: item.src_ip,
                 toname: item.dest_ip,
-                coords: [item.src_location, [item.dest_location[1],item.dest_location[0]]]
+                //coords: [item.src_location, [item.dest_location[1],item.dest_location[0]]]
+                coords: [item.src_location, item.dest_location]
               }],
               //线上面的动态特效
               effect: {
                 show: true,
                 period: 5, //特效动画的时间，单位为 s。
-                trailLength: .9,
+                //trailLength: .9,
                 color: "#00D7E9", //射线颜色
                 symbol:'triangle',
                 symbolSize: 2

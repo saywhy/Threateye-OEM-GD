@@ -123,16 +123,17 @@
 
               if(status == 0){
                 this.radio = data.ExtraneousDistributionType;
-                let feedback = data.ExtraneousDistribution;
 
-                if (feedback != null || feedback != ''){
-                  var feedAttr = feedback.split('-');
-                  this.base_general.cascader = [feedAttr[0],feedAttr[1]];
-                } else {
-                  this.base_general.cascader = [];
+                if(data.ExtraneousDistributionType == 'headquarters'){
+                  let feedback = data.ExtraneousDistribution;
+                  if (feedback != null || feedback != ''){
+                    var feedAttr = feedback.split('-');
+                    this.base_general.cascader = [feedAttr[0],feedAttr[1]];
+                  } else {
+                    this.base_general.cascader = [];
+                  }
                 }
                 this.baseInfo = data;
-
                 this.getBranch();
               }
             })

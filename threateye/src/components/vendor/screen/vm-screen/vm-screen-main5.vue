@@ -21,8 +21,8 @@
           </div>
           <vm-screen-progress :pg_data="item"></vm-screen-progress>
           <div class="item_fs2">
-            <i class="t_aw t-aw_1"></i><span class="t-name">{{item.flow}}B</span>
-            <i class="t_aw t-aw_2"></i><span class="t-name">0MB</span>
+            <i class="t_aw t-aw_1"></i><span class="t-name">{{item.flow}}MB</span>
+            <!--<i class="t_aw t-aw_2"></i><span class="t-name">0MB</span>-->
           </div>
         </div>
         <!--数据长度小于三的时候显示-->
@@ -43,8 +43,8 @@
               </div>
               <vm-screen-progress :pg_data="it"></vm-screen-progress>
               <div class="item_fs2">
-                <i class="t_aw t-aw_1"></i><span class="t-name">{{it.flow}}B</span>
-                <i class="t_aw t-aw_2"></i><span class="t-name">0MB</span>
+                <i class="t_aw t-aw_1"></i><span class="t-name">{{it.flow}}MB</span>
+                <!--<i class="t_aw t-aw_2"></i><span class="t-name">0MB</span>-->
               </div>
             </div>
             <!--数据长度小于三的时候显示-->
@@ -268,6 +268,7 @@
             background-size: 12px 16px;
             margin-top: 1px;
             &.t-aw_1{
+              margin-right: 5px;
               background-image: url("../../../../assets/images/screen/system/aw1.png");
             }
             &.t-aw_2{

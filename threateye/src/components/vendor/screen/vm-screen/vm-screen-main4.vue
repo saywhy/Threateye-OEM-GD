@@ -123,7 +123,27 @@
                   fontFamily:'PingFangSC-Regular',
                   margin: 70,
                   formatter: function (value) {
-                    return (value.length > 5 ? (value.slice(0,5)+"...") : value )
+                    let valAttr = value.split('');
+                    let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
+
+                    if(reg.test(value)){
+                      return (value.length > 5 ? (value.slice(0,5)+"...") : value )
+                    }else {
+                      return (value.length > 8 ? (value.slice(0,8)+"...") : value )
+                    }
+                   /* valAttr.forEach(item => {
+                      if(num < 10){
+                        if (re.test(item)){
+                          num += 2;
+                          length += 1;
+                        }else {
+                          num += 1;
+                          length += 1;
+                        }
+                      }else {
+                        return false;
+                      }
+                    });*/
                   },
                 },
                 position:'left',

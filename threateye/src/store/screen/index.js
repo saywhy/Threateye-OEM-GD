@@ -23,9 +23,9 @@ export default {
       {name: '外连资产数',alias:'outreachthreat_assets_count', flag: false, top_id: 1},
       {name: '告警数',alias:'alert_count', flag: false, top_id: 2},
       {name: '未处理告警数',alias:'untreated_alert_count', flag: false, top_id: 3},
-      {name: '风险服务器数',alias:'risk_server_count', flag: false, top_id: 4},
-      {name: '风险终端数',alias:'risk_terminal_count', flag: false, top_id: 5},
-      {name: '风险网络设备数',alias:'risk_network_count', flag: false, top_id: 6}]
+      {name: '风险服务器数',alias:'servers', flag: false, top_id: 4},
+      {name: '风险终端数',alias:'workstation', flag: false, top_id: 5},
+      {name: '风险网络设备数',alias:'network_equipment', flag: false, top_id: 6}]
   },
   getters: {
     baseInfo: state => state.baseInfo,
@@ -86,7 +86,6 @@ export default {
 
             // console.log(data[key])
             let count = String(args[key]).padStart(5,'0');
-
              /*if(!item.num){
                Object.assign(item,{num:count.toString().split('')});
              }*/
@@ -94,7 +93,6 @@ export default {
             /*if(!!!item.num){
               item.num = count.toString().split('');
             }*/
-
             item.num = count.toString().split('');
           }
         }

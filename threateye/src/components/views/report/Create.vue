@@ -884,7 +884,7 @@ export default {
     margin-right: 10px;
   }
   .echarts {
-    // display: none;
+    display: none;
   }
   #untreatedalarm_report,
   #application_protocol,

@@ -4097,7 +4097,7 @@ export default {
         }
         .item_li {
           display: flex;
-          height: 22px;
+          // height: 22px;
           margin-bottom: 16px;
           position: relative;
           .src_ul {

@@ -368,7 +368,8 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <el-checkbox label="news" value="news">消息中心通知</el-checkbox>
+                  <el-checkbox label="news"
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -586,6 +587,7 @@ import {
   forRoleList,
   formatList
 } from '@/store/layout/auth'
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: 'assets',
   components: {
@@ -753,6 +755,7 @@ export default {
     };
   },
   created () {
+    this.check_passwd();
     //頂部
     this.get_list_top();
 
@@ -764,6 +767,26 @@ export default {
 
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     //资产頂部
     get_list_top () {
       this.$axios.get('/yiiapi/alert/risk-asset-top')

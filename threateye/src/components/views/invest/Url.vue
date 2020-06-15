@@ -101,6 +101,7 @@
 </template>
 <script type="text/ecmascript-6">
 import VmEmergePicker from "@/components/common/vm-emerge-picker";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "invest_url",
   components: {
@@ -133,7 +134,8 @@ export default {
     };
   },
   mounted () {
-    console.log(this.$route.query);
+    this.check_passwd();
+    // console.log(this.$route.query);
     if (this.$route.query.src_ip && this.$route.query.src_ip != '') {
       this.url_search.src_ip = this.$route.query.src_ip;
       this.get_data();
@@ -159,6 +161,26 @@ export default {
           console.log(error);
         })
     },
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     search () {
       this.url_search.page = 1
       this.url_list.pageNow = 1
@@ -182,6 +204,9 @@ export default {
         .then(response => {
           this.url_search.loading = false
           let { status, data } = response.data;
+          if (status == '602') {
+            return false
+          }
           // if (data.count > 10000) {
           //   this.$message({
           //     type: 'warning',

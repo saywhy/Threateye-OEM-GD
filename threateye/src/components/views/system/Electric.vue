@@ -30,6 +30,7 @@
 import networkCard from "@/components/views/system/vm-electric/network-card";
 import proxyServer from "@/components/views/system/vm-electric/proxy-server";
 import routerSet from "@/components/views/system/vm-electric/router-set";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   components: {
     networkCard,
@@ -48,8 +49,29 @@ export default {
     };
   },
   mounted () {
+    this.check_passwd()
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     handleClick (tab, event) {
       console.log(tab);
       switch (tab.name) {

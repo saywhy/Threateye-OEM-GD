@@ -24,6 +24,7 @@
 <script type="text/ecmascript-6">
 import mailNotic from "@/components/views/system/vm-threat/mail-notic";
 import shortMessage from "@/components/views/system/vm-threat/short-message";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   components: {
     mailNotic,
@@ -35,8 +36,30 @@ export default {
       activeName: "first"
     };
   },
-
+  mounted () {
+    this.check_passwd()
+  },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     handleClick (tab, event) {
       console.log(tab.label);
     }

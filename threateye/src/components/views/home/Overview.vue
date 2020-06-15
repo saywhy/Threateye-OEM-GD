@@ -243,6 +243,7 @@ import bomRight from "./vm-home/bom-right";
 
 // import sysMonitor from "./vm-home/sys-monitor";
 import imgUrl from "@/assets/images/home/common/img1.png"
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "system_control_move",
   data () {
@@ -302,6 +303,7 @@ export default {
     };
   },
   created () {
+    this.check_passwd();
     //第一排
     this.init_top_left();
     this.init_top_mid();
@@ -316,6 +318,26 @@ export default {
     this.init_bom_right();
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     //第一排（左）
     init_top_left () {
       this.$axios.get('/yiiapi/alert/system-state')

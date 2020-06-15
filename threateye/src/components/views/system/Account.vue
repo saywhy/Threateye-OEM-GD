@@ -28,6 +28,7 @@
 import userManagement from "@/components/views/system/vm-account/user-management";
 import roleManagement from "@/components/views/system/vm-account/role-management";
 import securityPolicy from "@/components/views/system/vm-account/security-policy";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   components: {
     userManagement,
@@ -45,7 +46,30 @@ export default {
       }
     };
   },
+  mounted () {
+    this.check_passwd()
+  },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     handleClick (tab, event) {
       console.log(tab);
       switch (tab.name) {

@@ -134,6 +134,7 @@
 </template>
 <script type="text/ecmascript-6">
 import VmEmergePicker from "@/components/common/vm-emerge-picker";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "report_create",
   data () {
@@ -176,8 +177,29 @@ export default {
   components: { VmEmergePicker },
   mounted () {
     this.get_data()
+    this.check_passwd()
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     // 生成报表
     create () {
       console.log(this.report);

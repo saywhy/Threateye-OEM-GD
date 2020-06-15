@@ -420,6 +420,7 @@
 <script type="text/ecmascript-6">
 import moment from 'moment'
 import { pca, pcaa } from "area-data";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "system_control_monitor",
   data () {
@@ -467,6 +468,7 @@ export default {
   },
   mounted () {
     this.get_data()
+    this.check_passwd()
     var options = []
     // 遍历省级
     Object.keys(pca[86]).forEach(function (key) {
@@ -493,6 +495,26 @@ export default {
     this.area_array = options
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     init () {
       var options = []
       // 遍历省级

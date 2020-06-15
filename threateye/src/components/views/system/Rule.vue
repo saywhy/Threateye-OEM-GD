@@ -30,6 +30,7 @@
 import ruleBase from "@/components/views/system/vm-rule/rule-base";
 import yaraRule from "@/components/views/system/vm-rule/yara-rule";
 import whiteList from "@/components/views/system/vm-rule/white-list";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   components: {
     ruleBase,
@@ -48,7 +49,30 @@ export default {
     };
   },
 
+  mounted () {
+    this.check_passwd()
+  },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     handleClick (tab, event) {
       console.log(tab);
       switch (tab.name) {

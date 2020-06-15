@@ -1,11 +1,15 @@
 <template>
-  <div class="handle-outside" v-cloak>
-    <vm-handle-risks :threats = "threats">
-      <slot slot="name"><span>外部</span></slot>
+  <div class="handle-outside"
+       v-cloak>
+    <vm-handle-risks :threats="threats">
+      <slot slot="name">
+        <span>外部</span>
+      </slot>
       <slot>
         <div class="outside-middle">
           <div class="osm-top">
-            <img class="osm-img" src="../../../../assets/images/handle/risks/edit.png">
+            <img class="osm-img"
+                 src="../../../../assets/images/handle/risks/edit.png">
             <span class="osm-title">威胁及安全建议</span>
           </div>
           <div class="osm-middle">
@@ -32,19 +36,44 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import VmHandleRisks from '../vm-handle/vm-handle-risks'
-  export default {
-    name: 'handle-outside',
-    data() {
-      return {
-        threats:'externalthreat'
-      };
-    },
-    components:{VmHandleRisks}
-  };
+import VmHandleRisks from '../vm-handle/vm-handle-risks'
+import { eventBus } from '@/components/common/eventBus.js';
+export default {
+  name: 'handle-outside',
+  data () {
+    return {
+      threats: 'externalthreat'
+    };
+  },
+  components: { VmHandleRisks },
+  created () {
+    this.check_passwd();
+  },
+  methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    }
+  }
+};
 </script>
 
 <style scoped lang="less">
-
 </style>
 

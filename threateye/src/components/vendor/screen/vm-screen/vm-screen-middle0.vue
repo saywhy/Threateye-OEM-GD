@@ -21,21 +21,17 @@
           return {
             topFlag: true,
             timers: null,
-            riskData:[]
+            //riskData: []
           }
       },
-      /*computed:{
-        ...mapGetters({
-          topLists:'topLists',
-        }),
-      },*/
-      watch: {
-        topData: {
-          handler:function(newVal,oldVal){
-            this.getData();
+      computed:{
+        riskData:{
+          get(){
+            return this.$store.getters.topLists.filter(item => { return item.flag == true; });
           },
-          //深度监听
-          deep:true
+          set(val){
+
+          }
         }
       },
       created(){
@@ -63,10 +59,9 @@
 
               let {status, data} = resp.data;
 
-              //console.log(this.topData)
               if (status == 0) {
-                //this.$store.commit('SET_TOP_LISTS_NUM', data);
-               this.topData.map(item => {
+               this.$store.commit('SET_TOP_LISTS_NUM', data);
+               /*this.topData.map(item => {
                   for (let key in data) {
 
                     if(item.alias == key){
@@ -77,14 +72,14 @@
                         data[key] == 0;
                       }
                       let count = String(data[key]).padStart(5,'0');
-                      /*if(!item.num){
+                      /!*if(!item.num){
                         Object.assign(item,{num:count.toString().split('')});
-                      }*/
+                      }*!/
                       item.num = count.toString().split('');
                     }
                   };
                   this.riskData.push(item);
-               });
+               });*/
               }
             })
             .catch((error) => {

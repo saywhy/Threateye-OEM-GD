@@ -46,6 +46,8 @@
 
             .then((resp) => {
 
+              //console.log(resp)
+
               this.degree = [];
               this.category = [];
               this.degreeIndex = 0;
@@ -171,7 +173,17 @@
 
           myEcharts.setOption(option);
           myEcharts.hideLoading();
-          tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
+
+          if(degrees.length > 1){
+            tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
+          }else {
+            myEcharts.dispatchAction({
+              type: "highlight",
+              seriesIndex: 0,
+              dataIndex: 0
+            });
+          }
+
 
           //tools.autoHover(myEcharts, option, 17, 3000); // 使用本插件
 
@@ -299,7 +311,17 @@
 
           myEcharts.hideLoading();
 
-          tools.loopShowTooltip(myEcharts, option1, {loopSeries: true});
+          if(categories.length > 1){
+            tools.loopShowTooltip(myEcharts, option1, {loopSeries: true});
+          }else {
+            myEcharts.dispatchAction({
+              type: "highlight",
+              seriesIndex: 0,
+              dataIndex: 0
+            });
+          }
+
+
 
          /* myEcharts.dispatchAction({
             type: "highlight",

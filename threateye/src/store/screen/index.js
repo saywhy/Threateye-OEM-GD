@@ -78,7 +78,7 @@ export default {
       });
       state.topLists = lists;
     },
-    /*SET_TOP_LISTS_NUM: (state,args) => {
+    SET_TOP_LISTS_NUM: (state,args) => {
 
       state.topLists.map(item => {
 
@@ -92,14 +92,14 @@ export default {
               args[key] == 0;
             }
             let count = String(args[key]).padStart(5,'0');
-             /!*if(!item.num){
+             /*if(!item.num){
                Object.assign(item,{num:count.toString().split('')});
-             }*!/
+             }*/
             item.num = count.toString().split('');
           }
         }
       });
-    }*/
+    }
   },
   actions: {
     //获取大屏基础信息

@@ -34,15 +34,6 @@
       destroyed(){
         clearInterval(this.timers);
       },
-      watch:{
-        /*topData: {
-          handler:function(newVal,oldVal){
-            if(!this.topFlag){this.getData();}
-          },
-          //深度监听
-          deep:true,
-        },*/
-      },
       methods:{
         //获取数据
         getData() {
@@ -56,7 +47,6 @@
               let {status, data} = resp.data;
 
               if (status == 0) {
-
                 //console.log(data);
                 this.$store.commit('SET_TOP_LISTS_NUM', data);
 

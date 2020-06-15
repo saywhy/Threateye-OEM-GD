@@ -68,6 +68,8 @@
                 this.flow.legendData = Object.keys(data);
                 this.flow.legendData = this.flow.legendData.map(item => {return item.toUpperCase();});
 
+                //console.log(this.flow.legendData)
+
                 Object.values(data).forEach((val,key) => {
 
                   if(key == 0){
@@ -80,8 +82,12 @@
                     return item.flow;
                   });
 
+                  flow = flow.reverse();
+
                   this.flow.xAxisData = this.flow.xAxisData.reverse();
+
                   let legendName = this.flow.legendData[key];
+
                   legendName = legendName.toUpperCase();
 
                   if(legendName == 'http' || legendName == 'HTTP'){
@@ -137,12 +143,12 @@
           myChart.showLoading({ text: '正在加载数据...' });
           myChart.clear();
           let option = {
-            /*tooltip: {
+            tooltip: {
               trigger: 'axis',
               axisPointer: {
                 type: 'shadow'
               }
-            },*/
+            },
             color: this.flow.legendColor,
             legend: {
               bottom: -5,
@@ -203,9 +209,6 @@
                   color:'rgba(255,255,255,.12)'
                 }
               }
-            },
-            tooltip:{
-              show:false
             },
             series: this.flow.series
           };

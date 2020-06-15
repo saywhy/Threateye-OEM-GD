@@ -2,7 +2,7 @@
   <div class="home-screen" :class="{'active':!close}" v-cloak>
     <div class="home-top">
       <div class="home_l">
-        <label class="e_label"></label>
+        <!--<label class="e_label"></label>-->
       </div>
       <div class="home_c">{{baseInfo.ScreenName}}</div>
       <div class="home_r">
@@ -107,7 +107,7 @@
         baseInfo:'baseInfo',
         lists:'asideLists',
         topLists:'topLists',
-      })
+      }),
     },
     created() {
       //大屏基础信息

@@ -67,7 +67,6 @@
               this.dataInfo = [];
 
               //console.log(data)
-
               if(status == 0){
                 Object.keys(data).forEach((key) => {
                   this.dataInfo.push({name:key,value:data[key]});

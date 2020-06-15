@@ -5,12 +5,16 @@
 </template>
 
 <script type="text/ecmascript-6">
+/*  import logo0 from 'static/image/f0.png';
+  import logo1 from 'static/image/f1.png';*/
   export default {
     name: "Ddos",
     data() {
       return {
         timers: null,
+        myEcharts:null,
         loading:true,
+
         mapData:[{dest_ip:'202.106.40.115',dest_label:"[]",dest_location:[116.29845, 39.95933],
           dest_type:'remote',id:173,src_ip:'192.168.1.195',src_label:"['11234分支']",
           src_location:[116.29845, 39.95933],src_type:'local'},
@@ -20,7 +24,10 @@
       }
     },
     created(){
+      console.log('555')
+      this.myEcharts = null;
       this.getData();
+
     },
     mounted() {
       this.timers = setInterval(() => {
@@ -51,9 +58,11 @@
 
               this.mapData = data;
 
-              this.$nextTick(() => {
-                this.drawGraph();
-              });
+              setTimeout(() => {
+                this.$nextTick(() => {
+                  this.drawGraph();
+                });
+              },1000);
 
             }
           })
@@ -146,11 +155,11 @@
           }*/
         });
 
-        let myChart = this.$echarts.init(document.getElementById("screenMap"));
+        this.myEcharts = this.$echarts.init(document.getElementById("screenMap"));
 
-        myChart.showLoading({ text: '正在加载数据...' });
+        this.myEcharts.showLoading({ text: '正在加载数据...' });
 
-        myChart.clear();
+        this.myEcharts.clear();
 
         let options = {
           //设置标题文本
@@ -195,14 +204,15 @@
           series: series
         };
 
-        myChart.setOption(options);
+        this.myEcharts.setOption(options);
 
-        myChart.hideLoading();
+        this.myEcharts.hideLoading();
 
         window.addEventListener("resize", () => {
-          myChart.resize();
+          this.myEcharts.resize();
+          //this.myEcharts = null;
+          //this.getData();
         });
-
       }
     }
   };

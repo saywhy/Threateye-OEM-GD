@@ -29,9 +29,7 @@
           get(){
             return this.$store.getters.topLists.filter(item => { return item.flag == true; });
           },
-          set(val){
-
-          }
+          set(val){}
         }
       },
       created(){

@@ -157,7 +157,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "outside_set",
   data () {
@@ -201,14 +201,34 @@ export default {
     }
   },
   mounted () {
+    this.check_passwd()
     this.get_switch()
     this.get_ip()
     this.get_user_list()
     this.get_list('1')
     this.get_list('2')
   },
-
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     // 获取列表
     get_list (type) {
       this.$axios.get('/yiiapi/linkage/list', {

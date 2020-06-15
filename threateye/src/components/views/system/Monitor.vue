@@ -1011,19 +1011,38 @@ export default {
     },
     // 下载模板
     download_template () {
-      this.$axios.get('/yiiapi/site/check-auth-exist', {
-        params: {
-          pathInfo: 'yararule/download',
-        }
-      })
-        .then(response => {
-          var url1 = '/yiiapi/ipsegment/template-download';
-          window.location.href = url1;
-        })
-        .catch(error => {
-          console.log(error);
-        })
 
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.monitor_state.import = false;
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          } else {
+            this.$axios.get('/yiiapi/site/check-auth-exist', {
+              params: {
+                pathInfo: 'yararule/download',
+              }
+            })
+              .then(response => {
+                var url1 = '/yiiapi/ipsegment/template-download';
+                window.location.href = url1;
+              })
+              .catch(error => {
+                console.log(error);
+              })
+          }
+        })
     },
     // 导入
 
@@ -1095,17 +1114,35 @@ export default {
     },
     // 导出
     download () {
-      this.$axios.get('/yiiapi/site/check-auth-exist', {
-        params: {
-          pathInfo: 'yararule/download',
-        }
-      })
-        .then(response => {
-          var url2 = '/yiiapi/ipsegment/export';
-          window.location.href = url2;
-        })
-        .catch(error => {
-          console.log(error);
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          } else {
+            this.$axios.get('/yiiapi/site/check-auth-exist', {
+              params: {
+                pathInfo: 'yararule/download',
+              }
+            })
+              .then(response => {
+                var url2 = '/yiiapi/ipsegment/export';
+                window.location.href = url2;
+              })
+              .catch(error => {
+                console.log(error);
+              })
+          }
         })
     }
   },

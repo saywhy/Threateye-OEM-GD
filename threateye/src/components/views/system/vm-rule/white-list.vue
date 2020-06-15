@@ -127,6 +127,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "white_list",
   data () {
@@ -155,8 +156,29 @@ export default {
   },
   mounted () {
     this.get_data();
+    this.check_passwd();
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     get_data () {
       this.loading = true;
       this.$axios.get('/yiiapi/whitelist/list', {
@@ -236,19 +258,36 @@ export default {
     },
     // 下载模板
     download () {
-      this.$axios.get('/yiiapi/site/check-auth-exist', {
-        params: {
-          pathInfo: 'yararule/download',
-        }
-      })
-        .then(response => {
-          var url2 = "/yiiapi/whitelist/download-ioc-template";
-          window.location.href = url2;
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          } else {
+            this.$axios.get('/yiiapi/site/check-auth-exist', {
+              params: {
+                pathInfo: 'yararule/download',
+              }
+            })
+              .then(response => {
+                var url2 = "/yiiapi/whitelist/download-ioc-template";
+                window.location.href = url2;
+              })
+              .catch(error => {
+                console.log(error);
+              })
+          }
         })
-        .catch(error => {
-          console.log(error);
-        })
-
     },
     // 批量上传
     handlePreview () { },

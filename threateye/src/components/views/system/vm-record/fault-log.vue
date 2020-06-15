@@ -104,12 +104,21 @@ export default {
               type: 'success',
               message: '检测成功!'
             });
+          } else if (response.data.status == 602) {
+            {
+              this.$message({
+                type: 'warning',
+                message: response.data.msg
+              });
+            }
           } else {
             this.$message({
               type: 'error',
               message: response.data.msg
             });
           }
+
+
         })
         .catch(error => {
           console.log(error);

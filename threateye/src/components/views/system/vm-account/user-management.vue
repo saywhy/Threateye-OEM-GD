@@ -281,6 +281,7 @@
 
 <script type="text/ecmascript-6">
 import moment from 'moment'
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "user_management",
   data () {
@@ -331,12 +332,33 @@ export default {
   },
   mounted () {
     this.get_data();
+    this.check_passwd();
     this.role_list();
     this.get_menu()
     this.getPwdLength()
   },
 
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     // 修改密码
     edit_pswd () {
       this.$axios.get('/yiiapi/site/get-self-password-reset-token')

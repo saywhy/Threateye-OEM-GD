@@ -1338,21 +1338,39 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.get('/yiiapi/site/check-auth-exist', {
-          params: {
-            pathInfo: 'yararule/download',
-          }
-        })
-          .then(response => {
-            var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
-              + '&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
-            window.location.href = url1;
-          })
-          .catch(error => {
-            console.log(error);
+
+        this.$axios.get('/yiiapi/site/check-passwd-reset')
+          .then((resp) => {
+            let {
+              status,
+              msg,
+              data
+            } = resp.data;
+            if (status == '602') {
+              this.$message(
+                {
+                  message: msg,
+                  type: 'warning',
+                }
+              );
+              eventBus.$emit('reset')
+            } else {
+              this.$axios.get('/yiiapi/site/check-auth-exist', {
+                params: {
+                  pathInfo: 'yararule/download',
+                }
+              })
+                .then(response => {
+                  var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
+                    + '&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
+                  window.location.href = url1;
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+            }
           })
       }).catch(() => {
-
         this.$message({ type: 'info', message: '已取消导出' });
 
         this.$refs.multipleTable.clearSelection();

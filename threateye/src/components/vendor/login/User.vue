@@ -127,11 +127,13 @@ export default {
       loginRules: {
         username: [
           { required: true, message: '用户名不能为空', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'change' },
           /*{ min: 2, max: 16, message: '用户名长度为2~16个字符', trigger: 'blur' },*/
           /*{ required: true, trigger: 'blur', validator: validateUsername }*/
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'change' },
           /*{ min: 6, message: '密码长度最少为6位', trigger: 'blur' },*/
           /*{ required: true, trigger: 'blur', validator: validatePassword }*/
         ]

@@ -215,6 +215,10 @@ export default {
         }
       })
         .then(response => {
+          console.log(response);
+          if (response.data.status == 602) {
+            return false
+          }
           this.license_list = response.data.data.license
           this.licence_pop.key = response.data.data.key
           this.license_list.list.forEach((item, index) => {

@@ -1,7 +1,7 @@
 <template>
-    <div class="vm-screen-middle0">
+    <div class="vm-screen-middle0" v-cloak>
       <div class="risks">
-        <dl class="item-list" v-for="(item,index) in topData" :key="index">
+        <dl class="item-list" v-for="(item,index) in riskData" :key="index">
           <dt class="name">{{item.name}}</dt>
           <dd class="content">
             <span class="item" v-for="(it,idx) in item.num" :key="idx">{{it}}</span>
@@ -13,15 +13,30 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import {mapGetters} from 'vuex'
     export default {
       name: "vm-screen-middle0",
       props:['topData','close'],
       data(){
           return {
             topFlag: true,
-            riskData: [],
-            timers: null
+            timers: null,
+            riskData:[]
           }
+      },
+      /*computed:{
+        ...mapGetters({
+          topLists:'topLists',
+        }),
+      },*/
+      watch: {
+        topData: {
+          handler:function(newVal,oldVal){
+            this.getData();
+          },
+          //深度监听
+          deep:true
+        }
       },
       created(){
         this.getData();
@@ -42,14 +57,34 @@
 
             .then((resp) => {
 
+              this.riskData = [];
+
               this.topFlag = false;
 
               let {status, data} = resp.data;
 
+              //console.log(this.topData)
               if (status == 0) {
-                //console.log(data);
-                this.$store.commit('SET_TOP_LISTS_NUM', data);
+                //this.$store.commit('SET_TOP_LISTS_NUM', data);
+               this.topData.map(item => {
+                  for (let key in data) {
 
+                    if(item.alias == key){
+                      if(Number(data[key]) > 99999){
+                        data[key] = 99999;
+                      }
+                      if(data[key] == undefined || data[key] == null){
+                        data[key] == 0;
+                      }
+                      let count = String(data[key]).padStart(5,'0');
+                      /*if(!item.num){
+                        Object.assign(item,{num:count.toString().split('')});
+                      }*/
+                      item.num = count.toString().split('');
+                    }
+                  };
+                  this.riskData.push(item);
+               });
               }
             })
             .catch((error) => {

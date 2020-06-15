@@ -27,7 +27,6 @@
       console.log('555')
       this.myEcharts = null;
       this.getData();
-
     },
     mounted() {
       this.timers = setInterval(() => {

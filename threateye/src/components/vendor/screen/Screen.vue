@@ -143,6 +143,7 @@
       topLists: {
         handler:function(newVal,oldVal){
           let topLists = newVal.filter(item => { return item.flag == true; });
+          //console.log(topLists)
           this.totalTopLists = topLists;
         },
         //深度监听

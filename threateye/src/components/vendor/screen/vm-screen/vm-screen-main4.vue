@@ -78,7 +78,7 @@
             },
             grid: {
               top:'0',
-              left: '-8%',
+              left: '-12%',
               right: '0',
               bottom: '-8%',
               containLabel: true
@@ -100,7 +100,7 @@
                   color:'#fff',
                   fontSize:12,
                   fontFamily:'PingFangSC-Regular',
-                  margin: 24
+                  margin: 20
                 },
                 position:'left',
                 data: this.branch.branchCount,
@@ -121,7 +121,7 @@
                   color:'#fff',
                   fontSize:12,
                   fontFamily:'PingFangSC-Regular',
-                  margin: 70,
+                  margin: 80,
                   formatter: function (value) {
                     let valAttr = value.split('');
                     let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");

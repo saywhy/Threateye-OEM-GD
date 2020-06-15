@@ -139,6 +139,11 @@ export default {
     async getScreenTop({commit,dispatch},context){
       let resp = await axios('/yiiapi/demonstration/get-top-config',{params:context});
       let {status, data} = resp.data;
+      data.forEach(item => {
+        if(!item.num){
+          item.num = [0,0,0,0,0];
+        }
+      })
       if(status == 0){
         commit('SET_TOP_LISTS',data);
         return true;

@@ -57,9 +57,13 @@
 
               let {status, data} = resp.data;
 
+             // console.log(data)
+
+            //data
+
               if (status == 0) {
                this.$store.commit('SET_TOP_LISTS_NUM', data);
-               /*this.topData.map(item => {
+              /* this.topData.map(item => {
                   for (let key in data) {
 
                     if(item.alias == key){

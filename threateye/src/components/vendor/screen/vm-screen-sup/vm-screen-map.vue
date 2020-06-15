@@ -208,7 +208,7 @@
         this.myEcharts.hideLoading();
 
         window.addEventListener("resize", () => {
-          this.myEcharts.resize();
+          //this.myEcharts.resize();
           //this.myEcharts = null;
           //this.getData();
         });

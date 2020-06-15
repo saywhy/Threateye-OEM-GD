@@ -138,6 +138,7 @@
 </template>
 <script type="text/ecmascript-6">
 import moment from 'moment'
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "system_control_licence",
   data () {
@@ -183,8 +184,29 @@ export default {
     this.get_data();
     this.get_license();
     this.get_version();
+    this.check_passwd();
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     get_data () {
       this.$axios.get('/yiiapi/license/get', {
         params: {

@@ -234,9 +234,9 @@ export default {
       this.network_loading = true
       this.$axios.get('/yiiapi/seting/get-network')
         .then(response => {
+          this.network_loading = false
           this.network = response.data.data.data;
           this.change_name(this.network[0].NAME)
-          this.network_loading = false
         })
         .catch(error => {
           console.log(error);

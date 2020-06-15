@@ -107,6 +107,7 @@
 </template>
 <script type="text/ecmascript-6">
 import moment from 'moment'
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "sandbox",
   data () {
@@ -146,8 +147,44 @@ export default {
   },
   mounted () {
     this.get_data();
+    this.test()
+    this.check_passwd();
   },
   methods: {
+    // 测试600专用
+    test () {
+      this.$axios.get('/yiiapi/sandbox/list', {
+        params: {
+          pathInfo: 'investigate/host-network-investigation',
+        }
+      })
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     //获取当前版本
     get_version () {
       this.$axios.get('/yiiapi/site/license-version')

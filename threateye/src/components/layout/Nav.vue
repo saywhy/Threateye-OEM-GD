@@ -223,40 +223,20 @@ export default {
     getPwdLength () {
       this.$axios.get('/yiiapi/site/get-passwd-length')
         .then(response => {
-
-          //console.log('&&&&&&&')
-          //console.log(response);
-
           this.user_data.password = response.data.data
           this.user_data.placeholder = '请输入包含大写、小写、数字和特殊字符其中三项,' + response.data.data.min_passwd_len + '-' + response.data.data.max_passwd_len + '位密码'
           //!@#QWEasd123 Lele#easy123 Lele@19930901
-
           this.$axios.get('/yiiapi/site/get-self-password-reset-token')
-
             .then(response => {
-              //console.log('************************');
-              //console.log(response);
-
               let { status, msg, data } = response.data;
-
               if (status == 0) {
-
-                //setToken(data.data.token);
-
-                console.log(data.data)
-
+                // console.log(data.data)
                 localStorage.setItem("token", data.data.token);
-
                 let datas = data.data;
-
                 this.user_edit.department = datas.department;
                 this.user_edit.mobile = datas.mobile;
                 this.user_edit.email_addr = datas.email_addr;
-
-                //this.edit_user();
-
               } else {
-
                 this.$message(
                   {
                     message: msg,
@@ -295,7 +275,6 @@ export default {
         allow_ip: ''
       };
     },
-
     edit_user () {
       if (this.user_edit.password != this.user_edit.Re_password) {
         this.$message(
@@ -352,13 +331,9 @@ export default {
         old_password: this.user_edit.old_password
       })
         .then(response => {
-
           this.pass_state = false;
-
           localStorage.removeItem("token");
-
           if (response.data.status == 0) {
-
             this.$message({
               message: '修改用户成功',
               type: 'success'
@@ -434,7 +409,6 @@ export default {
           let { status, data } = resp.data;
           let datas = data;
           this.news_count = datas.count
-          console.log('8888');
         })
         .catch(error => {
           console.log(error);
@@ -442,7 +416,6 @@ export default {
     },
   },
   beforeDestroy () {
-    console.log('77777');
     clearInterval(this.timer); //关闭
   },
   destroyed () {

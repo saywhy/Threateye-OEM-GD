@@ -96,6 +96,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "report-sending",
   data () {
@@ -103,7 +104,10 @@ export default {
       send_config: {
         cycle: "daily",
         receiver: [],
-        receiver_list: [],
+        receiver_list: [{
+          name: '',
+          icon: true
+        }],
         report_type: '',
         status: '',
         receiver_edit: [],
@@ -112,8 +116,29 @@ export default {
   },
   mounted () {
     this.get_data()
+    this.check_passwd()
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     get_data () {
       this.$axios.get('/yiiapi/report/get-config')
         .then(response => {
@@ -122,14 +147,15 @@ export default {
           this.send_config.cycle = data.cycle;
           this.send_config.receiver = data.receiver;
           this.send_config.report_type = data.report_type;
-          this.send_config.receiver_list = [];
           console.log(this.send_config);
           if (this.send_config.receiver.length == 0) {
+            this.send_config.receiver_list = [];
             this.send_config.receiver_list.push({
               name: '',
               icon: true
             })
           } else {
+            this.send_config.receiver_list = [];
             this.send_config.receiver.forEach(item => {
               this.send_config.receiver_list.push({
                 name: item,

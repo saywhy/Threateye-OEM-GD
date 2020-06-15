@@ -89,11 +89,31 @@ export default {
   components: { backTitle },
   created () {
     this.get_news();
+    this.check_passwd();
   },
   mounted () {
-
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
+        })
+    },
     random (lower, upper) {
       return Math.floor(Math.random() * (upper - lower + 1)) + lower;
     },

@@ -82,6 +82,7 @@
 </template>
 <script type="text/ecmascript-6">
 import VmEmergePicker from "@/components/common/vm-emerge-picker";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: "invest_user",
   components: {
@@ -112,6 +113,7 @@ export default {
   },
   mounted () {
     this.test()
+    this.check_passwd()
   },
   methods: {
     // 测试600专用
@@ -126,6 +128,26 @@ export default {
         })
         .catch(error => {
           console.log(error);
+        })
+    },
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status == '602') {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+            eventBus.$emit('reset')
+          }
         })
     },
     search () {
@@ -147,7 +169,10 @@ export default {
       })
         .then(response => {
           this.user_search.loading = false
-          let { status, data } = response.data;
+          let { status, data } = response.data
+          if (status == '602') {
+            return false
+          }
           // if (data.count > 10000) {
           //   this.$message({
           //     type: 'warning',

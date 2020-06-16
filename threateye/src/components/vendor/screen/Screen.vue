@@ -2,7 +2,7 @@
   <div class="home-screen" :class="{'active':!close}" v-cloak>
     <div class="home-top">
       <div class="home_l">
-        <!--<label class="e_label"></label>-->
+        <label class="e_label"></label>
       </div>
       <div class="home_c">{{baseInfo.ScreenName}}</div>
       <div class="home_r">
@@ -238,22 +238,22 @@
       .home_l {
         flex: 1;
         .e_label {
-          width: 64px;
+         /* width: 64px;
           height: 48px;
           margin-top: 6px;
           display: block;
           background-image: url("../../../assets/images/screen/head-logo.png");
           background-repeat: no-repeat;
-          background-size: 64px 48px;
+          background-size: 64px 48px;*/
 
-          /*width: 128px;
+          width: 128px;
           height: 128px;
           margin-top: -30px;
           margin-left: 50px;
           display: block;
           background-image: url("../../../assets/images/screen/head-logo1.png");
           background-repeat: no-repeat;
-          background-size: 128px 128px;*/
+          background-size: 128px 128px;
         }
       }
       .home_c {

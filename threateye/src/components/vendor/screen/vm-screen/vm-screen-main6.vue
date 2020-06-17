@@ -340,15 +340,18 @@
         }
       }
     }
-    .el-table__body{
-      td{
-        border-width: 0;
-        padding: 0;
-        height: 32px;
-        line-height: 32px;
-        background: #00134A;
-        .cell{
-          color: #fff;
+    .el-table__body-wrapper{
+      overflow-x: hidden;
+      .el-table__body{
+        td{
+          border-width: 0;
+          padding: 0;
+          height: 32px;
+          line-height: 32px;
+          background: #00134A;
+          .cell{
+            color: #fff;
+          }
         }
       }
     }

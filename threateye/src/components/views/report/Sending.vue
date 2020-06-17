@@ -48,11 +48,11 @@
           <el-col :span="21">
             <div class="r_radio">
               <el-radio v-model="send_config.report_type"
-                        label="doc"
-                        class="r_radio_item">Word</el-radio>
-              <el-radio v-model="send_config.report_type"
                         label="excel"
                         class="r_radio_item">Excel</el-radio>
+              <el-radio v-model="send_config.report_type"
+                        label="doc"
+                        class="r_radio_item">Word</el-radio>
               <el-radio v-model="send_config.report_type"
                         label="pdf"
                         class="r_radio_item">PDF</el-radio>

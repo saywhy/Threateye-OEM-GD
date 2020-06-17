@@ -249,6 +249,9 @@ export default {
         .then(response => {
           this.ioc_data.loading = false
           let { status, data } = response.data;
+          if (status == '602') {
+            return false
+          }
           console.log(data);
           this.ioc_list = data
           this.ioc_list.data.forEach((item, index) => {

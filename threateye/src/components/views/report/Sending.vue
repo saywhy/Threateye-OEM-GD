@@ -193,7 +193,7 @@ export default {
         receiver: this.send_config.receiver_edit,
       })
         .then(response => {
-          let { status, data } = response.data;
+          let { status, data, msg } = response.data;
           console.log(data);
           console.log(status);
           if (status == 'success') {
@@ -202,6 +202,20 @@ export default {
               {
                 message: '修改成功',
                 type: 'success',
+              }
+            );
+          } else if (status == 602) {
+            this.$message(
+              {
+                message: msg,
+                type: 'warning',
+              }
+            );
+          } else {
+            this.$message(
+              {
+                message: msg,
+                type: 'error',
               }
             );
           }

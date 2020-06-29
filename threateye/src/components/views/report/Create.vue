@@ -685,8 +685,7 @@ export default {
     // 取消
     reseet () {
       this.report.name = ''
-      this.report.type = 'doc'
-      this.report.type = 'doc'
+      this.report.type = 'csv'
       this.report.start_time = ''
       this.report.end_time = ''
       $(document.querySelector('.el-button--text')).trigger('click');

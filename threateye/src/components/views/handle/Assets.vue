@@ -1027,7 +1027,7 @@ export default {
             if (Object.keys(this.detail_click_column).length != 0 && this.detail_click_column.type != 'selection') {
               this.$router.push({
                 path: '/detail/assets', name: 'detail_assets',
-                query: { id: this.detail_click_val.id, asset_ip: this.detail_click_val.asset_ip, status: this.detail_click_val.status }
+                query: { id: this.detail_click_val.id, asset_ip: this.detail_click_val.asset_ip, status: this.detail_click_val.status,type:"assets" }
               });
             }
           } else {

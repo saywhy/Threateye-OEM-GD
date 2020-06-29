@@ -67,6 +67,11 @@ export default {
     this.init_tabs_info();
     this.get_top_num();
   },
+  mounted () {
+    eventBus.$on('num', () => {
+      this.get_top_num()
+    })
+  },
   destroyed () {
     let route = this.$route;
     if (route.path != '/detail/works') {
@@ -176,6 +181,7 @@ export default {
         this.childUpdate3 = true;
         locate.setItem('activeName', 'third');
       }
+      this.get_top_num();
     }
   }
 }

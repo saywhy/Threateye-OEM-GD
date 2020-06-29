@@ -766,7 +766,7 @@
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
                   <el-checkbox label="news"
-                             value="news">消息中心通知</el-checkbox>
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -3372,7 +3372,7 @@ export default {
               font-size: 10px;
               line-height: 20px;
               font-family: PingFang;
-              transform: scale(0.8);
+              // transform: scale(0.8);
               display: block;
             }
           }

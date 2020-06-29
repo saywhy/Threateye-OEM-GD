@@ -788,6 +788,7 @@
 
 <script type="text/ecmascript-6">
 import VmEmergePicker from "@/components/common/vm-emerge-picker";
+import { eventBus } from '@/components/common/eventBus.js';
 export default {
   name: 'vm-handle-tabs',
   props: {
@@ -1639,6 +1640,7 @@ export default {
           let { status, msg, data } = resp.data;
           if (status == 0) {
             this.$message.success('分配成功');
+            eventBus.$emit('num')
             this.closed_task_new();
             this.get_list_works();
             this.$emit('updateNum');
@@ -2071,6 +2073,7 @@ export default {
           // "存在已被创建工单的资产"
           if (resp.data.status == 0) {
             this.$message.success('修改成功');
+            eventBus.$emit('num')
             this.get_list_works();
             this.edit.pop = false
           } else {

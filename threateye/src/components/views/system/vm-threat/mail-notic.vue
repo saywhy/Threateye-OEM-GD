@@ -196,10 +196,13 @@ export default {
           this.mail.host = data.host
           this.mail.username = data.username
           this.mail.send = data.send
+          if (status == 602) {
+            return false
+          }
           if (data.encryption == 'ssl') {
-            this.ssl_switch = true
+            this.mail.ssl_switch = true
           } else {
-            this.ssl_switch = false
+            this.mail.ssl_switch = false
           }
           if (data.alertEmail.length == 0) {
             this.mail.alertEmail_list = []

@@ -535,7 +535,8 @@
                                value="email">邮件通知</el-checkbox>
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
-                  <el-checkbox label="news" value="news">消息中心通知</el-checkbox>
+                  <el-checkbox label="news"
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -1334,7 +1335,16 @@ export default {
 
           } else if (status == 9) {
             // this.$message.error(msg);
-            this.$router.push({ path: "/handle/assets" });
+            switch (this.$route.query.type) {
+              case 'home':
+                this.$router.push({ path: "/home/overview" });
+                break;
+              case 'assets':
+                this.$router.push({ path: "/handle/assets" });
+                break;
+              default:
+                break;
+            }
           }
         });
     },
@@ -1912,7 +1922,7 @@ export default {
               font-size: 10px;
               line-height: 20px;
               font-family: PingFang;
-              transform: scale(0.8);
+              // transform: scale(0.8);
               display: block;
             }
           }

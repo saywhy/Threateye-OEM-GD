@@ -94,7 +94,7 @@ export default {
             console.log('点击详情');
             this.$router.push({
               path: '/detail/assets', name: 'detail_assets',
-              query: { id: this.detail_click_val.id, asset_ip: this.detail_click_val.asset_ip, status: this.detail_click_val.status }
+              query: { id: this.detail_click_val.id, asset_ip: this.detail_click_val.asset_ip, status: this.detail_click_val.status, type: 'home' }
             });
           } else {
             console.log('点击头部');

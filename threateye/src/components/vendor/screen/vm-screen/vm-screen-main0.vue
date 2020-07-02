@@ -24,11 +24,9 @@
           }
       },
       created() {
-
+        this.getData();
       },
       mounted() {
-        this.getData();
-
         this.timers = setInterval(()=>{
           this.getData();
        //},10000);
@@ -168,7 +166,10 @@
           myEcharts.setOption(option);
           myEcharts.hideLoading();
 
-          if(degrees.length > 1){
+          tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
+
+
+         /* if(degrees.length > 1){
             tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
           }else {
             myEcharts.dispatchAction({
@@ -176,7 +177,7 @@
               seriesIndex: 0,
               dataIndex: 0
             });
-          }
+          }*/
 
 
           //tools.autoHover(myEcharts, option, 17, 3000); // 使用本插件

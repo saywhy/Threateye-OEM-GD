@@ -401,11 +401,11 @@
             }
             .t2{
               position: absolute;
-              left: 420px;
+              left: 350px;
             }
             .t3{
               position: absolute;
-              right: 80px;
+              right: 110px;
             }
           }
         }

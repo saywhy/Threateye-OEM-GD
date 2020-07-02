@@ -18,6 +18,7 @@
      */
 
     tools.loopShowTooltip = function (chart, chartOption, options) {
+
         var defaultOptions = {
             interval: 2000,
             loopSeries: false,
@@ -58,6 +59,7 @@
         }
 
         function autoShowTip() {
+
             function showTip() {
                 // 判断是否更新数据
                 if (dataIndex === 0 && !first && typeof options.updateData === "function") {
@@ -85,6 +87,7 @@
                         break;
                 }
 
+
                 if (chartType === 'pie' || chartType === 'radar') {
                     // 取消之前高亮的图形
                     chart.dispatchAction({
@@ -106,6 +109,7 @@
                 chart.dispatchAction(tipParams);
 
                 dataIndex = (dataIndex + 1) % dataLen;
+
                 if (options.loopSeries && dataIndex === 0 && !first) { // 数据索引归0表示当前系列数据已经循环完
                     seriesIndex = (seriesIndex + 1) % seriesLen;
                 }
@@ -114,7 +118,9 @@
             }
 
             showTip();
+
             timeTicket = setInterval(showTip, options.interval);
+
         }
 
         // 关闭轮播
@@ -122,7 +128,6 @@
             if (timeTicket) {
                 clearInterval(timeTicket);
                 timeTicket = 0;
-
                 if (chartType === 'pie' || chartType === 'radar') {
                     // 取消高亮的图形
                     chart.dispatchAction({

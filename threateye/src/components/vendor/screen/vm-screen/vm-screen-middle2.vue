@@ -326,8 +326,9 @@
                 layout: "force",
                 //focusNodeAdjacency: true,
                 force: {
-                  repulsion: 100,
-                  edgeLength: 50
+                  repulsion: 300,
+                  gravity: 0.15,
+                  edgeLength: 100
                 },
                 symbolSize: 10,
                 roam: true,
@@ -442,10 +443,10 @@
     .block{
       position: relative;
       height: 245px;
-      width: 520px;
+      width: 450px;
       #flow{
         height: 245px;
-        width: 520px;
+        width: 450px;
       }
       .box{
         position: absolute;
@@ -457,7 +458,6 @@
         background-image: url("../../../../assets/images/screen/content-flow.png");
         background-repeat: no-repeat;
         background-size: 100% 100%;
-
         .line {
           position: absolute;
           top: 0;

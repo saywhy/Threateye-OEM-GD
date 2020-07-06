@@ -1,7 +1,7 @@
 <template>
     <div class="vm-screen-middle1">
       <div id="spreader">
-        <el-carousel trigger="click" :autoplay="false"
+        <el-carousel trigger="click" :autoplay="true"
                      :interval="20000" @change="changeCal">
           <el-carousel-item>
             <vm-screen-map></vm-screen-map>

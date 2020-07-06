@@ -56,12 +56,11 @@
             if(status == 0){
 
               this.mapData = data;
-
               setTimeout(() => {
                 this.$nextTick(() => {
                   this.drawGraph();
                 });
-              },1000);
+              },500);
 
             }
           })
@@ -109,18 +108,32 @@
               //线上面的动态特效
               effect: {
                 show: true,
-                period: 3, //特效动画的时间，单位为 s。
-                //trailLength: .9,
+                period: 5, //特效动画的时间，单位为 s。
+                trailLength: .21,
                 color: "#00D7E9", //射线颜色
                 symbol:'triangle',
-                symbolSize: 2
+                symbolSize: 4
               },
               symbol: symbol,
               symbolSize: symbolSize,
-              lineStyle: {
+            /* lineStyle: {
                 normal: {
                   width: "",
                   curveness: 0.3
+                }
+              },*/
+              lineStyle: {
+                normal: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#58B3CC'
+                  }, {
+                    offset: 1,
+                    color: "#00D7E9",
+                  }], false),
+                  width: 1,
+                  opacity: 0.03,
+                  curveness: 0.1
                 }
               },
               label:{

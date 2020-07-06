@@ -168,66 +168,6 @@
 
           tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
 
-
-         /* if(degrees.length > 1){
-            tools.loopShowTooltip(myEcharts, option, {loopSeries: true});
-          }else {
-            myEcharts.dispatchAction({
-              type: "highlight",
-              seriesIndex: 0,
-              dataIndex: 0
-            });
-          }*/
-
-
-          //tools.autoHover(myEcharts, option, 17, 3000); // 使用本插件
-
-          /*myEcharts.dispatchAction({
-            type: "highlight",
-            seriesIndex: 0,
-            dataIndex: 0
-          });*/
-
-          //自动轮播
-/*          let index = this.degreeIndex;
-          this.timer = setInterval(function () {
-            var dataLen = option.series[0].data.length;
-            // 取消之前高亮的图形
-            myEcharts.dispatchAction({
-              type: 'downplay',
-              seriesIndex: 0,
-              dataIndex: index
-            });
-            index = (index + 1) % dataLen;
-            // 高亮当前图形
-            myEcharts.dispatchAction({
-              type: 'highlight',
-              seriesIndex: 0,
-              dataIndex: index
-            });
-          }, 3000);*/
-
-          //设置默认选中高亮部分
-         /* myEcharts.on("mouseover", function(e) {
-            console.log('mouseover')
-            clearInterval(this.timer);
-            /!*if (e.dataIndex != index) {
-              myEcharts.dispatchAction({
-                type: "downplay",
-                seriesIndex: 0,
-                dataIndex: index
-              });
-            }*!/
-          });*/
-          /*myEcharts.on("mouseout", function(e) {
-            index = e.dataIndex;
-            myEcharts.dispatchAction({
-              type: "highlight",
-              seriesIndex: 0,
-              dataIndex: e.dataIndex
-            });
-          });*/
-
           window.addEventListener("resize", () => {
             myEcharts.resize();
           });

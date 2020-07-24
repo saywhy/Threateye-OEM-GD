@@ -172,7 +172,12 @@ export default {
     // 编辑
     edit_data () {
       this.send_config.receiver_edit = []
-      if (this.send_config.receiver_list.length == 0) {
+      this.send_config.receiver_list.forEach(item => {
+        if (item.name != '') {
+          this.send_config.receiver_edit.push(item.name)
+        }
+      });
+      if (this.send_config.receiver_edit.length == 0) {
         this.$message(
           {
             message: '请输入发件人邮箱',
@@ -181,11 +186,6 @@ export default {
         );
         return false
       }
-      this.send_config.receiver_list.forEach(item => {
-        if (item.name != '') {
-          this.send_config.receiver_edit.push(item.name)
-        }
-      });
       this.$axios.post('/yiiapi/report/set-config', {
         status: this.send_config.status,
         cycle: this.send_config.cycle,

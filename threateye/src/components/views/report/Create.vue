@@ -264,22 +264,34 @@ export default {
               })
                 .then(response => {
                   this.report.loading = false
-                  let { status, data, msg } = response.data;
-                  if (status == 0) {
-                    this.get_data();
-                    this.$message(
-                      {
-                        message: '报表生成成功',
-                        type: 'success',
-                      }
-                    );
-                  } else {
-                    this.$message(
-                      {
-                        message: msg,
-                        type: 'warning',
-                      }
-                    );
+                  let { status, data, msg, message } = response.data;
+                  switch (status) {
+                    case 0:
+                      this.get_data();
+                      this.$message(
+                        {
+                          message: '报表生成成功',
+                          type: 'success',
+                        }
+                      );
+                      break;
+                    case 500:
+                      this.$message(
+                        {
+                          message: message,
+                          type: 'warning',
+                        }
+                      );
+                      break;
+
+                    default:
+                      this.$message(
+                        {
+                          message: msg,
+                          type: 'warning',
+                        }
+                      );
+                      break;
                   }
 
                 })

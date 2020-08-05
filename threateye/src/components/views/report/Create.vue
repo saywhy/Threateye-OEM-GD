@@ -543,7 +543,8 @@ export default {
         series: [{
           // name: '高危',
           type: 'bar',
-          barWidth: 20,
+          // barWidth: 20,
+          barMaxWidth: 20,
           animation: false,
           stack: '搜索引擎',
           itemStyle: {
@@ -589,7 +590,7 @@ export default {
             show: false
           },
           axisLabel: {
-            interval: 0,
+            // interval: 2,
             rotate: '60',
             margin: 5,
             textStyle: {
@@ -612,7 +613,8 @@ export default {
         series: [{
           // name: '高危',
           type: 'bar',
-          barWidth: 20,
+          // barWidth: 20,
+          barMaxWidth: 20,
           animation: false,
           stack: '搜索引擎',
           itemStyle: {
@@ -679,7 +681,8 @@ export default {
         series: [{
           // name: '高危',
           type: 'bar',
-          barWidth: 20,
+          // barWidth: 20,
+          barMaxWidth: 20,
           animation: false,
           stack: '搜索引擎',
           itemStyle: {
@@ -934,9 +937,12 @@ export default {
   }
   #untreatedalarm_report,
   #application_protocol,
-  #alert_trend,
   #alert_type {
     border: 1px solid red;
+    width: 1000px;
+    height: 600px;
+  }
+  #alert_trend {
     width: 1000px;
     height: 600px;
   }

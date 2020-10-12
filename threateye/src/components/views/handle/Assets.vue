@@ -955,6 +955,7 @@ export default {
     //搜索按鈕點擊事件
     submitClick () {
       this.search_flag = true;
+      this.table.pageNow = 1;
       this.get_list_risk();
     },
 
@@ -975,6 +976,7 @@ export default {
         degree: "",
         status: "",
       };
+      this.table.pageNow = 1;
       this.get_list_risk();
     },
 

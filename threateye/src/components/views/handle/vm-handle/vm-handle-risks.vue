@@ -214,6 +214,7 @@
                          @current-change="handleCurrentChange"
                          :page-sizes="[10,20,50,100]"
                          :page-size="table.eachPage"
+                         :current-page="table.pageNow"
                          :total="table.count"
                          layout="total, sizes, prev, pager, next">
           </el-pagination>
@@ -805,6 +806,7 @@ export default {
     //每頁多少條切換
     handleSizeChange (val) {
       this.table.eachPage = val;
+      this.table.pageNow = 1;
       this.get_list_threat();
     },
     //頁數點擊切換
@@ -828,6 +830,7 @@ export default {
     },
     //搜索按鈕點擊事件
     submitClick () {
+      this.table.pageNow = 1;
       this.get_list_threat();
     },
     //重置按鈕點擊事件
@@ -841,6 +844,7 @@ export default {
         degree: ""
       }
       $(document.querySelector('.el-button--text')).trigger('click');
+      this.table.pageNow = 1;
       this.get_list_threat();
     },
     /*****************************/

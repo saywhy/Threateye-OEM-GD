@@ -1198,6 +1198,7 @@ export default {
     /**************************************************替换***********************************************************/
     //搜索按鈕點擊事件
     submitClick () {
+      this.table.pageNow = 1;
       this.get_list_works();
     },
 
@@ -1211,6 +1212,7 @@ export default {
         endTime: ""
       };
       $(document.querySelector('.el-button--text')).trigger('click');
+      this.table.pageNow = 1;
       this.get_list_works();
     },
 

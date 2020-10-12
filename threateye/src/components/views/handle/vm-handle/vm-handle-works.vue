@@ -1786,6 +1786,8 @@ export default {
         .then(resp => {
           this.selected_list = []
           let { status, data } = resp.data;
+
+          console.log("*(*(*(*(*")
           console.log(data);
           // 储存资产数组
           this.edit.data.risk_asset_cn = []

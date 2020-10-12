@@ -159,7 +159,7 @@
               </p>
             </div>
             <div class="bom_mid_content">
-              <bom-mid :bom_mid="bom_mid"></bom-mid>
+              <bom-mid :bom_mid="bom_mid" v-if="bom_mid_show"></bom-mid>
             </div>
           </div>
         </el-col>

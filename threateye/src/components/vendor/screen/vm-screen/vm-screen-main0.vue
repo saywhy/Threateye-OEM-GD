@@ -29,7 +29,7 @@
       mounted() {
         this.timers = setInterval(()=>{
           this.getData();
-       //},10000);
+       // },10000);
         },10000 * 30);
       },
       destroyed(){
@@ -38,13 +38,12 @@
       methods:{
         //获取数据
         getData(){
-         // clearInterval(this.timers);
+         //clearInterval(this.timers);
           this.$axios
             .get('/yiiapi/demonstration/threat-distribution')
             .then((resp) => {
 
               //console.log(resp)
-
               this.degree = [];
               this.category = [];
 

@@ -30,7 +30,7 @@ axios.interceptors.request.use(
 );
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-  //console.log(response)
+  console.log(response)
   //status内层
   switch (response.data.status) {
     case 602:
@@ -59,8 +59,8 @@ axios.interceptors.response.use(response => {
       });
       break;
     default:
-      // Router.push({path:'/404'})
-      //console.log(`请求状态${response.status}`)
+    // Router.push({path:'/404'})
+    //console.log(`请求状态${response.status}`)
   }
   return response
 }, err => {

@@ -20,7 +20,7 @@ Vue.prototype.$echarts = echarts;
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;
-// axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
+axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
 import uploader from 'vue-simple-uploader'
 
 import "echarts/extension/bmap/bmap.js";
@@ -83,8 +83,8 @@ router.beforeEach((to, from, next) => {
             store.dispatch('LogOut');
           } else {
             store.dispatch('GenerateRoutes', {
-                roles
-              })
+              roles
+            })
               .then(() => { // 生成可访问的路由表
 
                 router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表

@@ -273,6 +273,7 @@ export default {
   },
 
   created () {
+    this.check_passwd()
     let newId = this.$route.query.id;
     this.id = newId;
     this.loadlinks += newId;
@@ -283,7 +284,38 @@ export default {
 
 
   methods: {
-
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     // alert_detail
     // workorder
 

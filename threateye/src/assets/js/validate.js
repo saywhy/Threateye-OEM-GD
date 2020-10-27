@@ -2,6 +2,39 @@
  * Created by jiachenpan on 16/11/18.
  */
 
+//判断是否位空，空对象，空数组，undefined,null,非数字等（ycl）
+export function isSynthetical(val){
+  let str = true;
+  if(val === "" || val === " " || val === null || val === undefined){
+    str = false;
+  }
+  if(JSON.stringify(val) === '{}' || JSON.stringify(val) === '[]'){
+    str = false;
+  }
+  if(!val){ // "",null,undefined,NaN
+    str = false;
+  }
+  /*if(isNaN(val)){
+    str = false;
+  }*/
+  return str;
+}
+
+//判断是否位数字（ycl）
+export function isRealNum(val){
+  // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除，
+  if(val === "" || val == null || val == undefined){
+    return false;
+  }
+  if(!isNaN(val) && typeof val === 'number'){
+    //if(!isNaN(val) && typeof val === 'number' )
+    return true;
+  }else{
+    return false;
+  }
+}
+
+
 //用户名验证
 export function isvalidUsername(str) {
   const valid_map = ['admin']

@@ -1241,6 +1241,7 @@ export default {
   },
 
   created () {
+    this.check_passwd();
     let asset_ip = this.$route.query.asset_ip;
     let status = this.$route.query.status;
     let id = this.$route.query.id;
@@ -1251,6 +1252,39 @@ export default {
     this.get_assets_detail_top();
   },
   methods: {
+
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     //获取资产详情顶部
     get_assets_detail_top () {
       this.suggest_flag = false;

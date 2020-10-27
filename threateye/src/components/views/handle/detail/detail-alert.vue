@@ -1407,6 +1407,7 @@ export default {
     backTitle
   },
   mounted () {
+    this.check_passwd();
     this.get_data();
     console.log(this.$route.query);
     // detail: val.id, type: 'risks'
@@ -1415,6 +1416,38 @@ export default {
     // outreachthreat  外联威胁告警  outreath
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     // ^[0-9]*$
     // _-.@
     get_rex (str) {

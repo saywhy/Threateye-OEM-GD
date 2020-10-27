@@ -987,6 +987,7 @@ export default {
     VmEmergePicker
   },
   created () {
+    this.check_passwd();
     /********************************************************替换**************************************************/
     if (this.owned == 'distributed') {
       this.options_status = [
@@ -1047,6 +1048,38 @@ export default {
 
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     //获取全部资产列表
     get_list_assets_info () {
       this.$axios.get('/yiiapi/workorder/asset-list', {

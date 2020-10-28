@@ -1,6 +1,5 @@
 <template>
   <div class="home_overview"
-       v-loading.fullscreen.lock="loading"
        v-cloak>
     <div class="container">
 
@@ -160,8 +159,7 @@
               </p>
             </div>
             <div class="bom_mid_content">
-              <bom-mid :bom_mid="bom_mid"
-                       v-if="bom_mid_show"></bom-mid>
+              <bom-mid :bom_mid="bom_mid" v-if="bom_mid_show"></bom-mid>
             </div>
           </div>
         </el-col>
@@ -243,15 +241,14 @@ import bomLeft from "./vm-home/bom-left";
 import bomMid from "./vm-home/bom-mid";
 import bomRight from "./vm-home/bom-right";
 
-// import sysMonitor from "./vm-home/sys-monitor";
-import imgUrl from "@/assets/images/home/common/img1.png"
 import { eventBus } from '@/components/common/eventBus.js';
+
+import {isSynthetical} from "../../../assets/js/validate";
 export default {
   name: "system_control_move",
   data () {
     return {
       top_left: {},
-      loading: false,
       top_left_show: false,
 
       top_mid: {},
@@ -363,8 +360,14 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.top_left = data;
-            this.top_left_show = true;
+
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.top_left = data;
+              this.top_left_show = true;
+            }
+
           }
         })
     },
@@ -380,8 +383,12 @@ export default {
           } = resp.data;
 
           if (status == 0) {
-            this.top_mid = data;
-            this.top_mid_show = true;
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.top_mid = data;
+              this.top_mid_show = true;
+            }
           }
         })
     },
@@ -395,8 +402,14 @@ export default {
           } = resp.data;
           //console.log(data)
           if (status == 0) {
-            this.top_right = data;
-            this.top_right_show = true;
+
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.top_right = data;
+              this.top_right_show = true;
+            }
+
           }
         })
     },
@@ -410,8 +423,13 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.mid_left = data;
-            this.mid_left_show = true;
+
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.mid_left = data;
+              this.mid_left_show = true;
+            }
           }
         })
     },
@@ -424,8 +442,12 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.mid_mid = data;
-            this.mid_mid_show = true;
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.mid_mid = data;
+              this.mid_mid_show = true;
+            }
           }
         })
     },
@@ -439,8 +461,13 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.mid_right = data;
-            this.mid_right_show = true;
+
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.mid_right = data;
+              this.mid_right_show = true;
+            }
           }
         })
     },
@@ -451,14 +478,17 @@ export default {
       this.$axios.get('/yiiapi/alert/threat-top5')
         .then((resp) => {
           // /console.log(resp)
-
           let {
             status,
             data
           } = resp.data;
           if (status == 0) {
-            this.bom_left = data;
-            this.bom_left_show = true;
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.bom_left = data;
+              this.bom_left_show = true;
+            }
           }
         })
     },
@@ -472,8 +502,13 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.bom_mid = data;
-            this.bom_mid_show = true;
+
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.bom_mid = data;
+              this.bom_mid_show = true;
+            }
           }
         })
     },
@@ -488,8 +523,12 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.bom_right = data;
-            this.bom_right_show = true;
+            if(!isSynthetical(data)){
+              return false;
+            }else {
+              this.bom_right = data;
+              this.bom_right_show = true;
+            }
           }
         })
     },
@@ -777,15 +816,12 @@ export default {
       this.equipment_detail.title.type = params.names
       this.equipment_detail.title.ip = params.dev_ip
       this.equipment_detail.title.name = params.dev_name
-      this.loading = true
-
       this.$axios.get('/yiiapi/alert/dev-state', {
         params: {
           ip: params.dev_ip
         }
       })
         .then(response => {
-          this.loading = false;
           let {
             status,
             data
@@ -913,43 +949,6 @@ export default {
           }
         }],
         color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
-        visualMap: [{
-          show: false,
-          type: 'piecewise',
-          seriesIndex: 0,
-          pieces: [{
-            gt: 85,
-            color: '#dc5f5f'
-          }, {
-            gt: 0,
-            lte: 85,
-            color: "rgba(2,136,209,0.9)"
-          }]
-        }, {
-          show: false,
-          type: 'piecewise',
-          seriesIndex: 1,
-          pieces: [{
-            gt: 85,
-            color: '#dc5f5f'
-          }, {
-            gt: 0,
-            lte: 85,
-            color: "rgba(205,220,57,0.9)"
-          }]
-        }, {
-          show: false,
-          type: 'piecewise',
-          seriesIndex: 2,
-          pieces: [{
-            gt: 80,
-            color: '#dc5f5f'
-          }, {
-            gt: 0,
-            lte: 80,
-            color: "rgba(76,175,80,0.9)"
-          }]
-        }],
         series: [
           {
             name: "CPU",
@@ -958,6 +957,9 @@ export default {
             cursor: "pointer",
             smooth: true,
             data: this.equipment_detail.cpu,
+            lineStyle: {
+              color: "rgba(2,136,209,0.9)"
+            },
             areaStyle: {
               color: {
                 type: "linear",
@@ -985,6 +987,9 @@ export default {
             cursor: "pointer",
             smooth: true,
             data: this.equipment_detail.mem,
+            lineStyle: {
+              color: "rgba(205,220,57,0.9)"
+            },
             areaStyle: {
               color: {
                 type: "linear",
@@ -1012,6 +1017,9 @@ export default {
             cursor: "pointer",
             smooth: true,
             data: this.equipment_detail.disk,
+            lineStyle: {
+              color: "rgba(76,175,80,0.9)"
+            },
             areaStyle: {
               color: {
                 type: "linear",
@@ -1262,7 +1270,7 @@ export default {
             display: inline-block;
           }
           .legend_title {
-            margin-right: 10px;
+            margin-right: 20px;
           }
         }
         // 第一个
@@ -1371,9 +1379,6 @@ export default {
 </style>
 
 <style lang="less">
-.el-loading-mask {
-  z-index: 99999 !important;
-}
 .home_overview {
   .sys_box {
     z-index: 9000 !important;

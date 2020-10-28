@@ -44,10 +44,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../threateyefrontend/index.html'),
+    index: path.resolve(__dirname, '../iviewfrontend/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../threateyefrontend'),
+    assetsRoot: path.resolve(__dirname, '../iviewfrontend'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 

@@ -351,7 +351,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
+         // console.log(response);
           this.equipment_list = response.data.data
           this.equipment_list.pageNow *= 1
           this.equipment_list.rows *= 1

@@ -73,7 +73,7 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown"
-                                  style="width200px;"
+                                  style="width:200px;"
                                   class="dropdown_ul_box_detail">
                   <el-dropdown-item command='1'
                                     class="select_item">威胁追查</el-dropdown-item>
@@ -94,7 +94,7 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown"
-                                  style="width200px;"
+                                  style="width:200px;"
                                   class="dropdown_ul_box_detail">
                   <el-dropdown-item command='1'
                                     class="select_item">威胁追查</el-dropdown-item>
@@ -161,9 +161,9 @@
             <li class="item_li">
               <span class="item_li_title">标签:</span>
               <div class="item_li_content">
-                <ul v-if="network_detail.label_obj.length !=0">
+                <ul v-if="network_detail.label.length !=0">
                   <li class="tag_btn_box"
-                      v-for="item in network_detail.label_obj">
+                      v-for="item in network_detail.label">
                     <span class="tag_btn">{{item}}</span>
                   </li>
                 </ul>
@@ -268,7 +268,7 @@
                 <div class="info_bom_item">
                   <div class="info_bom_item_li"
                        v-for="demo in item.whois_list">
-                    <div class="left_li">{{demo.name}}</div>
+                    <div class="left_li">{{demo.name | ip_whois}}</div>
                     <div class="right_li">{{demo.value}}</div>
                   </div>
                 </div>
@@ -278,7 +278,7 @@
             <div class="time_right_net">
               <div class="time_right_net_item"
                    v-for="demo in item.event_list">
-                <div class="title_net">{{demo.name}}</div>
+                <div class="title_net">{{demo.name | network_event}}</div>
                 <div class="value_net">{{demo.value}}</div>
               </div>
             </div>
@@ -2860,11 +2860,11 @@ export default {
     // 编辑标签
     edit_tag_box () {
       this.edit_tag.tag_list = [];
-      console.log(this.network_detail.label_obj);
-      if (this.network_detail.label_obj.length == 0) {
+      console.log(this.network_detail.label);
+      if (this.network_detail.label.length == 0) {
         this.edit_tag.tag_list.push({ name: '', icon: true })
       } else {
-        this.network_detail.label_obj.forEach(element => {
+        this.network_detail.label.forEach(element => {
           var obj = {
             name: element,
             icon: false
@@ -2913,7 +2913,6 @@ export default {
       })
         .then(response => {
           let { status, data } = response.data;
-          console.log(data);
           if (status == 0) {
             this.$message(
               {

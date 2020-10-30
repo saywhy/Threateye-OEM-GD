@@ -120,8 +120,6 @@ export default {
 
         let roles = forRoleList(resp);
 
-        // console.log(roles);
-
          roles.push('995');
 
         if (!roles.includes('117')) {

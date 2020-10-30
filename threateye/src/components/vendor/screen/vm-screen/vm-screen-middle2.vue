@@ -344,7 +344,7 @@
                 edgeSymbolSize: [2, 6],
                 edgeLabel: {
                   normal: {
-                    show: true,
+                    show: false,
                     textStyle: {
                       fontSize: 8,
                       color: "#fff"

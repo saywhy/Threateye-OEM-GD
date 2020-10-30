@@ -24,7 +24,7 @@
           <vuedraggable class="menu-list" v-model="setAsideLists" v-show="defaultIndex == '1' && rotate1Active">
             <transition-group>
               <div class="item" v-for="(item,$index) in setAsideLists" :key="item.aside_id">
-                <span class="title">{{item.name}}</span>
+                <span class="title" :title="item.name">{{item.name}}</span>
                 <button class="bt" :class="{'active':item.flag}" @click="asideAddClick(item.aside_id);">
                   <span v-show="!item.flag">添加</span>
                   <span v-show="item.flag">已添加</span>
@@ -39,7 +39,7 @@
           <vuedraggable class="menu-list" v-model="setTopLists" v-show="defaultIndex == '2' && rotate2Active">
             <transition-group>
               <div class="item" v-for="(item,$index) in setTopLists" :key="item.top_id">
-                <span class="title">{{item.name}}</span>
+                <span class="title" :title="item.name">{{item.name}}</span>
                 <button class="bt" :class="{'active':item.flag}" @click="topAddClick(item.top_id);">
                   <span v-show="!item.flag">添加</span>
                   <span v-show="item.flag">已添加</span>
@@ -307,6 +307,11 @@
               font-family: PingFangSC-Regular;
               font-size: 12px;
               color: #333333;
+              width: 120px;
+              cursor: pointer;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
             .bt {
               float: right;

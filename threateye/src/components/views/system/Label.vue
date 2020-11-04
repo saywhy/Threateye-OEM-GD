@@ -8,7 +8,7 @@
         <div class="custom-top">
           <el-input class="search_key"
                     placeholder="搜索关键词"
-                    v-model="name"
+                    v-model.trim="name"
                     @keyup.enter.native="search()"
                     clearable>
             <i slot="prefix"

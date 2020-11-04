@@ -11,7 +11,7 @@
             <!--搜索关键词-->
             <el-input class="s_key"
                       placeholder="搜索关键词"
-                      v-model="params.key"
+                      v-model.trim="params.key"
                       clearable>
               <i slot="prefix"
                  class="el-input__icon el-icon-search"></i>

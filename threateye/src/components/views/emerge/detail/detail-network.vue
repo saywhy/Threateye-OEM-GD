@@ -1337,8 +1337,6 @@ export default {
         ],
         pop: false
       },
-
-
       //添加到工单
       worksheets_data: {
         page: 1,
@@ -2732,6 +2730,7 @@ export default {
         }
       })
         .then(response => {
+
           let { status, data } = response.data;
           this.emerge_list.now = data
         })
@@ -2907,10 +2906,16 @@ export default {
         default:
           break;
       }
-      this.$axios.put(label, {
+     /* this.$axios.put(label, {
         id: this.$route.query.detail,
         label: label_list
+      })*/
+     //ycl 11/04修改
+      this.$axios.put(label, {
+        id: this.$route.query.detail,
+        label_name: label_list
       })
+      //ycl 11/04修改
         .then(response => {
           let { status, data } = response.data;
           if (status == 0) {
@@ -2934,9 +2939,6 @@ export default {
         .catch(error => {
           console.log(error);
         })
-
-
-
     },
     closed_edit_tag_box () {
       this.edit_tag.pop = false

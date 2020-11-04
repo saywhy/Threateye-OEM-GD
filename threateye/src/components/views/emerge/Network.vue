@@ -73,31 +73,31 @@
           <!--1-->
           <el-col :span="24"
                   class="common_box_list">
-            <!--搜索关键词-->
-            <el-input class="s_key"
-                      placeholder="搜索关键词"
-                      v-model="params.key"
+
+            <!--告警类型-->
+            <el-input class="s_key1"
+                      placeholder="告警类型"
+                      v-model.trim="params.category"
                       clearable>
               <i slot="prefix"
                  class="el-input__icon el-icon-search"></i>
             </el-input>
-            <!--时间-->
+
+            <!--威胁指标-->
+            <el-input class="s_key1"
+                      placeholder="威胁指标"
+                      v-model.trim="params.indicator"
+                      clearable>
+              <i slot="prefix"
+                 class="el-input__icon el-icon-search"></i>
+            </el-input>
+
+            <!--告警时间-->
             <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-            <!--安全域-->
-            <el-select class="s_key s_key_types_network"
-                       v-model="params.domain"
-                       clearable
-                       placeholder="安全域"
-                       :popper-append-to-body="false">
-              <el-option v-for="item in options_domains"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
+
             <!--失陷确定性-->
-            <el-select class="s_key s_key_types_network_ok"
-                       v-model="params.certainty"
+            <el-select class="s_key1 s_key1_ok"
+                       v-model="params.fall_certainty"
                        clearable
                        placeholder="失陷确定性"
                        :popper-append-to-body="false">
@@ -107,24 +107,9 @@
                          :value="item.value">
               </el-option>
             </el-select>
-          </el-col>
-          <!--2-->
-          <!--<el-col :span="24" class="common_box_list common_box_list_network">
-            &lt;!&ndash;威胁等级&ndash;&gt;
-            <el-select class="s_key"
-                       v-model="params.degree"
-                       clearable
-                       placeholder="威胁等级"
-                       :popper-append-to-body="false">
-              <el-option v-for="item in options_degrees"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
 
-            &lt;!&ndash;处理状态&ndash;&gt;
-            <el-select class="s_key_network1"
+            <!--处理状态-->
+            <el-select class="s_key1"
                        v-model="params.status"
                        clearable
                        placeholder="处理状态"
@@ -136,25 +121,59 @@
               </el-option>
             </el-select>
 
-            &lt;!&ndash;攻击阶段&ndash;&gt;
-            <el-select class="s_key_network2"
-                       v-model="params.attack_stage"
+            <!--威胁等级-->
+            <el-select class="s_key1"
+                       v-model="params.degree"
                        clearable
-                       placeholder="攻击阶段"
+                       placeholder="威胁等级"
                        :popper-append-to-body="false">
-              <el-option v-for="item in options_attack_stages"
+              <el-option v-for="item in options_degree"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value">
               </el-option>
             </el-select>
+          </el-col>
+          <!--2-->
+          <el-col :span="24" class="common_box_list common_box_list_network">
+
+            <!--源地址-->
+            <el-input class="s_key1"
+                      placeholder="源地址"
+                      v-model.trim="params.src_ip"
+                      clearable>
+              <i slot="prefix"
+                 class="el-input__icon el-icon-search"></i>
+            </el-input>
+
+            <!--目的地址-->
+            <el-input class="s_key1"
+                      placeholder="目的地址"
+                      v-model.trim="params.dest_ip"
+                      clearable>
+              <i slot="prefix"
+                 class="el-input__icon el-icon-search"></i>
+            </el-input>
+
+            <!--更新时间-->
+            <vm-emerge-picker1 @changeTime='changeTime1'></vm-emerge-picker1>
+
+            <!--标签-->
+            <el-input class="s_key1 s_key1_ok"
+                      placeholder="标签"
+                      v-model.trim="params.label"
+                      clearable>
+              <i slot="prefix"
+                 class="el-input__icon el-icon-search"></i>
+            </el-input>
+
             <el-button class="s_btn"
                        @click="submitClick();">搜索</el-button>
             <el-link class="s_link"
                      @click="resetClick();">重置</el-link>
             <el-button class="s_btn_edit"
                        @click="export_box">导出</el-button>
-          </el-col>-->
+          </el-col>
         </el-row>
         <!--按钮组-->
         <el-row class="common_btn" style="width: 100%;">
@@ -279,13 +298,14 @@
                                min-width="150"
                                :prop="dropCol[index].prop"
                                :label="item.label">
-                <!--<template slot-scope="scope">{{ scope.row.alert_time | time }}</template>-->
                 <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
               </el-table-column>
               <!--威胁等级-->
               <el-table-column align="center"
                                v-else-if="dropCol[index].prop == 'degree'"
                                show-overflow-tooltip
+                               sortable="custom"
+                               min-width="100"
                                :prop="dropCol[index].prop"
                                :label="item.label">
                 <template slot-scope="scope">
@@ -314,41 +334,15 @@
                                :label="item.label">
                 <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
               </el-table-column>
-              <!--工单状态-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'workorder_status'"
-                               show-overflow-tooltip
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">{{ scope.row.workorder_status | work_status }}</template>
-              </el-table-column>
-              <!--风险指数-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'risk_num'"
-                               show-overflow-tooltip
-                               sortable="custom"
-                               min-width="120"
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">{{ scope.row.risk_num | risk_num}}</template>
-              </el-table-column>
               <!--更新时间-->
               <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'update_time'"
+                               v-else-if="dropCol[index].prop == 'updated_at'"
                                show-overflow-tooltip
                                sortable="custom"
                                min-width="150"
                                :prop="dropCol[index].prop"
                                :label="item.label">
-                <template slot-scope="scope">{{ scope.row.update_time | time }}</template>
-              </el-table-column>
-              <!--安全域-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'security_domain'"
-                               show-overflow-tooltip
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">{{ scope.row.security_domain | securityDomain }}</template>
+                <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
               </el-table-column>
               <!--其他-->
               <el-table-column align="center"
@@ -700,16 +694,16 @@
 <script type="text/ecmascript-6">
 import vmEmergeLine from "./vm-emerge/vm-emerge-line";
 import vmEmergePicker from "@/components/common/vm-emerge-picker";
+import vmEmergePicker1 from "@/components/common/vm-emerge-picker1";
 import { eventBus } from '@/components/common/eventBus.js';
-
 //拖拽
 import Sortable from 'sortablejs';
-
 export default {
   name: "Network",
   components: {
     vmEmergeLine,
-    vmEmergePicker
+    vmEmergePicker,
+    vmEmergePicker1
   },
   data () {
     return {
@@ -724,8 +718,8 @@ export default {
         { checked: true, disabled: false, name: "应用", alias: 'application' },
         { checked: true, disabled: false, name: "威胁等级", alias: 'degree' },
         { checked: true, disabled: false, name: "失陷确定性", alias: 'fall_certainty' },
-        { checked: false, disabled: false, name: "更新时间", alias: 'update_time' },
-        { checked: false, disabled: false, name: "告警次数", alias: 'alert_num' },
+        { checked: false, disabled: false, name: "更新时间", alias: 'updated_at' },
+        { checked: false, disabled: false, name: "告警次数", alias: 'alert_count' },
         { checked: false, disabled: false, name: "标签", alias: 'labels' },
         { checked: true, disabled: false, name: "状态", alias: 'status' }],
       sortable:null,
@@ -734,18 +728,22 @@ export default {
         loading: true,
         data_show: false,
       },
-      picker_data: {
-        time: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)]
-      },
       params: {
-        key: "",
-        threat: "",
-        status: "",
-        startTime: '',
-        endTime: '',
-        degree: ''
+        fall_certainty: '',
+        status: '',
+        degree: '',
+        start_time: '',
+        end_time: '',
+        category:'',
+        indicator: '',
+        src_ip: '',
+        dest_ip: '',
+        update_stime: '',
+        update_etime:'',
+        label: '',
+        sort:'degree'
       },
-      options_degrees: [
+      options_degree: [
         {
           value: "low",
           label: "低危"
@@ -759,7 +757,7 @@ export default {
           label: "高危"
         }
       ],
-      options_threat: [
+      options_certainty: [
         {
           value: "1",
           label: "已失陷"
@@ -811,7 +809,6 @@ export default {
       //弹窗部分
       state_change: false,
       process_state: "",
-
       //工单任务
       task: {
         new: false,
@@ -901,12 +898,17 @@ export default {
       newPositon: {
         x: '',
         y: ''
+      },
+      picker_data: {
+        time: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)]
       }
     };
   },
   mounted () {
     this.check_passwd();
+
     this.get_echarts();
+
     this.get_list_risk();
 
     this.column_deploy();
@@ -932,6 +934,7 @@ export default {
           }
         })
     },
+
     // 获取折现图表
     get_echarts () {
       this.$axios.get('/yiiapi/alert/alert-trend')
@@ -953,6 +956,71 @@ export default {
     /**
     * 2020/10/28ycl新加功能
     * */
+    //配置到
+    column_deploy () {
+      this.$axios.get('/yiiapi/site/field-list')
+        .then((resp) => {
+          // console.log(resp);
+          this.dropCol = [];
+          let { status, data } = resp.data;
+          if (status == 0) {
+            let config = data.config.fields;
+
+            console.log(config)
+            for (var key of config) {
+
+              this.fieldList.forEach(item => {
+                if (item.alias == key) {
+                  this.dropCol.push({ label: item.name, prop: item.alias })
+                }
+              });
+            }
+
+            this.fieldList.forEach(item => {
+              if (config.includes(item.alias)) {
+                item.checked = true;
+              } else {
+                item.checked = false;
+              }
+            });
+            this.columnDrop();
+          }
+        });
+    },
+
+    //下拉框勾选事件
+    fieldChange (alias, name) {
+      let colAttr = this.dropCol.map((item) => {
+        return item.prop;
+      });
+      if (colAttr.includes(alias)) {
+        var index = colAttr.findIndex((element) => (element == alias));
+        this.dropCol.splice(index, 1);
+      } else {
+        this.dropCol.push({ label: name, prop: alias });
+      }
+    },
+
+    //列拖拽
+    columnDrop () {
+      const wrapperTr = document.querySelector('.common-table_alert tr');
+      this.sortable = Sortable.create(wrapperTr, {
+        //handle: '.common-table_alert',
+        animation: 180,
+        delay: 0,
+        onEnd: evt => {
+          let newIndex = evt.newIndex - 2;
+          let oldIndex = evt.oldIndex - 2;
+          const oldItem = this.dropCol[oldIndex];
+          this.dropCol.splice(oldIndex, 1);
+          this.dropCol.splice(newIndex, 0, oldItem);
+
+          this.label_submit_click();
+
+          this.randomKey += 1;
+        }
+      });
+    },
 
     //配置到取消
     label_cancel_Click () {
@@ -960,8 +1028,9 @@ export default {
       this.column_deploy();
       this.get_list_risk();
     },
+
     //配置到确定
-    label_submit_click () {
+    label_submit_click (args) {
 
       let fieldAttr = [];
       fieldAttr = this.dropCol.map(item => {
@@ -978,7 +1047,6 @@ export default {
           if (status == 0) {
             this.$refs.messageDrop.hide();
             this.get_list_risk();
-
           } else {
             this.$message({
               message: '修改错误！',
@@ -987,95 +1055,44 @@ export default {
           }
         });
     },
-    //配置到
-    column_deploy () {
-      this.$axios.get('/yiiapi/site/field-list')
-        .then((resp) => {
-         // console.log(resp);
-          this.dropCol = [];
-          let { status, data } = resp.data;
-          if (status == 0) {
-            let config = data.config;
-            for (var key of config) {
-              this.fieldList.forEach(item => {
-                if (item.alias == key) {
-                  this.dropCol.push({ label: item.name, prop: item.alias })
-                }
-              });
-            }
-            this.fieldList.forEach(item => {
-              if (config.includes(item.alias)) {
-                item.checked = true;
-              } else {
-                item.checked = false;
-              }
-            });
-            this.columnDrop();
-          }
-        });
-    },
-    //下拉框勾选事件
-    fieldChange (alias, name) {
-      let colAttr = this.dropCol.map((item) => {
-        return item.prop;
-      });
-      if (colAttr.includes(alias)) {
-        var index = colAttr.findIndex((element) => (element == alias));
-        this.dropCol.splice(index, 1);
-      } else {
-        this.dropCol.push({ label: name, prop: alias });
-      }
-    },
-    //列拖拽
-    columnDrop () {
-      const wrapperTr = document.querySelector('.common-table_alert tr');
-      this.sortable = Sortable.create(wrapperTr, {
-        //handle: '.common-table_alert',
-        animation: 180,
-        delay: 0,
-        onEnd: evt => {
-          let newIndex = evt.newIndex - 2;
-          let oldIndex = evt.oldIndex - 2;
-          const oldItem = this.dropCol[oldIndex];
-          this.dropCol.splice(oldIndex, 1);
-          this.dropCol.splice(newIndex, 0, oldItem);
 
-          this.label_submit_click();
-          this.randomKey += 1;
-
-        }
-      });
-    },
     //配置列弹窗关闭事件
     dropdown_hide (val) {
       if (!val) {
         this.label_cancel_Click();
       }
     },
-
     /**
      * 2020/10/28ycl新加功能
      * */
-
     // 获取告警列表
     get_list_risk () {
       this.table.loading = true;
+      this.table.pageNow = 1;
+
       let params_alert = {
-        threat: ''
+        fall_certainty: ''
       };
-      if (this.params.threat == 1) {
-        params_alert.threat = 1;
+      if (this.params.fall_certainty == 1) {
+        params_alert.fall_certainty = 1;
       }
       this.$axios.get('/yiiapi/alert/list', {
         params: {
-          start_time: this.params.startTime,
-          end_time: this.params.endTime,
-          key_word: this.params.key,
-          fall_certainty: params_alert.threat,
+          start_time: this.params.start_time,
+          end_time: this.params.end_time,
+          fall_certainty: params_alert.fall_certainty,
           status: this.params.status,
           degree: this.params.degree,
           page: this.table.pageNow,
           rows: this.table.eachPage,
+          category:this.params.category,
+          indicator:this.params.indicator,
+          src_ip:this.params.src_ip,
+          dest_ip:this.params.dest_ip,
+          update_stime:this.params.update_stime,
+          update_etime:this.params.update_etime,
+          label:this.params.label,
+          sort: this.params.sort
         }
       }).then(resp => {
 
@@ -1087,6 +1104,10 @@ export default {
         if (status == 0) {
 
           let { data, count, maxPage, pageNow } = datas;
+
+          data.map(v => {
+            v.labels = v.labels.join(',');
+          });
 
           this.table.tableData = data;
           this.table.count = count;
@@ -1100,17 +1121,26 @@ export default {
           console.log(error);
         })
     },
-
+    //告警时间
     changeTime (data) {
       if (data) {
-        this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
-        this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
+        this.params.start_time = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.end_time = (data[1].valueOf() / 1000).toFixed(0);
       } else {
-        this.params.startTime = ''
-        this.params.endTime = ''
+        this.params.start_time = '';
+        this.params.end_time = '';
       }
     },
-
+    //更新时间
+    changeTime1 (data) {
+      if (data) {
+        this.params.update_stime = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.update_etime = (data[1].valueOf() / 1000).toFixed(0);
+      } else {
+        this.params.update_stime = '';
+        this.params.update_etime = '';
+      }
+    },
     //搜索按鈕點擊事件
     submitClick () {
       this.table.pageNow = 1;
@@ -1119,14 +1149,20 @@ export default {
 
     //重置按鈕點擊事件
     resetClick () {
-      this.params = {
-        key: "",
-        threat: "",
-        status: "",
-        startTime: '',
-        endTime: '',
-        degree: ''
-      };
+      this.params.fall_certainty = '';
+      this.params.status = '';
+      this.params.degree = '';
+      this.params.start_time = '';
+      this.params.end_time = '';
+      this.params.category = '';
+      this.params.indicator = '';
+      this.params.src_ip = '';
+      this.params.dest_ip = '';
+      this.params.update_stime = '';
+      this.params.update_etime = '';
+      this.params.label = '';
+      //this.params.sort = 'degree';
+
       $(document.querySelector('.el-button--text')).trigger('click');
       this.table.pageNow = 1;
       this.get_list_risk();
@@ -1155,33 +1191,20 @@ export default {
       this.detail_click_val = val
       this.detail_click_column = column
     },
+
     header_click (val) {
       this.detail_click_val = {}
     },
     //列排序
     header_cell (val) {
-      //console.log(val);
+      console.log(val);
 
-      if(val.prop == 'update_time'){
-        this.params.order = 'update_time';
-        if(val.order == 'ascending'){
-          this.params.sort = '3';
-        }else if(val.order == 'descending'){
-          this.params.sort = '4';
-        }else {
-          this.params.order = '';
-          this.params.sort = '3';
-        }
-      }else if(val.prop == 'risk_num'){
-        this.params.order = 'risk_num';
-        if(val.order == 'ascending'){
-          this.params.sort = '3';
-        }else if(val.order == 'descending'){
-          this.params.sort = '4';
-        }else {
-          this.params.order = '';
-          this.params.sort = '3';
-        }
+      if(val.prop == 'updated_at'){
+        this.params.sort = 'updated_at';
+      }else if(val.prop == 'degree'){
+        this.params.sort = 'degree';
+      }else {
+        this.params.sort = 'degree';
       }
       this.get_list_risk();
 
@@ -1689,8 +1712,20 @@ export default {
                 }
               })
                 .then(response => {
-                  var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
-                    + '&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
+                  var url1 = "/yiiapi/alert/export-alerts?start_time=" + this.params.start_time
+                    + '&end_time=' + this.params.end_time
+                    + '&fall_certainty=' + this.params.fall_certainty
+                    + '&status=' + this.params.status
+                    + '&degree=' + this.params.degree
+                    + '&page=' + this.table.pageNow
+                    + '&rows=' + this.table.eachPage
+                    + '&category=' + this.params.category
+                    + '&indicator=' + this.params.indicator
+                    + '&src_ip=' + this.params.src_ip
+                    + '&dest_ip=' + this.params.dest_ip
+                    + '&update_stime=' + this.params.update_stime
+                    + '&update_etime=' + this.params.update_etime
+                    + '&label=' + this.params.label;
                   window.location.href = url1;
                 })
                 .catch(error => {

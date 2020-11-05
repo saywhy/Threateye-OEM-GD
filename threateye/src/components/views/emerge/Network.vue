@@ -69,7 +69,6 @@
             <el-button class="s_btn_edit"
                        @click="export_box">导出</el-button>
           </el-col>-->
-
           <!--1-->
           <el-col :span="24"
                   class="common_box_list">
@@ -966,7 +965,7 @@ export default {
           if (status == 0) {
             let config = data.config.fields;
 
-            console.log(config)
+           // console.log(config)
             for (var key of config) {
 
               this.fieldList.forEach(item => {
@@ -1068,8 +1067,6 @@ export default {
     // 获取告警列表
     get_list_risk () {
       this.table.loading = true;
-      this.table.pageNow = 1;
-
       let params_alert = {
         fall_certainty: ''
       };
@@ -1108,6 +1105,9 @@ export default {
           data.map(v => {
             v.labels = v.labels.join(',');
           });
+
+
+          console.log(datas)
 
           this.table.tableData = data;
           this.table.count = count;
@@ -1170,6 +1170,7 @@ export default {
 
     //每頁多少條切換
     handleSizeChange (val) {
+      console.log(val)
       this.table.eachPage = val;
       this.table.pageNow = 1;
       this.get_list_risk();
@@ -1177,6 +1178,7 @@ export default {
 
     //頁數點擊切換
     handleCurrentChange (val) {
+      console.log(val)
       this.table.pageNow = val;
       this.get_list_risk();
     },

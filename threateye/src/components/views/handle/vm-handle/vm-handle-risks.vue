@@ -1016,14 +1016,21 @@ export default {
       }
       this.$axios.get('/yiiapi/' + this.threats + '/list', {
         params: {
-          start_time: this.params.startTime,
-          end_time: this.params.endTime,
-          degree: this.params.degree,
-          fall_certainty: params_alert.threat,
+          start_time: this.params.start_time,
+          end_time: this.params.end_time,
+          fall_certainty: params_alert.fall_certainty,
           status: this.params.status,
-          key_word: this.params.key_word,
+          degree: this.params.degree,
           page: this.table.pageNow,
-          rows: this.table.eachPage
+          rows: this.table.eachPage,
+          category:this.params.category,
+          indicator:this.params.indicator,
+          src_ip:this.params.src_ip,
+          dest_ip:this.params.dest_ip,
+          update_stime:this.params.update_stime,
+          update_etime:this.params.update_etime,
+          label:this.params.label,
+          sort: this.params.sort
         }
       }).then((resp) => {
 
@@ -1041,7 +1048,7 @@ export default {
           this.table.maxPage = maxPage;
           this.table.pageNow = pageNow;
 
-          // console.log(data)
+          this.columnDrop();
         }
       })
     },

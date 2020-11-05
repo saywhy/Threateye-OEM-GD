@@ -69,7 +69,7 @@ export default {
     chooseTime () {
      // console.log(this.option);
       // console.log(this.pickerOptions.time);
-      this.$emit("changeTime", this.pickerOptions.time);
+      this.$emit("changeTime1", this.pickerOptions.time);
     }
   }
 };

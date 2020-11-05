@@ -20,14 +20,13 @@ Vue.prototype.$echarts = echarts;
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;
-//axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
+axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
 import uploader from 'vue-simple-uploader'
 
 import "echarts/extension/bmap/bmap.js";
 import '../node_modules/echarts/map/js/world.js'
 
 Vue.use(uploader)
-
 
 // 引入http
 import {
@@ -56,6 +55,17 @@ Vue.use(gl_component);
 import '@/components/filters/index'
 
 import './assets/css/index.css'
+
+Vue.prototype.validSe = function (value, number = 255) {
+  value = value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,./;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '').replace(/\s/g, "");
+  if (value.length >= number) {
+    this.$message({
+      type: "warning",
+      message: `输入内容不能超过${number}个字符`
+    });
+  }
+  return value;
+}
 
 
 Vue.config.productionTip = false;

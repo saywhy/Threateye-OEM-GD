@@ -70,8 +70,7 @@
                        @click="export_box">导出</el-button>
           </el-col>-->
           <!--1-->
-          <el-col :span="24"
-                  class="common_box_list">
+          <el-col :span="24" class="common_box_list">
 
             <!--告警类型-->
             <el-input class="s_key1"
@@ -166,7 +165,7 @@
                  class="el-input__icon el-icon-search"></i>
             </el-input>
 
-            <el-button class="s_btn"
+            <el-button class="s_btn s_btn1_ok"
                        @click="submitClick();">搜索</el-button>
             <el-link class="s_link"
                      @click="resetClick();">重置</el-link>
@@ -1045,6 +1044,7 @@ export default {
 
           if (status == 0) {
             this.$refs.messageDrop.hide();
+            //this.table.pageNow = 1;
             this.get_list_risk();
           } else {
             this.$message({
@@ -1105,9 +1105,6 @@ export default {
           data.map(v => {
             v.labels = v.labels.join(',');
           });
-
-
-          console.log(datas)
 
           this.table.tableData = data;
           this.table.count = count;
@@ -1170,7 +1167,6 @@ export default {
 
     //每頁多少條切換
     handleSizeChange (val) {
-      console.log(val)
       this.table.eachPage = val;
       this.table.pageNow = 1;
       this.get_list_risk();
@@ -1178,7 +1174,6 @@ export default {
 
     //頁數點擊切換
     handleCurrentChange (val) {
-      console.log(val)
       this.table.pageNow = val;
       this.get_list_risk();
     },
@@ -1193,14 +1188,11 @@ export default {
       this.detail_click_val = val
       this.detail_click_column = column
     },
-
     header_click (val) {
       this.detail_click_val = {}
     },
     //列排序
     header_cell (val) {
-      console.log(val);
-
       if(val.prop == 'updated_at'){
         this.params.sort = 'updated_at';
       }else if(val.prop == 'degree'){
@@ -1209,7 +1201,6 @@ export default {
         this.params.sort = 'degree';
       }
       this.get_list_risk();
-
     },
     mousedown (event) {
       this.oldPositon = {

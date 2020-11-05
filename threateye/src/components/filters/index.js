@@ -288,7 +288,6 @@ Vue.filter('network_event', function (value) {
       return value
       break;
   }
-
 });
 
 Vue.filter('ip_whois', function (value) {
@@ -381,7 +380,6 @@ Vue.filter('ip_whois', function (value) {
       return '网络描述'
       break;
   }
-
 });
 
 

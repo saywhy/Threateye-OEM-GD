@@ -140,7 +140,7 @@ export default {
       },
       white_add: {
         add: false,
-        type_list: ["MD5", "IP", "URL", 'Indicator'],
+        type_list: ["MD5", "IP", "URL", 'Indicator','AlertType'],
         indicator: '',
         type: 'MD5'
       },

@@ -775,7 +775,7 @@
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
                   <el-checkbox label="news"
-                             value="news">消息中心通知</el-checkbox>
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -1466,9 +1466,9 @@ export default {
             msg,
             data
           } = resp.data;
-          if(status != 0){
-            for(let key in msg){
-              if(key == 600){
+          if (status != 0) {
+            for (let key in msg) {
+              if (key == 600) {
                 this.$message(
                   {
                     message: msg[key],
@@ -1476,7 +1476,7 @@ export default {
                   }
                 );
               }
-              if(key == 602){
+              if (key == 602) {
                 this.$message(
                   {
                     message: msg[key],
@@ -1834,7 +1834,7 @@ export default {
             if (!item.label) {
               item.label_obj = []
             } else {
-              item.label_obj = JSON.parse(item.label)
+              item.label_obj = item.label
             }
             item.info_list = []
             item.whois_list = [];
@@ -2720,6 +2720,7 @@ export default {
         default:
           break;
       }
+      console.log(indicator);
 
       this.$axios.get(new_list, {
         params: {
@@ -2741,11 +2742,12 @@ export default {
     handleSizeChange_now (val) {
       this.emerge_list.now_data.rows = val;
       this.emerge_list.now_data.page = 1;
-      this.new_list();
+      this.new_list(this.network_times_active.indicator);
+
     },
     handleCurrentChange_now (val) {
       this.emerge_list.now_data.page = val;
-      this.new_list();
+      this.new_list(this.network_times_active.indicator);
     },
     // 历史受威胁资产
     old_list (indicator) {
@@ -2791,11 +2793,11 @@ export default {
     handleSizeChange_old (val) {
       this.emerge_list.old_data.rows = val;
       this.emerge_list.old_data.page = 1;
-      this.old_list();
+      this.old_list(this.network_times_active.indicator);
     },
     handleCurrentChange_old (val) {
       this.emerge_list.old_data.page = val;
-      this.old_list();
+      this.old_list(this.network_times_active.indicator);
     },
 
     // 状态变更
@@ -2907,12 +2909,12 @@ export default {
           break;
       }
 
-     /* this.$axios.put(label, {
-        id: this.$route.query.detail,
-        label: label_list
-      })*/
+      /* this.$axios.put(label, {
+         id: this.$route.query.detail,
+         label: label_list
+       })*/
 
-     //ycl 2020/11/04
+      //ycl 2020/11/04
       this.$axios.put(label, {
         id: this.$route.query.detail,
         label_name: label_list

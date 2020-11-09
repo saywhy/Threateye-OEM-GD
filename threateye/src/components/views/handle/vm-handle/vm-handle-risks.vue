@@ -1109,18 +1109,24 @@ export default {
       this.table.pageNow = val;
       this.get_list_threat();
     },
-    //下拉框change切換
-    currentSelChange () {
-      //this.get_list_threat();
-    },
-    //時間切換
+    //告警时间
     changeTime (data) {
       if (data) {
-        this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
-        this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
+        this.params.start_time = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.end_time = (data[1].valueOf() / 1000).toFixed(0);
       } else {
-        this.params.startTime = ''
-        this.params.endTime = ''
+        this.params.start_time = '';
+        this.params.end_time = '';
+      }
+    },
+    //更新时间
+    changeTime1 (data) {
+      if (data) {
+        this.params.update_stime = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.update_etime = (data[1].valueOf() / 1000).toFixed(0);
+      } else {
+        this.params.update_stime = '';
+        this.params.update_etime = '';
       }
     },
     //搜索按鈕點擊事件
@@ -1130,14 +1136,20 @@ export default {
     },
     //重置按鈕點擊事件
     resetClick () {
-      this.params = {
-        key_word: "",
-        threat: "",
-        status: "",
-        startTime: "",
-        endTime: "",
-        degree: ""
-      }
+      this.params.fall_certainty = '';
+      this.params.status = '';
+      this.params.degree = '';
+      this.params.start_time = '';
+      this.params.end_time = '';
+      this.params.category = '';
+      this.params.indicator = '';
+      this.params.src_ip = '';
+      this.params.dest_ip = '';
+      this.params.update_stime = '';
+      this.params.update_etime = '';
+      this.params.label = '';
+      //this.params.sort = 'degree';
+
       $(document.querySelector('.el-button--text')).trigger('click');
       this.table.pageNow = 1;
       this.get_list_threat();

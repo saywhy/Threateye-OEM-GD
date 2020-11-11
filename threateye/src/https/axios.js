@@ -26,7 +26,7 @@ axios.interceptors.request.use(
     // if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
     // config.headers.Authorization = `token ${localStorage.JWT_TOKEN}`;
     // }
-    config.headers.Authorization = 'token 1232321312312312';
+    config.headers.Authorization = '140763762d75a2e27ebed7066002119e';
     return config;
   },
   error => {

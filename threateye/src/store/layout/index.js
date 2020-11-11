@@ -116,10 +116,10 @@ export default {
     }) {
       try {
         //真实数据
-        let resps = await axios('/yiiapi/site/menu');
-        console.log(resps);
+        // let resps = await axios('/yiiapi/site/menu');
+        // console.log(resps);
 
-        console.log(resp);
+        // console.log(resp);
         var resp = [{
           child: [{
             function_name: "总览",

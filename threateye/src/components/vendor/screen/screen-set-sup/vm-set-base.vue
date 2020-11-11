@@ -115,7 +115,7 @@
         //获取大屏名称
         getData () {
           this.$axios
-            .get('/yiiapi/demonstration/get-base-config')
+            .get('/yiiapi/demonstrationoem/get-base-config')
 
             .then((resp) => {
              // console.log(resp)
@@ -146,7 +146,7 @@
         //获取全部分支
         getBranch () {
           this.$axios
-            .get('/yiiapi/demonstration/get-branchs')
+            .get('/yiiapi/demonstrationoem/get-branchs')
             .then((resp) => {
               let {status, data} = resp.data;
 
@@ -212,7 +212,7 @@
           }
 
           this.$axios
-            .put('/yiiapi/demonstration/set-base-config',params)
+            .put('/yiiapi/demonstrationoem/set-base-config',params)
             .then((resp) => {
 
               let {status, data} = resp.data;

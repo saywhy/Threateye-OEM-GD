@@ -40,7 +40,7 @@
         getData(){
          // clearInterval(this.timers);
           this.$axios
-            .get('/yiiapi/demonstration/threat-distribution')
+            .get('/yiiapi/demonstrationoem/threat-distribution')
             .then((resp) => {
 
               //console.log(resp)

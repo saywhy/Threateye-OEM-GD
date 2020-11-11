@@ -49,7 +49,7 @@
         //获取数据
         getData() {
           this.$axios
-            .get('/yiiapi/demonstration/flow-statistics')
+            .get('/yiiapi/demonstrationoem/flow-statistics')
             .then((resp) => {
 
               this.flow = {
@@ -223,7 +223,7 @@
         },
         getReal() {
           this.$axios
-            .get('/yiiapi/demonstration/realtime-alert')
+            .get('/yiiapi/demonstrationoem/realtime-alert')
             .then((resp) => {
 
               let {status, data} = resp.data;

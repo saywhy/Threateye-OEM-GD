@@ -31,7 +31,7 @@
         //获取数据
         getData() {
           this.$axios
-            .get('/yiiapi/demonstration/risk-trend')
+            .get('/yiiapi/demonstrationoem/risk-trend')
             .then((resp) => {
 
 

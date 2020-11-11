@@ -36,7 +36,7 @@
       getData(){
         this.loading = false;
         this.$axios
-          .get('/yiiapi/demonstration/external-distribution')
+          .get('/yiiapi/demonstrationoem/external-distribution')
 
           .then((resp) => {
             this.loading = true;

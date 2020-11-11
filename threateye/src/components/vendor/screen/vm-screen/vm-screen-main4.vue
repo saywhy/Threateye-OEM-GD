@@ -35,7 +35,7 @@
         //获取数据
         getData(){
           this.$axios
-            .get('/yiiapi/demonstration/branch-safe')
+            .get('/yiiapi/demonstrationoem/branch-safe')
             .then((resp) => {
               let {status, data} = resp.data;
 

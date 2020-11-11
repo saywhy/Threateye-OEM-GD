@@ -35,7 +35,7 @@
         //获取数据
         getData(){
           this.$axios
-            .get('/yiiapi/demonstration/threat-dynamics')
+            .get('/yiiapi/demonstrationoem/threat-dynamics')
             .then((resp) => {
               let {status, data} = resp.data;
 

@@ -87,7 +87,7 @@
       //获取数据
       getData() {
         this.$axios
-          .get('/yiiapi/demonstration/threat-range')
+          .get('/yiiapi/demonstrationoem/threat-range')
 
           .then((resp) => {
 

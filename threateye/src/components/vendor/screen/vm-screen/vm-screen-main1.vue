@@ -44,7 +44,7 @@
         },
         getData() {
           this.$axios
-            .get('/yiiapi/demonstration/threat-indicators')
+            .get('/yiiapi/demonstrationoem/threat-indicators')
             .then((resp) => {
               let {status, data} = resp.data;
 

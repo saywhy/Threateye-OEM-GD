@@ -58,7 +58,7 @@
         //获取数据
         getData(){
           this.$axios
-            .get('/yiiapi/demonstration/attention-alarm')
+            .get('/yiiapi/demonstrationoem/attention-alarm')
 
             .then((resp) => {
 

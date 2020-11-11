@@ -198,7 +198,7 @@ export default {
     //获取大屏名称
     getName () {
       this.$axios
-        .get('/yiiapi/demonstration/get-screen-name')
+        .get('/yiiapi/demonstrationoem/get-screen-name')
 
         .then((resp) => {
 

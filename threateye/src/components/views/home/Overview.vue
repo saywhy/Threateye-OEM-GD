@@ -340,7 +340,7 @@ export default {
     },
     //第一排（左）
     init_top_left () {
-      this.$axios.get('/yiiapi/alert/system-state')
+      this.$axios.get('/yiiapi/overviewoem/system-state')
         .then((resp) => {
           // console.log(resp)
           let {
@@ -355,7 +355,7 @@ export default {
     },
     //第一排（中）
     init_top_mid () {
-      this.$axios.get('/yiiapi/alert/flow-file-statistics')
+      this.$axios.get('/yiiapi/overviewoem/flow-file-statistics')
         .then((resp) => {
           // console.log(resp)
           this.top_mid = {};
@@ -372,7 +372,7 @@ export default {
     },
     //第一排（右）
     init_top_right () {
-      this.$axios.get('/yiiapi/alert/protocol-flow-statistics')
+      this.$axios.get('/yiiapi/overviewoem/protocol-flow-statistics')
         .then((resp) => {
           let {
             status,
@@ -388,7 +388,7 @@ export default {
 
     //第二排（左）
     init_mid_left () {
-      this.$axios.get('/yiiapi/alert/get-last7-days-alarm')
+      this.$axios.get('/yiiapi/overviewoem/get-last7-days-alarm')
         .then((resp) => {
           let {
             status,
@@ -402,7 +402,7 @@ export default {
     },
     //第二排（中）
     init_mid_mid () {
-      this.$axios.get('/yiiapi/alert/untreated-alarm-type')
+      this.$axios.get('/yiiapi/overviewoem/untreated-alarm-type')
         .then((resp) => {
           let {
             status,
@@ -416,7 +416,7 @@ export default {
     },
     //第二排（右）
     init_mid_right () {
-      this.$axios.get('/yiiapi/alert/threat-type')
+      this.$axios.get('/yiiapi/overviewoem/threat-type')
         .then((resp) => {
 
           let {
@@ -433,7 +433,7 @@ export default {
 
     //第三排（左）
     init_bom_left () {
-      this.$axios.get('/yiiapi/alert/threat-top5')
+      this.$axios.get('/yiiapi/overviewoem/threat-top5')
         .then((resp) => {
           // /console.log(resp)
 
@@ -449,7 +449,7 @@ export default {
     },
     //第三排（中）
     init_bom_mid () {
-      this.$axios.get('/yiiapi/alert/risk-asset-top5')
+      this.$axios.get('/yiiapi/overviewoem/risk-asset-top5')
         .then((resp) => {
           // console.log(resp)
           let {
@@ -465,7 +465,7 @@ export default {
 
     //第三排（右）
     init_bom_right () {
-      this.$axios.get('/yiiapi/alert/list-top5')
+      this.$axios.get('/yiiapi/overviewoem/list-top5')
         .then((resp) => {
           // console.log(resp)
           let {
@@ -491,7 +491,7 @@ export default {
       this.equipment.sandbox = []
       this.equipment.echart_array = []
       this.equipment.links_array = []
-      this.$axios.get('/yiiapi/alert/system-state')
+      this.$axios.get('/yiiapi/overviewoem/system-state')
         .then(response => {
           let {
             status,
@@ -762,7 +762,7 @@ export default {
       this.equipment_detail.title.type = params.names
       this.equipment_detail.title.ip = params.dev_ip
       this.equipment_detail.title.name = params.dev_name
-      this.$axios.get('/yiiapi/alert/dev-state', {
+      this.$axios.get('/yiiapi/overviewoem/dev-state', {
         params: {
           ip: params.dev_ip
         }

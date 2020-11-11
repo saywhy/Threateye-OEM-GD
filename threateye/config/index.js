@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://192.168.1.245/', // 后台api
+        target: 'https://192.168.1.114/', // 后台api
         changeOrigin: true, //是否跨域
         secure: false,
         pathRewrite: {
@@ -44,11 +44,11 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../threateyefrontend/index.html'),
+    index: path.resolve(__dirname, '../threateyefrontend/index1.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../threateyefrontend'),
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'static1',
     assetsPublicPath: '/',
 
     /**

@@ -15,21 +15,18 @@ Vue.use(Router);
  * */
 
 //所有权限通用路由表，如首页和登录页和一些不用权限的公用页面
-export const constantRouterMap = [{
-  path: '/login',
-  name: 'login',
-  component: () => import('@/components/vendor/login/Login')
-},
+export const constantRouterMap = [
+  //   {
+  //   path: '/login',
+  //   name: 'login',
+  //   component: () => import('@/components/vendor/login/Login')
+  // },
   {
     path: '/',
-    name: 'home',
+    name: 'overview',
     component: Layout,
-    redirect: '/main_content',
-    children: [{
-      path: '/main_content',
-      name: 'main_content',
-      component: () => import('@/components/layout/Main')
-    }]
+    redirect: '/home/overview',
+    component: () => import('@/components/views/home/Overview')
   },
   {
     path: '/LayoutNot',
@@ -70,54 +67,54 @@ export const constantRouterMap = [{
       },
       component: () => import('@/components/views/emerge/detail/detail-network')
     },
-      {
-        path: '/detail/computer',
-        name: 'detail_computer',
-        meta: {
-          title: '计算机详情',
-          auth: '32',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '58',
-          rootAuth: '58'
-        },
-        component: () => import('@/components/views/emerge/detail/detail-computer')
+    {
+      path: '/detail/computer',
+      name: 'detail_computer',
+      meta: {
+        title: '计算机详情',
+        auth: '32',
+        icon: 'el-icon-picture-outline',
+        parentAuth: '58',
+        rootAuth: '58'
       },
-      {
-        path: '/detail/assets',
-        name: 'detail_assets',
-        meta: {
-          title: '风险资产详情',
-          auth: '21',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '13',
-          rootAuth: '13'
-        },
-        component: () => import('@/components/views/handle/detail/detail-assets')
+      component: () => import('@/components/views/emerge/detail/detail-computer')
+    },
+    {
+      path: '/detail/assets',
+      name: 'detail_assets',
+      meta: {
+        title: '风险资产详情',
+        auth: '21',
+        icon: 'el-icon-picture-outline',
+        parentAuth: '13',
+        rootAuth: '13'
       },
-      {
-        path: '/detail/assets/alert',
-        name: 'assets_alert',
-        meta: {
-          title: '风险资产详情',
-          auth: '21',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '13',
-          rootAuth: '13'
-        },
-        component: () => import('@/components/views/handle/detail/detail-alert')
+      component: () => import('@/components/views/handle/detail/detail-assets')
+    },
+    {
+      path: '/detail/assets/alert',
+      name: 'assets_alert',
+      meta: {
+        title: '风险资产详情',
+        auth: '21',
+        icon: 'el-icon-picture-outline',
+        parentAuth: '13',
+        rootAuth: '13'
       },
-      {
-        path: '/detail/works',
-        name: 'detail_works',
-        meta: {
-          title: '工单详情',
-          auth: '23',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '13',
-          rootAuth: '13'
-        },
-        component: () => import('@/components/views/handle/detail/detail-works')
+      component: () => import('@/components/views/handle/detail/detail-alert')
+    },
+    {
+      path: '/detail/works',
+      name: 'detail_works',
+      meta: {
+        title: '工单详情',
+        auth: '23',
+        icon: 'el-icon-picture-outline',
+        parentAuth: '13',
+        rootAuth: '13'
       },
+      component: () => import('@/components/views/handle/detail/detail-works')
+    },
     ]
   },
   /*{
@@ -127,19 +124,19 @@ export const constantRouterMap = [{
   },*/
   {
     path: '/screen',
-    name:'screen',
+    name: 'screen',
     component: () => import('@/components/vendor/screen/Screen')
   },
   {
     path: '/screen/set',
-    name:'screen_set',
+    name: 'screen_set',
     redirect: '/screen/set/top',
     component: () => import('@/components/vendor/screen/screen-set/screen-set'),
-    children:[
+    children: [
       {
         path: '/screen/set/base',
         name: 'screen_set_base',
-        query:{
+        query: {
           num: '0'
         },
         meta: {
@@ -155,7 +152,7 @@ export const constantRouterMap = [{
       {
         path: '/screen/set_screen',
         name: 'screen_set_aside',
-        query:{
+        query: {
           num: '1'
         },
         meta: {
@@ -171,7 +168,7 @@ export const constantRouterMap = [{
       {
         path: '/screen/set_screen',
         name: 'screen_set_top',
-        query:{
+        query: {
           num: '2'
         },
         meta: {
@@ -235,61 +232,61 @@ export const asyncRouterMap = [
         deep: 1
       },
       component: () => import('@/components/views/home/Overview')
-     },
-      {
-        path: '/home/screen_index',
-        name: 'screen_index',
-        meta: {
-          title: '大屏',
-          auth: '995',
-          icon: 'e-aside-big',
-          parentAuth: '1',
-          rootAuth: '1',
-          deep: 1
-        },
-        redirect: '/screen'
-       /* children: [
-          {
-            path: '/home/base_screen',
-            name: 'base_screen',
-            meta: {
-              title: '基础设置',
-              auth: '996',
-              icon: 'e-aside-none',
-              parentAuth: '995',
-              rootAuth: '1',
-              deep: 2
-            },
-            component: () => import('@/components/views/home/vm-screen/vm-screen-base')
-          },
-          {
-            path: '/home/top_index',
-            name: 'top_index',
-            meta: {
-              title: '顶部指标设置',
-              auth: '997',
-              icon: 'e-aside-none',
-              parentAuth: '995',
-              rootAuth: '1',
-              deep: 2
-            },
-            component: () => import('@/components/views/home/vm-screen/vm-screen-top')
-          },
-          {
-            path: '/home/aside_content',
-            name: 'aside_content',
-            meta: {
-              title: '两侧内容设置',
-              auth: '998',
-              icon: 'e-aside-none',
-              parentAuth: '995',
-              rootAuth: '1',
-              deep: 2
-            },
-            component: () => import('@/components/views/home/vm-screen/vm-screen-aside')
-          }
-        ]*/
-      }]
+    },
+    {
+      path: '/home/screen_index',
+      name: 'screen_index',
+      meta: {
+        title: '大屏',
+        auth: '995',
+        icon: 'e-aside-big',
+        parentAuth: '1',
+        rootAuth: '1',
+        deep: 1
+      },
+      redirect: '/screen'
+      /* children: [
+         {
+           path: '/home/base_screen',
+           name: 'base_screen',
+           meta: {
+             title: '基础设置',
+             auth: '996',
+             icon: 'e-aside-none',
+             parentAuth: '995',
+             rootAuth: '1',
+             deep: 2
+           },
+           component: () => import('@/components/views/home/vm-screen/vm-screen-base')
+         },
+         {
+           path: '/home/top_index',
+           name: 'top_index',
+           meta: {
+             title: '顶部指标设置',
+             auth: '997',
+             icon: 'e-aside-none',
+             parentAuth: '995',
+             rootAuth: '1',
+             deep: 2
+           },
+           component: () => import('@/components/views/home/vm-screen/vm-screen-top')
+         },
+         {
+           path: '/home/aside_content',
+           name: 'aside_content',
+           meta: {
+             title: '两侧内容设置',
+             auth: '998',
+             icon: 'e-aside-none',
+             parentAuth: '995',
+             rootAuth: '1',
+             deep: 2
+           },
+           component: () => import('@/components/views/home/vm-screen/vm-screen-aside')
+         }
+       ]*/
+    }]
   },
   /*处置*/
   {
@@ -315,72 +312,72 @@ export const asyncRouterMap = [
       },
       component: () => import('@/components/views/handle/Assets')
     },
-      {
-        path: '/handle/risks',
-        name: 'risks',
+    {
+      path: '/handle/risks',
+      name: 'risks',
+      meta: {
+        title: '风险维度',
+        auth: '23',
+        icon: 'e-aside-risks',
+        parentAuth: '13',
+        rootAuth: '13',
+        deep: 1
+      },
+      component: () => import('@/components/views/handle/Risks'),
+      children: [{
+        path: '/handle/risks/outside',
+        name: 'outside',
         meta: {
-          title: '风险维度',
-          auth: '23',
-          icon: 'e-aside-risks',
-          parentAuth: '13',
+          title: '外部威胁',
+          auth: '24',
+          icon: 'e-aside-none',
+          parentAuth: '23',
           rootAuth: '13',
-          deep: 1
+          deep: 2
         },
-        component: () => import('@/components/views/handle/Risks'),
-        children: [{
-          path: '/handle/risks/outside',
-          name: 'outside',
-          meta: {
-            title: '外部威胁',
-            auth: '24',
-            icon: 'e-aside-none',
-            parentAuth: '23',
-            rootAuth: '13',
-            deep: 2
-          },
-          component: () => import('@/components/views/handle/risks/Outside')
-        },
-          {
-            path: '/handle/risks/lateral',
-            name: 'lateral',
-            meta: {
-              title: '横向威胁',
-              auth: '32',
-              icon: 'e-aside-none',
-              parentAuth: '23',
-              rootAuth: '13',
-              deep: 2
-            },
-            component: () => import('@/components/views/handle/risks/Lateral')
-          },
-          {
-            path: '/handle/risks/outreath',
-            name: 'outreath',
-            meta: {
-              title: '外连威胁',
-              auth: '40',
-              icon: 'e-aside-none',
-              parentAuth: '23',
-              rootAuth: '13',
-              deep: 2
-            },
-            component: () => import('@/components/views/handle/risks/Outreath')
-          }
-        ]
+        component: () => import('@/components/views/handle/risks/Outside')
       },
       {
-        path: '/handle/works',
-        name: 'works',
+        path: '/handle/risks/lateral',
+        name: 'lateral',
         meta: {
-          title: '工单中心',
-          auth: '48',
-          icon: 'e-aside-works',
-          parentAuth: '13',
+          title: '横向威胁',
+          auth: '32',
+          icon: 'e-aside-none',
+          parentAuth: '23',
           rootAuth: '13',
-          deep: 1
+          deep: 2
         },
-        component: () => import('@/components/views/handle/Works')
+        component: () => import('@/components/views/handle/risks/Lateral')
+      },
+      {
+        path: '/handle/risks/outreath',
+        name: 'outreath',
+        meta: {
+          title: '外连威胁',
+          auth: '40',
+          icon: 'e-aside-none',
+          parentAuth: '23',
+          rootAuth: '13',
+          deep: 2
+        },
+        component: () => import('@/components/views/handle/risks/Outreath')
       }
+      ]
+    },
+    {
+      path: '/handle/works',
+      name: 'works',
+      meta: {
+        title: '工单中心',
+        auth: '48',
+        icon: 'e-aside-works',
+        parentAuth: '13',
+        rootAuth: '13',
+        deep: 1
+      },
+      component: () => import('@/components/views/handle/Works')
+    }
     ]
   },
   /*告警*/
@@ -430,110 +427,110 @@ export const asyncRouterMap = [
       },
       component: () => import('@/components/views/invest/Dns')
     },
-      {
-        path: '/invest/url',
-        name: 'url',
-        meta: {
-          title: 'IP/URL追查',
-          auth: '81',
-          icon: 'e-aside-url',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/Url')
+    {
+      path: '/invest/url',
+      name: 'url',
+      meta: {
+        title: 'IP/URL追查',
+        auth: '81',
+        icon: 'e-aside-url',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/host',
-        name: 'host',
-        meta: {
-          title: '主机追查',
-          auth: '85',
-          icon: 'e-aside-host',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/Host')
+      component: () => import('@/components/views/invest/Url')
+    },
+    {
+      path: '/invest/host',
+      name: 'host',
+      meta: {
+        title: '主机追查',
+        auth: '85',
+        icon: 'e-aside-host',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/user',
-        name: 'user',
-        meta: {
-          title: '用户追查',
-          auth: '93',
-          icon: 'e-aside-user',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/User')
+      component: () => import('@/components/views/invest/Host')
+    },
+    {
+      path: '/invest/user',
+      name: 'user',
+      meta: {
+        title: '用户追查',
+        auth: '93',
+        icon: 'e-aside-user',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/file',
-        name: 'file',
-        meta: {
-          title: '文件追查',
-          auth: '97',
-          icon: 'e-aside-file',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/File')
+      component: () => import('@/components/views/invest/User')
+    },
+    {
+      path: '/invest/file',
+      name: 'file',
+      meta: {
+        title: '文件追查',
+        auth: '97',
+        icon: 'e-aside-file',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/data',
-        name: 'data',
-        meta: {
-          title: '数据传输追查',
-          auth: '101',
-          icon: 'e-aside-data',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/Data')
+      component: () => import('@/components/views/invest/File')
+    },
+    {
+      path: '/invest/data',
+      name: 'data',
+      meta: {
+        title: '数据传输追查',
+        auth: '101',
+        icon: 'e-aside-data',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/flow',
-        name: 'flow',
-        meta: {
-          title: '流量方向追查',
-          auth: '105',
-          icon: 'e-aside-flow',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/Flow')
+      component: () => import('@/components/views/invest/Data')
+    },
+    {
+      path: '/invest/flow',
+      name: 'flow',
+      meta: {
+        title: '流量方向追查',
+        auth: '105',
+        icon: 'e-aside-flow',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/ioc',
-        name: 'ioc',
-        meta: {
-          title: 'IOC扫描器',
-          auth: '109',
-          icon: 'e-aside-ioc',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/Ioc')
+      component: () => import('@/components/views/invest/Flow')
+    },
+    {
+      path: '/invest/ioc',
+      name: 'ioc',
+      meta: {
+        title: 'IOC扫描器',
+        auth: '109',
+        icon: 'e-aside-ioc',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
       },
-      {
-        path: '/invest/sandbox',
-        name: 'sandbox',
-        meta: {
-          title: '沙箱',
-          auth: '117',
-          icon: 'e-aside-ioc',
-          parentAuth: '76',
-          rootAuth: '76',
-          deep: 1
-        },
-        component: () => import('@/components/views/invest/sandbox')
-      }
+      component: () => import('@/components/views/invest/Ioc')
+    },
+    {
+      path: '/invest/sandbox',
+      name: 'sandbox',
+      meta: {
+        title: '沙箱',
+        auth: '117',
+        icon: 'e-aside-ioc',
+        parentAuth: '76',
+        rootAuth: '76',
+        deep: 1
+      },
+      component: () => import('@/components/views/invest/sandbox')
+    }
     ]
   },
   /*报表*/
@@ -559,19 +556,19 @@ export const asyncRouterMap = [
       },
       component: () => import('@/components/views/report/Create')
     },
-      {
-        path: '/report/sending',
-        name: 'sending',
-        meta: {
-          title: '报表发送',
-          auth: '130',
-          icon: 'e-aside-sending',
-          parentAuth: '123',
-          rootAuth: '123',
-          deep: 1
-        },
-        component: () => import('@/components/views/report/Sending')
-      }
+    {
+      path: '/report/sending',
+      name: 'sending',
+      meta: {
+        title: '报表发送',
+        auth: '130',
+        icon: 'e-aside-sending',
+        parentAuth: '123',
+        rootAuth: '123',
+        deep: 1
+      },
+      component: () => import('@/components/views/report/Sending')
+    }
     ]
   },
   /*系统*/
@@ -597,136 +594,136 @@ export const asyncRouterMap = [
       },
       component: () => import('@/components/views/system/Manage')
     },
-      {
-        path: '/system/monitor',
-        name: 'monitor',
-        meta: {
-          title: '受监控IP',
-          auth: '139',
-          icon: 'e-aside-assets',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Monitor')
+    {
+      path: '/system/monitor',
+      name: 'monitor',
+      meta: {
+        title: '受监控IP',
+        auth: '139',
+        icon: 'e-aside-assets',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/account',
-        name: 'account',
-        meta: {
-          title: '账号管理',
-          auth: '144',
-          icon: 'e-aside-works',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Account')
+      component: () => import('@/components/views/system/Monitor')
+    },
+    {
+      path: '/system/account',
+      name: 'account',
+      meta: {
+        title: '账号管理',
+        auth: '144',
+        icon: 'e-aside-works',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/electric',
-        name: 'electric',
-        meta: {
-          title: '网络配置',
-          auth: '157',
-          icon: 'e-aside-network',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Electric')
+      component: () => import('@/components/views/system/Account')
+    },
+    {
+      path: '/system/electric',
+      name: 'electric',
+      meta: {
+        title: '网络配置',
+        auth: '157',
+        icon: 'e-aside-network',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/option',
-        name: 'option',
-        meta: {
-          title: '系统选项',
-          auth: '162',
-          icon: 'e-aside-terminal',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Option')
+      component: () => import('@/components/views/system/Electric')
+    },
+    {
+      path: '/system/option',
+      name: 'option',
+      meta: {
+        title: '系统选项',
+        auth: '162',
+        icon: 'e-aside-terminal',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/rule',
-        name: 'rule',
-        meta: {
-          title: '规则库及白名单',
-          auth: '169',
-          icon: 'e-aside-journal',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Rule')
+      component: () => import('@/components/views/system/Option')
+    },
+    {
+      path: '/system/rule',
+      name: 'rule',
+      meta: {
+        title: '规则库及白名单',
+        auth: '169',
+        icon: 'e-aside-journal',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/react',
-        name: 'react',
-        meta: {
-          title: '联动',
-          auth: '183',
-          icon: 'e-aside-dns',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/React')
+      component: () => import('@/components/views/system/Rule')
+    },
+    {
+      path: '/system/react',
+      name: 'react',
+      meta: {
+        title: '联动',
+        auth: '183',
+        icon: 'e-aside-dns',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/threat',
-        name: 'threat',
-        meta: {
-          title: '威胁通知',
-          auth: '187',
-          icon: 'e-aside-user',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Threat')
+      component: () => import('@/components/views/system/React')
+    },
+    {
+      path: '/system/threat',
+      name: 'threat',
+      meta: {
+        title: '威胁通知',
+        auth: '187',
+        icon: 'e-aside-user',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/record',
-        name: 'record',
-        meta: {
-          title: '日志',
-          auth: '191',
-          icon: 'e-aside-data',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Record')
+      component: () => import('@/components/views/system/Threat')
+    },
+    {
+      path: '/system/record',
+      name: 'record',
+      meta: {
+        title: '日志',
+        auth: '191',
+        icon: 'e-aside-data',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/resume',
-        name: 'resume',
-        meta: {
-          title: '恢复/重启',
-          auth: '204',
-          icon: 'e-aside-flow',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Resume')
+      component: () => import('@/components/views/system/Record')
+    },
+    {
+      path: '/system/resume',
+      name: 'resume',
+      meta: {
+        title: '恢复/重启',
+        auth: '204',
+        icon: 'e-aside-flow',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
       },
-      {
-        path: '/system/licence',
-        name: 'licence',
-        meta: {
-          title: '许可证',
-          auth: '207',
-          icon: 'e-aside-ioc',
-          parentAuth: '132',
-          rootAuth: '132',
-          deep: 1
-        },
-        component: () => import('@/components/views/system/Licence')
-      }
+      component: () => import('@/components/views/system/Resume')
+    },
+    {
+      path: '/system/licence',
+      name: 'licence',
+      meta: {
+        title: '许可证',
+        auth: '207',
+        icon: 'e-aside-ioc',
+        parentAuth: '132',
+        rootAuth: '132',
+        deep: 1
+      },
+      component: () => import('@/components/views/system/Licence')
+    }
     ]
   }
 ]

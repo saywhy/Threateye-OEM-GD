@@ -745,7 +745,7 @@ export default {
     },
     // 获取折现图表
     get_echarts () {
-      this.$axios.get('/yiiapi/alert/alert-trend')
+      this.$axios.get('/yiiapi/alertoem/alert-trend')
         .then(response => {
           this.e_line.loading = false;
           this.e_line.data_show = true;
@@ -769,7 +769,7 @@ export default {
       if (this.params.threat == 1) {
         params_alert.threat = 1;
       }
-      this.$axios.get('/yiiapi/alert/list', {
+      this.$axios.get('/yiiapi/alertoem/list', {
         params: {
           start_time: this.params.startTime,
           end_time: this.params.endTime,
@@ -951,7 +951,7 @@ export default {
         change_status = 5;
       }
 
-      this.$axios.put('/yiiapi/alert/do-alarm', {
+      this.$axios.put('/yiiapi/alertoem/do-alarm', {
         id: id_group,
         status: change_status
       })
@@ -1118,7 +1118,7 @@ export default {
       console.log(this.task_params.multiple);
 
       this.handle.save = true;
-      this.$axios.put('/yiiapi/alert/distribution-workorder',
+      this.$axios.put('/yiiapi/alertoem/distribution-workorder',
         {
           name: this.task_params.name,
           priority: this.task_params.level,
@@ -1153,7 +1153,7 @@ export default {
       }
       //console.log(this.task_params);
       this.handle.save = true;
-      this.$axios.post('/yiiapi/alert/add-workorder',
+      this.$axios.post('/yiiapi/alertoem/add-workorder',
         {
           name: this.task_params.name,
           priority: this.task_params.level,
@@ -1221,7 +1221,7 @@ export default {
     },
     //获取列表
     get_table_works_list () {
-      this.$axios.get('/yiiapi/alert/workorder-list', {
+      this.$axios.get('/yiiapi/alertoem/workorder-list', {
         params: {
           page: this.table_add_works.pageNow,
           rows: this.table_add_works.eachPage
@@ -1289,7 +1289,7 @@ export default {
         console.log(this.add_params.remind)
         console.log(this.add_params.perator);
         this.handle.save = true;
-        this.$axios.post('/yiiapi/alert/add-workorder',
+        this.$axios.post('/yiiapi/alertoem/add-workorder',
           {
             id: this.add_params.id,
             type: "alert",
@@ -1361,7 +1361,7 @@ export default {
                 }
               })
                 .then(response => {
-                  var url1 = "/yiiapi/alert/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
+                  var url1 = "/yiiapi/alertoem/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
                     + '&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
                   window.location.href = url1;
                 })

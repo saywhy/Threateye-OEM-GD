@@ -61,7 +61,7 @@ export default {
   },
   actions: {
     //登录
-    LoginByUsername({
+    LoginByUsername ({
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
@@ -110,19 +110,48 @@ export default {
     },
 
     //权限设置
-    async GetAuth({
+    async GetAuth ({
       commit,
       dispatch,
     }) {
       try {
         //真实数据
-        let resp = await axios('/yiiapi/site/menu');
+        let resps = await axios('/yiiapi/site/menu');
+        console.log(resps);
 
+        console.log(resp);
+        var resp = [{
+          child: [{
+            function_name: "总览",
+            id: "2",
+            menu_order: "2",
+            parent_id: "1",
+            permissions_id: "2"
+          }],
+          function_name: "首页",
+          id: "1",
+          menu_order: "1",
+          parent_id: "0",
+          permissions_id: "1",
+        }, {
+          child: [{
+            function_name: "网络告警",
+            id: "59",
+            menu_order: "59",
+            parent_id: "58",
+            permissions_id: "59",
+          }],
+          function_name: "告警",
+          id: "58",
+          menu_order: "58",
+          parent_id: "0",
+          permissions_id: "58",
+        }]
         let roles = forRoleList(resp);
 
         // console.log(roles);
 
-         roles.push('995');
+        roles.push('995');
 
         if (!roles.includes('117')) {
           roles.push('117');
@@ -139,7 +168,7 @@ export default {
       }
     },
 
-    async LogOut({
+    async LogOut ({
       commit,
       dispatch
     }) {
@@ -161,7 +190,7 @@ export default {
       }
     },
 
-    async GenerateRoutes({
+    async GenerateRoutes ({
       commit
     }, data) {
 

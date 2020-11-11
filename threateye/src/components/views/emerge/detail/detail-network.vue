@@ -775,7 +775,7 @@
                   <el-checkbox label="message"
                                value="message">短信通知</el-checkbox>
                   <el-checkbox label="news"
-                             value="news">消息中心通知</el-checkbox>
+                               value="news">消息中心通知</el-checkbox>
                 </el-checkbox-group>
               </li>
             </div>
@@ -1498,7 +1498,7 @@ export default {
       let workorder_type = '';
       switch (this.$route.query.type) {
         case 'alert':
-          workorder_list = '/yiiapi/alert/workorder-list'
+          workorder_list = '/yiiapi/alertoem/workorder-list'
           workorder_type = 'alert'
           break;
         case 'asset':
@@ -1599,7 +1599,7 @@ export default {
         // outreachthreat  外联威胁告警  outreath
         switch (this.$route.query.type) {
           case 'alert':
-            add_workorder = '/yiiapi/alert/add-workorder'
+            add_workorder = '/yiiapi/alertoem/add-workorder'
             break;
           case 'asset':
             add_workorder = '/yiiapi/asset/add-workorder'
@@ -1675,7 +1675,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          url = '/yiiapi/alert/alert-details'
+          url = '/yiiapi/alertoem/alert-details'
           break;
         case 'asset':
           url = '/yiiapi/asset/alert-details'
@@ -1724,7 +1724,7 @@ export default {
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              workorders = '/yiiapi/alert/workorders'
+              workorders = '/yiiapi/alertoem/workorders'
               break;
             case 'asset':
               workorders = '/yiiapi/asset/workorders'
@@ -2600,7 +2600,7 @@ export default {
             // outreachthreat  外联威胁告警  outreath
             switch (this.$route.query.type) {
               case 'alert':
-                window_open = '/yiiapi/alert/get-file?md5='
+                window_open = '/yiiapi/alertoem/get-file?md5='
                 break;
               case 'asset':
                 window_open = '/yiiapi/asset/get-file?md5='
@@ -2641,7 +2641,7 @@ export default {
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              window_open = '/yiiapi/alert/get-signature?md5='
+              window_open = '/yiiapi/alertoem/get-signature?md5='
               break;
             case 'asset':
               window_open = '/yiiapi/asset/get-signature?md5='
@@ -2672,7 +2672,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          new_list = '/yiiapi/alert/get-same-indicator-alert'
+          new_list = '/yiiapi/alertoem/get-same-indicator-alert'
           break;
         case 'asset':
           new_list = '/yiiapi/asset/get-same-indicator-alert'
@@ -2709,11 +2709,14 @@ export default {
     handleSizeChange_now (val) {
       this.emerge_list.now_data.rows = val;
       this.emerge_list.now_data.page = 1;
-      this.new_list();
+
+      this.new_list(this.network_times_active.indicator);
     },
     handleCurrentChange_now (val) {
       this.emerge_list.now_data.page = val;
-      this.new_list();
+      this.new_list(this.network_times_active.indicator);
+
+
     },
     // 历史受威胁资产
     old_list (indicator) {
@@ -2723,7 +2726,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          new_list = '/yiiapi/alert/get-same-indicator-alert'
+          new_list = '/yiiapi/alertoem/get-same-indicator-alert'
           break;
         case 'asset':
           new_list = '/yiiapi/asset/get-same-indicator-alert'
@@ -2759,11 +2762,11 @@ export default {
     handleSizeChange_old (val) {
       this.emerge_list.old_data.rows = val;
       this.emerge_list.old_data.page = 1;
-      this.old_list();
+      this.old_list(this.network_times_active.indicator);
     },
     handleCurrentChange_old (val) {
       this.emerge_list.old_data.page = val;
-      this.old_list();
+      this.old_list(this.network_times_active.indicator);
     },
 
     // 状态变更
@@ -2778,7 +2781,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          alarm = '/yiiapi/alert/do-alarm'
+          alarm = '/yiiapi/alertoem/do-alarm'
           break;
         case 'asset':
           alarm = '/yiiapi/asset/do-alarm'
@@ -2857,7 +2860,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          label = '/yiiapi/alert/label-edit'
+          label = '/yiiapi/alertoem/label-edit'
           break;
         case 'asset':
           label = '/yiiapi/asset/label-edit'
@@ -2956,7 +2959,7 @@ export default {
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              join = '/yiiapi/alert/join-external-dynamics'
+              join = '/yiiapi/alertoem/join-external-dynamics'
               break;
             case 'asset':
               join = '/yiiapi/asset/join-external-dynamics'
@@ -3034,7 +3037,7 @@ export default {
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              join = '/yiiapi/alert/join-external-dynamics'
+              join = '/yiiapi/alertoem/join-external-dynamics'
               break;
             case 'asset':
               join = '/yiiapi/asset/join-external-dynamics'
@@ -3162,7 +3165,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          workorder_list = '/yiiapi/alert/workorder-list'
+          workorder_list = '/yiiapi/alertoem/workorder-list'
           workorder_type = 'alert'
           break;
         case 'asset':
@@ -3260,7 +3263,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          add_workorder = '/yiiapi/alert/add-workorder'
+          add_workorder = '/yiiapi/alertoem/add-workorder'
           break;
         case 'asset':
           add_workorder = '/yiiapi/asset/add-workorder'
@@ -3406,7 +3409,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          distribution_workorder = '/yiiapi/alert/distribution-workorder'
+          distribution_workorder = '/yiiapi/alertoem/distribution-workorder'
           break;
         case 'asset':
           distribution_workorder = '/yiiapi/asset/distribution-workorder'
@@ -3466,7 +3469,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          add_workorder = '/yiiapi/alert/add-workorder'
+          add_workorder = '/yiiapi/alertoem/add-workorder'
           break;
         case 'asset':
           add_workorder = '/yiiapi/asset/add-workorder'

@@ -22,6 +22,11 @@ import {
 
 axios.interceptors.request.use(
   config => {
+    console.log(config);
+    // if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    // config.headers.Authorization = `token ${localStorage.JWT_TOKEN}`;
+    // }
+    config.headers.Authorization = 'token 1232321312312312';
     return config;
   },
   error => {
@@ -59,8 +64,8 @@ axios.interceptors.response.use(response => {
       });
       break;
     default:
-      // Router.push({path:'/404'})
-      //console.log(`请求状态${response.status}`)
+    // Router.push({path:'/404'})
+    //console.log(`请求状态${response.status}`)
   }
   return response
 }, err => {

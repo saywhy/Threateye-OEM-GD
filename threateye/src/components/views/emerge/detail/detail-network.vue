@@ -13,7 +13,7 @@
           <img src="@/assets/images/emerge/top3.png"
                alt="">
         </div>
-        <div class="top_right">
+        <!-- <div class="top_right">
           <el-row class="common_btn common_btn_124">
             <el-col :span="24"
                     class="common_btn_list">
@@ -56,14 +56,15 @@
                          @click="edit_tag_box">编辑标签</el-button>
             </el-col>
           </el-row>
-        </div>
+        </div> -->
       </div>
       <div class="detail_base_bottom">
         <div class="detail_base_bottom_item">
           <ul>
             <li class="item_li">
               <span class="item_li_title">源地址:</span>
-              <el-dropdown @command="change_state_src"
+              <span class="item_li_content">{{network_detail.src_ip}}</span>
+              <!-- <el-dropdown @command="change_state_src"
                            trigger="click"
                            class="src_dropdown_box"
                            placement='bottom-start'
@@ -80,11 +81,12 @@
                   <el-dropdown-item command="2"
                                     class="select_item">添加到外部动态列表</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
             </li>
             <li class="item_li">
               <span class="item_li_title">目的地址:</span>
-              <el-dropdown @command="change_state_dest"
+              <span class="item_li_content">{{network_detail.dest_ip}}</span>
+              <!-- <el-dropdown @command="change_state_dest"
                            trigger="click"
                            class="src_dropdown_box"
                            placement='bottom-start'
@@ -101,7 +103,7 @@
                   <el-dropdown-item command="2"
                                     class="select_item">添加到外部动态列表</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
             </li>
             <li class="item_li">
               <span class="item_li_title">源标签:</span>
@@ -173,7 +175,7 @@
               <span class="item_li_title">攻击阶段:</span>
               <span class="item_li_content">{{network_times_active.attack_stage_cn }}</span>
             </li>
-            <li class="item_li">
+            <!-- <li class="item_li">
               <span class="item_li_title">工单名称:</span>
               <span class="item_li_content Goto_workorder"
                     @click="Goto_workorder"
@@ -182,7 +184,7 @@
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
               <span class="item_li_content">{{network_work_order.work_order_status}}</span>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>

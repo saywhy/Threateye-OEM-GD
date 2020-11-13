@@ -72,7 +72,7 @@
           </el-col>
         </el-row>
         <!--按钮组-->
-        <el-row class="common_btn">
+        <!-- <el-row class="common_btn">
           <el-col :span="24"
                   class="common_btn_list">
             <el-dropdown @command="change_state"
@@ -112,7 +112,7 @@
             </el-dropdown>
 
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
       <el-row class="common-table-pattern">
         <el-col :span="24">

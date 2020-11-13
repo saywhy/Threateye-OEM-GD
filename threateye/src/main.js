@@ -28,7 +28,6 @@ import '../node_modules/echarts/map/js/world.js'
 
 Vue.use(uploader)
 
-
 // 引入http
 import {
   post,
@@ -55,16 +54,25 @@ Vue.use(gl_component);
 
 import '@/components/filters/index'
 
-
 import './assets/css/index.css'
+
+Vue.prototype.validSe = function (value, number = 255) {
+  value = value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,./;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '').replace(/\s/g, "");
+  if (value.length >= number) {
+    this.$message({
+      type: "warning",
+      message: `输入内容不能超过${number}个字符`
+    });
+  }
+  return value;
+}
 
 
 Vue.config.productionTip = false;
 const whiteList = ['/login', '/'];
 
-
 //全局路由钩子
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   NProgress.start();
   if (store.getters.token) { // 判断是否有token
     if (to.path === '/login') {
@@ -86,6 +94,8 @@ router.beforeEach((to, from, next) => {
               roles
             })
               .then(() => { // 生成可访问的路由表
+
+               // console.log(store.getters.addRouters)
 
                 router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 
@@ -117,12 +127,12 @@ router.beforeEach((to, from, next) => {
       next('/home/overview'); // 否则全部重定向到登录页
     }
   }
-});
+});*/
 
-// router.afterEach(() => {
-//   // finish progress bar
-//   NProgress.done();
-// })
+/*router.afterEach(() => {
+  // finish progress bar
+  NProgress.done();
+})*/
 
 /* eslint-disable no-new */
 new Vue({

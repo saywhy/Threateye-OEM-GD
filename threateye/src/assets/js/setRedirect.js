@@ -95,6 +95,8 @@ export function setRedirect(per) {
       redirect = '/system/resume';
     }else if(per.includes('207')) {
       redirect = '/system/licence';
+    }else if(per.includes('290')) {
+      redirect = '/system/label';
     }
   }
   return redirect;

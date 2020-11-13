@@ -34,7 +34,8 @@
               <div class="item"
                    v-for="(item,$index) in setAsideLists"
                    :key="item.aside_id">
-                <span class="title">{{item.name}}</span>
+                <span class="title"
+                      :title="item.name">{{item.name}}</span>
                 <button class="bt"
                         :class="{'active':item.flag}"
                         @click="asideAddClick(item.aside_id);">
@@ -59,7 +60,8 @@
               <div class="item"
                    v-for="(item,$index) in setTopLists"
                    :key="item.top_id">
-                <span class="title">{{item.name}}</span>
+                <span class="title"
+                      :title="item.name">{{item.name}}</span>
                 <button class="bt"
                         :class="{'active':item.flag}"
                         @click="topAddClick(item.top_id);">
@@ -312,36 +314,40 @@ export default {
             }
           }
         }
-      }
-      .menu-list {
-        padding: 0 16px;
-        .item {
-          margin: 6px 0;
-          width: 218px;
-          height: 44px;
-          border: 1px solid #ececec;
-          padding: 10px 8px;
-          cursor: move;
-          .title {
-            float: left;
-            font-family: PingFangSC-Regular;
-            font-size: 12px;
-            color: #333333;
-          }
-          .bt {
-            float: right;
-            width: 64px;
-            height: 24px;
-            line-height: 24px;
-            outline: none;
-            border-width: 0;
-            background: #5389e0;
-            color: #fff;
-            border-radius: 2px;
-            font-family: PingFangSC-Regular;
-            font-size: 12px;
-            text-align: center;
-            cursor: pointer;
+        .menu-list {
+          padding: 0 16px;
+          .item {
+            margin: 6px 0;
+            width: 218px;
+            height: 44px;
+            border: 1px solid #ECECEC;
+            padding: 10px 8px;
+            cursor: move;
+            .title {
+              float: left;
+              font-family: PingFangSC-Regular;
+              font-size: 12px;
+              color: #333333;
+              width: 120px;
+              cursor: pointer;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+            .bt {
+              float: right;
+              width: 64px;
+              height: 24px;
+              line-height: 24px;
+              outline: none;
+              border-width: 0;
+              background: #5389E0;
+              color: #fff;
+              border-radius: 2px;
+              font-family: PingFangSC-Regular;
+              font-size: 12px;
+              text-align: center;
+              cursor: pointer;
 
             &.active {
               background: #ececec;

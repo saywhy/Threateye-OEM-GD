@@ -3,6 +3,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  require('../../../../../static/js/echarts-auto-tooltip');
 export default {
   name: "safe",
   props: {
@@ -34,7 +35,7 @@ export default {
   methods: {
     graph() {
 
-      let index = 0;
+     // let index = 0;
 
       let low = this.untreat.low;
       let medium = this.untreat.medium;
@@ -47,8 +48,7 @@ export default {
 
       myChart.clear();
 
-      // 绘制图表
-      myChart.setOption({
+      let option = {
         grid: {
           top: "20%",
           left: "5%",
@@ -65,7 +65,7 @@ export default {
             avoidLabelOverlap: false,
             hoverAnimation: "false",
             legendHoverLink: false,
-            hoverOffset: 0,
+            hoverOffset: 1,
             selectedOffset: 0,
             label: {
               normal: {
@@ -100,11 +100,14 @@ export default {
             ]
           }
         ]
-      });
+      };
+
+      // 绘制图表
+      myChart.setOption(option);
 
       myChart.hideLoading();
 
-      myChart.dispatchAction({
+      /*myChart.dispatchAction({
         type: "highlight",
         seriesIndex: 0,
         dataIndex: 0
@@ -127,7 +130,9 @@ export default {
           seriesIndex: 0,
           dataIndex: e.dataIndex
         });
-      });
+      });*/
+
+      tools.loopShowTooltip(myChart, option, {loopSeries: true});
 
       window.addEventListener("resize", () => {
         myChart.resize();

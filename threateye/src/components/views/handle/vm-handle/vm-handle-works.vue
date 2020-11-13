@@ -11,7 +11,7 @@
             <!--搜索关键词-->
             <el-input class="s_key"
                       placeholder="搜索关键词"
-                      v-model="params.key"
+                      v-model.trim="params.key"
                       clearable>
               <i slot="prefix"
                  class="el-input__icon el-icon-search"></i>
@@ -987,6 +987,7 @@ export default {
     VmEmergePicker
   },
   created () {
+    this.check_passwd();
     /********************************************************替换**************************************************/
     if (this.owned == 'distributed') {
       this.options_status = [
@@ -1047,6 +1048,38 @@ export default {
 
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     //获取全部资产列表
     get_list_assets_info () {
       this.$axios.get('/yiiapi/workorder/asset-list', {
@@ -1198,6 +1231,7 @@ export default {
     /**************************************************替换***********************************************************/
     //搜索按鈕點擊事件
     submitClick () {
+      this.table.pageNow = 1;
       this.get_list_works();
     },
 
@@ -1211,6 +1245,7 @@ export default {
         endTime: ""
       };
       $(document.querySelector('.el-button--text')).trigger('click');
+      this.table.pageNow = 1;
       this.get_list_works();
     },
 
@@ -1786,6 +1821,8 @@ export default {
         .then(resp => {
           this.selected_list = []
           let { status, data } = resp.data;
+
+          console.log("*(*(*(*(*")
           console.log(data);
           // 储存资产数组
           this.edit.data.risk_asset_cn = []

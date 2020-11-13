@@ -216,4 +216,170 @@ Vue.filter('alarm', function (args) {
   return str;
 });
 
+Vue.filter('network_event', function (value) {
+  switch (value) {
+    case 'Time':
+      return '时间'
+      break;
+    case 'Source IP':
+      return '源地址'
+      break;
+    case 'Destination IP':
+      return '目的地址'
+      break;
+    case 'Traffic':
+      return '应用'
+      break;
+    case 'Method':
+      return '方式'
+      break;
+    case 'URL':
+      return 'URL'
+      break;
+    case 'User Agent':
+      return '用户代理'
+      break;
+    case 'Referrer':
+      return '来源参考'
+      break;
+    case 'TTL':
+      return 'TTL'
+      break;
+    case 'Domain':
+      return '域名'
+      break;
+    case 'SectianType':
+      return '类型'
+      break;
+    case 'Mail_from':
+      return '邮件_来自'
+      break;
+    case 'Recpt_to':
+      return '接收_到达'
+      break;
+    case 'User':
+      return '用户'
+      break;
+    case 'Tool':
+      return '工具'
+      break;
+    case 'Issuerdn':
+      return '签发者域名'
+      break;
+    case 'Authorizing':
+      return '授权'
+      break;
+    case 'Notafter':
+      return '有效期'
+      break;
+    case 'Msg_type':
+      return '消息_类型'
+      break;
+    case 'Cname':
+      return 'Cname'
+      break;
+    case 'Realm':
+      return '领域'
+      break;
+    case 'Sname':
+      return 'Sname'
+      break;
+    default:
+      return value
+      break;
+  }
+});
+
+Vue.filter('ip_whois', function (value) {
+  switch (value) {
+    case 'MX':
+      return '邮件服务器'
+      break;
+    case 'MX_ips':
+      return '邮件服务器IP'
+      break;
+    case 'NS':
+      return '域名服务器'
+      break;
+    case 'NS_ips':
+      return '域名服务器IP'
+      break;
+    case 'created':
+      return '域名注册时间'
+      break;
+    case 'domain':
+      return '域名'
+      break;
+    case 'expires':
+      return '域名过期时间'
+      break;
+    case 'org':
+      return '注册人组织'
+      break;
+    case 'registrar_name':
+      return '注册机构名称'
+      break;
+    case 'city':
+      return '注册人城市'
+      break;
+    case 'country':
+      return '注册人国家'
+      break;
+    case 'email':
+      return '注册人邮箱'
+      break;
+    case 'name':
+      return '注册人名称'
+      break;
+    case 'registrar_email':
+      return '注册机构邮箱'
+      break;
+    case 'contact_abuse_email':
+      return '滥用报告邮箱'
+      break;
+    case 'contact_abuse_name':
+      return '滥用报告接口人'
+      break;
+    case 'contact_owner_city':
+      return '网络所有者城市'
+      break;
+    case 'contact_owner_code':
+      return '网络所有者编码'
+      break;
+    case 'contact_owner_country':
+      return '网络所有者国家'
+      break;
+    case 'contact_owner_email':
+      return '网络所有者邮箱'
+      break;
+    case 'contact_owner_name':
+      return '网络所有者名称'
+      break;
+    case 'created':
+      return '网络注册时间'
+      break;
+    case 'net_name':
+      return '网络名称'
+      break;
+    case 'net_range':
+      return '网络地址范围'
+      break;
+    case 'updated':
+      return '网络更新时间'
+      break;
+    case 'asn':
+      return '自主系统号（ ASN）'
+      break;
+    case 'contact_abuse_name':
+      return '滥用报告接口人'
+      break;
+    case 'contact_abuse_email':
+      return '滥用报告邮箱'
+      break;
+    case 'descr':
+      return '网络描述'
+      break;
+  }
+});
+
 

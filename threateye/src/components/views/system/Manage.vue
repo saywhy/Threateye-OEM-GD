@@ -316,14 +316,26 @@ export default {
             msg,
             data
           } = resp.data;
-          if (status == '602') {
-            this.$message(
-              {
-                message: msg,
-                type: 'warning',
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
               }
-            );
-            eventBus.$emit('reset')
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
           }
         })
     },
@@ -339,7 +351,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
+         // console.log(response);
           this.equipment_list = response.data.data
           this.equipment_list.pageNow *= 1
           this.equipment_list.rows *= 1

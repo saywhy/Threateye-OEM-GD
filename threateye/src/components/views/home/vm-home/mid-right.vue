@@ -89,7 +89,7 @@ export default {
           },
           axisTick: {
             show: false
-          },
+          }
         },
         yAxis: {
           type: 'category',
@@ -118,23 +118,12 @@ export default {
             },
             barWidth: '40%',
             color: '#5389E0',
-            data: num
-          },
-          /*{
-            type: 'bar',
-            stack: '总量',
-            label: {
-              show: false
-            },
-            barWidth:'40%',
-            color:'#f8f8f8',
-            data: [maxNum, maxNum, maxNum],
-            tooltip:{
-              textStyle:{
-                backgroundColor:'red'
-              }
+            data: num,
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(220, 220, 220, 0.4)'
             }
-          },*/
+          }
         ]
       });
       window.addEventListener("resize", () => {

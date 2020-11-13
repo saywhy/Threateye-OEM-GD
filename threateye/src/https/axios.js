@@ -35,7 +35,7 @@ axios.interceptors.request.use(
 );
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-  //console.log(response)
+ // console.log(response)
   //status内层
   switch (response.data.status) {
     case 602:

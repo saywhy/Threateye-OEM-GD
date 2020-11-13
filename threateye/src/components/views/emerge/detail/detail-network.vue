@@ -73,7 +73,7 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown"
-                                  style="width200px;"
+                                  style="width:200px;"
                                   class="dropdown_ul_box_detail">
                   <el-dropdown-item command='1'
                                     class="select_item">威胁追查</el-dropdown-item>
@@ -94,7 +94,7 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown"
-                                  style="width200px;"
+                                  style="width:200px;"
                                   class="dropdown_ul_box_detail">
                   <el-dropdown-item command='1'
                                     class="select_item">威胁追查</el-dropdown-item>
@@ -161,9 +161,9 @@
             <li class="item_li">
               <span class="item_li_title">标签:</span>
               <div class="item_li_content">
-                <ul v-if="network_detail.label_obj.length !=0">
+                <ul v-if="network_detail.label.length !=0">
                   <li class="tag_btn_box"
-                      v-for="item in network_detail.label_obj">
+                      v-for="item in network_detail.label">
                     <span class="tag_btn">{{item}}</span>
                   </li>
                 </ul>
@@ -268,7 +268,7 @@
                 <div class="info_bom_item">
                   <div class="info_bom_item_li"
                        v-for="demo in item.whois_list">
-                    <div class="left_li">{{demo.name}}</div>
+                    <div class="left_li">{{demo.name | ip_whois}}</div>
                     <div class="right_li">{{demo.value}}</div>
                   </div>
                 </div>
@@ -278,7 +278,7 @@
             <div class="time_right_net">
               <div class="time_right_net_item"
                    v-for="demo in item.event_list">
-                <div class="title_net">{{demo.name}}</div>
+                <div class="title_net">{{demo.name | network_event}}</div>
                 <div class="value_net">{{demo.value}}</div>
               </div>
             </div>
@@ -1337,8 +1337,6 @@ export default {
         ],
         pop: false
       },
-
-
       //添加到工单
       worksheets_data: {
         page: 1,
@@ -1450,6 +1448,7 @@ export default {
     backTitle
   },
   mounted () {
+    this.check_passwd()
     this.get_data();
     console.log(this.$route.query);
     // detail: val.id, type: 'risks'
@@ -1458,6 +1457,38 @@ export default {
     // outreachthreat  外联威胁告警  outreath
   },
   methods: {
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if (status != 0) {
+            for (let key in msg) {
+              if (key == 600) {
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if (key == 602) {
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     /**************************************************************************************************************/
     /***************新加到工单*****************/
 
@@ -1803,7 +1834,7 @@ export default {
             if (!item.label) {
               item.label_obj = []
             } else {
-              item.label_obj = JSON.parse(item.label)
+              item.label_obj = item.label
             }
             item.info_list = []
             item.whois_list = [];
@@ -2689,6 +2720,7 @@ export default {
         default:
           break;
       }
+      console.log(indicator);
 
       this.$axios.get(new_list, {
         params: {
@@ -2699,6 +2731,7 @@ export default {
         }
       })
         .then(response => {
+
           let { status, data } = response.data;
           this.emerge_list.now = data
         })
@@ -2709,14 +2742,12 @@ export default {
     handleSizeChange_now (val) {
       this.emerge_list.now_data.rows = val;
       this.emerge_list.now_data.page = 1;
-
       this.new_list(this.network_times_active.indicator);
+
     },
     handleCurrentChange_now (val) {
       this.emerge_list.now_data.page = val;
       this.new_list(this.network_times_active.indicator);
-
-
     },
     // 历史受威胁资产
     old_list (indicator) {
@@ -2830,11 +2861,11 @@ export default {
     // 编辑标签
     edit_tag_box () {
       this.edit_tag.tag_list = [];
-      console.log(this.network_detail.label_obj);
-      if (this.network_detail.label_obj.length == 0) {
+      console.log(this.network_detail.label);
+      if (this.network_detail.label.length == 0) {
         this.edit_tag.tag_list.push({ name: '', icon: true })
       } else {
-        this.network_detail.label_obj.forEach(element => {
+        this.network_detail.label.forEach(element => {
           var obj = {
             name: element,
             icon: false
@@ -2877,13 +2908,19 @@ export default {
         default:
           break;
       }
+
+      /* this.$axios.put(label, {
+         id: this.$route.query.detail,
+         label: label_list
+       })*/
+
+      //ycl 2020/11/04
       this.$axios.put(label, {
         id: this.$route.query.detail,
-        label: label_list
+        label_name: label_list
       })
         .then(response => {
           let { status, data } = response.data;
-          console.log(data);
           if (status == 0) {
             this.$message(
               {

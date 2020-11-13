@@ -72,7 +72,7 @@
                   class="common_box_list">
             <el-input class="s_key"
                       placeholder="搜索关键词"
-                      v-model="params.key"
+                      v-model.trim="params.key"
                       clearable>
               <i slot="prefix"
                  class="el-input__icon el-icon-search"></i>
@@ -776,14 +776,26 @@ export default {
             msg,
             data
           } = resp.data;
-          if (status == '602') {
-            this.$message(
-              {
-                message: msg,
-                type: 'warning',
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
               }
-            );
-            eventBus.$emit('reset')
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
           }
         })
     },
@@ -955,6 +967,7 @@ export default {
     //搜索按鈕點擊事件
     submitClick () {
       this.search_flag = true;
+      this.table.pageNow = 1;
       this.get_list_risk();
     },
 
@@ -975,6 +988,7 @@ export default {
         degree: "",
         status: "",
       };
+      this.table.pageNow = 1;
       this.get_list_risk();
     },
 

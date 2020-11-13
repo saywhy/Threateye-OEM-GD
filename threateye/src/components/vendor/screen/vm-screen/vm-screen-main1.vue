@@ -54,8 +54,8 @@
 
                 data.forEach(item => {
                   item.style = {
-                    top: this.random(5, 200) + 'px',
-                    left: this.random(5, 300) + 'px'
+                    top: this.random(0.4, 12) + 'rem',
+                    left: this.random(0.4, 18) + 'rem'
                   };
                   item.change = false;
                 });
@@ -91,6 +91,7 @@
 <style scoped lang="less">
 .vm-screen-main1{
   padding: 0 16px 16px;
+
   .reli_box {
     width: 100%;
     height: 240px;

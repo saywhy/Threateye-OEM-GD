@@ -1,5 +1,6 @@
 <template>
   <div class="home_overview"
+       v-loading.fullscreen.lock="loading"
        v-cloak>
     <div class="container">
 
@@ -159,7 +160,8 @@
               </p>
             </div>
             <div class="bom_mid_content">
-              <bom-mid :bom_mid="bom_mid"></bom-mid>
+              <bom-mid :bom_mid="bom_mid"
+                       v-if="bom_mid_show"></bom-mid>
             </div>
           </div>
         </el-col>
@@ -241,13 +243,14 @@ import bomLeft from "./vm-home/bom-left";
 import bomMid from "./vm-home/bom-mid";
 import bomRight from "./vm-home/bom-right";
 
-// import sysMonitor from "./vm-home/sys-monitor";
-import imgUrl from "@/assets/images/home/common/img1.png"
 import { eventBus } from '@/components/common/eventBus.js';
+
+import { isSynthetical } from "../../../assets/js/validate";
 export default {
   name: "system_control_move",
   data () {
     return {
+      loading: false,
       top_left: {},
       top_left_show: false,
 
@@ -327,14 +330,26 @@ export default {
             msg,
             data
           } = resp.data;
-          if (status == '602') {
-            this.$message(
-              {
-                message: msg,
-                type: 'warning',
+          if (status != 0) {
+            for (let key in msg) {
+              if (key == 600) {
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
               }
-            );
-            eventBus.$emit('reset')
+              if (key == 602) {
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
           }
         })
     },
@@ -348,8 +363,14 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.top_left = data;
-            this.top_left_show = true;
+
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.top_left = data;
+              this.top_left_show = true;
+            }
+
           }
         })
     },
@@ -365,8 +386,12 @@ export default {
           } = resp.data;
 
           if (status == 0) {
-            this.top_mid = data;
-            this.top_mid_show = true;
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.top_mid = data;
+              this.top_mid_show = true;
+            }
           }
         })
     },
@@ -380,8 +405,14 @@ export default {
           } = resp.data;
           //console.log(data)
           if (status == 0) {
-            this.top_right = data;
-            this.top_right_show = true;
+
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.top_right = data;
+              this.top_right_show = true;
+            }
+
           }
         })
     },
@@ -395,8 +426,13 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.mid_left = data;
-            this.mid_left_show = true;
+
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.mid_left = data;
+              this.mid_left_show = true;
+            }
           }
         })
     },
@@ -409,8 +445,12 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.mid_mid = data;
-            this.mid_mid_show = true;
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.mid_mid = data;
+              this.mid_mid_show = true;
+            }
           }
         })
     },
@@ -424,8 +464,13 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.mid_right = data;
-            this.mid_right_show = true;
+
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.mid_right = data;
+              this.mid_right_show = true;
+            }
           }
         })
     },
@@ -436,14 +481,17 @@ export default {
       this.$axios.get('/yiiapi/overviewoem/threat-top5')
         .then((resp) => {
           // /console.log(resp)
-
           let {
             status,
             data
           } = resp.data;
           if (status == 0) {
-            this.bom_left = data;
-            this.bom_left_show = true;
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.bom_left = data;
+              this.bom_left_show = true;
+            }
           }
         })
     },
@@ -457,8 +505,13 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.bom_mid = data;
-            this.bom_mid_show = true;
+
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.bom_mid = data;
+              this.bom_mid_show = true;
+            }
           }
         })
     },
@@ -473,8 +526,12 @@ export default {
             data
           } = resp.data;
           if (status == 0) {
-            this.bom_right = data;
-            this.bom_right_show = true;
+            if (!isSynthetical(data)) {
+              return false;
+            } else {
+              this.bom_right = data;
+              this.bom_right_show = true;
+            }
           }
         })
     },
@@ -660,8 +717,6 @@ export default {
           this.equipment.echart_array.push(data_item1);
         })
       }
-      console.log(this.equipment.echart_array);
-      console.log(this.equipment.echart_array);
       this.equipment.echart_array.forEach(element => {
         console.log(element.names);
         if (element.names == '引擎') {
@@ -700,8 +755,8 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function (params, trigger) {
-            console.log(params);
-            console.log(trigger);
+            // console.log(params);
+            // console.log(trigger);
             if (params.dataType == 'node') {
               return '设备：' + params.data.dev_name + '</br>' + 'IP地址：' + params.data.dev_ip + '</br>' + '状态：' + params.data.status
             } else {
@@ -743,17 +798,14 @@ export default {
       //添加点击事件
       myChart.off("click"); //防止累计触发
       myChart.on('click', (params) => {
-        console.log(params.data);
-        console.log(this.state_detail);
+        // console.log(params.data);
+        //console.log(this.state_detail);
         this.state_detail = true;
         this.iot_detail_top(params.data)
       });
 
     },
     iot_detail_top (params) {
-      console.log(params.dev_ip);
-      console.log(params.dev_name);
-      console.log(params.names);
       this.equipment_detail.cpu = []
       this.equipment_detail.mem = []
       this.equipment_detail.disk = []
@@ -762,17 +814,19 @@ export default {
       this.equipment_detail.title.type = params.names
       this.equipment_detail.title.ip = params.dev_ip
       this.equipment_detail.title.name = params.dev_name
-      this.$axios.get('/yiiapi/overviewoem/dev-state', {
+      this.loading = true;
+      this.$axios.get('/yiiapi/alert/dev-state', {
         params: {
           ip: params.dev_ip
         }
       })
         .then(response => {
+          this.loading = false;
           let {
             status,
             data
           } = response.data;
-          console.log(data);
+          // console.log(data);
           data.forEach(element => {
             this.equipment_detail.cpu.unshift(element.cpu)
             this.equipment_detail.mem.unshift(element.mem)
@@ -830,7 +884,8 @@ export default {
           borderWidth: 2,
           backgroundColor: "#fff",
           textStyle: {
-            color: "#ccc"
+            color: "#ccc",
+            align: 'left'
           },
           axisPointer: {
             lineStyle: {
@@ -895,6 +950,43 @@ export default {
           }
         }],
         color: ["rgba(2,136,209,0.9)", "rgba(205,220,57,0.9)", "rgba(76,175,80,0.9)"],
+        visualMap: [{
+          show: false,
+          type: 'piecewise',
+          seriesIndex: 0,
+          pieces: [{
+            gt: 85,
+            color: '#dc5f5f'
+          }, {
+            gt: 0,
+            lte: 85,
+            color: "rgba(2,136,209,0.9)"
+          }]
+        }, {
+          show: false,
+          type: 'piecewise',
+          seriesIndex: 1,
+          pieces: [{
+            gt: 85,
+            color: '#dc5f5f'
+          }, {
+            gt: 0,
+            lte: 85,
+            color: "rgba(205,220,57,0.9)"
+          }]
+        }, {
+          show: false,
+          type: 'piecewise',
+          seriesIndex: 2,
+          pieces: [{
+            gt: 80,
+            color: '#dc5f5f'
+          }, {
+            gt: 0,
+            lte: 80,
+            color: "rgba(76,175,80,0.9)"
+          }]
+        }],
         series: [
           {
             name: "CPU",
@@ -1216,7 +1308,7 @@ export default {
             display: inline-block;
           }
           .legend_title {
-            margin-right: 10px;
+            margin-right: 20px;
           }
         }
         // 第一个
@@ -1432,5 +1524,8 @@ export default {
       }
     }
   }
+}
+.el-loading-mask {
+  z-index: 99999 !important;
 }
 </style>

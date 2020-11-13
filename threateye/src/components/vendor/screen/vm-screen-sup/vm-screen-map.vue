@@ -70,7 +70,6 @@
 
         let mapData = this.mapData;
 
-
         mapData.forEach(item => {
 
           if((!!item.src_location) && (!!item.dest_location)){

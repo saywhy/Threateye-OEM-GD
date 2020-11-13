@@ -130,7 +130,7 @@
                       class="reset_table"
                       :data="table.tableData"
                       tooltip-effect="dark">
-              <el-table-column label="告警时间"
+              <!--<el-table-column label="告警时间"
                                align="center"
                                width="180"
                                show-overflow-tooltip>
@@ -170,7 +170,68 @@
                                align="center"
                                width="80">
                 <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
-              </el-table-column>
+              </el-table-column>-->
+              <template v-for="(item, index) in dropCol">
+                <!--告警时间-->
+                <el-table-column align="center"
+                                 v-if="dropCol[index].prop == 'alert_time'"
+                                 show-overflow-tooltip
+                                 min-width="150"
+                                 :prop="dropCol[index].prop"
+                                 :label="item.label">
+                  <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
+                </el-table-column>
+                <!--威胁等级-->
+                <el-table-column align="center"
+                                 v-else-if="dropCol[index].prop == 'degree'"
+                                 show-overflow-tooltip
+                                 min-width="100"
+                                 :prop="dropCol[index].prop"
+                                 :label="item.label">
+                  <template slot-scope="scope">
+                  <span class="btn_alert_background"
+                        :class="{'high_background':scope.row.degree =='高',
+                        'mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                    {{ scope.row.degree | degree_sino }}</span>
+                  </template>
+                </el-table-column>
+                <!--失陷确定性-->
+                <el-table-column align="center"
+                                 v-else-if="dropCol[index].prop == 'fall_certainty'"
+                                 show-overflow-tooltip
+                                 :prop="dropCol[index].prop"
+                                 :label="item.label">
+                  <template slot-scope="scope">
+                  <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                    {{ scope.row.fall_certainty | certainty }}</span>
+                  </template>
+                </el-table-column>
+                <!--状态-->
+                <el-table-column align="center"
+                                 v-else-if="dropCol[index].prop == 'status'"
+                                 show-overflow-tooltip
+                                 :prop="dropCol[index].prop"
+                                 :label="item.label">
+                  <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+                </el-table-column>
+                <!--更新时间-->
+                <el-table-column align="center"
+                                 v-else-if="dropCol[index].prop == 'updated_at'"
+                                 show-overflow-tooltip
+                                 min-width="150"
+                                 :prop="dropCol[index].prop"
+                                 :label="item.label">
+                  <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
+                </el-table-column>
+                <!--其他-->
+                <el-table-column align="center"
+                                 v-else
+                                 min-width="100"
+                                 show-overflow-tooltip
+                                 :prop="dropCol[index].prop"
+                                 :label="item.label">
+                </el-table-column>
+              </template>
             </el-table>
           </div>
           <el-pagination class="handle_pagination_box"
@@ -268,11 +329,28 @@ export default {
         multipleSelection: []
       },
       //回复内容
-      reply: ''
+      reply: '',
+
+      //告警列表自动匹配字段
+      dropCol: [],
+      //告警列表
+      fieldList: [{ checked: true, disabled: true, name: "告警时间", alias: 'alert_time' },
+        { checked: true, disabled: true, name: "告警类型", alias: 'category' },
+        { checked: true, disabled: true, name: "源地址", alias: 'src_ip' },
+        { checked: true, disabled: true, name: "目的地址", alias: 'dest_ip' },
+        { checked: true, disabled: false, name: "威胁指标", alias: 'indicator' },
+        { checked: true, disabled: false, name: "应用", alias: 'application' },
+        { checked: true, disabled: false, name: "威胁等级", alias: 'degree' },
+        { checked: true, disabled: false, name: "失陷确定性", alias: 'fall_certainty' },
+        { checked: false, disabled: false, name: "更新时间", alias: 'updated_at' },
+        { checked: false, disabled: false, name: "告警次数", alias: 'alert_count' },
+        { checked: false, disabled: false, name: "标签", alias: 'labels' },
+        { checked: true, disabled: false, name: "状态", alias: 'status' }],
     };
   },
 
   created () {
+    this.check_passwd()
     let newId = this.$route.query.id;
     this.id = newId;
     this.loadlinks += newId;
@@ -283,7 +361,38 @@ export default {
 
 
   methods: {
-
+    // 测试密码过期
+    check_passwd () {
+      this.$axios.get('/yiiapi/site/check-passwd-reset')
+        .then((resp) => {
+          let {
+            status,
+            msg,
+            data
+          } = resp.data;
+          if(status != 0){
+            for(let key in msg){
+              if(key == 600){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+              }
+              if(key == 602){
+                this.$message(
+                  {
+                    message: msg[key],
+                    type: 'warning',
+                  }
+                );
+                eventBus.$emit('reset');
+              }
+            }
+          }
+        })
+    },
     // alert_detail
     // workorder
 
@@ -329,21 +438,14 @@ export default {
         })
         .then((resp) => {
 
-          // console.log(resp.data)
-
           let { status, data } = resp.data;
-
           if (status == 0) {
-
             //对经办人处理
             //let attr = data.perator.map(x => { return x.perator });
             data.new_perator = data.perator.join(',');
 
             //顶部数据参数
             this.data = data;
-
-            console.log(data)
-
             this.page_show = false;
 
             /**
@@ -366,15 +468,42 @@ export default {
             if (data.alerts) {
               //是告警
               this.table.tabsFlag = 1;
+
+              data.alerts.data.map(v => {
+                if(v.labels){v.labels = v.labels.join(',');}
+              });
+
               this.table.tableData = data.alerts.data;
               this.table.count = data.alerts.count;
               this.table.maxPage = data.alerts.maxPage;
               this.table.pageNow = data.alerts.pageNow;
+
+              //获取列（告警需要配置列）
+              this.column_deploy();
             }
           }
         });
     },
 
+    //获取列
+    column_deploy(){
+      this.$axios.get('/yiiapi/site/field-list')
+        .then((resp) => {
+          this.dropCol = [];
+          let { status, data } = resp.data;
+
+          if (status == 0) {
+            let config = data.config.fields;
+            for (var key of config) {
+              this.fieldList.forEach(item => {
+                if (item.alias == key) {
+                  this.dropCol.push({ label: item.name, prop: item.alias })
+                }
+              });
+            }
+          }
+        });
+    },
     //回复记录列表
     get_reply_works_detail () {
       var url = ''

@@ -1,28 +1,15 @@
 import axios from "axios";
 
 import {
-  asyncRouterMap,
   constantRouterMap
 } from "@/router";
-import {
-  getToken,
-  setToken,
-  removeToken
-} from "./cookie";
-import {
-  forRoleList,
-  formatList
-} from './auth'
+
+let asyncRouterMap = constantRouterMap.slice(0, 2);
 
 export default {
   state: {
-    highligh: {
-      navIndex: '0',
-      asideIndex: '0'
-    },
     routers: constantRouterMap,
-    addRouters: [],
-    token: getToken(),
+    addRouters: asyncRouterMap,
     roles: [],
     isCollapse: false,
     sysMonitor: false,
@@ -38,20 +25,16 @@ export default {
     SET_TOKEN: (state, args) => {
       state.token = args;
     },
-
     SET_SANDBOX: (state, args) => {
       state.sandbox = args;
     },
-
     SET_ROLES: (state, args) => {
       state.roles = args;
     },
-
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers);
     },
-
     TOGGLE_COLLAPSE: (state, args) => {
       state.isCollapse = args;
     },
@@ -61,7 +44,7 @@ export default {
   },
   actions: {
     //登录
-    LoginByUsername ({
+    /*LoginByUsername({
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
@@ -108,7 +91,6 @@ export default {
         })
       });
     },
-
     //权限设置
     async GetAuth ({
       commit,
@@ -116,40 +98,11 @@ export default {
     }) {
       try {
         //真实数据
-        // let resps = await axios('/yiiapi/site/menu');
-        // console.log(resps);
+        let resp = await axios('/yiiapi/site/menu');
 
-        // console.log(resp);
-        var resp = [{
-          child: [{
-            function_name: "总览",
-            id: "2",
-            menu_order: "2",
-            parent_id: "1",
-            permissions_id: "2"
-          }],
-          function_name: "首页",
-          id: "1",
-          menu_order: "1",
-          parent_id: "0",
-          permissions_id: "1",
-        }, {
-          child: [{
-            function_name: "网络告警",
-            id: "59",
-            menu_order: "59",
-            parent_id: "58",
-            permissions_id: "59",
-          }],
-          function_name: "告警",
-          id: "58",
-          menu_order: "58",
-          parent_id: "0",
-          permissions_id: "58",
-        }]
+        console.log(resp);
+
         let roles = forRoleList(resp);
-
-        // console.log(roles);
 
         roles.push('995');
 
@@ -166,44 +119,41 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
+    },*/
 
-    async LogOut ({
-      commit,
-      dispatch
-    }) {
-      try {
-        let resp = await axios('/yiiapi/site/logout');
-        let {
-          status,
-          msg,
-          data
-        } = resp.data;
+    /* async LogOut({
+       commit,
+       dispatch
+     }) {
+       try {
+         let resp = await axios('/yiiapi/site/logout');
+         let {
+           status,
+           msg,
+           data
+         } = resp.data;
+ 
+         if (status == 0) {
+           commit('SET_ROLES', []);
+           commit('SET_TOKEN', data);
+           removeToken();
+         }
+       } catch (err) {
+         console.log(err);
+       }
+     },*/
 
-        if (status == 0) {
-          commit('SET_ROLES', []);
-          commit('SET_TOKEN', data);
-          removeToken();
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    async GenerateRoutes ({
+    /*async GenerateRoutes({
       commit
     }, data) {
-
       return new Promise(resolve => {
         const {
           roles
         } = data;
-
-        // const accessedRouters = formatList(roles);
         const accessedRouters = formatList(asyncRouterMap, roles);
         commit('SET_ROUTERS', accessedRouters);
         resolve();
       })
-    }
+    }*/
   }
 }

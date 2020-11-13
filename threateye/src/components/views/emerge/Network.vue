@@ -14,9 +14,9 @@
         <h3 class="title">告警监测</h3>
         <el-row class="common_box"
                 style="padding: 15px 0;">
-          <!--<el-col :span="24"
+          <el-col :span="24"
                   class="common_box_list">
-            &lt;!&ndash;搜索关键词&ndash;&gt;
+            <!--搜索关键词-->
             <el-input class="s_key"
                       placeholder="搜索关键词"
                       v-model="params.key"
@@ -24,9 +24,9 @@
               <i slot="prefix"
                  class="el-input__icon el-icon-search"></i>
             </el-input>
-            &lt;!&ndash;时间&ndash;&gt;
+            <!--时间-->
             <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-            &lt;!&ndash;失陷确定性&ndash;&gt;
+            <!--失陷确定性-->
             <el-select class="s_key s_key_types"
                        v-model="params.threat"
                        clearable
@@ -38,7 +38,7 @@
                          :value="item.value">
               </el-option>
             </el-select>
-            &lt;!&ndash;威胁等级&ndash;&gt;
+            <!--威胁等级-->
             <el-select class="s_key"
                        v-model="params.degree"
                        clearable
@@ -50,7 +50,7 @@
                          :value="item.value">
               </el-option>
             </el-select>
-            &lt;!&ndash;处理状态&ndash;&gt;
+            <!--处理状态-->
             <el-select class="s_key"
                        v-model="params.status"
                        clearable
@@ -69,116 +69,10 @@
 
             <el-button class="s_btn_edit"
                        @click="export_box">导出</el-button>
-          </el-col>-->
-          <!--1-->
-          <el-col :span="24"
-                  class="common_box_list">
-
-            <!--告警类型-->
-            <el-input class="s_key1"
-                      placeholder="告警类型"
-                      v-model.trim="params.category"
-                      clearable>
-              <i slot="prefix"
-                 class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <!--威胁指标-->
-            <el-input class="s_key1"
-                      placeholder="威胁指标"
-                      v-model.trim="params.indicator"
-                      clearable>
-              <i slot="prefix"
-                 class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <!--告警时间-->
-            <vm-emerge-picker @changeTime='changeTime'></vm-emerge-picker>
-
-            <!--失陷确定性-->
-            <el-select class="s_key1 s_key1_ok"
-                       v-model="params.fall_certainty"
-                       clearable
-                       placeholder="失陷确定性"
-                       :popper-append-to-body="false">
-              <el-option v-for="item in options_certainty"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-
-            <!--处理状态-->
-            <el-select class="s_key1"
-                       v-model="params.status"
-                       clearable
-                       placeholder="处理状态"
-                       :popper-append-to-body="false">
-              <el-option v-for="item in options_status"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-
-            <!--威胁等级-->
-            <el-select class="s_key1"
-                       v-model="params.degree"
-                       clearable
-                       placeholder="威胁等级"
-                       :popper-append-to-body="false">
-              <el-option v-for="item in options_degree"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-col>
-          <!--2-->
-          <el-col :span="24"
-                  class="common_box_list common_box_list_network">
-
-            <!--源地址-->
-            <el-input class="s_key1"
-                      placeholder="源地址"
-                      v-model.trim="params.src_ip"
-                      clearable>
-              <i slot="prefix"
-                 class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <!--目的地址-->
-            <el-input class="s_key1"
-                      placeholder="目的地址"
-                      v-model.trim="params.dest_ip"
-                      clearable>
-              <i slot="prefix"
-                 class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <!--更新时间-->
-            <vm-emerge-picker1 @changeTime='changeTime1'></vm-emerge-picker1>
-
-            <!--标签-->
-            <el-input class="s_key1 s_key1_ok"
-                      placeholder="标签"
-                      v-model.trim="params.label"
-                      clearable>
-              <i slot="prefix"
-                 class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <el-button class="s_btn s_btn1_ok"
-                       @click="submitClick();">搜索</el-button>
-            <el-link class="s_link"
-                     @click="resetClick();">重置</el-link>
-            <el-button class="s_btn_edit"
-                       @click="export_box">导出</el-button>
           </el-col>
         </el-row>
         <!--按钮组-->
-        <el-row class="common_btn"
-                style="width: 100%;">
+        <el-row class="common_btn">
           <el-col :span="24"
                   class="common_btn_list">
             <el-dropdown @command="change_state"
@@ -217,50 +111,15 @@
               </el-dropdown-menu>
             </el-dropdown>
 
-            <!--配置列-->
-            <el-dropdown class="e_deplay"
-                         trigger="click"
-                         ref="messageDrop"
-                         @visible-change="dropdown_hide">
-              <span class="s_btn_train">
-                <i class="t_img"></i>
-                <span class="t_name">配置列</span>
-              </span>
-              <el-dropdown-menu class="s_btn_list"
-                                slot="dropdown"
-                                style="padding: 20px;">
-                <span class="s_b_name">展示字段</span>
-                <ul class="s_b_list">
-                  <li class="item"
-                      v-for="(item,$index) in fieldList"
-                      :key="$index">
-                    <el-checkbox v-model="item.checked"
-                                 :disabled="item.disabled"
-                                 @change="fieldChange(item.alias,item.name)">{{item.name}}
-                    </el-checkbox>
-                  </li>
-                </ul>
-                <div class="s_b_group">
-                  <el-button type="primary"
-                             class="s_bg s_bg_cancel"
-                             @click.native="label_cancel_Click()">取消</el-button>
-                  <el-button type="primary"
-                             class="s_bg s_bg_submit"
-                             @click.native="label_submit_click()">确认</el-button>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown>
-
           </el-col>
         </el-row>
       </el-form>
-      <!--:render-header="col"-->
       <el-row class="common-table-pattern">
         <el-col :span="24">
           <el-table ref="multipleTable"
                     align="center"
                     border
-                    class="common-table common-table_alert"
+                    class="common-table"
                     v-loading="table.loading"
                     :data="table.tableData"
                     :row-style="{cursor:'pointer'}"
@@ -269,91 +128,70 @@
                     @mouseup.native="mouseup"
                     @selection-change="handleSelChange"
                     @header-click="header_click"
-                    @sort-change="header_cell"
-                    row-key="id"
-                    :key="randomKey"
                     @row-click="detail_click">
             <el-table-column label=" "
-                             fixed="left"
                              align="center"
                              prop="type"
-                             :resizable="false"
-                             width="30">
+                             width="20">
               <template slot-scope="scope">
                 <div class="new_dot"
                      v-show="scope.row.new_alert=='1'"></div>
               </template>
             </el-table-column>
             <el-table-column type="selection"
-                             fixed="left"
                              align="center"
-                             width="50"
-                             :resizable="false">
+                             width="50"></el-table-column>
+            <el-table-column label="告警时间"
+                             align="center"
+                             width="200"
+                             show-overflow-tooltip>
+              <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
             </el-table-column>
-            <!--:key="`col_${index}`"-->
-            <template v-for="(item, index) in dropCol">
-              <!--告警时间-->
-              <el-table-column align="center"
-                               v-if="dropCol[index].prop == 'alert_time'"
-                               show-overflow-tooltip
-                               min-width="150"
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">{{ scope.row.alert_time | time }}</template>
-              </el-table-column>
-              <!--威胁等级-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'degree'"
-                               show-overflow-tooltip
-                               sortable="custom"
-                               min-width="100"
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">
-                  <span class="btn_alert_background"
-                        :class="{'high_background':scope.row.degree =='高',
-                        'mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
-                    {{ scope.row.degree | degree_sino }}</span>
-                </template>
-              </el-table-column>
-              <!--失陷确定性-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'fall_certainty'"
-                               show-overflow-tooltip
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">
-                  <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
-                    {{ scope.row.fall_certainty | certainty }}</span>
-                </template>
-              </el-table-column>
-              <!--状态-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'status'"
-                               show-overflow-tooltip
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
-              </el-table-column>
-              <!--更新时间-->
-              <el-table-column align="center"
-                               v-else-if="dropCol[index].prop == 'updated_at'"
-                               show-overflow-tooltip
-                               sortable="custom"
-                               min-width="150"
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-                <template slot-scope="scope">{{ scope.row.updated_at | time }}</template>
-              </el-table-column>
-              <!--其他-->
-              <el-table-column align="center"
-                               v-else
-                               min-width="100"
-                               show-overflow-tooltip
-                               :prop="dropCol[index].prop"
-                               :label="item.label">
-              </el-table-column>
-            </template>
+            <el-table-column prop="category"
+                             align="center"
+                             label="告警类型"
+                             width="100"
+                             show-overflow-tooltip></el-table-column>
+            <el-table-column prop="indicator"
+                             align="center"
+                             label="威胁指标"
+                             min-width="120"
+                             show-overflow-tooltip></el-table-column>
+            <el-table-column prop="src_ip"
+                             align="center"
+                             label="源地址"
+                             show-overflow-tooltip></el-table-column>
+            <el-table-column prop="dest_ip"
+                             align="center"
+                             label="目的地址"
+                             show-overflow-tooltip></el-table-column>
+            <el-table-column prop="application"
+                             align="center"
+                             label="应用"
+                             width="60"
+                             show-overflow-tooltip></el-table-column>
+            <el-table-column label="威胁等级"
+                             align="center"
+                             width="100">
+              <template slot-scope="scope">
+                <span class="btn_alert_background"
+                      :class="{'high_background':scope.row.degree =='高','mid_background':scope.row.degree =='中','low_background':scope.row.degree =='低'}">
+                  {{ scope.row.degree | degree_sino }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="失陷确定性"
+                             align="center"
+                             width="120">
+              <template slot-scope="scope">
+                <span :class="{'fall_certainty':scope.row.fall_certainty == '1'}">
+                  {{ scope.row.fall_certainty | certainty }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态"
+                             align="center"
+                             width="80">
+              <template slot-scope="scope">{{ scope.row.status | alert_status }}</template>
+            </el-table-column>
           </el-table>
         </el-col>
         <el-col :span="24"
@@ -695,56 +533,32 @@
 <script type="text/ecmascript-6">
 import vmEmergeLine from "./vm-emerge/vm-emerge-line";
 import vmEmergePicker from "@/components/common/vm-emerge-picker";
-import vmEmergePicker1 from "@/components/common/vm-emerge-picker1";
 import { eventBus } from '@/components/common/eventBus.js';
-//拖拽
-import Sortable from 'sortablejs';
 export default {
   name: "Network",
   components: {
     vmEmergeLine,
-    vmEmergePicker,
-    vmEmergePicker1
+    vmEmergePicker
   },
   data () {
     return {
-      randomKey: 0,
-      dropCol: [],
-      fieldFlag: false,
-      fieldList: [{ checked: true, disabled: true, name: "告警时间", alias: 'alert_time' },
-      { checked: true, disabled: true, name: "告警类型", alias: 'category' },
-      { checked: true, disabled: true, name: "源地址", alias: 'src_ip' },
-      { checked: true, disabled: true, name: "目的地址", alias: 'dest_ip' },
-      { checked: true, disabled: false, name: "威胁指标", alias: 'indicator' },
-      { checked: true, disabled: false, name: "应用", alias: 'application' },
-      { checked: true, disabled: false, name: "威胁等级", alias: 'degree' },
-      { checked: true, disabled: false, name: "失陷确定性", alias: 'fall_certainty' },
-      { checked: false, disabled: false, name: "更新时间", alias: 'updated_at' },
-      { checked: false, disabled: false, name: "告警次数", alias: 'alert_count' },
-      { checked: false, disabled: false, name: "标签", alias: 'labels' },
-      { checked: true, disabled: false, name: "状态", alias: 'status' }],
-      sortable: null,
       echarts_data: {},
       e_line: {
         loading: true,
         data_show: false,
       },
-      params: {
-        fall_certainty: '',
-        status: '',
-        degree: '',
-        start_time: '',
-        end_time: '',
-        category: '',
-        indicator: '',
-        src_ip: '',
-        dest_ip: '',
-        update_stime: '',
-        update_etime: '',
-        label: '',
-        sort: 'degree'
+      picker_data: {
+        time: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)]
       },
-      options_degree: [
+      params: {
+        key: "",
+        threat: "",
+        status: "",
+        startTime: '',
+        endTime: '',
+        degree: ''
+      },
+      options_degrees: [
         {
           value: "low",
           label: "低危"
@@ -758,7 +572,7 @@ export default {
           label: "高危"
         }
       ],
-      options_certainty: [
+      options_threat: [
         {
           value: "1",
           label: "已失陷"
@@ -869,7 +683,6 @@ export default {
         eachPage: 10,
         multipleSelection: []
       },
-
       //添加到工单
       add_state_change: false,
       table_add_works: {
@@ -904,12 +717,8 @@ export default {
   },
   mounted () {
     this.check_passwd();
-
     this.get_echarts();
-
     this.get_list_risk();
-
-    this.column_deploy();
   },
   methods: {
     // 测试密码过期
@@ -932,14 +741,12 @@ export default {
           }
         })
     },
-
     // 获取折现图表
     get_echarts () {
       this.$axios.get('/yiiapi/alertoem/alert-trend')
         .then(response => {
           this.e_line.loading = false;
           this.e_line.data_show = true;
-
           if (response.data.data) {
             this.echarts_data = response.data.data;
           } else {
@@ -950,239 +757,84 @@ export default {
           console.log(error);
         })
     },
-
-    /**
-    * 2020/10/28ycl新加功能
-    * */
-    //配置到
-    column_deploy () {
-      this.$axios.get('/yiiapi/site/field-list')
-        .then((resp) => {
-          // console.log(resp);
-          this.dropCol = [];
-          let { status, data } = resp.data;
-          if (status == 0) {
-            let config = data.config.fields;
-
-            // console.log(config)
-            for (var key of config) {
-
-              this.fieldList.forEach(item => {
-                if (item.alias == key) {
-                  this.dropCol.push({ label: item.name, prop: item.alias })
-                }
-              });
-            }
-
-            this.fieldList.forEach(item => {
-              if (config.includes(item.alias)) {
-                item.checked = true;
-              } else {
-                item.checked = false;
-              }
-            });
-            this.columnDrop();
-          }
-        });
-    },
-
-    //下拉框勾选事件
-    fieldChange (alias, name) {
-      let colAttr = this.dropCol.map((item) => {
-        return item.prop;
-      });
-      if (colAttr.includes(alias)) {
-        var index = colAttr.findIndex((element) => (element == alias));
-        this.dropCol.splice(index, 1);
-      } else {
-        this.dropCol.push({ label: name, prop: alias });
-      }
-    },
-
-    //列拖拽
-    columnDrop () {
-      const wrapperTr = document.querySelector('.common-table_alert tr');
-      this.sortable = Sortable.create(wrapperTr, {
-        //handle: '.common-table_alert',
-        animation: 180,
-        delay: 0,
-        onEnd: evt => {
-          let newIndex = evt.newIndex - 2;
-          let oldIndex = evt.oldIndex - 2;
-          const oldItem = this.dropCol[oldIndex];
-          this.dropCol.splice(oldIndex, 1);
-          this.dropCol.splice(newIndex, 0, oldItem);
-
-          this.label_submit_click();
-
-          this.randomKey += 1;
-        }
-      });
-    },
-
-    //配置到取消
-    label_cancel_Click () {
-      this.$refs.messageDrop.hide();
-      this.column_deploy();
-      this.get_list_risk();
-    },
-
-    //配置到确定
-    label_submit_click (args) {
-
-      let fieldAttr = [];
-      fieldAttr = this.dropCol.map(item => {
-        return item.prop;
-      });
-
-      this.$axios.put('/yiiapi/site/field-edit', {
-        fields: fieldAttr
-      })
-        .then((resp) => {
-
-          let { status, msg, data } = resp.data;
-
-          if (status == 0) {
-            this.$refs.messageDrop.hide();
-            //this.table.pageNow = 1;
-            this.get_list_risk();
-          } else {
-            this.$message({
-              message: '修改错误！',
-              type: 'error',
-            });
-          }
-        });
-    },
-
-    //配置列弹窗关闭事件
-    dropdown_hide (val) {
-      if (!val) {
-        this.label_cancel_Click();
-      }
-    },
-    /**
-     * 2020/10/28ycl新加功能
-     * */
     // 获取告警列表
     get_list_risk () {
       this.table.loading = true;
       let params_alert = {
-        fall_certainty: ''
+        threat: ''
       };
-      if (this.params.fall_certainty == 1) {
-        params_alert.fall_certainty = 1;
+      if (this.params.threat == 1) {
+        params_alert.threat = 1;
       }
       this.$axios.get('/yiiapi/alertoem/list', {
         params: {
-          start_time: this.params.start_time,
-          end_time: this.params.end_time,
-          fall_certainty: params_alert.fall_certainty,
+          start_time: this.params.startTime,
+          end_time: this.params.endTime,
+          key_word: this.params.key,
+          fall_certainty: params_alert.threat,
           status: this.params.status,
           degree: this.params.degree,
           page: this.table.pageNow,
           rows: this.table.eachPage,
-          category: this.params.category,
-          indicator: this.params.indicator,
-          src_ip: this.params.src_ip,
-          dest_ip: this.params.dest_ip,
-          update_stime: this.params.update_stime,
-          update_etime: this.params.update_etime,
-          label: this.params.label,
-          sort: this.params.sort
         }
       }).then(resp => {
-
         this.table.loading = false;
-
         let { status, data } = resp.data;
         let datas = data;
-
         if (status == 0) {
-
           let { data, count, maxPage, pageNow } = datas;
-
-          data.map(v => {
-            v.labels = v.labels.join(',');
-          });
-
           this.table.tableData = data;
           this.table.count = count;
           this.table.maxPage = maxPage;
           this.table.pageNow = pageNow;
-
-          this.columnDrop();
+          //console.log(data)
         }
       })
         .catch(error => {
           console.log(error);
         })
     },
-    //告警时间
     changeTime (data) {
       if (data) {
-        this.params.start_time = (data[0].valueOf() / 1000).toFixed(0);
-        this.params.end_time = (data[1].valueOf() / 1000).toFixed(0);
+        this.params.startTime = (data[0].valueOf() / 1000).toFixed(0);
+        this.params.endTime = (data[1].valueOf() / 1000).toFixed(0);
       } else {
-        this.params.start_time = '';
-        this.params.end_time = '';
-      }
-    },
-    //更新时间
-    changeTime1 (data) {
-      if (data) {
-        this.params.update_stime = (data[0].valueOf() / 1000).toFixed(0);
-        this.params.update_etime = (data[1].valueOf() / 1000).toFixed(0);
-      } else {
-        this.params.update_stime = '';
-        this.params.update_etime = '';
+        this.params.startTime = ''
+        this.params.endTime = ''
       }
     },
     //搜索按鈕點擊事件
     submitClick () {
-      this.table.pageNow = 1;
       this.get_list_risk();
     },
-
     //重置按鈕點擊事件
     resetClick () {
-      this.params.fall_certainty = '';
-      this.params.status = '';
-      this.params.degree = '';
-      this.params.start_time = '';
-      this.params.end_time = '';
-      this.params.category = '';
-      this.params.indicator = '';
-      this.params.src_ip = '';
-      this.params.dest_ip = '';
-      this.params.update_stime = '';
-      this.params.update_etime = '';
-      this.params.label = '';
-      //this.params.sort = 'degree';
-
+      this.params = {
+        key: "",
+        threat: "",
+        status: "",
+        startTime: '',
+        endTime: '',
+        degree: ''
+      };
       $(document.querySelector('.el-button--text')).trigger('click');
-      this.table.pageNow = 1;
       this.get_list_risk();
     },
-
     //每頁多少條切換
     handleSizeChange (val) {
       this.table.eachPage = val;
       this.table.pageNow = 1;
       this.get_list_risk();
     },
-
     //頁數點擊切換
     handleCurrentChange (val) {
       this.table.pageNow = val;
       this.get_list_risk();
     },
-
     //多选获取选中数据
     handleSelChange (val) {
       this.table.multipleSelection = val;
     },
-
     //进入详情页面
     detail_click (val, column, cell) {
       this.detail_click_val = val
@@ -1190,17 +842,6 @@ export default {
     },
     header_click (val) {
       this.detail_click_val = {}
-    },
-    //列排序
-    header_cell (val) {
-      if (val.prop == 'updated_at') {
-        this.params.sort = 'updated_at';
-      } else if (val.prop == 'degree') {
-        this.params.sort = 'degree';
-      } else {
-        this.params.sort = 'degree';
-      }
-      this.get_list_risk();
     },
     mousedown (event) {
       this.oldPositon = {
@@ -1232,16 +873,13 @@ export default {
         console.log('复制');
       }
     },
-
     /***********************************以下是弹窗部分****************************************/
     /***********************************以下是弹窗部分****************************************/
-
     // 状态变更选择
     change_state (command) {
       this.process_state = command;
       this.open_state();
     },
-
     //工单任务选择
     change_task (command) {
       if (command == "新建工单") {
@@ -1250,7 +888,6 @@ export default {
         this.open_add_new();
       }
     },
-
     /***************状态变更*****************/
     //打开状态变更弹窗
     open_state () {
@@ -1262,29 +899,23 @@ export default {
         this.state_change = true;
       }
     },
-
     //关闭状态变更弹窗
     closed_state () {
       this.state_change = false;
       this.$refs.multipleTable.clearSelection();
     },
-
     //状态变更取消按钮点击
     cancel_state () {
       this.closed_state();
     },
-
     //状态变更确定按钮点击
     ok_state () {
-
       let selected = this.table.multipleSelection;
       //资产ID处理
       let id_group = selected.map(x => { return x.id; });
-
       //状态设置
       let process = this.process_state;
       let change_status = 0;
-
       if (process == '处置中') {
         change_status = 2;
       } else if (process == '已处置') {
@@ -1294,7 +925,6 @@ export default {
       } else if (process == '误报') {
         change_status = 5;
       }
-
       this.$axios.put('/yiiapi/alertoem/do-alarm', {
         id: id_group,
         status: change_status
@@ -1318,9 +948,7 @@ export default {
           console.log(err);
         })
     },
-
     /***************工单任务*****************/
-
     //打开编辑工单
     open_task_new () {
       let sel_table_data = this.table.multipleSelection;
@@ -1340,7 +968,6 @@ export default {
           let eachPage = this.table_alerts.eachPage;
           let handle_data = this.table_alerts.tableData.slice(0, eachPage);
           this.table_alerts.tableData_new = handle_data;
-
           //获取用户列表(经办人使用)
           this.$axios.get('/yiiapi/site/user-list')
             .then(resp => {
@@ -1360,12 +987,10 @@ export default {
         }
       }
     },
-
     //关闭编辑工单
     closed_task_new () {
       this.task.new = false;
       this.task.new_contet = false;
-
       this.task_params = {
         name: "",
         level: "",
@@ -1380,7 +1005,6 @@ export default {
       this.table_alerts.tableData_new = [];
       this.$refs.multipleTable.clearSelection();
     },
-
     //下一步时候验证工单名称，优先级、经办人等参数
     next_task_new () {
       var pattern = new RegExp("[`~!#%$^&*()=|{}':;',\\[\\]<>《》/?~！#￥……&*（）|{}【】‘；：”“'。，、？]");
@@ -1402,12 +1026,10 @@ export default {
         this.handle.active = 0;
       }
     },
-
     //上一步
     prev_task_handle () {
       this.task.new_contet = true;
     },
-
     //经办人change处理
     select_changced (item) {
       let level_list = this.table_operator.tableData;
@@ -1420,7 +1042,6 @@ export default {
       let selected_name_attr = this.table_operator.tableData.map(x => { return x.username });
       this.task_params.new_operator = selected_name_attr;
     },
-
     //tabs下table每页显示多少条
     sc_table_alerts (val) {
       this.table_alerts.eachPage = val;
@@ -1428,7 +1049,6 @@ export default {
       let handle_data = this.table_alerts.tableData.slice(0, val);
       this.table_alerts.tableData_new = handle_data;
     },
-
     //tabs下第一个table页数点击
     hcc_table_alerts (val) {
       this.table_alerts.pageNow = val;
@@ -1437,30 +1057,24 @@ export default {
         .slice((val - 1) * eachPage, val * eachPage);
       this.table_alerts.tableData_new = handle_data;
     },
-
     //tab下第一个table多选
     handle_sel_table_alerts (val) {
       this.table_alerts.multipleSelection = val;
       let selected = val.map(x => { return x.id * 1 });
       this.task_params.multiple = selected;
     },
-
     //新增工单按钮切换
     table_btn_toggle (index) {
       this.handle.active = index;
     },
-
     //编辑工单分配
     prev_task_handle_assign () {
-
       if (this.task_params.multiple.length == 0) {
         let selected = this.table.multipleSelection
           .map(x => { return x.id * 1 });
         this.task_params.multiple = selected;
       }
-
       console.log(this.task_params.multiple);
-
       this.handle.save = true;
       this.$axios.put('/yiiapi/alertoem/distribution-workorder',
         {
@@ -1486,7 +1100,6 @@ export default {
           console.log(err);
         });
     },
-
     //编辑工单保存
     prev_task_handle_save () {
       if (this.task_params.multiple.length == 0) {
@@ -1521,17 +1134,13 @@ export default {
           console.log(err);
         });
     },
-
     /***************新加到工单*****************/
-
     //添加到工单打开
     open_add_new () {
       this.add_open_state();
     },
-
     //新加到工单打开状态
     add_open_state () {
-
       let sel_table_data = this.table.multipleSelection;
       let sel_table_attr = sel_table_data.map(x => { return x.status });
       if (sel_table_data.length == 0) {
@@ -1571,7 +1180,6 @@ export default {
           rows: this.table_add_works.eachPage
         }
       }).then((resp) => {
-
         console.log(resp)
         this.table_add_works.loading = false;
         let { status, data } = resp.data;
@@ -1589,23 +1197,19 @@ export default {
         }
       })
     },
-
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
       // el-radio单选框,不需要这一步
       console.log(row)
       this.table_add_works.multipleSelection = row;
     },
-
     //新加到工单确定
     add_ok_state () {
       let selected_attr = this.table.multipleSelection
         .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
-
       //判断工单列表长度
       let multipe = this.table_add_works.multipleSelection;
-
       if (multipe.length == 0) {
         this.$message({ message: '请选择需要添加的工单！', type: 'warning' });
       } else if (multipe.length > 1) {
@@ -1618,18 +1222,13 @@ export default {
         this.add_params.perator = JSON.parse(multipe[0].perator);
         this.add_params.remarks = multipe[0].remarks;
         this.add_params.remind = JSON.parse(multipe[0].remind);
-
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
-
         console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)];
-
         var newArr = this.add_params.multiple.filter(item => item)
-
         this.add_params.multiple = newArr;
-
         console.log(this.add_params.remind)
         console.log(this.add_params.perator);
         this.handle.save = true;
@@ -1660,20 +1259,17 @@ export default {
           });
       }
     },
-
     //每页显示多少条
     sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();
     },
-
     //新加工单列表分页页面切换
     hcc_table_add_works (val) {
       this.table_add_works.pageNow = val;
       this.get_table_works_list();
     },
-
     /***************************导出*****************************/
     //导出
     export_box () {
@@ -1682,7 +1278,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
         this.$axios.get('/yiiapi/site/check-passwd-reset')
           .then((resp) => {
             let {
@@ -1705,20 +1300,8 @@ export default {
                 }
               })
                 .then(response => {
-                  var url1 = "/yiiapi/alert/export-alerts?start_time=" + this.params.start_time
-                    + '&end_time=' + this.params.end_time
-                    + '&fall_certainty=' + this.params.fall_certainty
-                    + '&status=' + this.params.status
-                    + '&degree=' + this.params.degree
-                    + '&page=' + this.table.pageNow
-                    + '&rows=' + this.table.eachPage
-                    + '&category=' + this.params.category
-                    + '&indicator=' + this.params.indicator
-                    + '&src_ip=' + this.params.src_ip
-                    + '&dest_ip=' + this.params.dest_ip
-                    + '&update_stime=' + this.params.update_stime
-                    + '&update_etime=' + this.params.update_etime
-                    + '&label=' + this.params.label;
+                  var url1 = "/yiiapi/alertoem/export-alerts?status=" + this.params.status + '&start_time=' + this.params.startTime
+                    + '&end_time=' + this.params.endTime + '&fall_certainty=' + this.params.threat + '&key_word=' + this.params.key;
                   window.location.href = url1;
                 })
                 .catch(error => {
@@ -1728,7 +1311,6 @@ export default {
           })
       }).catch(() => {
         this.$message({ type: 'info', message: '已取消导出' });
-
         this.$refs.multipleTable.clearSelection();
       });
     }
@@ -1740,6 +1322,7 @@ export default {
 @import '../../../assets/css/less/common-pattern.less';
 @import '../../../assets/css/less/common-table-pattern.less';
 #Network {
+  background: transparent;
   text-align: left;
   padding: 24px;
   .e_line {
@@ -1764,7 +1347,6 @@ export default {
     background: #fff;
     text-align: left;
   }
-
   /* 弹窗 */
   /* 状态变更 */
   /deep/ .pop_state_box {
@@ -1806,24 +1388,20 @@ export default {
             margin-left: -10px;
           }
         }
-
         .content {
-          height: 112px;
-          padding-top: 36px;
+          height: 128px;
+          padding-top: 48px;
         }
-
         .btn_box {
           height: 42px;
           text-align: center;
           margin-bottom: 24px;
-
           .ok_btn {
             width: 136px;
             height: 42px;
             background: #0070ff;
             color: #fff;
           }
-
           .cancel_btn {
             width: 136px;
             height: 42px;
@@ -1835,17 +1413,14 @@ export default {
       }
     }
   }
-
   // 编辑工单
   /deep/ .task_new_box {
     .el-dialog {
       .el-dialog__header {
         display: none;
       }
-
       .el-dialog__body {
         padding: 30px;
-
         .closed_img {
           position: absolute;
           top: -18px;
@@ -1854,18 +1429,15 @@ export default {
           width: 46px;
           height: 46px;
         }
-
         .title {
           height: 24px;
           line-height: 24px;
           text-align: left;
-
           .title_name {
             font-size: 20px;
             color: #333333;
             line-height: 24px;
           }
-
           .mask {
             width: 24px;
             height: 0px;
@@ -1880,7 +1452,6 @@ export default {
             margin-left: -10px;
           }
         }
-
         .step_box {
           height: 36px;
           margin: 20px 0 24px 0;
@@ -1894,18 +1465,15 @@ export default {
             position: relative;
             line-height: 36px;
             text-align: center;
-
             .step1_span {
               font-size: 14px;
             }
-
             .selected_img {
               position: absolute;
               left: 0;
               top: 0;
             }
           }
-
           .step_box2 {
             width: 120px;
             height: 36px;
@@ -1917,24 +1485,19 @@ export default {
             line-height: 36px;
             text-align: center;
             margin-left: -10px;
-
             .step2_span {
               font-size: 14px;
             }
           }
-
           .step_now {
             color: #0070ff;
           }
-
           .step_past {
             color: #999999;
           }
         }
-
         .task_new_content {
           /*height: 480px;*/
-
           .task_content_box {
             height: 400px;
             overflow-y: auto;
@@ -1953,56 +1516,44 @@ export default {
               border-radius: 6px;
               background: #f4f4f4;
             }
-
             .content_top {
               overflow: hidden;
               .content_top_left {
                 float: left;
                 width: 45%;
-
                 .left_item {
                   margin-bottom: 16px;
                   display: flex;
-
                   .title {
                     width: 100px;
                     line-height: 38px;
-
                     .improtant_ico {
                       color: #ff3a36;
                     }
                   }
-
                   .task_new_input {
                     flex: 1;
-
                     .el-input__inner {
                       height: 38px;
                     }
                   }
                 }
               }
-
               .content_top_right {
                 float: right;
                 width: 45%;
-
                 .right_item {
                   margin-bottom: 16px;
                   display: flex;
-
                   .title {
                     width: 100px;
                     line-height: 38px;
-
                     .improtant_ico {
                       color: #ff3a36;
                     }
                   }
-
                   .task_new_input {
                     flex: 1;
-
                     .el-input__inner {
                       height: 38px;
                     }
@@ -2010,13 +1561,11 @@ export default {
                 }
               }
             }
-
             .content_remarks {
               .title {
                 font-size: 12px;
                 color: #999999;
               }
-
               /deep/ .el-textarea {
                 height: 92px;
                 textarea {
@@ -2030,16 +1579,13 @@ export default {
               .el-textarea__inner:hover {
                 border: none;
               }
-
               .el-textarea__inner {
                 border: none;
                 background: #f8f8f8;
               }
             }
-
             .content_table {
               margin-top: 16px;
-
               /deep/ .el-table td {
                 padding: 0;
                 height: 32px;
@@ -2051,20 +1597,17 @@ export default {
                 .cell {
                 }
               }
-
               /deep/ .el-pagination {
                 margin-top: 20px;
                 text-align: center;
               }
             }
           }
-
           .btn_box {
             margin-top: 36px;
             margin-bottom: 24px;
             height: 42px;
             text-align: center;
-
             .cancel_btn {
               border: 1px solid #0070ff;
               background: #fff;
@@ -2082,7 +1625,6 @@ export default {
             }
           }
         }
-
         .task_handle_content {
           .handle_content_top {
             height: 42px;
@@ -2095,7 +1637,6 @@ export default {
               height: 42px;
               color: #fff;
             }
-
             .cel {
               border: 1px solid #0070ff;
               background: #fff;
@@ -2105,10 +1646,8 @@ export default {
               margin-left: 0;
             }
           }
-
           .table_box {
             margin-top: 24px;
-
             .table_box_title {
               height: 38px;
               li {
@@ -2121,7 +1660,6 @@ export default {
                 text-align: center;
                 border-top: 2px solid #fff;
               }
-
               li.active {
                 cursor: pointer;
                 background: #eef6ff;
@@ -2143,19 +1681,16 @@ export default {
                 color: #333333;
               }
             }
-
             /deep/ .el-pagination {
               margin-top: 20px;
               text-align: center;
             }
           }
-
           .btn_box {
             margin-top: 36px;
             margin-bottom: 24px;
             height: 42px;
             text-align: center;
-
             .cancel_btn {
               border: 1px solid #0070ff;
               background: #fff;
@@ -2164,7 +1699,6 @@ export default {
               height: 42px;
               font-size: 16px;
             }
-
             .prev_btn {
               background-color: #0070ff;
               color: #fff;
@@ -2183,11 +1717,9 @@ export default {
       .el-dialog__header {
         display: none;
       }
-
       .el-dialog__body {
-        /*max-height: 640px;*/
+        max-height: 640px;
         padding: 30px;
-
         .closed_img {
           position: absolute;
           top: -18px;
@@ -2196,18 +1728,15 @@ export default {
           width: 46px;
           height: 46px;
         }
-
         .title {
           height: 24px;
           line-height: 24px;
           text-align: left;
-
           .title_name {
             font-size: 20px;
             color: #333333;
             line-height: 24px;
           }
-
           .mask {
             width: 24px;
             height: 0px;
@@ -2223,32 +1752,25 @@ export default {
           }
         }
         .content {
-          padding-top: 16px;
+          padding-top: 48px;
         }
         .btn_box {
           height: 42px;
           text-align: center;
-          margin-bottom: 10px;
-
+          margin-bottom: 24px;
+          margin-top: 36px;
           .ok_btn {
             width: 136px;
             height: 42px;
             background: #0070ff;
             color: #fff;
           }
-
           .cancel_btn {
             width: 136px;
             height: 42px;
             border-color: #0070ff;
             background: #fff;
             color: #0070ff;
-          }
-        }
-
-        .el-table__header {
-          .el-checkbox {
-            display: none;
           }
         }
       }
@@ -2262,96 +1784,6 @@ export default {
       // top: 200px;
       left: 50%;
       transform: translateX(-50%);
-    }
-  }
-}
-</style>
-<style lang="less">
-.s_btn_list {
-  position: absolute;
-  top: 30px;
-  right: 0;
-  width: 308px !important;
-  height: 408px !important;
-  background: #ffffff;
-  padding: 20px 20px !important;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.24);
-  .s_b_name {
-    height: 30px;
-    line-height: 30px;
-    font-family: PingFangSC-Medium;
-    font-size: 16px;
-    color: #333333;
-    font-weight: bold;
-  }
-  .s_b_list {
-    height: 288px;
-    overflow-y: auto;
-    .item {
-      line-height: 24px;
-      font-family: PingFangSC-Regular;
-      font-size: 16px;
-      color: #333333;
-      /deep/ .el-checkbox {
-        .el-checkbox__label {
-          font-family: PingFangSC-Regular;
-          font-size: 16px;
-          color: #333333;
-        }
-      }
-    }
-    &::-webkit-scrollbar {
-      /*滚动条整体样式*/
-      width: 4px;
-      /*高宽分别对应横竖滚动条的尺寸*/
-      /* border-radius: 6px;*/
-    }
-    &::-webkit-scrollbar-thumb {
-      /*滚动条里面小方块*/
-      border-radius: 6px;
-      background: #0070ff;
-      /*background: red;*/
-    }
-    &::-webkit-scrollbar-track {
-      /*滚动条里面轨道*/
-      border-radius: 6px;
-      background: #f4f4f4;
-    }
-  }
-  .s_b_group {
-    margin-top: 10px;
-    height: 40px;
-    line-height: 50px;
-    text-align: center;
-    /deep/ .s_bg {
-      font-size: 14px;
-      height: 34px;
-      width: 96px;
-      outline: none;
-      margin-right: 8px;
-      line-height: 0;
-      padding: 0;
-      font-family: PingFangMedium;
-      &.s_bg_submit {
-        color: #fff;
-        background: #0070ff;
-        border: 1px solid #0070ff;
-        &:hover {
-          color: #fff;
-          background: #0070ff;
-          border: 1px solid #0070ff;
-        }
-      }
-      &.s_bg_cancel {
-        color: #0070ff;
-        border: 1px solid #0070ff;
-        background-color: #fff;
-        &:hover {
-          color: #0070ff;
-          border: 1px solid #0070ff;
-          background-color: #fff;
-        }
-      }
     }
   }
 }

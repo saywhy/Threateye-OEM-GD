@@ -320,7 +320,7 @@ export default {
             margin: 6px 0;
             width: 218px;
             height: 44px;
-            border: 1px solid #ECECEC;
+            border: 1px solid #ececec;
             padding: 10px 8px;
             cursor: move;
             .title {
@@ -341,7 +341,7 @@ export default {
               line-height: 24px;
               outline: none;
               border-width: 0;
-              background: #5389E0;
+              background: #5389e0;
               color: #fff;
               border-radius: 2px;
               font-family: PingFangSC-Regular;
@@ -349,44 +349,45 @@ export default {
               text-align: center;
               cursor: pointer;
 
-            &.active {
-              background: #ececec;
-              color: #bbbbbb;
-              cursor: not-allowed;
+              &.active {
+                background: #ececec;
+                color: #bbbbbb;
+                cursor: not-allowed;
+              }
             }
           }
         }
       }
     }
+    /deep/ .set-container {
+      margin-left: 250px;
+      width: calc(100vw - 250px);
+      height: calc(100vh - 64px);
+    }
+    /deep/ .set-main {
+      padding: 0 !important;
+      background: #f4f4f4;
+    }
+    /deep/ .set-footer {
+      background-color: #ececec;
+      height: 64px !important;
+      line-height: 64px !important;
+      font-family: PingFangSC-Regular;
+      color: #999;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      font-size: 16px;
+      z-index: 999;
+    }
   }
-  /deep/ .set-container {
-    margin-left: 250px;
-    width: calc(100vw - 250px);
-    height: calc(100vh - 64px);
+  .slider-enter {
+    opacity: 0;
+    transform: translateX(100px);
   }
-  /deep/ .set-main {
-    padding: 0 !important;
-    background: #f4f4f4;
+  .slider-enter-active {
+    transition: all 0.3s ease;
   }
-  /deep/ .set-footer {
-    background-color: #ececec;
-    height: 64px !important;
-    line-height: 64px !important;
-    font-family: PingFangSC-Regular;
-    color: #999;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    font-size: 16px;
-    z-index: 999;
-  }
-}
-.slider-enter {
-  opacity: 0;
-  transform: translateX(100px);
-}
-.slider-enter-active {
-  transition: all 0.3s ease;
 }
 </style>

@@ -362,20 +362,7 @@ export default {
       }
     }
 
-    /*/deep/
-    .set-footer {
-      background-color: #ececec;
-      height: 64px !important;
-      line-height: 64px !important;
-      font-family: PingFangSC-Regular;
-      color: #999;
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      font-size: 16px;
-      z-index: 999;
-    }*/
+
   }
   /deep/
   .set-container {
@@ -388,6 +375,20 @@ export default {
       background: #f4f4f4;
     }
   }
+  /*/deep/
+   .set-footer {
+     background-color: #ececec;
+     height: 64px !important;
+     line-height: 64px !important;
+     font-family: PingFangSC-Regular;
+     color: #999;
+     position: fixed;
+     left: 0;
+     bottom: 0;
+     width: 100%;
+     font-size: 16px;
+     z-index: 999;
+   }*/
   .slider-enter {
     opacity: 0;
     transform: translateX(100px);

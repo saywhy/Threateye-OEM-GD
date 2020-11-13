@@ -71,9 +71,8 @@ Vue.prototype.validSe = function (value, number = 255) {
 Vue.config.productionTip = false;
 const whiteList = ['/login', '/'];
 
-
 //全局路由钩子
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   NProgress.start();
   if (store.getters.token) { // 判断是否有token
     if (to.path === '/login') {
@@ -95,6 +94,8 @@ router.beforeEach((to, from, next) => {
               roles
             })
               .then(() => { // 生成可访问的路由表
+
+               // console.log(store.getters.addRouters)
 
                 router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 
@@ -125,12 +126,12 @@ router.beforeEach((to, from, next) => {
       next('/login'); // 否则全部重定向到登录页
     }
   }
-});
+});*/
 
-router.afterEach(() => {
+/*router.afterEach(() => {
   // finish progress bar
   NProgress.done();
-})
+})*/
 
 /* eslint-disable no-new */
 new Vue({

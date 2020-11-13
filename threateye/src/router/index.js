@@ -15,196 +15,7 @@ Vue.use(Router);
  * */
 
 //所有权限通用路由表，如首页和登录页和一些不用权限的公用页面
-export const constantRouterMap = [{
-  path: '/login',
-  name: 'login',
-  component: () => import('@/components/vendor/login/Login')
-},
-  {
-    path: '/',
-    name: 'home',
-    component: Layout,
-    redirect: '/main_content',
-    children: [{
-      path: '/main_content',
-      name: 'main_content',
-      component: () => import('@/components/layout/Main')
-    }]
-  },
-  {
-    path: '/LayoutNot',
-    name: 'LayoutNot',
-    meta: {
-      title: '通知',
-      icon: 'el-icon-help'
-    },
-    component: LayoutNot,
-    children: [{
-      path: '/message',
-      name: 'message',
-      meta: {
-        title: '通知',
-        auth: '',
-        icon: 'el-icon-help',
-        parentAuth: ''
-      },
-      component: () => import('@/components/vendor/Message')
-    },]
-  },
-  {
-    path: '/detail',
-    name: 'detail',
-    meta: {
-      title: '详情'
-    },
-    component: LayoutNot,
-    children: [{
-      path: '/detail/network',
-      name: 'detail_network',
-      meta: {
-        title: '告警',
-        auth: '31',
-        icon: 'el-icon-picture-outline',
-        parentAuth: '58',
-        rootAuth: '58'
-      },
-      component: () => import('@/components/views/emerge/detail/detail-network')
-    },
-      {
-        path: '/detail/computer',
-        name: 'detail_computer',
-        meta: {
-          title: '计算机详情',
-          auth: '32',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '58',
-          rootAuth: '58'
-        },
-        component: () => import('@/components/views/emerge/detail/detail-computer')
-      },
-      {
-        path: '/detail/assets',
-        name: 'detail_assets',
-        meta: {
-          title: '风险资产详情',
-          auth: '21',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '13',
-          rootAuth: '13'
-        },
-        component: () => import('@/components/views/handle/detail/detail-assets')
-      },
-      {
-        path: '/detail/assets/alert',
-        name: 'assets_alert',
-        meta: {
-          title: '风险资产详情',
-          auth: '21',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '13',
-          rootAuth: '13'
-        },
-        component: () => import('@/components/views/handle/detail/detail-alert')
-      },
-      {
-        path: '/detail/works',
-        name: 'detail_works',
-        meta: {
-          title: '工单详情',
-          auth: '23',
-          icon: 'el-icon-picture-outline',
-          parentAuth: '13',
-          rootAuth: '13'
-        },
-        component: () => import('@/components/views/handle/detail/detail-works')
-      },
-    ]
-  },
-  {
-    path: '/screen',
-    name:'screen',
-    component: () => import('@/components/vendor/screen/Screen')
-  },
-  {
-    path: '/screen/set',
-    name:'screen_set',
-    redirect: '/screen/set/top',
-    component: () => import('@/components/vendor/screen/screen-set/screen-set'),
-    children:[
-      {
-        path: '/screen/set/base',
-        name: 'screen_set_base',
-        query:{
-          num: '0'
-        },
-        meta: {
-          title: '基础设置',
-          auth: '996',
-          icon: 'e-aside-none',
-          parentAuth: '995',
-          rootAuth: '1',
-          deep: 2
-        },
-        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-base.vue')
-      },
-      {
-        path: '/screen/set_screen',
-        name: 'screen_set_aside',
-        query:{
-          num: '1'
-        },
-        meta: {
-          title: '顶部设置',
-          auth: '996',
-          icon: 'e-aside-none',
-          parentAuth: '995',
-          rootAuth: '1',
-          deep: 2
-        },
-        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-screen.vue')
-      },
-      {
-        path: '/screen/set_screen',
-        name: 'screen_set_top',
-        query:{
-          num: '2'
-        },
-        meta: {
-          title: '基础设置',
-          auth: '996',
-          icon: 'e-aside-none',
-          parentAuth: '995',
-          rootAuth: '1',
-          deep: 2
-        },
-        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-screen.vue')
-      }
-    ]
-  },
-  {
-    path: '/600',
-    component: () => import('@/components/vendor/600')
-  },
-  {
-    path: '/401',
-    component: () => import('@/components/vendor/401')
-  },
-  {
-    path: '*',
-    component: () => import('@/components/vendor/404')
-  }
-]
-
-//实例化vue的时候只挂载constantRouter
-export default new Router({
-  scrollBehavior: () => ({
-    y: 0
-  }),
-  routes: constantRouterMap
-});
-
-//异步挂载的路由，动态需要根据权限加载的路由表
-export const asyncRouterMap = [
+export const constantRouterMap = [
   /*首页*/
   {
     path: '/home',
@@ -230,7 +41,7 @@ export const asyncRouterMap = [
         deep: 1
       },
       component: () => import('@/components/views/home/Overview')
-     },
+    },
       {
         path: '/home/screen_index',
         name: 'screen_index',
@@ -695,5 +506,193 @@ export const asyncRouterMap = [
         component: () => import('@/components/views/system/Licence')
       }
     ]
-  }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/components/vendor/login/Login')
+  },
+  {
+    path: '/',
+    name: 'home',
+    component: Layout,
+    redirect: '/main_content',
+    children: [{
+      path: '/main_content',
+      name: 'main_content',
+      component: () => import('@/components/layout/Main')
+    }]
+  },
+  {
+    path: '/LayoutNot',
+    name: 'LayoutNot',
+    meta: {
+      title: '通知',
+      icon: 'el-icon-help'
+    },
+    component: LayoutNot,
+    children: [{
+      path: '/message',
+      name: 'message',
+      meta: {
+        title: '通知',
+        auth: '',
+        icon: 'el-icon-help',
+        parentAuth: ''
+      },
+      component: () => import('@/components/vendor/Message')
+    },]
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    meta: {
+      title: '详情'
+    },
+    component: LayoutNot,
+    children: [{
+      path: '/detail/network',
+      name: 'detail_network',
+      meta: {
+        title: '告警',
+        auth: '31',
+        icon: 'el-icon-picture-outline',
+        parentAuth: '58',
+        rootAuth: '58'
+      },
+      component: () => import('@/components/views/emerge/detail/detail-network')
+    },
+      {
+        path: '/detail/computer',
+        name: 'detail_computer',
+        meta: {
+          title: '计算机详情',
+          auth: '32',
+          icon: 'el-icon-picture-outline',
+          parentAuth: '58',
+          rootAuth: '58'
+        },
+        component: () => import('@/components/views/emerge/detail/detail-computer')
+      },
+      {
+        path: '/detail/assets',
+        name: 'detail_assets',
+        meta: {
+          title: '风险资产详情',
+          auth: '21',
+          icon: 'el-icon-picture-outline',
+          parentAuth: '13',
+          rootAuth: '13'
+        },
+        component: () => import('@/components/views/handle/detail/detail-assets')
+      },
+      {
+        path: '/detail/assets/alert',
+        name: 'assets_alert',
+        meta: {
+          title: '风险资产详情',
+          auth: '21',
+          icon: 'el-icon-picture-outline',
+          parentAuth: '13',
+          rootAuth: '13'
+        },
+        component: () => import('@/components/views/handle/detail/detail-alert')
+      },
+      {
+        path: '/detail/works',
+        name: 'detail_works',
+        meta: {
+          title: '工单详情',
+          auth: '23',
+          icon: 'el-icon-picture-outline',
+          parentAuth: '13',
+          rootAuth: '13'
+        },
+        component: () => import('@/components/views/handle/detail/detail-works')
+      },
+    ]
+  },
+  {
+    path: '/screen',
+    name:'screen',
+    component: () => import('@/components/vendor/screen/Screen')
+  },
+  {
+    path: '/screen/set',
+    name:'screen_set',
+    redirect: '/screen/set/top',
+    component: () => import('@/components/vendor/screen/screen-set/screen-set'),
+    children:[
+      {
+        path: '/screen/set/base',
+        name: 'screen_set_base',
+        query:{
+          num: '0'
+        },
+        meta: {
+          title: '基础设置',
+          auth: '996',
+          icon: 'e-aside-none',
+          parentAuth: '995',
+          rootAuth: '1',
+          deep: 2
+        },
+        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-base.vue')
+      },
+      {
+        path: '/screen/set_screen',
+        name: 'screen_set_aside',
+        query:{
+          num: '1'
+        },
+        meta: {
+          title: '顶部设置',
+          auth: '996',
+          icon: 'e-aside-none',
+          parentAuth: '995',
+          rootAuth: '1',
+          deep: 2
+        },
+        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-screen.vue')
+      },
+      {
+        path: '/screen/set_screen',
+        name: 'screen_set_top',
+        query:{
+          num: '2'
+        },
+        meta: {
+          title: '基础设置',
+          auth: '996',
+          icon: 'e-aside-none',
+          parentAuth: '995',
+          rootAuth: '1',
+          deep: 2
+        },
+        component: () => import('@/components/vendor/screen/screen-set-sup/vm-set-screen.vue')
+      }
+    ]
+  },
+  {
+    path: '/600',
+    component: () => import('@/components/vendor/600')
+  },
+  {
+    path: '/401',
+    component: () => import('@/components/vendor/401')
+  },
+  {
+    path: '*',
+    component: () => import('@/components/vendor/404')
+  },
+
 ]
+
+//实例化vue的时候只挂载constantRouter
+export default new Router({
+  scrollBehavior: () => ({
+    y: 0
+  }),
+  routes: constantRouterMap
+});
+

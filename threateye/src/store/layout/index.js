@@ -1,28 +1,15 @@
 import axios from "axios";
 
 import {
-  asyncRouterMap,
   constantRouterMap
 } from "@/router";
-import {
-  getToken,
-  setToken,
-  removeToken
-} from "./cookie";
-import {
-  forRoleList,
-  formatList
-} from './auth'
+
+let asyncRouterMap = constantRouterMap.slice(0,6);
 
 export default {
   state: {
-    highligh: {
-      navIndex: '0',
-      asideIndex: '0'
-    },
     routers: constantRouterMap,
-    addRouters: [],
-    token: getToken(),
+    addRouters:asyncRouterMap,
     roles: [],
     isCollapse: false,
     sysMonitor: false,
@@ -38,20 +25,16 @@ export default {
     SET_TOKEN: (state, args) => {
       state.token = args;
     },
-
     SET_SANDBOX: (state, args) => {
       state.sandbox = args;
     },
-
     SET_ROLES: (state, args) => {
       state.roles = args;
     },
-
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers);
     },
-
     TOGGLE_COLLAPSE: (state, args) => {
       state.isCollapse = args;
     },
@@ -61,7 +44,7 @@ export default {
   },
   actions: {
     //登录
-    LoginByUsername({
+    /*LoginByUsername({
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
@@ -108,7 +91,6 @@ export default {
         })
       });
     },
-
     //权限设置
     async GetAuth({
       commit,
@@ -117,6 +99,8 @@ export default {
       try {
         //真实数据
         let resp = await axios('/yiiapi/site/menu');
+
+        console.log(resp);
 
         let roles = forRoleList(resp);
 
@@ -135,7 +119,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
+    },*/
 
     async LogOut({
       commit,
@@ -159,19 +143,17 @@ export default {
       }
     },
 
-    async GenerateRoutes({
+    /*async GenerateRoutes({
       commit
     }, data) {
-
       return new Promise(resolve => {
         const {
           roles
         } = data;
-
         const accessedRouters = formatList(asyncRouterMap, roles);
         commit('SET_ROUTERS', accessedRouters);
         resolve();
       })
-    }
+    }*/
   }
 }

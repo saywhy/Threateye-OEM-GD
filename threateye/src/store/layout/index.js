@@ -4,7 +4,7 @@ import {
   constantRouterMap
 } from "@/router";
 
-let asyncRouterMap = constantRouterMap.slice(0,6);
+let asyncRouterMap = constantRouterMap.slice(0,2);
 
 export default {
   state: {
@@ -121,7 +121,7 @@ export default {
       }
     },*/
 
-    async LogOut({
+   /* async LogOut({
       commit,
       dispatch
     }) {
@@ -141,7 +141,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
+    },*/
 
     /*async GenerateRoutes({
       commit

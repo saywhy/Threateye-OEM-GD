@@ -202,13 +202,16 @@ export default {
 </script>
 
 <style scoped lang="less">
+
 .screen-set {
-  /deep/ .set-aside {
+  /deep/
+  .set-aside {
     width: 250px !important;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 999;
+
     .set-aside-top {
       width: 100%;
       /*height: 56px!important;*/
@@ -237,7 +240,6 @@ export default {
         }
       }
     }
-
     .set-aside-menu {
       position: inherit;
       border-width: 0;
@@ -359,16 +361,9 @@ export default {
         }
       }
     }
-    /deep/ .set-container {
-      margin-left: 250px;
-      width: calc(100vw - 250px);
-      height: calc(100vh - 64px);
-    }
-    /deep/ .set-main {
-      padding: 0 !important;
-      background: #f4f4f4;
-    }
-    /deep/ .set-footer {
+
+    /*/deep/
+    .set-footer {
       background-color: #ececec;
       height: 64px !important;
       line-height: 64px !important;
@@ -380,6 +375,17 @@ export default {
       width: 100%;
       font-size: 16px;
       z-index: 999;
+    }*/
+  }
+  /deep/
+  .set-container {
+    margin-left: 250px;
+    width: calc(100vw - 250px);
+    height: calc(100vh - 64px);
+    /deep/
+    .set-main {
+      padding: 0 !important;
+      background: #f4f4f4;
     }
   }
   .slider-enter {

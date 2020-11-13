@@ -153,14 +153,14 @@ export const constantRouterMap = [
   },
   {
     path: '/screen/set',
-    name: 'screen_set',
+    name:'screen_set',
     redirect: '/screen/set/top',
     component: () => import('@/components/vendor/screen/screen-set/screen-set'),
-    children: [
+    children:[
       {
         path: '/screen/set/base',
         name: 'screen_set_base',
-        query: {
+        query:{
           num: '0'
         },
         meta: {
@@ -176,7 +176,7 @@ export const constantRouterMap = [
       {
         path: '/screen/set_screen',
         name: 'screen_set_aside',
-        query: {
+        query:{
           num: '1'
         },
         meta: {
@@ -192,7 +192,7 @@ export const constantRouterMap = [
       {
         path: '/screen/set_screen',
         name: 'screen_set_top',
-        query: {
+        query:{
           num: '2'
         },
         meta: {

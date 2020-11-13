@@ -13,7 +13,7 @@
         </transition>
       </el-main>
     </el-container>
-    <el-footer>©虎特信息科技（上海）有限公司 版权所有</el-footer>
+    <!-- <el-footer>©虎特信息科技（上海）有限公司 版权所有</el-footer> -->
   </el-container>
 </template>
 
@@ -49,21 +49,24 @@ export default {
     .dashboard-list-main {
       padding: 0;
       margin-left: 0;
-      background-color: #f4f4f4;
+      // background-color: #f4f4f4;
+      background: transparent;
       min-height: auto;
-      height: calc(100vh - 120px);
+      height: calc(100vh - 65px);
       &::-webkit-scrollbar {
         /*滚动条整体样式*/
         width: 10px;
         /*高宽分别对应横竖滚动条的尺寸*/
         /* border-radius: 6px;*/
       }
-      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+      &::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
         border-radius: 6px;
         background: #a8a8a8;
         /*background: red;*/
       }
-      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+      &::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
         border-radius: 6px;
         background: #f4f4f4;
       }

@@ -28,7 +28,7 @@
           </router-link>
         </el-menu>
       </el-col>
-      <el-col :span="9"
+      <!-- <el-col :span="9"
               style="width:38.3%;">
         <div class="header-basic"
              align="right">
@@ -64,11 +64,11 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-      </el-col>
+      </el-col> -->
     </el-row>
 
     <!-- 修改密码弹窗 -->
-    <el-dialog class="pop_box_password"
+    <!-- <el-dialog class="pop_box_password"
                :close-on-click-modal="false"
                :modal-append-to-body="false"
                :visible.sync="pass_state">
@@ -151,7 +151,7 @@
         <el-button class="ok_btn"
                    @click="edit_user">确定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -432,7 +432,7 @@ export default {
     }
     .el-col {
       .el-menu-demo {
-        background-color: #2e3f60;
+        background: transparent;
         display: flex;
         border-width: 0 !important;
         > a.item {

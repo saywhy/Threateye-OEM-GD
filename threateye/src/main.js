@@ -20,7 +20,7 @@ Vue.prototype.$echarts = echarts;
 // 引入axios
 import axios from './https/axios'
 Vue.prototype.$axios = axios;
-// axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
+axios.defaults.baseURL = '/api/' // api 即上面 vue.config.js 中配置的地址
 import uploader from 'vue-simple-uploader'
 
 import "echarts/extension/bmap/bmap.js";
@@ -113,15 +113,16 @@ router.beforeEach((to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next();
     } else {
-      next('/login'); // 否则全部重定向到登录页
+      // next('/login'); // 否则全部重定向到登录页
+      next('/home/overview'); // 否则全部重定向到登录页
     }
   }
 });
 
-router.afterEach(() => {
-  // finish progress bar
-  NProgress.done();
-})
+// router.afterEach(() => {
+//   // finish progress bar
+//   NProgress.done();
+// })
 
 /* eslint-disable no-new */
 new Vue({

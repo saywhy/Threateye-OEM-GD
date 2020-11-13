@@ -81,11 +81,11 @@ axios.interceptors.response.use(response => {
         console.log('拒绝访问111')
         let locate = window.sessionStorage;
         locate.setItem('overtime', 'true');
-        removeToken();
+        // removeToken();
         location.reload();
-        Vue.$router.push({
-          path: '/login'
-        });
+        // Vue.$router.push({
+        //   path: '/login'
+        // });
         return false;
         // Router.push({
         //   path: '/login'

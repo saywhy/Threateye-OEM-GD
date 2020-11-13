@@ -18,7 +18,7 @@
         </transition>
       </el-main>
     </el-container>
-    <el-footer>©虎特信息科技（上海）有限公司  版权所有</el-footer>
+    <!-- <el-footer>©虎特信息科技（上海）有限公司  版权所有</el-footer> -->
   </el-container>
 </template>
 
@@ -50,8 +50,10 @@ export default {
 
 <style scoped lang="less">
 #dashboard {
+  background-image: linear-gradient(to right, #365d8c, #3e2149);
   .el-header {
-    background-color: #2e3f60;
+    // background-color: #2e3f60;
+    background-image: linear-gradient(to right, #365d8c, #3e2149);
     padding: 0 24px;
     position: fixed;
     width: 100%;
@@ -74,8 +76,7 @@ export default {
         width: 56px !important;
         #aside {
           width: 100%;
-          /deep/
-          .el-menu--collapse {
+          /deep/ .el-menu--collapse {
             width: 100%;
             .aside-item {
               .item {
@@ -98,21 +99,24 @@ export default {
     .dashboard-list-main {
       padding: 0;
       margin-left: 210px;
-      background-color: #f4f4f4;
+      background: transparent;
+      // background-color: #f4f4f4;
       min-height: auto;
-      height: calc(100vh - 120px);
+      height: calc(100vh - 60px);
       &::-webkit-scrollbar {
         /*滚动条整体样式*/
         width: 10px;
         /*高宽分别对应横竖滚动条的尺寸*/
         /* border-radius: 6px;*/
       }
-      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+      &::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
         border-radius: 6px;
         background: #a8a8a8;
         /*background: red;*/
       }
-      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+      &::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
         border-radius: 6px;
         background: #f4f4f4;
       }

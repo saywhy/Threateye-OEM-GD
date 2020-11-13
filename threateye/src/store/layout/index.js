@@ -199,6 +199,7 @@ export default {
           roles
         } = data;
 
+        // const accessedRouters = formatList(roles);
         const accessedRouters = formatList(asyncRouterMap, roles);
         commit('SET_ROUTERS', accessedRouters);
         resolve();

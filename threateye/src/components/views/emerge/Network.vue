@@ -1384,6 +1384,7 @@ export default {
 @import '../../../assets/css/less/common-pattern.less';
 @import '../../../assets/css/less/common-table-pattern.less';
 #Network {
+  background: transparent;
   text-align: left;
   padding: 24px;
   .e_line {

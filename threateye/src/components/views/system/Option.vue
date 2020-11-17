@@ -526,7 +526,7 @@ export default {
   .content_box {
     min-height: 830px;
     .title {
-      font-family: PingFangMedium;
+      font-family: Microsoft YaHei;
       font-size: 18px;
       color: #333333;
       margin-bottom: 16px;

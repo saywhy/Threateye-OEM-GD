@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     chooseTime () {
-     // console.log(this.option);
+      // console.log(this.option);
       // console.log(this.pickerOptions.time);
       this.$emit("changeTime", this.pickerOptions.time);
     }
@@ -77,7 +77,7 @@ export default {
 
 <style lang="less">
 .el-input__inner {
-  background-color: #f8f8f8;
+  background: rgba(0, 0, 0, 0.3);
   border-width: 0;
   outline: none;
 }
@@ -85,21 +85,25 @@ export default {
   width: 400px !important;
   /deep/ .el-range-input {
     /*width: auto;*/
-    background-color: #f8f8f8;
+    // background: rgba(0, 0, 0, 0.3);
+    background: transparent;
   }
   /deep/ .el-range-separator {
     padding: 0 3px;
     line-height: 32px;
     width: auto;
-    color: #303133;
+    color: #fff;
   }
-  .el-date-table td.end-date span {
-    background-color: #0070ff;
+  /deep/ .el-date-table td.end-date span {
+    background-color: #00ff00;
   }
-  .el-button.is-active,
-  .el-button.is-plain:active {
-    color: #0070ff;
-    border-color: #0070ff;
+  /deep/ .el-button.is-active,
+  /deep/ .el-button.is-plain:active {
+    color: #00ff00;
+    border-color: #00ff00;
+  }
+  /deep/ .el-date-table td.start-date span {
+    background-color: #00ff00;
   }
 }
 </style>

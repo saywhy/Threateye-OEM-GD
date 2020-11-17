@@ -607,7 +607,7 @@ export default {
                 show: true,
                 textStyle: {
                   fontSize: 12,
-                  color: '#666',
+                  color: '#fff',
                   align: 'center',
                 },
                 formatter: '探针'
@@ -640,7 +640,7 @@ export default {
               show: true,
               textStyle: {
                 fontSize: 12,
-                color: '#666',
+                color: '#fff',
                 align: 'center',
               },
               formatter: '引擎'
@@ -670,7 +670,7 @@ export default {
               show: true,
               textStyle: {
                 fontSize: 12,
-                color: '#666',
+                color: '#fff',
                 align: 'center',
               },
               formatter: '引擎/探针'
@@ -703,7 +703,7 @@ export default {
                 show: true,
                 textStyle: {
                   fontSize: 12,
-                  color: '#666',
+                  color: '#fff',
                   align: 'center',
                 },
                 formatter: '沙箱'
@@ -786,7 +786,7 @@ export default {
           focusNodeAdjacenc: false, //是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点
           lineStyle: {
             normal: {
-              color: '#F2F2F2',
+              color: '#fff',
               opacity: 0.9,
               width: 2,
               // curveness: 0
@@ -798,7 +798,7 @@ export default {
       //添加点击事件
       myChart.off("click"); //防止累计触发
       myChart.on('click', (params) => {
-        // console.log(params.data);
+        console.log(params.data);
         //console.log(this.state_detail);
         this.state_detail = true;
         this.iot_detail_top(params.data)
@@ -815,7 +815,7 @@ export default {
       this.equipment_detail.title.ip = params.dev_ip
       this.equipment_detail.title.name = params.dev_name
       this.loading = true;
-      this.$axios.get('/yiiapi/alert/dev-state', {
+      this.$axios.get('/yiiapi/overviewoem/dev-state', {
         params: {
           ip: params.dev_ip
         }
@@ -868,7 +868,8 @@ export default {
           left: 'center',
           orient: 'horizontal',
           textStyle: {
-            fontSize: 12
+            fontSize: 12,
+            color: '#fff'
           },
           selected: {
             // 选中'系列1'
@@ -882,14 +883,14 @@ export default {
           trigger: "axis",
           borderColor: "rgba(2,136,209,0.3)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0,0,0,.3)",
           textStyle: {
-            color: "#ccc",
+            color: "#fff",
             align: 'left'
           },
           axisPointer: {
             lineStyle: {
-              color: "#ccc"
+              color: "#fff"
             }
           }
         },
@@ -912,7 +913,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -923,7 +924,7 @@ export default {
         yAxis: [{
           name: '单位(%)',
           nameTextStyle: {
-            color: '#666'
+            color: '#fff'
           },
           splitLine: {
             show: true,
@@ -942,7 +943,7 @@ export default {
           axisLabel: {
 
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -1101,7 +1102,8 @@ export default {
           left: 'center',
           orient: 'horizontal',
           textStyle: {
-            fontSize: 12
+            fontSize: 12,
+            color: '#fff'
           },
           selected: {
             // 选中'系列1'
@@ -1113,13 +1115,13 @@ export default {
           trigger: "axis",
           borderColor: "rgba(187,120,247,0.3)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0,0,0,.3)",
           textStyle: {
-            color: "#ccc"
+            color: "#fff"
           },
           axisPointer: {
             lineStyle: {
-              color: "#ccc"
+              color: "#fff"
             }
           }
         },
@@ -1143,7 +1145,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -1154,7 +1156,7 @@ export default {
         yAxis: [{
           name: '单位(Mbps)',
           nameTextStyle: {
-            color: '#666'
+            color: '#fff'
           },
           splitLine: {
             show: true,
@@ -1172,7 +1174,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -1268,23 +1270,23 @@ export default {
       }
       margin-bottom: 10px;
       .top_item {
-        background: #ffffff;
+        background: rgba(0, 0, 0, 0.2);
         height: 380px;
         border-radius: 4px;
         padding: 0 16px 20px 16px;
         .title {
           height: 60px;
           line-height: 60px;
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
           font-size: 18px;
-          color: #333333;
+          color: #fff;
           .title_left {
             float: left;
           }
           .title_right {
             float: right;
             font-size: 14px;
-            color: #333333;
+            color: #fff;
             .title_right_icon {
               margin-left: 12px;
               border-radius: 2px;
@@ -1354,14 +1356,14 @@ export default {
   padding: 0 !important;
   /deep/ .common-table {
     width: 100%;
-    font-family: PingFangMedium;
+    font-family: Microsoft YaHei;
     /deep/ .el-table__header-wrapper {
       .el-table__header {
         thead.has-gutter {
           th {
             background: #f8f8f8;
             .cell {
-              color: #333;
+              color: #fff;
             }
           }
         }
@@ -1422,6 +1424,7 @@ export default {
     z-index: 9000 !important;
     .el-dialog {
       width: 842px;
+      background-image: linear-gradient(to right, #365d8c, #3e2149);
       .el-dialog__header {
         display: none;
       }
@@ -1451,11 +1454,11 @@ export default {
           }
           .title_name {
             font-size: 16px;
-            color: #333333;
+            color: #fff;
             margin-left: 6px;
             display: inline-block;
             vertical-align: super;
-            font-family: PingFangMedium;
+            font-family: Microsoft YaHei;
           }
         }
         #graph {
@@ -1470,6 +1473,7 @@ export default {
     z-index: 99999 !important;
     .el-dialog {
       width: 840px;
+      background-image: linear-gradient(to right, #365d8c, #3e2149);
       .el-dialog__header {
         display: none;
       }
@@ -1490,7 +1494,7 @@ export default {
           text-align: left;
           .title_name {
             font-size: 20px;
-            color: #333333;
+            color: #fff;
             line-height: 24px;
           }
           .mask {
@@ -1513,7 +1517,7 @@ export default {
             margin-top: 24px;
             p {
               font-size: 14px;
-              color: #999999;
+              color: #fff;
             }
             #cpu,
             #flow_echarts {

@@ -39,13 +39,13 @@ export default {
           trigger: "axis",
           borderColor: "rgba(2,136,209,0.3)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           textStyle: {
-            color: "#ccc"
+            color: "#fff"
           },
           axisPointer: {
             lineStyle: {
-              color: "#ccc"
+              color: "#fff"
             }
           }
         },
@@ -65,13 +65,13 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: "#ECECEC",
+              color: "#fff",
               width: 2
             }
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -90,13 +90,13 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: "#ECECEC",
+              color: "#fff",
               width: 2
             }
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {

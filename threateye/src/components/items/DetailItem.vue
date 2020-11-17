@@ -59,7 +59,7 @@ export default {
       background-repeat: no-repeat;
     }*/
     .va-title {
-      font-family: PingFang;
+      font-family: Microsoft YaHei;
       font-size: 14px;
       color: #999999;
       line-height: 18px;
@@ -69,7 +69,7 @@ export default {
     position: absolute;
     left: 56px;
     top: 40px;
-    font-family: PingFangMedium;
+    font-family: Microsoft YaHei;
     font-size: 18px;
     color: #333333;
     /*font-weight: normal;*/

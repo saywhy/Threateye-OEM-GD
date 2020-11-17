@@ -67,59 +67,16 @@
             <el-link class="s_link"
                      @click="resetClick();">重置</el-link>
 
-            <el-button class="s_btn_edit"
-                       @click="export_box">导出</el-button>
+            <!-- <el-button class="s_btn_edit"
+                       @click="export_box">导出</el-button> -->
           </el-col>
         </el-row>
-        <!--按钮组-->
-        <!-- <el-row class="common_btn">
-          <el-col :span="24"
-                  class="common_btn_list">
-            <el-dropdown @command="change_state"
-                         trigger="click"
-                         placement='bottom-start'
-                         size='148'>
-              <el-button type="primary"
-                         class="change_btn">
-                <span>状态变更</span>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown"
-                                class="dropdown_ul_box">
-                <el-dropdown-item command="处置中"
-                                  class="select_item">处置中</el-dropdown-item>
-                <el-dropdown-item command="已处置"
-                                  class="select_item">已处置</el-dropdown-item>
-                <el-dropdown-item command="已忽略"
-                                  class="select_item">已忽略</el-dropdown-item>
-                <el-dropdown-item command="误报"
-                                  class="select_item">误报</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-dropdown @command="change_task"
-                         placement='bottom-start'
-                         trigger="click">
-              <el-button type="primary"
-                         class="change_btn">
-                <span>工单任务</span>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown"
-                                class="dropdown_ul_box">
-                <el-dropdown-item command="新建工单">新建工单</el-dropdown-item>
-                <el-dropdown-item command="添加到工单">添加到工单</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-
-          </el-col>
-        </el-row> -->
       </el-form>
-      <el-row class="common-table-pattern">
+      <el-row>
         <el-col :span="24">
           <el-table ref="multipleTable"
                     align="center"
-                    border
-                    class="common-table"
+                    stripe
                     v-loading="table.loading"
                     :data="table.tableData"
                     :row-style="{cursor:'pointer'}"
@@ -138,9 +95,9 @@
                      v-show="scope.row.new_alert=='1'"></div>
               </template>
             </el-table-column>
-            <el-table-column type="selection"
+            <!-- <el-table-column type="selection"
                              align="center"
-                             width="50"></el-table-column>
+                             width="50"></el-table-column> -->
             <el-table-column label="告警时间"
                              align="center"
                              width="200"
@@ -1322,18 +1279,19 @@ export default {
 @import '../../../assets/css/less/common-pattern.less';
 @import '../../../assets/css/less/common-table-pattern.less';
 #Network {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.2);
   text-align: left;
   padding: 24px;
   .e_line {
     height: 322px;
-    background: #ffffff;
+    background: transparent;
+    // background: #ffffff;
     border-radius: 4px;
     position: relative;
     .title {
       text-align: left;
       font-size: 18px;
-      color: #333;
+      color: #fff;
       position: absolute;
       top: 12px;
       left: 24px;
@@ -1344,7 +1302,6 @@ export default {
     margin-top: 20px;
     padding: 20px 24px;
     height: auto;
-    background: #fff;
     text-align: left;
   }
   /* 弹窗 */
@@ -1371,7 +1328,7 @@ export default {
           text-align: left;
           .title_name {
             font-size: 20px;
-            color: #333333;
+            color: #fff;
             line-height: 24px;
           }
           .mask {
@@ -1573,7 +1530,7 @@ export default {
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFang;
+                  font-family: Microsoft YaHei;
                 }
               }
               .el-textarea__inner:hover {

@@ -147,14 +147,14 @@
         }
         .s_name{
           opacity: 0.8;
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 12px;
           color: #FFFFFF;
           height: 32px;
           line-height: 32px;
         }
         .s_content{
-          font-family: PingFangSC-Medium;
+          font-family: Microsoft YaHeiSC-Medium;
           font-size: 16px;
           color: #00D6E9;
           overflow: hidden;

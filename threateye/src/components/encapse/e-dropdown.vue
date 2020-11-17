@@ -135,7 +135,7 @@
         .item_a {
           text-decoration: none;
           color: #333333;
-          font-family: PingFang;
+          font-family:Microsoft YaHei;
           font-size: 12px;
           @media (min-width: 1600px) {
             font-size: 14px;

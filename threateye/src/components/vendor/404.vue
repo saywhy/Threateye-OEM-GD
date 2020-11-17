@@ -55,7 +55,7 @@ body {
 .nofind p:not(:first-child) {
   text-align: center;
   color: #666;
-  font-family: PingFang;
+  font-family:Microsoft YaHei;
   font-size: 20px;
   text-shadow: 0 1px 0 #fff;
   letter-spacing: 1px;

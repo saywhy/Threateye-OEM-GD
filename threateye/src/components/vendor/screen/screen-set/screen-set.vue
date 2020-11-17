@@ -202,10 +202,9 @@ export default {
 </script>
 
 <style scoped lang="less">
-
 .screen-set {
-  /deep/
-  .set-aside {
+  background-image: linear-gradient(to right, #365d8c, #3e2149);
+  /deep/ .set-aside {
     width: 250px !important;
     position: fixed;
     top: 0;
@@ -217,18 +216,18 @@ export default {
       /*height: 56px!important;*/
       line-height: 56px !important;
       text-align: left;
-      font-family: PingFangSC-Regular;
+      font-family: Microsoft YaHei;
       font-size: 14px;
-      color: #999999;
+      color: #fff;
       font-weight: bold;
       padding: 0 10px;
       /deep/ .el-link {
         &.el-link--default {
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 14px;
-          color: #999999;
+          color: #fff;
           &:hover {
-            color: #999999;
+            color: #fff;
             border-width: 0;
           }
           &:after {
@@ -287,7 +286,7 @@ export default {
         .el-menu-item {
           height: 56px;
           font-size: 14px;
-          color: #333;
+          color: #fff;
           display: block;
           text-align: left;
           padding: 0 16px 0 44px;
@@ -297,7 +296,7 @@ export default {
 
           &.is-active {
             color: #fff;
-            background-color: #0070ff;
+            background-color: rgba(0, 0, 0, 0.3);
             -webkit-transition: 0s height, 0s padding-top, 0s padding-bottom;
             transition: 0s height, 0s padding-top, 0s padding-bottom;
 
@@ -308,7 +307,7 @@ export default {
               height: 0px;
               border-top: 8px solid transparent;
               border-bottom: 8px solid transparent;
-              border-left: 8px solid #0070ff;
+              border-left: 8px solid rgba(0, 0, 0, 0.3);
               position: absolute;
               top: 20px;
               right: -8px;
@@ -322,14 +321,15 @@ export default {
             margin: 6px 0;
             width: 218px;
             height: 44px;
-            border: 1px solid #ececec;
+            // border: 1px solid #ececec;
+            background: rgba(0, 0, 0, 0.3);
             padding: 10px 8px;
             cursor: move;
             .title {
               float: left;
-              font-family: PingFangSC-Regular;
+              font-family: Microsoft YaHei;
               font-size: 12px;
-              color: #333333;
+              color: #fff;
               width: 120px;
               cursor: pointer;
               white-space: nowrap;
@@ -346,7 +346,7 @@ export default {
               background: #5389e0;
               color: #fff;
               border-radius: 2px;
-              font-family: PingFangSC-Regular;
+              font-family: Microsoft YaHei;
               font-size: 12px;
               text-align: center;
               cursor: pointer;
@@ -361,18 +361,14 @@ export default {
         }
       }
     }
-
-
   }
-  /deep/
-  .set-container {
+  /deep/ .set-container {
     margin-left: 250px;
     width: calc(100vw - 250px);
     height: calc(100vh - 64px);
-    /deep/
-    .set-main {
+    /deep/ .set-main {
       padding: 0 !important;
-      background: #f4f4f4;
+      background-image: linear-gradient(to right, #365d8c, #3e2149);
     }
   }
   /*/deep/
@@ -380,7 +376,7 @@ export default {
      background-color: #ececec;
      height: 64px !important;
      line-height: 64px !important;
-     font-family: PingFangSC-Regular;
+     font-family: Microsoft YaHei;
      color: #999;
      position: fixed;
      left: 0;

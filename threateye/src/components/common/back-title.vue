@@ -39,7 +39,7 @@ export default {
 <style scoped lang="less">
 .back-title {
   height: 106px;
-  background-color: #f8f8f8;
+  background: rgba(0, 0, 0, 0.3);
   padding: 0 56px;
   position: relative;
   .back {
@@ -49,11 +49,11 @@ export default {
     font-size: 14px;
     display: block;
     cursor: pointer;
-    color: #999999;
+    color: #fff;
     .e-title {
-      font-family: PingFang;
+      font-family: Microsoft YaHei;
       font-size: 14px;
-      color: #999999;
+      color: #fff;
       line-height: 18px;
       margin-left: -4px;
     }
@@ -63,8 +63,8 @@ export default {
     left: 56px;
     bottom: 12px;
     font-size: 20px;
-    font-family: PingFangMedium;
-    color: #333333;
+    font-family: Microsoft YaHei;
+    color: #fff;
   }
 }
 </style>

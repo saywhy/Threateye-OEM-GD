@@ -1184,7 +1184,7 @@ export default {
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFang;
+                  font-family: Microsoft YaHei;
                 }
               }
               .el-textarea__inner:hover {

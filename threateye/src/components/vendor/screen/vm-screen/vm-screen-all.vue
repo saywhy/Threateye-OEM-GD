@@ -91,7 +91,7 @@
     color: #00D7E9;
     text-align: left;
     padding: 18px 16px 10px 16px;
-    font-family: PingFangSC-Medium;
+    font-family: Microsoft YaHeiSC-Medium;
     .t_img {
       width: 140px;
       height: 24px;

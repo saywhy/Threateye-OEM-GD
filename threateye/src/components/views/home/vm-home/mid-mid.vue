@@ -1,9 +1,9 @@
 <template>
-    <div id="safe"></div>
+  <div id="safe"></div>
 </template>
 
 <script type="text/ecmascript-6">
-  require('../../../../../static/js/echarts-auto-tooltip');
+require('../../../../../static/js/echarts-auto-tooltip');
 export default {
   name: "safe",
   props: {
@@ -12,30 +12,30 @@ export default {
       default: () => []
     }
   },
-  data(){
-    return{
+  data () {
+    return {
       untreat: {}
     }
   },
-  created(){
+  created () {
     let chartData = this.mid_mid;
-    chartData.forEach((item,index,array)=>{
+    chartData.forEach((item, index, array) => {
       if (item.degree == 'low') {
         this.$set(this.untreat, 'low', item.total_count);
-      }else if(item.degree == 'medium'){
+      } else if (item.degree == 'medium') {
         this.$set(this.untreat, 'medium', item.total_count);
-      }else if(item.degree == 'high'){
+      } else if (item.degree == 'high') {
         this.$set(this.untreat, 'high', item.total_count);
       }
     });
   },
-  mounted() {
+  mounted () {
     this.graph();
   },
   methods: {
-    graph() {
+    graph () {
 
-     // let index = 0;
+      // let index = 0;
 
       let low = this.untreat.low;
       let medium = this.untreat.medium;
@@ -83,7 +83,7 @@ export default {
                     lineHeight: 40
                   },
                   b: {
-                    color: "#999"
+                    color: "#fff"
                   }
                 }
               }
@@ -132,7 +132,7 @@ export default {
         });
       });*/
 
-      tools.loopShowTooltip(myChart, option, {loopSeries: true});
+      tools.loopShowTooltip(myChart, option, { loopSeries: true });
 
       window.addEventListener("resize", () => {
         myChart.resize();

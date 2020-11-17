@@ -91,7 +91,7 @@
         background-image: url("../../../../assets/images/screen/aside-arrow.png");
       }
       .t-name{
-        font-family: PingFangSC-Regular;
+        font-family: Microsoft YaHei;
         font-size: 14px;
         color: #FFFFFF;
       }
@@ -110,12 +110,12 @@
       background-size: 162px;
       padding: 45px 0;
       .disk-num{
-        font-family: PingFangSC-Semibold;
+        font-family: Microsoft YaHeiSC-Semibold;
         font-size: 32px;
         color: #00D7E9;
       }
       .disk-times{
-        font-family: PingFangSC-Regular;
+        font-family: Microsoft YaHei;
         font-size: 12px;
         color: #FFFFFF;
       }
@@ -145,7 +145,7 @@
           background-size: 14px 14px;
         }
         .t-name{
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 14px;
           color: #FFFFFF;
         }

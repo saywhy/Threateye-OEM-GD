@@ -44,11 +44,11 @@ export default {
       myChart.setOption({
         tooltip: {
           trigger: "axis",
-          borderColor: "rgba(83,137,224,0.3)",
+          borderColor: "rgba(0, 0, 0, 0.8)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           textStyle: {
-            color: "#ccc"
+            color: "#fff"
           },
           axisPointer: {
             type: 'none'
@@ -84,7 +84,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -101,7 +101,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {

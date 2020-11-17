@@ -265,7 +265,7 @@ export default {
   .r_top {
     background: #fff;
     min-height: 900px;
-    font-family: PingFangMedium;
+    font-family: Microsoft YaHei;
     .r_content_top {
       height: 80px;
       line-height: 80px;

@@ -1,5 +1,5 @@
 <template>
-    <div id="test"></div>
+  <div id="test"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -8,22 +8,22 @@ export default {
   props: {
     mid_left: {
       type: Array,
-      default:() => []
+      default: () => []
     }
   },
-  data(){
-    return{
-      treat:{
-        date:[],
-        high:[],
-        medium:[],
-        low:[]
+  data () {
+    return {
+      treat: {
+        date: [],
+        high: [],
+        medium: [],
+        low: []
       }
     }
   },
-  created(){
+  created () {
     let chartData = this.mid_left;
-    chartData.forEach((item,index,array)=>{
+    chartData.forEach((item, index, array) => {
 
       this.treat.date.push(item.statistics_time);
       this.treat.high.push(item.alert_count_details.high);
@@ -32,11 +32,11 @@ export default {
 
     });
   },
-  mounted() {
+  mounted () {
     this.graph();
   },
   methods: {
-    graph() {
+    graph () {
       // 基于准备好的dom，初始化echarts实例
 
       let date = this.treat.date;
@@ -58,7 +58,7 @@ export default {
           }
         },
         legend: {
-          show:false,
+          show: false,
           data: ['低危', '中危', '高危']
         },
         grid: {
@@ -70,17 +70,17 @@ export default {
         },
         tooltip: {
           trigger: "axis",
-          borderColor: "rgba(71,202,217,0.3)",
+          borderColor: "rgba(0, 0, 0, 0.8)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           textStyle: {
-            color: "#ccc"
+            color: "#fff"
           },
           axisPointer: {
-            type:'none'
+            type: 'none'
           }
         },
-        color: ["#47CAD9","#E0C840","#DC5F5F"],
+        color: ["#47CAD9", "#E0C840", "#DC5F5F"],
         xAxis: {
           type: 'category',
           //网格样式
@@ -100,7 +100,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -125,7 +125,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -137,21 +137,21 @@ export default {
             name: '低危',
             type: 'bar',
             stack: '广告',
-            barWidth:'20',
+            barWidth: '20',
             data: low
           },
           {
             name: '中危',
             type: 'bar',
             stack: '广告',
-            barWidth:'20',
+            barWidth: '20',
             data: medium
           },
           {
             name: '高危',
             type: 'bar',
             stack: '广告',
-            barWidth:'20',
+            barWidth: '20',
             data: high
           }
         ]

@@ -2,19 +2,29 @@
  *此样式带(全选)的table公共样式
  *创建者ycl 时间2020-01-05
 **/
-/deep/
-.common-table {
+/deep/ .common-table {
   width: 100%;
-  font-family: PingFangMedium;
+  font-family: Microsoft YaHei;
+  background: transparent;
+  background: rgba(0, 0, 0, 0.2);
+
+  .el-table th,
+  .el-table td,
+  .el-table tr {
+    background: red
+  }
+
   .el-table__header-wrapper {
     .el-table__header {
       thead.has-gutter {
         th {
-          background: #f8f8f8;
+
+          // background: #f8f8f8;
           /*padding: 0.48rem 0 !important;*/
           .cell {
-            font-family: PingFangMedium;
-            color: #333;
+            font-family: Microsoft YaHei;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
             font-size: 18px;
             white-space: nowrap;
           }
@@ -22,18 +32,21 @@
       }
     }
   }
+
   .el-table__body-wrapper {
     tbody {
       td {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
-        color: #666;
+        color: #fff;
         border-top-width: 0;
         border-left-width: 0;
         border-right-width: 0;
-        border-bottom: 1px solid #ececec;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
         .cell {
-          line-height: initial!important;
+          line-height: initial !important;
+
           .new_dot {
             width: 8px;
             height: 8px;
@@ -41,6 +54,7 @@
             background: #ff5f5c;
             float: right;
           }
+
           .fall_certainty {
             width: 72px;
             /*height: 30px;*/
@@ -96,16 +110,18 @@
     &:before {
       height: 0;
     }
+
     .el-table__fixed-header-wrapper {
       .el-table__header {
         thead {
           th {
-            background: #f8f8f8;
-         /*   padding: 0.48rem 0 !important;*/
+            background: rgba(0, 0, 0, 0.2);
+            /*   padding: 0.48rem 0 !important;*/
             white-space: nowrap;
             font-size: 0px;
+
             &.el-table-column--selection {
-              border-right: 1px solid #EBEEF5;
+              border-right: 1px solid rgba(0, 0, 0, 0.1);
             }
           }
         }
@@ -115,15 +131,17 @@
     .el-table__fixed-body-wrapper {
       tbody {
         td {
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
           font-size: 16px;
           color: #666;
           border-top-width: 0;
           border-left-width: 0;
           border-right-width: 0;
-          border-bottom: 1px solid #ececec;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
           .cell {
-            line-height: inherit!important;
+            line-height: inherit !important;
+
             .new_dot {
               width: 8px;
               height: 8px;
@@ -131,7 +149,8 @@
               background: #ff5f5c;
               float: right;
             }
-            label{
+
+            label {
               line-height: 0;
             }
           }

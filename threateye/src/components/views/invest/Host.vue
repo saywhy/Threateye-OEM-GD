@@ -583,7 +583,7 @@ export default {
       width: 112px;
       height: 34px;
       padding: 0;
-      font-family: PingFang;
+      font-family:Microsoft YaHei;
       &.active {
         color: #fff;
         background: #0070ff;

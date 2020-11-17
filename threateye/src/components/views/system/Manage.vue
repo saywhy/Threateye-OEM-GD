@@ -945,7 +945,7 @@ export default {
         }
         .item_right {
           .item_right_title {
-            font-family: PingFangMedium;
+            font-family: Microsoft YaHei;
             font-size: 18px;
             color: #333333;
             margin-top: 25px;

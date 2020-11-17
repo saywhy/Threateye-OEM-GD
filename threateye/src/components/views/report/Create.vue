@@ -833,7 +833,7 @@ export default {
   padding: 24px;
   .r_top {
     background: #fff;
-    font-family: PingFangMedium;
+    font-family: Microsoft YaHei;
     border-bottom: 1px solid #ececec;
 
     .r_content_top {

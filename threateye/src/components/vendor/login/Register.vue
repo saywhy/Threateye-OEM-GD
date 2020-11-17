@@ -163,7 +163,7 @@ export default {
       .el-form-item__content {
         line-height: 1;
         .view-label {
-          font-family: PingFang;
+          font-family:Microsoft YaHei;
           font-size: 14px;
           color: #bbbbbb;
           line-height: 30px;

@@ -145,7 +145,7 @@ export default {
 #system_control_resume {
   .content_box {
     .title {
-      font-family: PingFangMedium;
+      font-family: Microsoft YaHei;
       font-size: 16px;
       color: #333333;
       margin-bottom: 24px;

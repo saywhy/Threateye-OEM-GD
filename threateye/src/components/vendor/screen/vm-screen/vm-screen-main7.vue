@@ -114,7 +114,7 @@
         width: 90px;
         text-align: left;
         cursor: default;
-        font-family: PingFang;
+        font-family:Microsoft YaHei;
         border: 1px;
         color: #fff;
         position: relative;

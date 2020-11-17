@@ -321,7 +321,7 @@ export default {
       /deep/ .e-btn {
         width: 148px;
         height: 42px;
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
         cursor: pointer;
         border: 1px solid #0070ff;

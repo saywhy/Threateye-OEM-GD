@@ -335,7 +335,7 @@
     flex: 1;
     position: relative;
     .name {
-      font-family: PingFangSC-Regular;
+      font-family: Microsoft YaHei;
       font-size: 14px;
       color: #00D7E9;
       position: absolute;

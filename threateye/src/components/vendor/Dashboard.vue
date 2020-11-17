@@ -51,8 +51,12 @@ export default {
 <style scoped lang="less">
 #dashboard {
   background-image: linear-gradient(to right, #365d8c, #3e2149);
+  // background: url('../../assets/images/common//bg03.jpg') no-repeat center
+  // center fixed;
+  // background-size: cover;
   .el-header {
     // background-color: #2e3f60;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     background-image: linear-gradient(to right, #365d8c, #3e2149);
     padding: 0 24px;
     position: fixed;
@@ -129,7 +133,7 @@ export default {
     background-color: #ececec;
     height: 60px !important;
     line-height: 60px;
-    font-family: PingFangSC-Regular;
+    font-family: Microsoft YaHei;
     color: #999;
     position: fixed;
     left: 0;

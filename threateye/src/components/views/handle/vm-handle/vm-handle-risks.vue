@@ -1683,7 +1683,7 @@ export default {
         font-size: 16px;
         color: #333;
         text-align: left;
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
       }
       &.ost-1 {
         width: 1221px;
@@ -1718,7 +1718,7 @@ export default {
       }
       .osm-title {
         display: inline-block;
-        font-family: PingFang;
+        font-family:Microsoft YaHei;
         font-size: 16px;
         color: #333333;
         margin-left: 6px;
@@ -1728,13 +1728,13 @@ export default {
       height: auto;
       padding: 16px 24px;
       .osm-dt {
-        font-family: PingFangSC-Medium;
+        font-family: Microsoft YaHeiSC-Medium;
         font-size: 14px;
         color: #333333;
         margin: 10px 0;
       }
       .osm-dd {
-        font-family: PingFangSC-Regular;
+        font-family: Microsoft YaHei;
         font-size: 14px;
         color: #666666;
         line-height: 32px;
@@ -2008,7 +2008,7 @@ export default {
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFang;
+                  font-family:Microsoft YaHei;
                 }
               }
               .el-textarea__inner:hover {

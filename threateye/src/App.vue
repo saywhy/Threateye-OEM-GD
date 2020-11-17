@@ -1,7 +1,7 @@
 <template>
   <div id="App">
     <transition :name="transitionName">
-      <router-view :key="key"/>
+      <router-view :key="key" />
     </transition>
   </div>
 </template>
@@ -42,6 +42,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 #nprogress {
   .bar {

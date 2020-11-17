@@ -961,7 +961,7 @@ export default {
           margin-left: 6px;
           display: inline-block;
           vertical-align: super;
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
         }
       }
       #graph {

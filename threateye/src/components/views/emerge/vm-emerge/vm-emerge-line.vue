@@ -43,15 +43,14 @@ export default {
           trigger: "axis",
           axisPointer: {
             lineStyle: {
-              color: "#ddd",
+              color: "#fff",
             },
           },
-          backgroundColor: "rgba(255,255,255,1)",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           padding: [5, 10],
           textStyle: {
-            color: "#7588E4",
+            color: "#fff",
           },
-          extraCssText: "box-shadow: 0 0 5px rgba(0,0,0,0.3)",
         },
         xAxis: {
           //网格样式
@@ -63,7 +62,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666",
+              color: "#fff",
             },
             formatter: function (val) {
 
@@ -102,7 +101,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {

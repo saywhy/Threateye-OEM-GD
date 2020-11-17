@@ -428,7 +428,7 @@
           <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
-                    border
+                    stripe
                     :data="emerge_list.now.data"
                     tooltip-effect="dark"
                     style="width: 100%"
@@ -494,7 +494,7 @@
           <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
-                    border
+                    stripe
                     :data="emerge_list.old.data"
                     tooltip-effect="dark"
                     style="width: 100%"
@@ -3574,24 +3574,8 @@ export default {
 @import '../../../../assets/css/less/common-table-pattern.less';
 @import '../../../../assets/css/less/common-dropdown.less';
 @import '../../../../assets/css/less/reset_css/reset_table.less';
-// .reset_table {
-//   .el-table__header-wrapper {
-//     .el-table__header {
-//       thead.has-gutter {
-//         th {
-//           background: #f8f8f8 !important;
-//           .cell {
-//             font-family: PingFangMedium;
-//             color: #333;
-//             font-size: 14px;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 .el-input__inner {
-  background: #f8f8f8;
+  background: rgba(0, 0, 0, 0.3);
   border: 0;
 }
 .dropdown_ul_box_detail {
@@ -3601,23 +3585,6 @@ export default {
     color: #606266;
   }
 }
-// tab栏
-// .emerge_table {
-//   th {
-//     .cell {
-//       font-family: PingFangMedium;
-//       font-size: 14px;
-//       color: #333333;
-//     }
-//   }
-//   td {
-//     .cell {
-//       font-family: PingFang;
-//       font-size: 14px;
-//       color: #666;
-//     }
-//   }
-// }
 .detail-network {
   .pagination_box {
     margin: 24px 0;
@@ -3767,8 +3734,8 @@ export default {
 
           .title_name {
             font-size: 20px;
-            color: #333333;
-            font-family: PingFangMedium;
+            color: #fff;
+            font-family: Microsoft YaHei;
             line-height: 24px;
           }
 
@@ -3777,7 +3744,7 @@ export default {
             height: 0px;
             border-top: 0px;
             border-right: 2px solid transparent;
-            border-bottom: 5px solid #0070ff;
+            border-bottom: 5px solid #00ff00;
             border-left: 2px solid transparent;
             transform: rotate3d(0, 0, 1, 90deg);
             display: inline-block;
@@ -3830,7 +3797,7 @@ export default {
           }
 
           .step_now {
-            color: #0070ff;
+            color: #00ff00;
           }
 
           .step_past {
@@ -3911,7 +3878,7 @@ export default {
                 height: 92px;
                 font-size: 14px;
                 color: #333;
-                font-family: PingFang;
+                font-family: Microsoft YaHei;
               }
             }
             .el-textarea__inner:hover {
@@ -3971,16 +3938,16 @@ export default {
           text-align: center;
 
           .cancel_btn {
-            border: 1px solid #0070ff;
-            background: #fff;
-            color: #0070ff;
+            border: 1px solid #00ff00;
+            background: rgba(0, 0, 0, 0.3);
+            color: #00ff00;
             width: 136px;
             height: 42px;
             font-size: 16px;
           }
 
           .next_btn {
-            background-color: #0070ff;
+            background-color: #00ff00;
             color: #fff;
             width: 136px;
             height: 42px;
@@ -3993,17 +3960,17 @@ export default {
             text-align: left;
             .change_btn,
             .ref {
-              background-color: #0070ff;
-              border-color: #0070ff;
+              background-color: #00ff00;
+              border-color: #00ff00;
               width: 136px;
               height: 42px;
               color: #fff;
             }
 
             .cel {
-              border: 1px solid #0070ff;
-              background: #fff;
-              color: #0070ff;
+              border: 1px solid #00ff00;
+              background: rgba(0, 0, 0, 0.3);
+              color: #00ff00;
               width: 136px;
               height: 42px;
               margin-left: 0;
@@ -4028,23 +3995,23 @@ export default {
 
               li.active {
                 cursor: pointer;
-                background: #eef6ff;
-                color: #0070ff;
-                border-top: 2px solid #0070ff;
+                background: rgba(0, 0, 0, 0.5);
+                color: #00ff00;
+                border-top: 2px solid #00ff00;
               }
             }
             /deep/ .el-table {
               font-size: 12px;
               thead.has-gutter {
                 th {
-                  color: #333333;
+                  color: #fff;
                   background: #f8f8f8;
                   .cell {
                   }
                 }
               }
               .cell {
-                color: #333333;
+                color: #fff;
               }
             }
 
@@ -4061,16 +4028,16 @@ export default {
             text-align: center;
 
             .cancel_btn {
-              border: 1px solid #0070ff;
-              background: #fff;
-              color: #0070ff;
+              border: 1px solid #00ff00;
+              background: rgba(0, 0, 0, 0.3);
+              color: #00ff00;
               width: 136px;
               height: 42px;
               font-size: 16px;
             }
 
             .prev_btn {
-              background-color: #0070ff;
+              background-color: #00ff00;
               color: #fff;
               width: 136px;
               height: 42px;
@@ -4085,19 +4052,20 @@ export default {
 </style>
 <style scoped lang="less">
 .detail-network {
-  background: #f8f8f8;
-
+  background-image: linear-gradient(to right, #365d8c, #3e2149);
+  color: #fff;
   .red_color {
     color: #ff5f5c !important;
   }
   //   基础信息
   .detail_base {
     // height: 323px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
     .detail_base_top {
       padding: 0 56px;
       height: 62px;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .top_left {
         float: left;
         line-height: 62px;
@@ -4107,21 +4075,19 @@ export default {
       }
       .top_right {
         float: right;
-        /*margin-top: 14px;*/
-        // line-height: 62px;
         .change_btn {
           height: 34px;
           width: 124px;
           padding: 0;
-          background: #0070ff;
+          background: #00ff00;
         }
         .edit_btn {
           height: 34px;
           width: 124px;
           padding: 0;
-          background: #fff;
-          border: 1px solid #0070ff;
-          color: #0070ff;
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid #00ff00;
+          color: #00ff00;
         }
       }
     }
@@ -4145,7 +4111,7 @@ export default {
           .src_ul {
             width: 180px;
             padding: 10px 0;
-            background: #fff;
+            background: rgba(0, 0, 0, 0.3);
             box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
             position: absolute;
             left: 96px;
@@ -4158,19 +4124,19 @@ export default {
               cursor: pointer;
             }
             li:hover {
-              background: #eef6ff;
+              background: rgba(0, 0, 0, 0.5);
             }
           }
           .item_li_title {
             width: 96px;
             font-size: 16px;
-            color: #333333;
-            font-family: PingFangMedium;
+            color: #fff;
+            font-family: Microsoft YaHei;
           }
           .item_li_content {
             flex: 1;
             font-size: 16px;
-            color: #666;
+            color: #fff;
             .tag_btn_box {
               margin: 0 2px;
               display: inline-block;
@@ -4178,21 +4144,21 @@ export default {
               padding: 0 3px;
               border-radius: 2px;
               color: #ffffff;
-              background: #5389e0;
+              background: rgba(0, 0, 0, 0.3);
               text-align: center;
             }
             .tag_btn {
               height: 20px;
               font-size: 14px;
               line-height: 20px;
-              font-family: PingFang;
+              font-family: Microsoft YaHei;
               padding: 0 3px;
               // transform: scale(0.8);
               display: block;
             }
           }
           .Goto_workorder {
-            color: #0070ff;
+            color: #00ff00;
             cursor: pointer;
           }
           .btn_fall {
@@ -4203,9 +4169,9 @@ export default {
             color: #fff;
           }
           .src_active {
-            font-family: PingFang;
+            font-family: Microsoft YaHei;
             font-size: 16px;
-            color: #0070ff;
+            color: #00ff00;
             cursor: pointer;
           }
         }
@@ -4218,9 +4184,9 @@ export default {
     padding: 24px 56px 36px 56px;
     .time_title {
       height: 22px;
-      font-family: PingFangMedium;
+      font-family: Microsoft YaHei;
       font-size: 16px;
-      color: #333333;
+      color: #fff;
       margin-bottom: 12px;
       text-align: left;
     }
@@ -4229,12 +4195,12 @@ export default {
       .time_left {
         width: 180px;
         float: left;
-        background: #fff;
+        background: rgba(0, 0, 0, 0.3);
         margin: 0;
         ul.time_left_list {
           width: 180px;
           // height: 610px;
-          background: #fff;
+          background: rgba(0, 0, 0, 0.3);
           overflow-y: auto;
           overflow-x: hidden;
           z-index: 0;
@@ -4247,7 +4213,7 @@ export default {
           &.time_left_list::-webkit-scrollbar-thumb {
             /*滚动条里面小方块*/
             border-radius: 10px;
-            background: #fff;
+            background: rgba(0, 0, 0, 0.3);
           }
           &.time_left_list::-webkit-scrollbar-track {
             /*滚动条里面轨道*/
@@ -4273,7 +4239,7 @@ export default {
           }
         }
         .time_item.active {
-          background: #0070ff;
+          background: rgba(0, 0, 0, 0.5);
           color: #fff;
         }
         .time_item.active:after {
@@ -4283,7 +4249,7 @@ export default {
           height: 0px;
           border-top: 8px solid transparent;
           border-bottom: 8px solid transparent;
-          border-left: 8px solid #0070ff;
+          border-left: 8px solid rgba(0, 0, 0, 0.5);
           position: absolute;
           top: 32px;
           right: -8px;
@@ -4298,13 +4264,13 @@ export default {
         align-items: flex-start;
         margin-left: 18px;
         // height: 610px;
-        background: #fff;
+        background: rgba(0, 0, 0, 0.3);
         .title {
           height: 42px;
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
           font-size: 16px;
-          color: #333333;
-          border-bottom: 1px solid #ececec;
+          color: #fff;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
           line-height: 42px;
           text-align: left;
           padding: 0 24px;
@@ -4312,13 +4278,13 @@ export default {
         .time_right_info {
           padding-left: 24px;
           .download_text {
-            color: #0070ff !important;
+            color: #00ff00 !important;
             cursor: pointer;
             text-decoration: underline;
           }
           .time_right_info_top {
             overflow-y: auto;
-            border-bottom: 1px solid #ececec;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             padding-top: 16px;
             .info_top_item {
               // height: 22px;
@@ -4329,16 +4295,16 @@ export default {
               display: flex;
               .info_top_item_title {
                 width: 150px;
-                font-family: PingFang;
+                font-family: Microsoft YaHei;
                 font-size: 16px;
-                color: #333333;
+                color: #fff;
               }
               .info_top_item_content {
                 word-break: break-all;
                 flex: 1;
-                font-family: PingFang;
+                font-family: Microsoft YaHei;
                 font-size: 16px;
-                color: #666666;
+                color: #fff;
               }
             }
           }
@@ -4348,9 +4314,9 @@ export default {
             display: flex;
             .info_bom_title {
               width: 150px;
-              font-family: PingFang;
+              font-family: Microsoft YaHei;
               font-size: 16px;
-              color: #333333;
+              color: #fff;
             }
             .info_bom_item {
               flex: 1;
@@ -4366,11 +4332,11 @@ export default {
                 .left_li {
                   width: 200px;
                   font-size: 16px;
-                  color: #666;
+                  color: #fff;
                 }
                 .right_li {
                   font-size: 16px;
-                  color: #666;
+                  color: #fff;
                   flex: 1;
                   flex-wrap: wrap;
                   justify-content: flex-start;
@@ -4382,7 +4348,7 @@ export default {
         }
         .time_right_net {
           margin: 16px 24px;
-          border-bottom: 1px solid #ececec;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
           display: flex;
           .time_right_net_item {
             flex: 1;
@@ -4394,10 +4360,10 @@ export default {
             .title_net {
               height: 42px;
               text-align: left;
-              background: #f8f8f8;
-              font-family: PingFangMedium;
+              background: rgba(0, 0, 0, 0.3);
+              font-family: Microsoft YaHei;
               font-size: 14px;
-              color: #333333;
+              color: #fff;
               line-height: 42px;
               padding: 0 10px;
             }
@@ -4407,7 +4373,7 @@ export default {
               word-break: break-all;
               overflow: hidden;
               font-size: 14px;
-              color: #666;
+              color: #fff;
               text-align: left;
               padding: 10px;
             }
@@ -4420,16 +4386,16 @@ export default {
   .attack_stage_box {
     text-align: left;
     // height: 171px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
     margin-bottom: 24px;
     .detail_base_top {
       padding: 0 56px;
       height: 62px;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .attack_stage_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
-        color: #333333;
+        color: #fff;
         line-height: 62px;
       }
       .icon_img {
@@ -4446,10 +4412,10 @@ export default {
         width: 104px;
         height: 48px;
         line-height: 48px;
-        background: #eef6ff;
+        background: rgba(0, 0, 0, 0.5);
         border-radius: 2px;
         font-size: 16px;
-        color: #aaaaaa;
+        color: #fff;
         text-align: center;
         position: relative;
         .circle_box {
@@ -4468,7 +4434,7 @@ export default {
         }
       }
       .count_color {
-        color: #0070ff;
+        color: #00ff00;
       }
       .stage_img_box {
         flex: 1;
@@ -4486,16 +4452,16 @@ export default {
   // 威胁安全建议
   .suggest_box {
     text-align: left;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
     margin-bottom: 24px;
     .suggest_top {
       padding: 0 56px;
       height: 62px;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .suggest_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
-        color: #333333;
+        color: #fff;
         line-height: 62px;
       }
       .icon_img {
@@ -4511,18 +4477,18 @@ export default {
         vertical-align: middle;
       }
       .suggest_bom_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 14px;
-        color: #333333;
+        color: #fff;
       }
       .suggest_bom_des {
         margin: 8px 0 24px 0;
         font-size: 14px;
-        color: #666666;
+        color: #fff;
       }
       .suggest_bom_li {
         font-size: 14px;
-        color: #666666;
+        color: #fff;
       }
       .suggest_bom_list {
         margin: 12px 0 8px 0;
@@ -4533,7 +4499,7 @@ export default {
   //   告警列表
   .emerge_box {
     padding: 24px 56px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
     .pagination_box {
       margin-top: 24px;
     }
@@ -4544,17 +4510,17 @@ export default {
       .el-table {
         th {
           .cell {
-            font-family: PingFangMedium;
+            font-family: Microsoft YaHei;
             font-size: 14px;
-            color: #333333;
+            color: #fff;
           }
         }
       }
 
       th > .cell {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 14px;
-        color: #333333;
+        color: #fff;
       }
       .el-table__row {
         height: 42px;

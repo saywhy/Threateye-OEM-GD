@@ -556,7 +556,7 @@ export default {
       display: flex;
       margin-bottom: 36px;
       .item_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
         color: #333333;
         height: 42px;

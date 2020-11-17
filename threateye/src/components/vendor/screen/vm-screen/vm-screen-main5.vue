@@ -162,7 +162,7 @@
           vertical-align: inherit;
         }
         .t-name{
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 14px;
         }
         &.t-info_0{
@@ -231,7 +231,7 @@
           }
         }
         .item_fs0{
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 14px;
           color: #FFFFFF;
           line-height: 40px;
@@ -251,7 +251,7 @@
             vertical-align: text-top;
           }
           .t_name{
-            ont-family: PingFangSC-Regular;
+            ont-family: Microsoft YaHei;
             font-size: 12px;
             color: #FFFFFF;
             line-height: 14px;
@@ -276,7 +276,7 @@
             }
           }
           .t-name{
-            font-family: PingFangSC-Regular;
+            font-family: Microsoft YaHei;
             font-size: 12px;
             color: #FFFFFF;
           }

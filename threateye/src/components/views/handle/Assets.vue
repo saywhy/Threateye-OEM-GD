@@ -1522,7 +1522,7 @@ export default {
         color: #333333;
         font-size: 18px;
         margin-top: 16px;
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
       }
 
       .all_list {
@@ -1550,7 +1550,7 @@ export default {
           text-align: center;
 
           .name {
-            font-family: PingFang;
+            font-family:Microsoft YaHei;
             font-size: 12px;
             color: #666666;
           }
@@ -1576,7 +1576,7 @@ export default {
 
     .assets_all_detail {
       background: #ccc;
-      font-family: PingFang;
+      font-family:Microsoft YaHei;
       border-top: 1px solid #ececec;
       .all_detail {
         .all_detail_item {
@@ -1635,7 +1635,7 @@ export default {
               left: 9px;
 
               .name {
-                font-family: PingFang;
+                font-family:Microsoft YaHei;
                 font-size: 12px;
                 color: #0070ff;
                 display: inline-block;
@@ -1947,7 +1947,7 @@ export default {
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFang;
+                  font-family:Microsoft YaHei;
                 }
               }
               .el-textarea__inner:hover {

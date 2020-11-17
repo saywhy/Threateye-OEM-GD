@@ -315,15 +315,15 @@ export default {
         },
         tooltip: {
           trigger: "axis",
-          borderColor: "#fff",
+          borderColor: "rgba(0, 0, 0, 0.8)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           textStyle: {
-            color: "#ccc"
+            color: "#fff"
           },
           axisPointer: {
             lineStyle: {
-              color: "#ccc"
+              color: "#fff"
             }
           }
         },
@@ -370,7 +370,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -397,7 +397,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {

@@ -112,13 +112,13 @@ export default {
       vertical-align: middle;
     }
     .l_product_name {
-      font-family: PingFangSC-Semibold;
+      font-family: Microsoft YaHeiSC-Semibold;
       font-size: 30px;
       color: #ffffff;
       margin-top: 48px;
     }
     .l_product_content {
-      font-family: PingFang;
+      font-family: Microsoft YaHei;
       font-size: 20px;
       color: #ffffff;
       margin-top: 12px;
@@ -140,7 +140,7 @@ export default {
       text-align: left;
       padding: 24px 42px;
       .l-title {
-        font-family: PingFangSC-Semibold;
+        font-family: Microsoft YaHeiSC-Semibold;
         font-size: 32px;
         color: #0070ff;
         letter-spacing: 2.67px;
@@ -155,7 +155,7 @@ export default {
     line-height: 50px;
     bottom: 0;
     left: 0;
-    font-family: PingFangSC-Regular;
+    font-family: Microsoft YaHei;
     font-size: 16px;
     color: #ffffff;
   }

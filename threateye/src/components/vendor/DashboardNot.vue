@@ -76,7 +76,7 @@ export default {
     background-color: #ececec;
     height: 60px !important;
     line-height: 60px;
-    font-family: PingFangSC-Regular;
+    font-family: Microsoft YaHei;
     color: #999;
     position: fixed;
     left: 0;

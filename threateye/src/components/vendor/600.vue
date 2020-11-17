@@ -74,11 +74,11 @@ body {
   letter-spacing: 1px;
   line-height: 2em;
   margin-top: 50px;
-  font-family: PingFang;
+  font-family:Microsoft YaHei;
 }
 .re_last {
   font-size: 20px;
-  font-family: PingFang;
+  font-family:Microsoft YaHei;
   color: #666;
 }
 .nofind_ref {
@@ -86,6 +86,6 @@ body {
   color: #0070ff;
   cursor: pointer;
   text-decoration: underline;
-  font-family: PingFang;
+  font-family:Microsoft YaHei;
 }
 </style>

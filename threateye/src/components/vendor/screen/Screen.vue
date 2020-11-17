@@ -254,10 +254,11 @@ export default {
 .home-screen {
   padding: 0 36px;
   /* background-color: #001034;*/
-  background-color: rgba(0, 16, 52, 0.9);
-  background-image: url('../../../assets/images/screen/bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
+  // background-color: rgba(0, 16, 52, 0.9);
+  // background-image: url('../../../assets/images/screen/bg.png');
+  background-image: linear-gradient(to right, #365d8c, #3e2149);
+  // background-repeat: no-repeat;
+  // background-size: cover;
   overflow-y: auto;
   height: 100vh;
   &.active {
@@ -292,7 +293,7 @@ export default {
       }
     }
     .home_c {
-      font-family: PingFangSC-Medium;
+      font-family: Microsoft YaHeiSC-Medium;
       font-size: 24px;
       color: #ffffff;
       line-height: 60px;
@@ -317,7 +318,7 @@ export default {
         outline: none;
         background-color: transparent;
         background-repeat: no-repeat;
-        font-family: PingFangSC-Regular;
+        font-family: Microsoft YaHei;
         font-size: 14px;
         cursor: pointer;
         border-radius: 0;
@@ -357,7 +358,7 @@ export default {
             }
           }
           .t_title{
-            font-family: PingFangSC-Regular;
+            font-family: Microsoft YaHei;
             font-size: 14px;
             color: #FFFFFF;
           }*/
@@ -411,7 +412,7 @@ export default {
         color: #00d7e9;
         text-align: left;
         padding: 18px 16px 10px 16px;
-        font-family: PingFangSC-Medium;
+        font-family: Microsoft YaHeiSC-Medium;
         .t_img {
           width: 140px;
           height: 24px;
@@ -427,7 +428,7 @@ export default {
           color: #fff;
           .t11 {
             opacity: 0.6;
-            font-family: PingFangSC-Regular;
+            font-family: Microsoft YaHei;
             font-size: 12px;
             color: #ffffff;
             margin-left: 12px;

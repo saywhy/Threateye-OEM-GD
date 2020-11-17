@@ -18,7 +18,7 @@ export default {
     graph () {
 
       //console.log(this.top_mid)
-      if(!!!this.top_mid){
+      if (!!!this.top_mid) {
         return false;
       }
 
@@ -45,13 +45,13 @@ export default {
           trigger: "axis",
           borderColor: "rgba(76,175,80,0.3)",
           borderWidth: 2,
-          backgroundColor: "#fff",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           textStyle: {
-            color: "#ccc"
+            color: "#fff"
           },
           axisPointer: {
             lineStyle: {
-              color: "#ccc"
+              color: "#fff"
             }
           }
         },
@@ -77,7 +77,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {
@@ -102,7 +102,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: "#666666"
+              color: "#fff"
             }
           },
           axisTick: {

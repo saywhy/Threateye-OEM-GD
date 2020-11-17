@@ -112,17 +112,21 @@ export default {
   .aside-breadcrumb {
     height: 60px;
     display: flex;
-    .all-breadcrumb {
+    /deep/.all-breadcrumb {
       flex: 1;
       height: 100%;
       line-height: 60px;
       padding: 0 24px;
-      color: #333;
+      color: #fff;
       font-size: 16px;
-      font-family: 'PingFangMedium';
+      font-family: 'Microsoft YaHei';
       .el-breadcrumb__item {
         .el-breadcrumb__inner {
           cursor: pointer;
+          color: #fff !important;
+        }
+        .is-link {
+          color: #fff !important;
         }
       }
     }
@@ -146,6 +150,8 @@ export default {
   /deep/ .el-menu {
     width: 210px;
     border-width: 0;
+    background: transparent;
+    color: #fff;
   }
 }
 .fade-enter-active,

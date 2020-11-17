@@ -3,7 +3,7 @@ export default (Vue) => {
       inserted: function (el, binding) {
         //console.log(binding);
         let more = document.createElement("a");
-        more.style = "display:inline-table;color:#0070FF;font-size: 12px;font-family: PingFang;";
+        more.style = "display:inline-table;color:#0070FF;font-size: 12px;font-family:Microsoft YaHei;";
         more.innerHTML = `<span>更多</span><span class="el-icon-d-arrow-right"></span>`;
         /*more.onclick = function(){
         }*/

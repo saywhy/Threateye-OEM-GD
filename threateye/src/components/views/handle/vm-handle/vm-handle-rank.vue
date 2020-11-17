@@ -242,7 +242,7 @@
         color: #aaa;
         padding: 0;
         border-width: 0;
-        font-family: PingFang;
+        font-family:Microsoft YaHei;
         &.is-active {
           color: #0070FF;
         }

@@ -1996,7 +1996,7 @@ export default {
       }
       .top_left_title {
         vertical-align: middle;
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
         color: #333333;
       }
@@ -2020,7 +2020,7 @@ export default {
         line-height: 30px;
         .title {
           width: 130px;
-          font-family: PingFang;
+          font-family:Microsoft YaHei;
           font-size: 16px;
           color: #333333;
           .b_i {
@@ -2057,7 +2057,7 @@ export default {
               height: 20px;
               font-size: 10px;
               line-height: 20px;
-              font-family: PingFang;
+              font-family:Microsoft YaHei;
               // transform: scale(0.8);
               display: block;
             }
@@ -2091,7 +2091,7 @@ export default {
       }
       .title_name {
         vertical-align: middle;
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
         color: #333333;
       }
@@ -2166,7 +2166,7 @@ export default {
       }
       .osm-title {
         display: inline-block;
-        font-family: PingFang;
+        font-family:Microsoft YaHei;
         font-size: 16px;
         color: #333333;
         margin-left: 6px;
@@ -2176,13 +2176,13 @@ export default {
       height: 220px;
       padding: 16px 56px;
       .osm-dt {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 14px;
         color: #333333;
         margin: 5px 0;
       }
       .osm-dd {
-        font-family: PingFang;
+        font-family:Microsoft YaHei;
         font-size: 14px;
         color: #666666;
       }
@@ -2198,7 +2198,7 @@ export default {
       height: 62px;
       border-bottom: 1px solid #ececec;
       .suggest_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
         color: #333333;
         line-height: 62px;
@@ -2216,7 +2216,7 @@ export default {
         vertical-align: middle;
       }
       .suggest_bom_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 14px;
         color: #333333;
       }
@@ -2262,7 +2262,7 @@ export default {
           height: 48px;
         }
         td > .cell {
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
           /*.fall_certainty {
             color: #ff5f5c;
           }*/
@@ -2600,7 +2600,7 @@ export default {
                   height: 92px;
                   font-size: 14px;
                   color: #333;
-                  font-family: PingFang;
+                  font-family:Microsoft YaHei;
                 }
               }
               .el-textarea__inner:hover {

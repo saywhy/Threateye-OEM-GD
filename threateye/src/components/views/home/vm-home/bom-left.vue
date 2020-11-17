@@ -1,10 +1,8 @@
 <template>
   <el-col class="vm-move-threat">
-    <el-table class="common-table"
-              ref="multipleTable"
+    <el-table ref="multipleTable"
               align="center"
-              tooltip-effect="dark"
-              border
+              stripe
               @row-click="detail_click"
               @header-click="header_click"
               :row-style="{cursor:'pointer'}"

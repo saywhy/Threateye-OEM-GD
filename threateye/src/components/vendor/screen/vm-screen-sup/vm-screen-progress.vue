@@ -62,7 +62,7 @@
         width: 50px;
         .progress-title{
           display: inline-block;
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 12px;
           color: #fff;
           padding: 0 10px 0 0;
@@ -84,7 +84,7 @@
           }
         }
         .el-progress__text{
-          font-family: PingFangSC-Regular;
+          font-family: Microsoft YaHei;
           font-size: 12px;
           color: #fff;
           transform: scale(.75);

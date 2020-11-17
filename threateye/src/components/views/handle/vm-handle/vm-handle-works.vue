@@ -2168,7 +2168,7 @@ export default {
           margin-right: 8px;
           line-height: 0;
           margin-left: 0;
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
           &.b_btn_add {
             color: #fff;
             background: #0070ff;
@@ -2202,7 +2202,7 @@ export default {
         .item {
           font-size: 14px;
           color: #666666;
-          font-family: PingFang;
+          font-family:Microsoft YaHei;
           margin-right: 20px;
           .num {
             color: #0070ff;
@@ -2498,7 +2498,7 @@ export default {
                 height: 92px;
                 font-size: 14px;
                 color: #333;
-                font-family: PingFang;
+                font-family:Microsoft YaHei;
               }
             }
             .el-textarea__inner:hover {

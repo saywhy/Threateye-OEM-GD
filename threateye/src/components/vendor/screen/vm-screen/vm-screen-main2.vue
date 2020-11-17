@@ -81,7 +81,7 @@
         linear-gradient(90deg, rgba(0,122,255,0.36) 0%,
         rgba(0,122,255,0.00) 100%);
       text-align: left;
-      font-family: PingFangSC-Regular;
+      font-family: Microsoft YaHei;
       font-size: 14px;
       color: #FFFFFF;
       /*padding: 0 16px;*/
@@ -111,7 +111,7 @@
         left: 16px;
         top: 24px;
         opacity: 0.36;
-        font-family: PingFangSC-Regular;
+        font-family: Microsoft YaHei;
         font-size: 12px;
         color: #FFFFFF;
       }

@@ -236,7 +236,7 @@ export default {
       .el-form-item__content {
         line-height: 1;
         .view-label {
-          font-family: PingFang;
+          font-family:Microsoft YaHei;
           font-size: 14px;
           color: #bbbbbb;
           line-height: 30px;
@@ -310,7 +310,7 @@ export default {
       margin-top: 18px;
       .p3_error {
         text-align: right;
-        font-family: PingFang;
+        font-family:Microsoft YaHei;
         font-size: 14px;
         /deep/ .el-icon-warning {
           color: #ff3a36;
@@ -334,7 +334,7 @@ export default {
     text-align: center;
     .pass_a {
       text-decoration: none;
-      ont-family: PingFang;
+      ont-family: Microsoft YaHei;
       font-size: 16px;
       color: #bbbbbb;
     }

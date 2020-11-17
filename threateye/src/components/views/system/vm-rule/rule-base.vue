@@ -361,7 +361,7 @@ export default {
 
   .title {
     font-size: 16px;
-    font-family: PingFangMedium;
+    font-family: Microsoft YaHei;
     color: #333333;
     margin-bottom: 24px;
   }

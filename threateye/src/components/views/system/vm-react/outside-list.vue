@@ -404,7 +404,7 @@ export default {
       word-wrap: break-word;
       .title {
         padding-bottom: 8px;
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
         color: #333333;
         border-bottom: 1px solid #ececec;

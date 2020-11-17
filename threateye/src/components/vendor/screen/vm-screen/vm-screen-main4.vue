@@ -99,7 +99,7 @@
                 axisLabel:{
                   color:'#fff',
                   fontSize:12,
-                  fontFamily:'PingFangSC-Regular',
+                  fontFamily:'Microsoft YaHei',
                   margin: 20
                 },
                 position:'left',
@@ -120,7 +120,7 @@
                 axisLabel:{
                   color:'#fff',
                   fontSize:12,
-                  fontFamily:'PingFangSC-Regular',
+                  fontFamily:'Microsoft YaHei',
                   margin: 80,
                   formatter: function (value) {
                     let valAttr = value.split('');
@@ -204,7 +204,7 @@
                 "position": "absolute",
                 "color": "#fff",
                 "background":"rgba(0,0,0,.5)",
-                "font-family": "PingFangSC-Regular",
+                "font-family": "Microsoft YaHei",
                 "font-size": "12px",
                 "padding": "5px",
                 "display": "inline"

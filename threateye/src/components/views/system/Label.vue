@@ -737,7 +737,7 @@
       .custom-name{
         margin-bottom: 24px;
         .name{
-          font-family: PingFangSC-Medium;
+          font-family: Microsoft YaHeiSC-Medium;
           font-size: 18px;
           color: #333333;
           font-weight: 500;
@@ -792,7 +792,7 @@
               .tog_cate{
                 flex: 1;
                 .name{
-                  font-family: PingFangSC-Medium;
+                  font-family: Microsoft YaHeiSC-Medium;
                   font-size: 14px;
                   color: #333333;
                   line-height: 18px;
@@ -830,7 +830,7 @@
                     background-image: url("../../../assets/images/system/set/label_down.png");
                   }
                   .name{
-                    font-family: PingFangSC-Regular;
+                    font-family: Microsoft YaHei;
                     font-size: 12px;
                     color: #0070FF;
                     line-height: 14px;
@@ -923,7 +923,7 @@
                   margin: -3px 4px;
                 }
                 .ba_span{
-                  font-family: PingFangSC-Regular;
+                  font-family: Microsoft YaHei;
                   font-size: 14px;
                   color: #333333;
                   vertical-align: middle;

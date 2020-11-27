@@ -1448,7 +1448,7 @@ export default {
     backTitle
   },
   mounted () {
-    // this.check_passwd()
+    this.check_passwd()
     this.get_data();
     console.log(this.$route.query);
     // detail: val.id, type: 'risks'
@@ -1773,52 +1773,52 @@ export default {
               break;
           }
           // 获取当前告警的工单状态
-          // this.$axios.get(workorders, {
-          //   params: {
-          //     id: this.$route.query.detail
-          //   }
-          // })
-          //   .then(response => {
-          //     console.log(response.data);
-          //     this.$nextTick(() => {
-          //       console.log(response.data);
-          //       this.network_work_order.workorder_id = response.data.data.workorder_id
-          //       if (response.data.data.workorder_id == '0') {
-          //         console.log(213213);
-          //         this.network_work_order.work_order_status = '未关联工单'
-          //         this.network_work_order.work_name = ''
-          //       } else {
-          //         if (response.data.data.workorder_status && response.data.data.workorder_name) {
-          //           switch (response.data.data.workorder_status += '') {
-          //             case '0':
-          //               this.network_work_order.work_order_status = '待分配'
-          //               break;
-          //             case '1':
-          //               this.network_work_order.work_order_status = '已分配';
-          //               break;
-          //             case '2':
-          //               this.network_work_order.work_order_status = '处置中';
-          //               break;
-          //             case '3':
-          //               this.network_work_order.work_order_status = '已处置';
-          //               break;
-          //             case '4':
-          //               this.network_work_order.work_order_status = '已取消';
-          //               break;
-          //             default:
-          //               break;
-          //           }
-          //           this.network_work_order.work_name = response.data.data.workorder_name
-          //         } else {
-          //           this.network_work_order.work_order_status = ''
-          //           this.network_work_order.work_name = ''
-          //         }
-          //       }
-          //     })
-          //   })
-          //   .catch(error => {
-          //     console.log(error);
-          //   })
+          this.$axios.get(workorders, {
+            params: {
+              id: this.$route.query.detail
+            }
+          })
+            .then(response => {
+              console.log(response.data);
+              this.$nextTick(() => {
+                console.log(response.data);
+                this.network_work_order.workorder_id = response.data.data.workorder_id
+                if (response.data.data.workorder_id == '0') {
+                  console.log(213213);
+                  this.network_work_order.work_order_status = '未关联工单'
+                  this.network_work_order.work_name = ''
+                } else {
+                  if (response.data.data.workorder_status && response.data.data.workorder_name) {
+                    switch (response.data.data.workorder_status += '') {
+                      case '0':
+                        this.network_work_order.work_order_status = '待分配'
+                        break;
+                      case '1':
+                        this.network_work_order.work_order_status = '已分配';
+                        break;
+                      case '2':
+                        this.network_work_order.work_order_status = '处置中';
+                        break;
+                      case '3':
+                        this.network_work_order.work_order_status = '已处置';
+                        break;
+                      case '4':
+                        this.network_work_order.work_order_status = '已取消';
+                        break;
+                      default:
+                        break;
+                    }
+                    this.network_work_order.work_name = response.data.data.workorder_name
+                  } else {
+                    this.network_work_order.work_order_status = ''
+                    this.network_work_order.work_name = ''
+                  }
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            })
           this.network_times = [];
           this.network_times.push(this.network_detail)
           if (this.network_detail.alarm_merger.length != 0) {

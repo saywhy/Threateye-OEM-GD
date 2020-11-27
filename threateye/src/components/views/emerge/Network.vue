@@ -673,7 +673,7 @@ export default {
     };
   },
   mounted () {
-    this.check_passwd();
+   // this.check_passwd();
     this.get_echarts();
     this.get_list_risk();
   },

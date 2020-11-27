@@ -306,7 +306,7 @@ export default {
     };
   },
   created () {
-    this.check_passwd();
+    //this.check_passwd();
     //第一排
     this.init_top_left();
     this.init_top_mid();

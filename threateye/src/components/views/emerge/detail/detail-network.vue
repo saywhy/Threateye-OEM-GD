@@ -1450,7 +1450,7 @@ export default {
     backTitle
   },
   mounted () {
-    this.check_passwd()
+    //this.check_passwd()
     this.get_data();
     console.log(this.$route.query);
     // detail: val.id, type: 'risks'
@@ -1755,7 +1755,7 @@ export default {
           // horizontalthreat  横向威胁告警  lateral
           // externalthreat  外部威胁告警  outside
           // outreachthreat  外联威胁告警  outreath
-          switch (this.$route.query.type) {
+         /* switch (this.$route.query.type) {
             case 'alert':
               workorders = '/yiiapi/alertoem/workorders'
               break;
@@ -1820,7 +1820,7 @@ export default {
             })
             .catch(error => {
               console.log(error);
-            })
+            })*/
           this.network_times = [];
           this.network_times.push(this.network_detail)
           if (this.network_detail.alarm_merger.length != 0) {

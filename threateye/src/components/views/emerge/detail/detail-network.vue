@@ -13,7 +13,7 @@
           <img src="@/assets/images/emerge/top3.png"
                alt="">
         </div>
-        <div class="top_right">
+        <!-- <div class="top_right">
           <el-row class="common_btn common_btn_124">
             <el-col :span="24"
                     class="common_btn_list">
@@ -56,14 +56,15 @@
                          @click="edit_tag_box">编辑标签</el-button>
             </el-col>
           </el-row>
-        </div>
+        </div> -->
       </div>
       <div class="detail_base_bottom">
         <div class="detail_base_bottom_item">
           <ul>
             <li class="item_li">
               <span class="item_li_title">源地址:</span>
-              <el-dropdown @command="change_state_src"
+              <span class="item_li_content">{{network_detail.src_ip}}</span>
+              <!-- <el-dropdown @command="change_state_src"
                            trigger="click"
                            class="src_dropdown_box"
                            placement='bottom-start'
@@ -80,11 +81,12 @@
                   <el-dropdown-item command="2"
                                     class="select_item">添加到外部动态列表</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
             </li>
             <li class="item_li">
               <span class="item_li_title">目的地址:</span>
-              <el-dropdown @command="change_state_dest"
+              <span class="item_li_content">{{network_detail.dest_ip}}</span>
+              <!-- <el-dropdown @command="change_state_dest"
                            trigger="click"
                            class="src_dropdown_box"
                            placement='bottom-start'
@@ -101,7 +103,7 @@
                   <el-dropdown-item command="2"
                                     class="select_item">添加到外部动态列表</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
             </li>
             <li class="item_li">
               <span class="item_li_title">源标签:</span>
@@ -173,7 +175,7 @@
               <span class="item_li_title">攻击阶段:</span>
               <span class="item_li_content">{{network_times_active.attack_stage_cn }}</span>
             </li>
-            <li class="item_li">
+            <!-- <li class="item_li">
               <span class="item_li_title">工单名称:</span>
               <span class="item_li_content Goto_workorder"
                     @click="Goto_workorder"
@@ -182,7 +184,7 @@
             <li class="item_li">
               <span class="item_li_title">工单状态:</span>
               <span class="item_li_content">{{network_work_order.work_order_status}}</span>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -426,7 +428,7 @@
           <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
-                    border
+                    stripe
                     :data="emerge_list.now.data"
                     tooltip-effect="dark"
                     style="width: 100%"
@@ -492,7 +494,7 @@
           <el-table class="reset_table"
                     ref="multipleTable"
                     align="center"
-                    border
+                    stripe
                     :data="emerge_list.old.data"
                     tooltip-effect="dark"
                     style="width: 100%"
@@ -629,7 +631,6 @@
                   <i></i>
                 </el-radio>
               </template>
-
             </el-table-column>-->
             <el-table-column label="选择"
                              align="center"
@@ -1290,7 +1291,6 @@ export default {
             '2、考虑用网络安全设备阻止该公共VPN地址。',
           ],
         },
-
       ],
       // attack_stage
       network_detail: {
@@ -1411,7 +1411,6 @@ export default {
         // 告警数组
         network_detail: []
       },
-
       //
       table_alerts: {
         tableData: [],
@@ -1448,7 +1447,7 @@ export default {
     backTitle
   },
   mounted () {
-    this.check_passwd()
+    // this.check_passwd()
     this.get_data();
     console.log(this.$route.query);
     // detail: val.id, type: 'risks'
@@ -1491,17 +1490,13 @@ export default {
     },
     /**************************************************************************************************************/
     /***************新加到工单*****************/
-
     //添加到工单打开
     open_add_new () {
       this.add_open_state();
     },
-
     //新加到工单打开状态
     add_open_state () {
-
       let status = this.table_alerts.tableData[0].status;
-
       if (status == '3' || status == '4' || status == '5') {
         this.$message({ message: '告警状态为已处置、已忽略、误报的不能添加到工单。', type: 'warning' });
       } else {
@@ -1529,7 +1524,7 @@ export default {
       let workorder_type = '';
       switch (this.$route.query.type) {
         case 'alert':
-          workorder_list = '/yiiapi/alert/workorder-list'
+          workorder_list = '/yiiapi/alertoem/workorder-list'
           workorder_type = 'alert'
           break;
         case 'asset':
@@ -1551,7 +1546,6 @@ export default {
         default:
           break;
       }
-
       this.$axios.get(workorder_list, {
         params: {
           page: this.table_add_works.pageNow,
@@ -1577,7 +1571,6 @@ export default {
         }
       })
     },
-
     //新加工单列表勾选某一条记录
     handle_sel_table_add_works (row) {
       // el-radio单选框,不需要这一步
@@ -1585,16 +1578,13 @@ export default {
       console.log(row)
       this.table_add_works.multipleSelection = row;
     },
-
     //新加到工单确定
     add_ok_state () {
       let selected_attr = this.table_alerts.tableData
         .map(x => { return x.id * 1 });
       this.add_params.multiple = selected_attr;
-
       //判断工单列表长度
       let multipe = this.table_add_works.multipleSelection;
-
       if (multipe.length == 0) {
         this.$message({ message: '请选择需要添加的工单！', type: 'warning' });
       } else if (multipe.length > 1) {
@@ -1607,30 +1597,23 @@ export default {
         this.add_params.perator = JSON.parse(multipe[0].perator);
         this.add_params.remarks = multipe[0].remarks;
         this.add_params.remind = JSON.parse(multipe[0].remind);
-
         this.add_params.old_as = JSON.parse(multipe[0].te_alert);
         //console.log(this.add_params);
         this.add_params.multiple = [...this.add_params.multiple, ...this.add_params.old_as];
-
         console.log(this.add_params.multiple);
         this.add_params.multiple = [...new Set(this.add_params.multiple)];
-
         var newArr = this.add_params.multiple.filter(item => item)
-
         this.add_params.multiple = newArr;
-
         console.log(this.add_params)
         console.log(this.add_params.perator);
         this.loading = true;
-
-
         var add_workorder = ''
         // horizontalthreat  横向威胁告警  lateral
         // externalthreat  外部威胁告警  outside
         // outreachthreat  外联威胁告警  outreath
         switch (this.$route.query.type) {
           case 'alert':
-            add_workorder = '/yiiapi/alert/add-workorder'
+            add_workorder = '/yiiapi/alertoem/add-workorder'
             break;
           case 'asset':
             add_workorder = '/yiiapi/asset/add-workorder'
@@ -1647,7 +1630,6 @@ export default {
           default:
             break;
         }
-
         this.$axios.post(add_workorder,
           {
             id: this.add_params.id,
@@ -1675,20 +1657,17 @@ export default {
           });
       }
     },
-
     //每页显示多少条
     sc_table_add_works (val) {
       this.table_add_works.eachPage = val;
       this.table_add_works.pageNow = 1;
       this.get_table_works_list();
     },
-
     //新加工单列表分页页面切换
     hcc_table_add_works (val) {
       this.table_add_works.pageNow = val;
       this.get_table_works_list();
     },
-
     /**************************************************************************************************************/
     // ^[0-9]*$
     // _-.@
@@ -1706,7 +1685,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          url = '/yiiapi/alert/alert-details'
+          url = '/yiiapi/alertoem/alert-details'
           break;
         case 'asset':
           url = '/yiiapi/asset/alert-details'
@@ -1723,7 +1702,6 @@ export default {
         default:
           break;
       }
-
       this.$axios.get(url, {
         params: {
           id: this.$route.query.detail
@@ -1755,7 +1733,7 @@ export default {
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              workorders = '/yiiapi/alert/workorders'
+              workorders = '/yiiapi/alertoem/workorders'
               break;
             case 'asset':
               workorders = '/yiiapi/asset/workorders'
@@ -1773,52 +1751,52 @@ export default {
               break;
           }
           // 获取当前告警的工单状态
-          this.$axios.get(workorders, {
-            params: {
-              id: this.$route.query.detail
-            }
-          })
-            .then(response => {
-              console.log(response.data);
-              this.$nextTick(() => {
-                console.log(response.data);
-                this.network_work_order.workorder_id = response.data.data.workorder_id
-                if (response.data.data.workorder_id == '0') {
-                  console.log(213213);
-                  this.network_work_order.work_order_status = '未关联工单'
-                  this.network_work_order.work_name = ''
-                } else {
-                  if (response.data.data.workorder_status && response.data.data.workorder_name) {
-                    switch (response.data.data.workorder_status += '') {
-                      case '0':
-                        this.network_work_order.work_order_status = '待分配'
-                        break;
-                      case '1':
-                        this.network_work_order.work_order_status = '已分配';
-                        break;
-                      case '2':
-                        this.network_work_order.work_order_status = '处置中';
-                        break;
-                      case '3':
-                        this.network_work_order.work_order_status = '已处置';
-                        break;
-                      case '4':
-                        this.network_work_order.work_order_status = '已取消';
-                        break;
-                      default:
-                        break;
-                    }
-                    this.network_work_order.work_name = response.data.data.workorder_name
-                  } else {
-                    this.network_work_order.work_order_status = ''
-                    this.network_work_order.work_name = ''
-                  }
-                }
-              })
-            })
-            .catch(error => {
-              console.log(error);
-            })
+          // this.$axios.get(workorders, {
+          //   params: {
+          //     id: this.$route.query.detail
+          //   }
+          // })
+          //   .then(response => {
+          //     console.log(response.data);
+          //     this.$nextTick(() => {
+          //       console.log(response.data);
+          //       this.network_work_order.workorder_id = response.data.data.workorder_id
+          //       if (response.data.data.workorder_id == '0') {
+          //         console.log(213213);
+          //         this.network_work_order.work_order_status = '未关联工单'
+          //         this.network_work_order.work_name = ''
+          //       } else {
+          //         if (response.data.data.workorder_status && response.data.data.workorder_name) {
+          //           switch (response.data.data.workorder_status += '') {
+          //             case '0':
+          //               this.network_work_order.work_order_status = '待分配'
+          //               break;
+          //             case '1':
+          //               this.network_work_order.work_order_status = '已分配';
+          //               break;
+          //             case '2':
+          //               this.network_work_order.work_order_status = '处置中';
+          //               break;
+          //             case '3':
+          //               this.network_work_order.work_order_status = '已处置';
+          //               break;
+          //             case '4':
+          //               this.network_work_order.work_order_status = '已取消';
+          //               break;
+          //             default:
+          //               break;
+          //           }
+          //           this.network_work_order.work_name = response.data.data.workorder_name
+          //         } else {
+          //           this.network_work_order.work_order_status = ''
+          //           this.network_work_order.work_name = ''
+          //         }
+          //       }
+          //     })
+          //   })
+          //   .catch(error => {
+          //     console.log(error);
+          //   })
           this.network_times = [];
           this.network_times.push(this.network_detail)
           if (this.network_detail.alarm_merger.length != 0) {
@@ -2000,7 +1978,6 @@ export default {
                     value: item.urls_cn,
                   });
                 }
-
                 item.info_list = [
                   {
                     name: 'MD5',
@@ -2163,7 +2140,6 @@ export default {
                     value: item.alert_description.threat
                   },
                 ];
-
                 if (item.alert_description.category == '恶意程序') {
                   item.info_list.push({
                     name: "文件下载",
@@ -2217,7 +2193,6 @@ export default {
                     })
                   }
                 });
-
                 if (item.alert_description.category == '恶意程序') {
                   item.info_list.push({
                     name: "文件下载",
@@ -2272,7 +2247,7 @@ export default {
               default:
                 break;
             }
-             // 网络事件匹配
+            // 网络事件匹配
             switch (item.network_event.event_type) {
               case 'fileinfo':
                 switch (item.network_event.app_proto) {
@@ -2282,44 +2257,44 @@ export default {
                         ","
                       );
                     }
-                      var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
                       { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Mail_from', value: item.network_event.email.from },
                       { name: 'Recpt_to', value: item.network_event.email_to },
                       { name: 'Traffic', value: 'smtp' },
                     ]
                     break;
                   case 'http':
-                       var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Method', value: item.network_event.http.http_method },
-                         { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'URL', value: item.network_event.http.url },
                       { name: 'User Agent', value: item.network_event.http.http_user_agent },
                       { name: 'Referrer', value: item.network_event.http.http_refer },
@@ -2327,48 +2302,48 @@ export default {
                     ]
                     break;
                   case 'ftp-data':
-                       var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                         { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'User', value: '-' },
                       { name: 'Traffic', value: 'FTP' },
                     ]
                     break;
                   case 'imap':
-                      var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
                     if (item.network_event.email.to.length > 1) {
                       item.network_event.email_to = item.network_event.email.to.join(
                         ","
                       );
                     }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                         { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Mail_from', value: item.network_event.email.from },
                       { name: 'Recpt_to', value: item.network_event.email_to },
                       { name: 'Traffic', value: 'imap' },
@@ -2380,44 +2355,44 @@ export default {
                         ","
                       );
                     }
-                      var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                            { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Mail_from', value: item.network_event.email.from },
                       { name: 'Recpt_to', value: item.network_event.email_to },
                       { name: 'Traffic', value: 'pop3' },
                     ]
                     break;
                   case 'smb':
-                      var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                           { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Domain', value: '-' },
                       { name: 'User', value: '-' },
                       { name: 'Traffic', value: 'smb' },
@@ -2429,22 +2404,22 @@ export default {
                     } else if (item.network_event.app_proto == 'failed') {
                       item.network_event.app_proto = ''
                     }
-                      var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                           { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Traffic', value: item.network_event.app_proto },
                     ]
                     break;
@@ -2453,119 +2428,120 @@ export default {
               case 'flow':
                 switch (item.network_event.app_proto) {
                   case 'ftp':
-                         var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                        { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: item.network_event.src_ip + ':' + item.network_event.src_port },
+                      { name: 'Destination IP', value: item.network_event.dest_ip + ':' + item.network_event.dest_port },
                       { name: 'User', value: item.network_event.user },
                       { name: 'Traffic', value: item.network_event.app_proto },
                     ]
                     break;
                   default:
+
                     if (!item.network_event.app_proto) {
                       item.network_event.app_proto = item.network_event.proto
                     } else if (item.network_event.app_proto == 'failed') {
                       item.network_event.app_proto = ''
                     }
-                         var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                            { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Traffic', value: item.network_event.app_proto },
                     ]
                     break;
                 }
                 break
               case 'smb':
-                        var srcIP = ''
+                var srcIP = ''
                 var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
                 } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
                 }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
                 } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
                 }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
-                        { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Source IP', value: srcIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'Domain', value: '-' },
                   { name: 'User', value: '-' },
                   { name: 'Traffic', value: item.network_event.event_type },
                 ]
                 break
               case 'ssh':
-                        var srcIP = ''
+                var srcIP = ''
                 var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
                 } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
                 }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
                 } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
                 }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
-                        { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Source IP', value: srcIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'Tool', value: item.network_event.ssh.client.software_version },
                   { name: 'User', value: '-' },
                   { name: 'Traffic', value: item.network_event.event_type },
                 ]
                 break
               case 'tls':
-                        var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
                 if (item.network_event.tls.subject) {
                   item.network_event.tls.Authorizing = item.network_event.tls.subject.substring(
                     item.network_event.tls.subject.indexOf("CN=") + 3
                   );
                 }
+                var srcIP = ''
+                var desIP = ''
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
+                } else {
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                }
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
+                } else {
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
-                     { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Source IP', value: srcIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'URL', value: item.network_event.tls.sni },
                   { name: 'Issuerdn', value: item.network_event.tls.issuerdn },
                   { name: 'Authorizing', value: item.network_event.tls.Authorizing },
@@ -2587,22 +2563,22 @@ export default {
                     }
                   });
                 }
-                        var srcIP = ''
+                var srcIP = ''
                 var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
                 } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
                 }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
                 } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
                 }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
                   { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'SectianType', value: item.network_event.dns.rrtype },
                   { name: 'Domain', value: item.network_event.dns.rrname },
                   { name: 'TTL', value: item.network_event.dns.HostAddr },
@@ -2610,22 +2586,22 @@ export default {
                 ]
                 break
               case 'krb5':
-                        var srcIP = ''
+                var srcIP = ''
                 var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
                 } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
                 }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
                 } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
                 }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
-                   { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Source IP', value: srcIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'Msg_type', value: item.network_event.krb5.msg_type },
                   { name: 'Cname', value: item.network_event.krb5.cname },
                   { name: 'Realm', value: item.network_event.krb5.realm },
@@ -2634,22 +2610,22 @@ export default {
                 ]
                 break
               case 'http':
-                        var srcIP = ''
+                var srcIP = ''
                 var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
                 } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
                 }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
                 } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
                 }
                 item.event_list = [
                   { name: 'Method', value: item.network_event.http.http_method },
-                     { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Source IP', value: srcIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'URL', value: item.network_event.http.url },
                   { name: 'User Agent', value: item.network_event.http.http_user_agent },
                   { name: 'Referrer', value: item.network_event.http.http_refer },
@@ -2657,18 +2633,6 @@ export default {
                 ]
                 break
               case 'alert':
-                        var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
                 switch (item.network_event.app_proto) {
                   case 'tls':
                     if (item.network_event.tls.subject) {
@@ -2676,10 +2640,22 @@ export default {
                         item.network_event.tls.subject.indexOf("CN=") + 3
                       );
                     }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                        { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'URL', value: item.network_event.tls.sni },
                       { name: 'Issuerdn', value: item.network_event.tls.issuerdn },
                       { name: 'Authorizing', value: item.network_event.tls.Authorizing },
@@ -2688,22 +2664,22 @@ export default {
                     ]
                     break;
                   case 'http':
-                            var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Method', value: item.network_event.http.http_method },
-                        { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'URL', value: item.network_event.http.url },
                       { name: 'User Agent', value: item.network_event.http.http_user_agent },
                       { name: 'Referrer', value: item.network_event.http.http_refer },
@@ -2711,27 +2687,27 @@ export default {
                     ]
                     break;
                   default:
-                            var srcIP = ''
-                var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
-                } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
-                }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
-                } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
-                }
                     if (!item.network_event.app_proto) {
                       item.network_event.app_proto = item.network_event.proto
                     } else if (item.network_event.app_proto == 'failed') {
                       item.network_event.app_proto = ''
                     }
+                    var srcIP = ''
+                    var desIP = ''
+                    if (this.selectItem.network_event.src_port == 0) {
+                      srcIP = this.selectItem.network_event.src_ip
+                    } else {
+                      srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
+                    }
+                    if (this.selectItem.network_event.dest_port == 0) {
+                      desIP = this.selectItem.network_event.dest_ip
+                    } else {
+                      desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
+                    }
                     item.event_list = [
                       { name: 'Time', value: item.network_event.timestamp },
-                       { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                      { name: 'Source IP', value: srcIP },
+                      { name: 'Destination IP', desIP },
                       { name: 'Traffic', value: item.network_event.app_proto },
                     ]
                     break;
@@ -2742,30 +2718,28 @@ export default {
                 } else if (item.network_event.app_proto == 'failed') {
                   item.network_event.app_proto = ''
                 }
-                        var srcIP = ''
+                var srcIP = ''
                 var desIP = ''
-                if (item.network_event.src_port == 0) {
-                  srcIP = item.network_event.src_ip
+                if (this.selectItem.network_event.src_port == 0) {
+                  srcIP = this.selectItem.network_event.src_ip
                 } else {
-                  srcIP = item.network_event.src_ip + ':' + item.network_event.src_port
+                  srcIP = this.selectItem.network_event.src_ip + ':' + this.selectItem.network_event.src_port
                 }
-                if (item.network_event.dest_port == 0) {
-                  desIP = item.network_event.dest_ip
+                if (this.selectItem.network_event.dest_port == 0) {
+                  desIP = this.selectItem.network_event.dest_ip
                 } else {
-                  desIP = item.network_event.dest_ip + ':' + item.network_event.dest_port
+                  desIP = this.selectItem.network_event.dest_ip + ':' + this.selectItem.network_event.dest_port
                 }
                 item.event_list = [
                   { name: 'Time', value: item.network_event.timestamp },
-                    { name: 'Source IP', value: srcIP },
-                      { name: 'Destination IP', value: desIP },
+                  { name: 'Source IP', value: srcIP },
+                  { name: 'Destination IP', desIP },
                   { name: 'Traffic', value: item.network_event.app_proto },
                 ]
                 break;
                 break;
             }
           });
-
-
           // 攻击阶段
           this.attack_stage_list.forEach(element => {
             element.count = 0;
@@ -2812,116 +2786,88 @@ export default {
         default:
           break;
       }
-
     },
     // 下载payload
     download (value, item) {
-      if (value.value == "点击下载" && value.name == "PayLoad信息") {
-        this.$axios.get('/yiiapi/site/check-auth-exist', {
-          params: {
-            pathInfo: 'yararule/download',
-          }
-        })
-          .then(response => {
-            var funDownload = function (content, filename) {
-              // 创建隐藏的可下载链接
-              var eleLink = document.createElement("a");
-              eleLink.download = filename;
-              eleLink.style.display = "none";
-              // 字符内容转变成blob地址
-              var blob = new Blob([content]);
-              eleLink.href = URL.createObjectURL(blob);
-              // 触发点击
-              document.body.appendChild(eleLink);
-              eleLink.click();
-              // 然后移除
-              document.body.removeChild(eleLink);
-            };
-            funDownload(item.network_event.payload, "payload.dat");
-          })
-          .catch(error => {
-            console.log(error);
-          })
 
+      if (value.value == "点击下载" && value.name == "PayLoad信息") {
+        var funDownload = function (content, filename) {
+          // 创建隐藏的可下载链接
+          var eleLink = document.createElement("a");
+          eleLink.download = filename;
+          eleLink.style.display = "none";
+          // 字符内容转变成blob地址
+          var blob = new Blob([content]);
+          eleLink.href = URL.createObjectURL(blob);
+          // 触发点击
+          document.body.appendChild(eleLink);
+          eleLink.click();
+          // 然后移除
+          document.body.removeChild(eleLink);
+        };
+        funDownload(item.network_event.payload, "payload.dat");
       }
       if (value.value == "点击下载" && value.name == '文件下载') {
-        this.$axios.get('/yiiapi/site/check-auth-exist', {
-          params: {
-            pathInfo: 'yararule/download',
-          }
-        })
-          .then(response => {
-            var window_open = ''
-            console.log(item);
-            console.log(value);
-            // horizontalthreat  横向威胁告警  lateral
-            // externalthreat  外部威胁告警  outside
-            // outreachthreat  外联威胁告警  outreath
-            switch (this.$route.query.type) {
-              case 'alert':
-                window_open = '/yiiapi/alert/get-file?md5='
-                break;
-              case 'asset':
-                window_open = '/yiiapi/asset/get-file?md5='
-                break;
-              case 'lateral':
-                window_open = '/yiiapi/horizontalthreat/get-file?md5='
-                break;
-              case 'outside':
-                window_open = '/yiiapi/externalthreat/get-file?md5='
-                break;
-              case 'outreath':
-                window_open = '/yiiapi/outreachthreat/get-file?md5='
-                break;
-              default:
-                break;
-            }
-            window.open(window_open + value.md5);
-          })
-          .catch(error => {
-            console.log(error);
-          })
+
+        var window_open = ''
+        console.log(item);
+        console.log(value);
+        // horizontalthreat  横向威胁告警  lateral
+        // externalthreat  外部威胁告警  outside
+        // outreachthreat  外联威胁告警  outreath
+        switch (this.$route.query.type) {
+          case 'alert':
+            window_open = '/yiiapi/alertoem/get-file?md5='
+            break;
+          case 'asset':
+            window_open = '/yiiapi/asset/get-file?md5='
+            break;
+          case 'lateral':
+            window_open = '/yiiapi/horizontalthreat/get-file?md5='
+            break;
+          case 'outside':
+            window_open = '/yiiapi/externalthreat/get-file?md5='
+            break;
+          case 'outreath':
+            window_open = '/yiiapi/outreachthreat/get-file?md5='
+            break;
+          default:
+            break;
+        }
+        window.open(window_open + value.md5);
+
       }
     },
     download_sandbox (value, item) {
       console.log(value);
+
+      var window_open = ''
       console.log(item);
-      this.$axios.get('/yiiapi/site/check-auth-exist', {
-        params: {
-          pathInfo: 'yararule/download',
-        }
-      })
-        .then(response => {
-          var window_open = ''
-          console.log(item);
-          console.log(value);
-          // horizontalthreat  横向威胁告警  lateral
-          // externalthreat  外部威胁告警  outside
-          // outreachthreat  外联威胁告警  outreath
-          switch (this.$route.query.type) {
-            case 'alert':
-              window_open = '/yiiapi/alert/get-signature?md5='
-              break;
-            case 'asset':
-              window_open = '/yiiapi/asset/get-signature?md5='
-              break;
-            case 'lateral':
-              window_open = '/yiiapi/horizontalthreat/get-signature?md5='
-              break;
-            case 'outside':
-              window_open = '/yiiapi/externalthreat/get-signature?md5='
-              break;
-            case 'outreath':
-              window_open = '/yiiapi/outreachthreat/get-signature?md5='
-              break;
-            default:
-              break;
-          }
-          window.open(window_open + value.MD5 + '&id=' + value.taskID);
-        })
-        .catch(error => {
-          console.log(error);
-        })
+      console.log(value);
+      // horizontalthreat  横向威胁告警  lateral
+      // externalthreat  外部威胁告警  outside
+      // outreachthreat  外联威胁告警  outreath
+      switch (this.$route.query.type) {
+        case 'alert':
+          window_open = '/yiiapi/alertoem/get-signature?md5='
+          break;
+        case 'asset':
+          window_open = '/yiiapi/asset/get-signature?md5='
+          break;
+        case 'lateral':
+          window_open = '/yiiapi/horizontalthreat/get-signature?md5='
+          break;
+        case 'outside':
+          window_open = '/yiiapi/externalthreat/get-signature?md5='
+          break;
+        case 'outreath':
+          window_open = '/yiiapi/outreachthreat/get-signature?md5='
+          break;
+        default:
+          break;
+      }
+      window.open(window_open + value.MD5 + '&id=' + value.taskID);
+
     },
     // 当前受威胁资产
     new_list (indicator) {
@@ -2931,7 +2877,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          new_list = '/yiiapi/alert/get-same-indicator-alert'
+          new_list = '/yiiapi/alertoem/get-same-indicator-alert'
           break;
         case 'asset':
           new_list = '/yiiapi/asset/get-same-indicator-alert'
@@ -2949,7 +2895,6 @@ export default {
           break;
       }
       console.log(indicator);
-
       this.$axios.get(new_list, {
         params: {
           indicator: indicator,
@@ -2959,7 +2904,6 @@ export default {
         }
       })
         .then(response => {
-
           let { status, data } = response.data;
           this.emerge_list.now = data
         })
@@ -2971,7 +2915,6 @@ export default {
       this.emerge_list.now_data.rows = val;
       this.emerge_list.now_data.page = 1;
       this.new_list(this.network_times_active.indicator);
-
     },
     handleCurrentChange_now (val) {
       this.emerge_list.now_data.page = val;
@@ -2985,7 +2928,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          new_list = '/yiiapi/alert/get-same-indicator-alert'
+          new_list = '/yiiapi/alertoem/get-same-indicator-alert'
           break;
         case 'asset':
           new_list = '/yiiapi/asset/get-same-indicator-alert'
@@ -3027,20 +2970,18 @@ export default {
       this.emerge_list.old_data.page = val;
       this.old_list(this.network_times_active.indicator);
     },
-
     // 状态变更
     change_state (item) {
       console.log(item);
       var id_list = []
       id_list.push(this.$route.query.detail)
-
       var alarm = ''
       // horizontalthreat  横向威胁告警  lateral
       // externalthreat  外部威胁告警  outside
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          alarm = '/yiiapi/alert/do-alarm'
+          alarm = '/yiiapi/alertoem/do-alarm'
           break;
         case 'asset':
           alarm = '/yiiapi/asset/do-alarm'
@@ -3119,7 +3060,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          label = '/yiiapi/alert/label-edit'
+          label = '/yiiapi/alertoem/label-edit'
           break;
         case 'asset':
           label = '/yiiapi/asset/label-edit'
@@ -3136,12 +3077,10 @@ export default {
         default:
           break;
       }
-
       /* this.$axios.put(label, {
          id: this.$route.query.detail,
          label: label_list
        })*/
-
       //ycl 2020/11/04
       this.$axios.put(label, {
         id: this.$route.query.detail,
@@ -3170,9 +3109,6 @@ export default {
         .catch(error => {
           console.log(error);
         })
-
-
-
     },
     closed_edit_tag_box () {
       this.edit_tag.pop = false
@@ -3195,7 +3131,6 @@ export default {
     del_tag (item, index) {
       this.edit_tag.tag_list.splice(index, 1);
     },
-
     // 加入外部链接
     change_state_src (item) {
       console.log(item);
@@ -3209,7 +3144,6 @@ export default {
         //   label = '/yiiapi/outreachthreat/label-edit'
         // }
         this.$router.push({ path: "/invest/url", query: { src_ip: this.network_detail.src_ip, dest_ip: '' } });
-
       }
       //加入外部链接
       if (item == '2') {
@@ -3224,7 +3158,7 @@ export default {
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              join = '/yiiapi/alert/join-external-dynamics'
+              join = '/yiiapi/alertoem/join-external-dynamics'
               break;
             case 'asset':
               join = '/yiiapi/asset/join-external-dynamics'
@@ -3241,9 +3175,6 @@ export default {
             default:
               break;
           }
-
-
-
           this.$axios.post(join, {
             addr: this.network_detail.src_ip,
             type: 1
@@ -3278,14 +3209,10 @@ export default {
         });
       }
     },
-
     // 加入外部链接
     change_state_dest (item) {
       console.log(item);
       if (item == '1') {
-
-
-
         this.$router.push({ path: "/invest/url", query: { dest_ip: this.network_detail.dest_ip, src_ip: '' } });
       }
       //加入外部链接
@@ -3296,13 +3223,12 @@ export default {
           type: 'warning'
         }).then(() => {
           var join = ''
-
           // horizontalthreat  横向威胁告警  lateral
           // externalthreat  外部威胁告警  outside
           // outreachthreat  外联威胁告警  outreath
           switch (this.$route.query.type) {
             case 'alert':
-              join = '/yiiapi/alert/join-external-dynamics'
+              join = '/yiiapi/alertoem/join-external-dynamics'
               break;
             case 'asset':
               join = '/yiiapi/asset/join-external-dynamics'
@@ -3319,8 +3245,6 @@ export default {
             default:
               break;
           }
-
-
           this.$axios.post(join, {
             addr: this.network_detail.dest_ip,
             type: 1
@@ -3355,9 +3279,6 @@ export default {
         });
       }
     },
-
-
-
     time_active (index) {
       this.time_choose = index;
       console.log(this.network_times);
@@ -3384,8 +3305,6 @@ export default {
     //工单任务选择
     change_task (command) {
       if (command == "1") {
-
-
         this.new_worksheets_list.name = ''
         this.new_worksheets_list.level = ''
         this.new_worksheets_list.operator = ''
@@ -3394,7 +3313,6 @@ export default {
         this.new_worksheets_list.textarea = ''
         this.new_worksheets_list.multiple = []
         this.new_worksheets_list.select_list = []
-
         this.new_worksheets_data.operator_list = []
         this.new_worksheets_data.operator_list = []
         this.new_worksheets_data.table_operator.tableData = []
@@ -3406,7 +3324,6 @@ export default {
         this.new_worksheets_data.network_detail = []
         // 存在被创建工单的告警
         console.log(this.network_detail.status);
-
         // this.table_alerts.tableData[0].status
         if (this.network_detail.status == '3' || this.network_detail.status == '4' || this.network_detail.status == '5') {
           this.$message({ message: '告警状态为已处置、已忽略、误报的不能新建工单。', type: 'warning' });
@@ -3414,7 +3331,6 @@ export default {
         }
         this.get_user_list();
       } else if (command == "2") {
-
         this.open_add_new();
         // 添加到工单，只有告警状态 0 1
         // 告警：0新告警，1待处置，2处置中，3已处置，4已忽略，5误报
@@ -3430,7 +3346,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          workorder_list = '/yiiapi/alert/workorder-list'
+          workorder_list = '/yiiapi/alertoem/workorder-list'
           workorder_type = 'alert'
           break;
         case 'asset':
@@ -3494,13 +3410,10 @@ export default {
       this.worksheets_data.tableRadio = {}
       this.get_worksheets_list();
     },
-
     // -新加到工单取消状态
     add_closed_state () {
       this.worksheets_data.pop = false;
     },
-
-
     //新加到工单确定
     add_ok_worksheets () {
       console.log(this.worksheets_data.tableRadio);
@@ -3528,7 +3441,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          add_workorder = '/yiiapi/alert/add-workorder'
+          add_workorder = '/yiiapi/alertoem/add-workorder'
           break;
         case 'asset':
           add_workorder = '/yiiapi/asset/add-workorder'
@@ -3572,7 +3485,6 @@ export default {
         });
     },
     ///-------------------------新建工单
-
     closed_task_new () {
       this.new_worksheets_data.pop = false
     },
@@ -3594,7 +3506,6 @@ export default {
           console.log(err);
         })
     },
-
     //经办人change处理
     select_changced (item) {
       console.log(item);
@@ -3674,7 +3585,7 @@ export default {
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          distribution_workorder = '/yiiapi/alert/distribution-workorder'
+          distribution_workorder = '/yiiapi/alertoem/distribution-workorder'
           break;
         case 'asset':
           distribution_workorder = '/yiiapi/asset/distribution-workorder'
@@ -3691,8 +3602,6 @@ export default {
         default:
           break;
       }
-
-
       this.$axios.put(distribution_workorder,
         {
           name: this.new_worksheets_list.name,
@@ -3727,14 +3636,13 @@ export default {
       te_alert.push(this.network_detail.id * 1)
       console.log(te_alert);
       console.log(this.new_worksheets_list);
-
       var add_workorder = ''
       // horizontalthreat  横向威胁告警  lateral
       // externalthreat  外部威胁告警  outside
       // outreachthreat  外联威胁告警  outreath
       switch (this.$route.query.type) {
         case 'alert':
-          add_workorder = '/yiiapi/alert/add-workorder'
+          add_workorder = '/yiiapi/alertoem/add-workorder'
           break;
         case 'asset':
           add_workorder = '/yiiapi/asset/add-workorder'
@@ -3776,9 +3684,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-
-
-
     },
   },
   filters: {
@@ -3800,24 +3705,8 @@ export default {
 @import '../../../../assets/css/less/common-table-pattern.less';
 @import '../../../../assets/css/less/common-dropdown.less';
 @import '../../../../assets/css/less/reset_css/reset_table.less';
-// .reset_table {
-//   .el-table__header-wrapper {
-//     .el-table__header {
-//       thead.has-gutter {
-//         th {
-//           background: #f8f8f8 !important;
-//           .cell {
-//             font-family: PingFangMedium;
-//             color: #333;
-//             font-size: 14px;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 .el-input__inner {
-  background: #f8f8f8;
+  background: rgba(0, 0, 0, 0.3);
   border: 0;
 }
 .dropdown_ul_box_detail {
@@ -3827,29 +3716,11 @@ export default {
     color: #606266;
   }
 }
-// tab栏
-// .emerge_table {
-//   th {
-//     .cell {
-//       font-family: PingFangMedium;
-//       font-size: 14px;
-//       color: #333333;
-//     }
-//   }
-//   td {
-//     .cell {
-//       font-family: PingFang;
-//       font-size: 14px;
-//       color: #666;
-//     }
-//   }
-// }
 .detail-network {
   .pagination_box {
     margin: 24px 0;
     text-align: center;
   }
-
   // 弹窗编辑标签
   .add_tag {
     .el-dialog {
@@ -3935,7 +3806,6 @@ export default {
             border-radius: 6px;
             background: #f4f4f4;
           }
-
           .el-radio__input.is-checked .el-radio__inner::after {
             transform: rotate(45deg) scaleY(1);
           }
@@ -3985,25 +3855,22 @@ export default {
           width: 46px;
           height: 46px;
         }
-
         .title {
           height: 24px;
           line-height: 24px;
           text-align: left;
-
           .title_name {
             font-size: 20px;
-            color: #333333;
-            font-family: PingFangMedium;
+            color: #fff;
+            font-family: Microsoft YaHei;
             line-height: 24px;
           }
-
           .mask {
             width: 24px;
             height: 0px;
             border-top: 0px;
             border-right: 2px solid transparent;
-            border-bottom: 5px solid #0070ff;
+            border-bottom: 5px solid #00ff00;
             border-left: 2px solid transparent;
             transform: rotate3d(0, 0, 1, 90deg);
             display: inline-block;
@@ -4012,7 +3879,6 @@ export default {
             margin-left: -10px;
           }
         }
-
         .step_box {
           height: 36px;
           margin: 20px 0 24px 0;
@@ -4026,18 +3892,15 @@ export default {
             position: relative;
             line-height: 36px;
             text-align: center;
-
             .step1_span {
               font-size: 14px;
             }
-
             .selected_img {
               position: absolute;
               left: 0;
               top: 0;
             }
           }
-
           .step_box2 {
             width: 120px;
             height: 36px;
@@ -4049,73 +3912,57 @@ export default {
             line-height: 36px;
             text-align: center;
             margin-left: -10px;
-
             .step2_span {
               font-size: 14px;
             }
           }
-
           .step_now {
-            color: #0070ff;
+            color: #00ff00;
           }
-
           .step_past {
             color: #999999;
           }
         }
         .task_new_content {
           /*height: 480px;*/
-
           .content_top {
             overflow: hidden;
-
             .content_top_left {
               float: left;
               width: 45%;
-
               .left_item {
                 margin-bottom: 16px;
                 display: flex;
-
                 .title {
                   width: 100px;
                   line-height: 38px;
-
                   .improtant_ico {
                     color: #ff3a36;
                   }
                 }
-
                 .task_new_input {
                   flex: 1;
-
                   .el-input__inner {
                     height: 38px;
                   }
                 }
               }
             }
-
             .content_top_right {
               float: right;
               width: 45%;
-
               .right_item {
                 margin-bottom: 16px;
                 display: flex;
-
                 .title {
                   width: 100px;
                   line-height: 38px;
-
                   .improtant_ico {
                     color: #ff3a36;
                   }
                 }
-
                 .task_new_input {
                   flex: 1;
-
                   .el-input__inner {
                     height: 38px;
                   }
@@ -4123,13 +3970,11 @@ export default {
               }
             }
           }
-
           .content_remarks {
             .title {
               font-size: 12px;
               color: #999999;
             }
-
             /deep/ .el-textarea {
               height: 92px;
               textarea {
@@ -4137,22 +3982,19 @@ export default {
                 height: 92px;
                 font-size: 14px;
                 color: #333;
-                font-family: PingFang;
+                font-family: Microsoft YaHei;
               }
             }
             .el-textarea__inner:hover {
               border: none;
             }
-
             .el-textarea__inner {
               border: none;
               background: #f8f8f8;
             }
           }
-
           .content_table {
             margin-top: 16px;
-
             /deep/ .el-table td {
               padding: 0;
               height: 32px;
@@ -4164,7 +4006,6 @@ export default {
               .cell {
               }
             }
-
             /deep/ .el-pagination {
               margin-top: 20px;
               text-align: center;
@@ -4195,18 +4036,16 @@ export default {
           margin-bottom: 24px;
           height: 42px;
           text-align: center;
-
           .cancel_btn {
-            border: 1px solid #0070ff;
-            background: #fff;
-            color: #0070ff;
+            border: 1px solid #00ff00;
+            background: rgba(0, 0, 0, 0.3);
+            color: #00ff00;
             width: 136px;
             height: 42px;
             font-size: 16px;
           }
-
           .next_btn {
-            background-color: #0070ff;
+            background-color: #00ff00;
             color: #fff;
             width: 136px;
             height: 42px;
@@ -4219,26 +4058,23 @@ export default {
             text-align: left;
             .change_btn,
             .ref {
-              background-color: #0070ff;
-              border-color: #0070ff;
+              background-color: #00ff00;
+              border-color: #00ff00;
               width: 136px;
               height: 42px;
               color: #fff;
             }
-
             .cel {
-              border: 1px solid #0070ff;
-              background: #fff;
-              color: #0070ff;
+              border: 1px solid #00ff00;
+              background: rgba(0, 0, 0, 0.3);
+              color: #00ff00;
               width: 136px;
               height: 42px;
               margin-left: 0;
             }
           }
-
           .table_box {
             margin-top: 24px;
-
             .table_box_title {
               height: 38px;
               li {
@@ -4251,52 +4087,47 @@ export default {
                 text-align: center;
                 border-top: 2px solid #fff;
               }
-
               li.active {
                 cursor: pointer;
-                background: #eef6ff;
-                color: #0070ff;
-                border-top: 2px solid #0070ff;
+                background: rgba(0, 0, 0, 0.5);
+                color: #00ff00;
+                border-top: 2px solid #00ff00;
               }
             }
             /deep/ .el-table {
               font-size: 12px;
               thead.has-gutter {
                 th {
-                  color: #333333;
+                  color: #fff;
                   background: #f8f8f8;
                   .cell {
                   }
                 }
               }
               .cell {
-                color: #333333;
+                color: #fff;
               }
             }
-
             /deep/ .el-pagination {
               margin-top: 20px;
               text-align: center;
             }
           }
-
           .btn_box {
             margin-top: 36px;
             margin-bottom: 24px;
             height: 42px;
             text-align: center;
-
             .cancel_btn {
-              border: 1px solid #0070ff;
-              background: #fff;
-              color: #0070ff;
+              border: 1px solid #00ff00;
+              background: rgba(0, 0, 0, 0.3);
+              color: #00ff00;
               width: 136px;
               height: 42px;
               font-size: 16px;
             }
-
             .prev_btn {
-              background-color: #0070ff;
+              background-color: #00ff00;
               color: #fff;
               width: 136px;
               height: 42px;
@@ -4311,19 +4142,20 @@ export default {
 </style>
 <style scoped lang="less">
 .detail-network {
-  background: #f8f8f8;
-
+  background-image: linear-gradient(to right, #365d8c, #3e2149);
+  color: #fff;
   .red_color {
     color: #ff5f5c !important;
   }
   //   基础信息
   .detail_base {
     // height: 323px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
     .detail_base_top {
       padding: 0 56px;
       height: 62px;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .top_left {
         float: left;
         line-height: 62px;
@@ -4333,21 +4165,19 @@ export default {
       }
       .top_right {
         float: right;
-        /*margin-top: 14px;*/
-        // line-height: 62px;
         .change_btn {
           height: 34px;
           width: 124px;
           padding: 0;
-          background: #0070ff;
+          background: #00ff00;
         }
         .edit_btn {
           height: 34px;
           width: 124px;
           padding: 0;
-          background: #fff;
-          border: 1px solid #0070ff;
-          color: #0070ff;
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid #00ff00;
+          color: #00ff00;
         }
       }
     }
@@ -4371,7 +4201,7 @@ export default {
           .src_ul {
             width: 180px;
             padding: 10px 0;
-            background: #fff;
+            background: rgba(0, 0, 0, 0.3);
             box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
             position: absolute;
             left: 96px;
@@ -4384,19 +4214,19 @@ export default {
               cursor: pointer;
             }
             li:hover {
-              background: #eef6ff;
+              background: rgba(0, 0, 0, 0.5);
             }
           }
           .item_li_title {
             width: 96px;
             font-size: 16px;
-            color: #333333;
-            font-family: PingFangMedium;
+            color: #fff;
+            font-family: Microsoft YaHei;
           }
           .item_li_content {
             flex: 1;
             font-size: 16px;
-            color: #666;
+            color: #fff;
             .tag_btn_box {
               margin: 0 2px;
               display: inline-block;
@@ -4404,21 +4234,21 @@ export default {
               padding: 0 3px;
               border-radius: 2px;
               color: #ffffff;
-              background: #5389e0;
+              background: rgba(0, 0, 0, 0.3);
               text-align: center;
             }
             .tag_btn {
               height: 20px;
               font-size: 14px;
               line-height: 20px;
-              font-family: PingFang;
+              font-family: Microsoft YaHei;
               padding: 0 3px;
               // transform: scale(0.8);
               display: block;
             }
           }
           .Goto_workorder {
-            color: #0070ff;
+            color: #00ff00;
             cursor: pointer;
           }
           .btn_fall {
@@ -4429,9 +4259,9 @@ export default {
             color: #fff;
           }
           .src_active {
-            font-family: PingFang;
+            font-family: Microsoft YaHei;
             font-size: 16px;
-            color: #0070ff;
+            color: #00ff00;
             cursor: pointer;
           }
         }
@@ -4444,9 +4274,9 @@ export default {
     padding: 24px 56px 36px 56px;
     .time_title {
       height: 22px;
-      font-family: PingFangMedium;
+      font-family: Microsoft YaHei;
       font-size: 16px;
-      color: #333333;
+      color: #fff;
       margin-bottom: 12px;
       text-align: left;
     }
@@ -4455,12 +4285,12 @@ export default {
       .time_left {
         width: 180px;
         float: left;
-        background: #fff;
+        background: rgba(0, 0, 0, 0.3);
         margin: 0;
         ul.time_left_list {
           width: 180px;
           // height: 610px;
-          background: #fff;
+          background: rgba(0, 0, 0, 0.3);
           overflow-y: auto;
           overflow-x: hidden;
           z-index: 0;
@@ -4473,7 +4303,7 @@ export default {
           &.time_left_list::-webkit-scrollbar-thumb {
             /*滚动条里面小方块*/
             border-radius: 10px;
-            background: #fff;
+            background: rgba(0, 0, 0, 0.3);
           }
           &.time_left_list::-webkit-scrollbar-track {
             /*滚动条里面轨道*/
@@ -4499,7 +4329,7 @@ export default {
           }
         }
         .time_item.active {
-          background: #0070ff;
+          background: rgba(0, 0, 0, 0.5);
           color: #fff;
         }
         .time_item.active:after {
@@ -4509,7 +4339,7 @@ export default {
           height: 0px;
           border-top: 8px solid transparent;
           border-bottom: 8px solid transparent;
-          border-left: 8px solid #0070ff;
+          border-left: 8px solid rgba(0, 0, 0, 0.5);
           position: absolute;
           top: 32px;
           right: -8px;
@@ -4524,13 +4354,13 @@ export default {
         align-items: flex-start;
         margin-left: 18px;
         // height: 610px;
-        background: #fff;
+        background: rgba(0, 0, 0, 0.3);
         .title {
           height: 42px;
-          font-family: PingFangMedium;
+          font-family: Microsoft YaHei;
           font-size: 16px;
-          color: #333333;
-          border-bottom: 1px solid #ececec;
+          color: #fff;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
           line-height: 42px;
           text-align: left;
           padding: 0 24px;
@@ -4538,13 +4368,13 @@ export default {
         .time_right_info {
           padding-left: 24px;
           .download_text {
-            color: #0070ff !important;
+            color: #00ff00 !important;
             cursor: pointer;
             text-decoration: underline;
           }
           .time_right_info_top {
             overflow-y: auto;
-            border-bottom: 1px solid #ececec;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             padding-top: 16px;
             .info_top_item {
               // height: 22px;
@@ -4555,16 +4385,16 @@ export default {
               display: flex;
               .info_top_item_title {
                 width: 150px;
-                font-family: PingFang;
+                font-family: Microsoft YaHei;
                 font-size: 16px;
-                color: #333333;
+                color: #fff;
               }
               .info_top_item_content {
                 word-break: break-all;
                 flex: 1;
-                font-family: PingFang;
+                font-family: Microsoft YaHei;
                 font-size: 16px;
-                color: #666666;
+                color: #fff;
               }
             }
           }
@@ -4574,9 +4404,9 @@ export default {
             display: flex;
             .info_bom_title {
               width: 150px;
-              font-family: PingFang;
+              font-family: Microsoft YaHei;
               font-size: 16px;
-              color: #333333;
+              color: #fff;
             }
             .info_bom_item {
               flex: 1;
@@ -4592,11 +4422,11 @@ export default {
                 .left_li {
                   width: 200px;
                   font-size: 16px;
-                  color: #666;
+                  color: #fff;
                 }
                 .right_li {
                   font-size: 16px;
-                  color: #666;
+                  color: #fff;
                   flex: 1;
                   flex-wrap: wrap;
                   justify-content: flex-start;
@@ -4608,7 +4438,7 @@ export default {
         }
         .time_right_net {
           margin: 16px 24px;
-          border-bottom: 1px solid #ececec;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
           display: flex;
           .time_right_net_item {
             flex: 1;
@@ -4620,10 +4450,10 @@ export default {
             .title_net {
               height: 42px;
               text-align: left;
-              background: #f8f8f8;
-              font-family: PingFangMedium;
+              background: rgba(0, 0, 0, 0.3);
+              font-family: Microsoft YaHei;
               font-size: 14px;
-              color: #333333;
+              color: #fff;
               line-height: 42px;
               padding: 0 10px;
             }
@@ -4633,7 +4463,7 @@ export default {
               word-break: break-all;
               overflow: hidden;
               font-size: 14px;
-              color: #666;
+              color: #fff;
               text-align: left;
               padding: 10px;
             }
@@ -4646,16 +4476,16 @@ export default {
   .attack_stage_box {
     text-align: left;
     // height: 171px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
     margin-bottom: 24px;
     .detail_base_top {
       padding: 0 56px;
       height: 62px;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .attack_stage_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
-        color: #333333;
+        color: #fff;
         line-height: 62px;
       }
       .icon_img {
@@ -4672,10 +4502,10 @@ export default {
         width: 104px;
         height: 48px;
         line-height: 48px;
-        background: #eef6ff;
+        background: rgba(0, 0, 0, 0.5);
         border-radius: 2px;
         font-size: 16px;
-        color: #aaaaaa;
+        color: #fff;
         text-align: center;
         position: relative;
         .circle_box {
@@ -4694,7 +4524,7 @@ export default {
         }
       }
       .count_color {
-        color: #0070ff;
+        color: #00ff00;
       }
       .stage_img_box {
         flex: 1;
@@ -4712,16 +4542,16 @@ export default {
   // 威胁安全建议
   .suggest_box {
     text-align: left;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
     margin-bottom: 24px;
     .suggest_top {
       padding: 0 56px;
       height: 62px;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .suggest_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 16px;
-        color: #333333;
+        color: #fff;
         line-height: 62px;
       }
       .icon_img {
@@ -4737,29 +4567,28 @@ export default {
         vertical-align: middle;
       }
       .suggest_bom_title {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 14px;
-        color: #333333;
+        color: #fff;
       }
       .suggest_bom_des {
         margin: 8px 0 24px 0;
         font-size: 14px;
-        color: #666666;
+        color: #fff;
       }
       .suggest_bom_li {
         font-size: 14px;
-        color: #666666;
+        color: #fff;
       }
       .suggest_bom_list {
         margin: 12px 0 8px 0;
       }
     }
   }
-
   //   告警列表
   .emerge_box {
     padding: 24px 56px;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.3);
     .pagination_box {
       margin-top: 24px;
     }
@@ -4770,17 +4599,16 @@ export default {
       .el-table {
         th {
           .cell {
-            font-family: PingFangMedium;
+            font-family: Microsoft YaHei;
             font-size: 14px;
-            color: #333333;
+            color: #fff;
           }
         }
       }
-
       th > .cell {
-        font-family: PingFangMedium;
+        font-family: Microsoft YaHei;
         font-size: 14px;
-        color: #333333;
+        color: #fff;
       }
       .el-table__row {
         height: 42px;
